@@ -1,0 +1,149 @@
+body {
+  font-family: "Source Sans Pro";
+}
+
+#navbarNav a {
+  color: white;
+}
+
+/** CSS DA LISTA DE POSTS **/
+
+#post-list {
+  padding-top: 15px;
+  font-family: "Source Sans Pro";
+}
+
+#post-list > .row {
+  background-color: white;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+}
+
+#paginator ul {
+  background-color: white;
+}
+
+/*** CSS DA HOMEPAGE   ***/
+#footer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #a9a9a9;
+}
+
+#social-media {
+  color: grey;
+}
+
+/*** CSS DO ARTIGO ***/
+
+#article-title {
+  color: white;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  font-family: "Source Sans Pro";
+}
+
+#article {
+  background-color: white;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  font-family: "Source Sans Pro";
+}
+
+#article h1 {
+  font-size: 32px;
+}
+
+#article h1::before {
+  content: "# ";
+}
+
+#article h2 {
+  font-size: 25px;
+}
+
+#article h2::before {
+  content: "# ";
+}
+
+#article h3 {
+  font-size: 20px;
+}
+
+#article h3::before {
+  content: "# ";
+}
+
+#article h4 {
+  font-size: 18px;
+}
+
+#article h4::before {
+  content: "# ";
+}
+
+#article pre {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-left: -30px;
+  margin-right: -30px;
+}
+
+#article pre > code {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+#author-date {
+  font-size: 12px;
+}
+
+/******** CSS da pagina doc urso *******/
+
+.curso-main {
+  margin-top: 30px;
+}
+
+.curso-main h1, p {
+  color: white;
+}
+
+/********  CSS DO NAVBAR  ********/
+
+nav[data-toggle='toc'] {
+  top: 42px;
+}
+
+nav[data-toggle=toc] .nav>li>a {
+ color: #777777; 
+}
+
+nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:focus, nav[data-toggle=toc] .nav-link.active:hover {
+  color: #8d66ca;
+}
+
+/* small screens */
+@media (max-width: 768px) {
+  /* override stickyness so that the navigation does not follow scrolling */
+  nav[data-toggle='toc'] {
+    margin-bottom: 42px;
+    position: static;
+  }
+
+  /* PICK ONE */
+  /* don't expand nested items, which pushes down the rest of the page when navigating */
+  nav[data-toggle='toc'] .nav .active .nav {
+    display: none;
+  }
+  /* alternatively, if you *do* want the second-level navigation to be shown (as seen on this page on mobile), use this */
+  /*
+  nav[data-toggle='toc'] .nav .nav {
+    display: block;
+  }
+  */
+}

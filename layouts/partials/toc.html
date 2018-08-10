@@ -1,0 +1,23 @@
+<script>
+
+      var add_id_to_headers = function(level) {
+      
+        /* Add headers to scrollspy */
+        var div = $(".section.level" + level);
+        var h = $(".section.level" + level + " h" + level);
+        
+        for(var i = 0; i < div.length; i++) {
+        
+            var a = h[i];
+            var b = div[i];
+            
+            a.setAttribute("id", "header-" + b.getAttribute("id"))
+        }
+        
+      }
+      
+      add_id_to_headers(1);
+      add_id_to_headers(2);
+      add_id_to_headers(3);
+      
+</script>
