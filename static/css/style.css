@@ -887,6 +887,21 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #fff;
 }
 
+#intro .cta-btn {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
 #call-to-action .cta-btn:hover {
   background: #18d26e;
   border: 2px solid #18d26e;
