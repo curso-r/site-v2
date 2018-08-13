@@ -2,30 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Curso-R</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-
-  <!-- Favicons -->
-  <link href="img/favicon.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
-
-  <!-- Bootstrap CSS File -->
-  <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Libraries CSS Files -->
-  <link href="/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <link href="/lib/animate/animate.min.css" rel="stylesheet">
-  <link href="/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-  <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
-  <!-- Main Stylesheet File -->
-  <link href="/css/style.css" rel="stylesheet">
 
   <!-- =======================================================
     Theme Name: BizPage
@@ -58,23 +34,23 @@
           <div class="carousel-item active col-md-12">
             
             <div class="carousel-background">
-              <img src="/img/cursos/intro-r.jpg" alt="">
+              <img src="{{.Site.BaseURL}}{{ .Params.banner }}" alt="">
             </div>
             
             <div class="carousel-container">
               <div class="container carousel-content">
                 <p style="font-size: 56px;">Introdução à programação em R</p>
                 <div id="infos-praticas">
-                  <p class="mutavel"><i class="fa fa-calendar" aria-hidden="true"></i>  dias 27, 28 e 29 de Setembro de 2018</p>
-                  <p><i class="fa fa-clock" aria-hidden="true"></i>  das 19h às 22h</p>
-                  <p><i class="fa fa-map" aria-hidden="true"></i>  Espaço Maestro - Rua Maestro Cardim no 1070</p>
-                  <p><i class="fa fa-money" aria-hidden="true"></i>  R$690,00</p>
+                  <p class="mutavel"><i class="fa fa-calendar" aria-hidden="true"></i>  {{.Params.data}}</p>
+                  <p><i class="fa fa-clock" aria-hidden="true"></i>  {{.Params.hora}}</p>
+                  <p><i class="fa fa-map" aria-hidden="true"></i>  {{.Params.local}}</p>
+                  <p><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
                   <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="WVA7EUN5WLT5N">
+<input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
 <input type="image" src="https://user-images.githubusercontent.com/4706822/43983533-591b4034-9cd1-11e8-8dea-d03c403a0710.png" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
 <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-</form>x
+</form>
                 </div>
               </div>
             </div>
@@ -94,53 +70,9 @@
     <section id="cursos">
       <div class="container">
 
-        <header class="section-header">
-          <h3>Conheça o curso</h3>
-        </header>
-        
-        <p>No curso de introdução você irá aprender sobre manipulação e visualização de dados usando R. Durante o curso você resolverá um problema real de análise de dados e criará um dashboard para comunicar as suas conclusões.</p>
-
-        
           {{.Content}}
           
-        <header class="section-header">
-          <h3>O que eu preciso saber?</h3>
-        </header>
-        
-        <h3>Necessário</h3>
-        
-        <p>Conhecimentos básicos de estatística:</p>
-        
-  
-        <ul>
-          <li>Média, Mediana, Quantis.</li>
-          <li>Variância, Desvio Padrão.</li>
-          <li>Interpretação de porcentagens.</li>
-        </ul>
-        
-        <h3>Recomendado</h3>
-        
-        <ul>
-          <li>Noções básicas de lógica de programação.</li>
-        </ul>
-        
-        <header class="section-header">
-          <h3>O que eu preciso levar?</h3>
-        </header>
-        
-        <h3>Necessário</h3>
-        
-        <ul>
-          <li>Notebook com acesso a internet.</li>
-          <li>Permissão para instalar novos programas.</li>
-        </ul>
-        
-        <h3>Recomendado</h3>
-        
-        <ul>
-          <li>Carregador do notebook.</li>
-          <li>Adaptador de tomada (o local possui apenas o novo padrão)</li>
-        </ul>
+      </div>
         
     </section><!-- #about -->
     
