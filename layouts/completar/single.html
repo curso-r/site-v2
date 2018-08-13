@@ -1,0 +1,40 @@
+<!doctype html5>
+<html>
+<head>
+  {{ partial "head.html" . }}
+</head>
+  <body data-spy="scroll" data-target="#toc">
+    {{ partial "header.html" . }}
+    
+    <div class="container">
+      
+      <div class="row justify-content-md-center" id="article-title">
+        <h1 data-toc-skip>{{ .Title }}</h1>
+      </div>  
+      
+      <div class="row">
+        <div class="col-md-12" style="background-color: white; padding-left: 50px; padding-top: 20px;">
+          <h3>Complete seu cadastro</h3>
+          <p>Utilizaremos essas informações para a emitir a nota fiscal e para enviar materiais complementares do curso que você se inscreveu.</p>  
+        </div>
+      </div>
+      
+      <div class="row">
+        
+        <div class="col-md-12" style="background-color: white;">
+          {{ partial "form.html" .}}          
+        </div>
+    
+      </div>
+      
+    
+      {{ partial "footer.html" . }}
+      
+    </div>
+    
+  </body>
+  
+  {{ partial "scripts.html" .}}
+  {{ partial "toc.html" . }}
+  
+</html>
