@@ -28,82 +28,36 @@
     ============================-->
     <section id="cursos">
       <div class="container" style="background: none;">
-
+        
         <header class="section-header">
           <h3>Nossos cursos</h3>
           <p>Cursos de qualidade com conhecimento em R e estatística.</p>
         </header>
-
-        <div class="row about-cols">
-
-          <div class="col-md-4 wow fadeInUp">
-            <div class="about-col">
-              <div class="img">
-                <img src="{{ .Site.BaseURL }}img/intro-R.png" alt="" class="img-fluid">
-              </div>
-              <h2 class="title"><a href="#">Começando</a></h2>
-              <p>
-                A Curso-R é fortemente integrada com a comunidade do R e da ciência de dados.
-              </p>
-            </div>
-          </div>
-          
-          <div class="col-md-4 wow fadeInUp">
-            <div class="about-col">
-              <div class="img">
-                <img src="{{ .Site.BaseURL }}img/r4ds.png" alt="" class="img-fluid">
-              </div>
-              <h2 class="title"><a href="#">Começando</a></h2>
-              <p>
-                A Curso-R é fortemente integrada com a comunidade do R e da ciência de dados.
-              </p>
-            </div>
-          </div>
-          
-          <div class="col-md-4 wow fadeInUp">
-            <div class="about-col">
-              <div class="img">
-                <img src="{{ .Site.BaseURL }}img/web-scraping.png" alt="" class="img-fluid">
-              </div>
-              <h2 class="title"><a href="#">Começando</a></h2>
-              <p>
-                A Curso-R é fortemente integrada com a comunidade do R e da ciência de dados.
-              </p>
-            </div>
-          </div>
-
-          
-        </div>
         
-        <div class="row about-cols">
-          
-          <a href="#">
+        {{ range $i, $member := (where .Pages "Params.type" "!=" "completar") }}
+        
+          {{ if modBool $i 3 }}
+            <div class="row about-cols">
+          {{ end }}
+        
           <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
-                <img src="{{ .Site.BaseURL }}img/dashboards.png" alt="" class="img-fluid">
+                <img src="{{ .Site.BaseURL }}{{$member.Params.img}}" alt="" class="img-fluid">
               </div>
               <h2 class="title"><a href="#">Começando</a></h2>
               <p>
-                A Curso-R é fortemente integrada com a comunidade do R e da ciência de dados.
-              </p>
-            </div>
-          </div>
-          </a>
-          
-           <div class="col-md-4 wow fadeInUp">
-            <div class="about-col">
-              <div class="img">
-                <img src="{{ .Site.BaseURL }}img/deep-learning.png" alt="" class="img-fluid">
-              </div>
-              <h2 class="title"><a href="#">Começando</a></h2>
-              <p>
-                A Curso-R é fortemente integrada com a comunidade do R e da ciência de dados.
+                {{$i}}
               </p>
             </div>
           </div>
           
-        </div>
+          {{ if (modBool (add $i 1) 3) }}
+          </div>
+          {{ end }}
+          
+          
+        {{ end }}
 
       </div>
     </section><!-- #about -->
