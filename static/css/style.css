@@ -885,6 +885,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin-top: 10px;
   border: 2px solid #fff;
   color: #fff;
+  cursor: pointer;
 }
 
 #intro .cta-btn {
@@ -900,6 +901,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin-top: 10px;
   border: 2px solid #fff;
   color: #fff;
+  background-color: transparent;
+  background-repeat:no-repeat;
+  cursor: pointer;
+  overflow: hidden;   
 }
 
 #call-to-action .cta-btn:hover {

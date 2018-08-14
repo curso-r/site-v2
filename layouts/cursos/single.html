@@ -48,7 +48,7 @@
                   <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
-<input type="image" src="https://user-images.githubusercontent.com/4706822/43983533-591b4034-9cd1-11e8-8dea-d03c403a0710.png" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
+<button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
 <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
 </form>
                 </div>
@@ -80,9 +80,8 @@
       <div class="container text-center">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="WVA7EUN5WLT5N">
-<input type="image" src="https://user-images.githubusercontent.com/4706822/43983533-591b4034-9cd1-11e8-8dea-d03c403a0710.png" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+<input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
+<button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button><img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
 </form>
       </div>
     </section><!-- #call-to-action -->
