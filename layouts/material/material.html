@@ -6,7 +6,24 @@
   <body>
     {{ partial "header.html" . }}
     
-    {{ partial "hex-material.html" . }}
+    <section id="material">
+    
+    <div class="container">
+      
+      <header class="section-header">
+        <h3>Nosso material</h3>
+        <p>Acreditamos que a partir da disseminação do conhecimento para todos possamos democratizar o ensino de Ciências de dados. Portanto, oferecemos de forma aberta todo o conteúdo trabalhado nos nossos cursos.</p>
+      </header>
+      
+    </div>
+    
+    <div class="container-fluid">
+    
+     {{ partial "hex-material.html" . }}
+      
+    </div>
+    
+    </section>
     
     {{ partial "footer.html" . }}
     {{ partial "scripts.html" .}}
