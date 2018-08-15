@@ -23,19 +23,7 @@
           <div class="row about-cols">
         {{ end }}
       
-        <a href="{{$member.URL}}">
-        <div class="col-md-4 wow fadeInUp">
-          <div class="about-col">
-            <div class="img">
-              <img src="{{ .Site.BaseURL }}{{$member.Params.banner}}" alt="" class="img-fluid" style="height: 200px; width: 100%;">
-            </div>
-            <h2 class="title"><a href="#">{{.Title}}</a></h2>
-            <p>
-              {{.Summary}}
-            </p>
-          </div>
-        </div>
-        </a>
+        {{ partial "blog-item.html" .}}
         
         {{ if (modBool (add $i 1) 3) }}
         </div>

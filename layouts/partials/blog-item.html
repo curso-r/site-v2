@@ -1,0 +1,13 @@
+<a href="{{.URL}}">
+  <div class="col-md-4 wow fadeInUp">
+    <div class="about-col">
+      <div class="img">
+        <img src="{{ .Site.BaseURL }}{{.Params.banner}}" alt="" class="img-fluid" style="height: 200px; width: 100%;">
+      </div>
+      <h2 class="title"><a href="#">{{.Title}}</a></h2>
+      <p>
+        {{.Summary}}
+      </p>
+    </div>
+  </div>
+</a>
