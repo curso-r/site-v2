@@ -2,78 +2,105 @@
 title: "Introdução à programação em R"
 data: "dias 26, 27 e 28 de setembro"
 hora: "das 19h às 22h"
-local: "Espaço Maestro (Rua Maestro Cardim 1000)"
+local: "FYI Learning Solutions - Av. Paulista, 2006, Conjunto 401 - São Paulo - SP"
 paypal: "WVA7EUN5WLT5N"
 img: "img/cursos/intro-r.png"
 preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
-desc: "Aprenda o básico de manipulação e visualização de dados com R"
+desc: "Aprenda o básico de manipulação e visualização de dados com R."
 requisitos: ""
 ---
 
 <header class="section-header">
   <h3>Conheça o curso</h3>
 </header>
-        
-No curso de introdução você irá aprender sobre manipulação e visualização de dados usando R. Durante o curso você resolverá um problema real de análise de dados e criará um dashboard para comunicar as suas conclusões.
 
-### Apresentação do problema
+O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
-Aqui blahejkahkjhskajhsa
+O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. Você sairá deste curso apto a começar a utilizar o R em suas análises.
 
-### Ambientação com o R e RStudio
+Ao decorrer do curso, abordaremos os seguintes tópicos:
 
+#### Introdução
 
-sajhAJDHKJASHDKJHASKJDH
-SAJJAHDKAJHSA
-
+- Apresentação do problema de análise de dados.
+- Ambientação ao R e ao RStudio.
 
 ### Manipulação de dados
 
-DKJSHDKJAHDSKDSA
+- O pacote `dplyr`.
+- Filtrando linhas.
+- Ordenando linhas.
+- Selecionando colunas.
+- Criando e modificando colunas.
+- Agregando a base.
+- Juntando bases de dados (*joins*).
 
 ### Visualização de dados
 
-ASDHAJDHS
+- O pacote `ggplot2`.
+- Gráficos de dispersão.
+- Gráficos de barras.
+- Boxplots e histogramas.
+- Gráfico de séries.
+- Customizando os gráficos.
 
-### Relatórios com RMarkdown
+### Relatórios com R Markdown
 
-DAJKHSJSDH
+- O que é uma linguagem de marcação?
+- Criação de relatórios com R Markdown.
+- Criação de dashboards estáticos com o pacote `flexdashboard`.
+
+
+
+
+<br>
+<header class="section-header">
+  <h3>Para quem é este curso?</h3>
+</header>
+
+Este curso é destinado a estudantes e profissionais que:
+
+- desejam entrar no mundo da ciência de dados, utilizando o R como principal ferramenta;
+- já trabalham com análise de dados e gostariam de incluir o R no seu repertório de ferramentas.
+
+
+
 
 <header class="section-header">
   <h3>O que eu preciso saber?</h3>
 </header>
 
-<h3>Necessário</h3>
+#### Necessário
         
-<p>Conhecimentos básicos de estatística:</p>
-        
-<ul>
-  <li>Média, Mediana, Quantis.</li>
-  <li>Variância, Desvio Padrão.</li>
-  <li>Interpretação de porcentagens.</li>
-</ul>
+O conhecimento dos seguintes tópicos é necessário para o completo entendimento do curso:
 
-<h3>Recomendado</h3>
+- medidas de posição, como média e mediana.
+- medidas de dispersão, como variância e desvio padrão.
+- interpretação de proporções, como taxas de acerto e erro.
+- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
 
-<ul>
-  <li>Noções básicas de lógica de programação.</li>
-</ul>
 
+
+
+<br>
 <header class="section-header">
   <h3>O que eu preciso levar?</h3>
 </header>
 
-<h3>Necessário</h3>
+Durante as aulas, você vai precisar de:
 
-<ul>
-  <li>Notebook com acesso a internet.</li>
-  <li>Permissão para instalar novos programas.</li>
-</ul>
+- um notebook com acesso a internet;
+- últimas versões do R e do RStudio instaladas;
+- permissão para instalar novos programas.
 
-<h3>Recomendado</h3>
+Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
 
-<ul>
-  <li>Carregador do notebook.</li>
-  <li>Adaptador de tomada (o local possui apenas o novo padrão)</li>
-</ul>
+
+
+<br>
+<header class="section-header">
+  <h3>Professores</h3>
+</header>
+
+Este curso contará com os seguintes professores: a definir.
