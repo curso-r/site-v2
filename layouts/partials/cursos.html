@@ -10,7 +10,7 @@
       <div class="img">
         <img src="{{ .Site.BaseURL }}{{$member.Params.img}}" alt="" class="img-fluid">
       </div>
-      <h2 class="title"><a href="#">{{.Title}}</a></h2>
+      <h2 class="title"><a href="{{$member.URL}}">{{.Title}}</a></h2>
       <p>
         {{.Params.desc}}
       </p>
