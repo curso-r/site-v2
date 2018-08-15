@@ -1,0 +1,21 @@
+<section id="cursos">
+  <div class="container">
+    
+    <header class="section-header">
+      <h3>Nosso blog</h3>
+      <p>Aqui você encontra novidades sobre ciência de dados e R além de conteúdo para se aprofundar.</p>
+    </header>
+    
+     <div class="row about-cols">
+
+    {{ range first 3 (where .Pages "Section" "blog").ByDate.Reverse }}
+
+        {{ partial "blog-item.html" .}}
+    
+    {{ end }}
+    
+    </div>
+    
+  </div>
+  
+</section><!-- #about -->

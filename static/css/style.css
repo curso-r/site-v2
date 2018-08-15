@@ -872,6 +872,45 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #fff;
 }
 
+#call-to-action .cta-submit {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+}
+
+#call-to-action .cta-submit:hover {
+  background: #18d26e;
+  border: 2px solid #18d26e;
+}
+
+#call-to-action .cta-email {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  background: none;
+  text-align: center;
+  margin-right: 5px;
+}
+
 #call-to-action .cta-btn {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
@@ -1253,6 +1292,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 #team {
   background: #fff;
   padding: 60px 0;
+}
+
+#team .row {
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 #team .member {
