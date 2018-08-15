@@ -9,6 +9,7 @@ preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
 desc: "Aprenda o básico de manipulação e visualização de dados com R."
 requisitos: ""
+professores: ["Daniel Falbel", "William Amorim"]
 ---
 
 <header class="section-header">
