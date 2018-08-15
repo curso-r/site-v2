@@ -1255,6 +1255,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 60px 0;
 }
 
+#team .row {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
 #team .member {
   text-align: center;
   margin-bottom: 20px;
