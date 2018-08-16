@@ -1610,7 +1610,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   width: 65%;
 }
 
-#footer .footer-top .footer-newsletter input[type="submit"] {
+#footer .footer-top .footer-newsletter button[type="submit"] {
   background: #18d26e;
   border: 0;
   width: 35%;
@@ -1621,7 +1621,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   cursor: pointer;
 }
 
-#footer .footer-top .footer-newsletter input[type="submit"]:hover {
+#footer .footer-top .footer-newsletter button[type="submit"]:hover {
   background: #13a456;
 }
 

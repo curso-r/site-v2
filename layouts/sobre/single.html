@@ -30,21 +30,22 @@
       <div class="container" style="background: none;">
         
         <header class="section-header">
-          <h3>Nossos cursos</h3>
-          <p>Cursos de qualidade com conhecimento em R e estatística.</p>
+          <h3>Quem somos</h3>
         </header>
         
-        {{partial "cursos.html" .}}
+        {{.Content}}
+        
         
       </div>
+
     </section><!-- #about -->
+    
+    {{ partial "equipe.html" . }}
     
     {{ partial "newsletter.html" . }}
     
-    {{ partial "professores.html" . }}
+    {{partial "footer.html" .}}
     
-    {{ partial "footer.html" . }}
-    
-    {{ partial "scripts.html" . }}
+    {{partial "scripts.html" .}}
   
 </body>
