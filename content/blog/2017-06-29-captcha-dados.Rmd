@@ -40,7 +40,7 @@ vira isso: (substituí `0` por `'.'` para ficar mais fácil de ver)
 
 ```{r echo=FALSE}
 library(tidyverse)
-m <- decryptr:::create_response("a49f36", c(0:9, letters))
+m <- decryptr:::get_answer_vocab("a49f36", c(0:9, letters))
 m[m == 0] <- '.'
 as_tibble(m) %>% rownames_to_column('posicao') %>% knitr::kable()
 ```
@@ -66,8 +66,8 @@ library(decryptr)
 arqs <- dir('../../static/data/captcha-dados/tjmg', full.names = TRUE)
 
 d_captcha <- arqs %>% 
-  read_captcha() %>%
-  prepare()
+  read_captcha(ans_in_path = TRUE) %>%
+  join_captchas()
 
 str(d_captcha)
 ```

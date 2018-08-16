@@ -48,21 +48,22 @@ Visualizando a imagem:
 ```{r plotimg1}
 "../../static/data/captcha-segment/captcha705f7bad4a3d.jpeg"  %>% 
   read_captcha() %>% 
+  purrr::pluck(1) %>%
   plot()
 ```
 
 Infelizmente, segmentar a imagem nos lugares corretos é [uma tarefa difícil](https://www.usenix.org/node/185129). Pior até do que predizer as letras. Para simplificar, vamos fazer um corte fixado das letras:
 
 ```{r imglines}
-arq_captcha %>% read_captcha() %>% plot()
+arq_captcha %>% read_captcha() %>% purrr::pluck(1) %>% plot()
 abline(v = 30 + 15 * 0:5, col = 'red')
 ```
 
 Podemos também limitar os eixos `x` (tirar os espaços vazios à esquerda e à direita) e `y` (superiores e inferiores).
 
 ```{r imglines2}
-"../../static/data/captcha-segment/captcha705f7bad4a3d.jpeg" %>% 
-  load_image() %>% 
+"../../static/data/captcha-segment/captcha705f7bad4a3d.jpeg" %>%
+  decryptr:::load_image() %>%
   magrittr::extract(-c(1:9, 31:dim(.)[1]), -c(1:15, 106:dim(.)[2]), TRUE) %>% 
   grDevices::as.raster() %>% 
   graphics::plot()
@@ -78,7 +79,7 @@ No caso do TRT, cada CAPTCHA gerará uma tabela de 6 linhas e 315 (`21 * 15`) co
 
 ```{r imgsep}
 arq_captcha %>% 
-  load_image() %>% 
+  decryptr:::load_image() %>% 
   magrittr::extract(-c(1:9, 31:dim(.)[1]), -c(1:15, 106:dim(.)[2]), 1) %>% 
   as_tibble() %>% 
   rownames_to_column('y') %>% 

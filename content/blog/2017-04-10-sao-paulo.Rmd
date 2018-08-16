@@ -132,7 +132,7 @@ loc <- locale(grouping_mark = '.', decimal_mark = ',')
 pop <- read_excel('pop.xls', skip = 1, sheet = 2) %>%
   clean_names() %>%
   filter(!is.na(cod_munic)) %>%
-  mutate(pop = parse_number(`população_estimada`, locale = loc),
+  mutate(pop = parse_number(`populacao_estimada`, locale = loc),
          cd_gcmun = paste0(cod_uf, cod_munic)) %>%
   select(cd_gcmun, pop)
 ```
@@ -142,7 +142,7 @@ loc <- locale(grouping_mark = '.', decimal_mark = ',')
 pop <- read_excel('../../static/data/sao-paulo/pop.xls', skip = 1, sheet = 2) %>%
   clean_names() %>%
   filter(!is.na(cod_munic)) %>%
-  mutate(pop = parse_number(`população_estimada`, locale = loc),
+  mutate(pop = parse_number(`populacao_estimada`, locale = loc),
          cd_gcmun = paste0(cod_uf, cod_munic)) %>%
   select(cd_gcmun, pop)
 ```

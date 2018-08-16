@@ -95,9 +95,9 @@ mtcars %>%
   ggplot(aes(x = as.factor(carb), y = mpg)) +
   geom_boxplot()
 mtcars %>% 
-  mutate(carb = fct_reorder(f = as.factor(carb), 
-                            x = mpg,
-                            fun = median)) %>% 
+  mutate(carb = fct_reorder(.f = as.factor(carb), 
+                            .x = mpg,
+                            .fun = median)) %>% 
   ggplot(aes(x = carb, y = mpg)) +
   geom_boxplot()
   

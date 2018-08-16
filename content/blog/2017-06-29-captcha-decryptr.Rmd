@@ -104,6 +104,7 @@ Para plotar um CAPTCHA basta ler o arquivo com `read_captcha()` e depois usar a 
 library(decryptr)
 '../../static/data/captcha-dados/tjmg/captcha4d2f1097adba_73301.jpeg' %>% 
   read_captcha() %>% 
+  purrr::pluck(1) %>%
   plot()
 ```
 

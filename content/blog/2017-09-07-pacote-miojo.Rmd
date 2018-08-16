@@ -114,14 +114,6 @@ FIM!
 - Agora você não tem desculpa para não empacotar suas soluções em R.
 - Esse tutorial é incompleto! Para acessar mais detalhes, veja http://r-pkgs.had.co.nz, elaborado por você sabe quem.
 
-```{r, fig.width=5, fig.height=4.4, echo=FALSE, fig.align='center'}
-# templates <- meme::get_templates("imgflip")
-# allthethings <- meme::create_meme(templates[[9]], "Now", "It's your turn",
-#                                   username = 'jtrecenti', password = 'XXX')
-# saveRDS(allthethings, 'dicaprio.rds')
-meme:::plot.meme(readRDS('../../static/data/pacote-miojo/allthehings.rds'))
-```
-
 ## Outras pequenas dicas práticas
 
 - Use sempre `devtools::check()` para checar se seu pacote está 100% bem construído.
@@ -131,14 +123,5 @@ meme:::plot.meme(readRDS('../../static/data/pacote-miojo/allthehings.rds'))
 - Use `abjutils::use_pipe()` para poder usar o `%>%` nos seus pacotes.
 - Use `devtools::use_data()` para adicionar dados ao seu pacote.
 - Use `devtools::use_vignettes()` para escrever um tutorial sobre seu pacote, [igual a esse do dplyr, por exemplo](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html).
-
-
-```{r, fig.width=5, fig.height=4.4, echo=FALSE, fig.align='center'}
-# allthethings <- meme::create_meme(templates[[17]], "Package", "All the things!",
-#                                   username = 'jtrecenti', password = 'XXX')
-# saveRDS(allthethings, 'allthehings.rds')
-meme:::plot.meme(readRDS('../../static/data/pacote-miojo/dicaprio.rds'))
-```
-
 
 É isso. Happy coding ;)

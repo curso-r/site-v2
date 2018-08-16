@@ -35,15 +35,18 @@ library(decryptr)
 arq <- captcha_download_rfb(dest = "img")
 arq %>% 
   read_captcha() %>% 
+  purrr::pluck(1) %>%
   plot()
 ```
 
 
 ```{r, fig.height=1, fig.width=3, echo=FALSE}
 library(decryptr)
+load_image <- decryptr:::load_image
 arq <- "../../static/data/captcha-segment/captcha9202d1c210b.png"
 arq %>% 
   read_captcha() %>% 
+  purrr::pluck(1) %>%
   plot()
 ```
 
@@ -698,6 +701,7 @@ Vamos ver a imagem novamente:
 ```{r, fig.width=7, fig.height=2}
 arq %>% 
   read_captcha() %>% 
+  purrr::pluck(1) %>%
   plot()
 ```
 
