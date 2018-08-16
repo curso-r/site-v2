@@ -6,6 +6,16 @@ body {
   color: white;
 }
 
+#titulo-curso {
+  font-size: 56px;
+}
+
+@media (max-width: 768px) {
+#titulo-curso {
+  font-size: 22px;
+}
+}
+
 /** CSS DA LISTA DE POSTS **/
 
 #post-list {
