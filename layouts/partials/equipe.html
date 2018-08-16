@@ -10,7 +10,7 @@
     </div>
     
     
-    {{ range $i, $member := (where .Pages "Section" "equipe") }}
+    {{ range $i, $member := (where (where .Site.Pages "Section" "equipe") "Kind" "page")}}
 
       {{ if modBool $i 3 }}
         <div class="row">
