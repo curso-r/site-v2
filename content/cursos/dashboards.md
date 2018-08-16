@@ -15,9 +15,9 @@ requisitos: ""
   <h3>Conheça o curso</h3>
 </header>
 
-O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
+Dashboards são excelentes ferramentas para comunicar os resultados de análises de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos e dinâmicos altamente customizáveis, mas de maneira simples e rápida.
 
-O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. Você sairá deste curso apto a começar a utilizar o R em suas análises.
+O objetivo deste curso é apresentar os principais pacotes do R para a criação de dashboards. Você sairá deste curso apto a construir dashboards estáticos e dinâmicos para comunicar utilizando apenas a linguagem R.
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
