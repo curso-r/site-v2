@@ -90,7 +90,9 @@ Conhecimentos básicos de programação.
 - Noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
 - Conhecimento básico de programação em R:
    - sintaxe e vocabulário básico;
-   - criação de objetos e funções.
+   - criação de objetos e funções;
+   - criação e manipulação de vetores;
+   - criação e manipulação de data frames.
 
 #### Recomendado
 
@@ -112,7 +114,7 @@ Conhecimentos introdutórios de programação.
 Durante as aulas, você vai precisar de:
 
 - um notebook com acesso a internet;
-- últimas versões do R e do RStudio instaladas;
+- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
@@ -125,5 +127,5 @@ Também recomendamos levar a fonte do notebook e um adaptador de tomada (as sala
   <h3>Professores</h3>
 </header>
 
-Este curso contará com os seguintes professores: a definir.
+Este curso contará com os seguintes professores:
 

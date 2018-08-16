@@ -92,7 +92,7 @@ O conhecimento dos seguintes tópicos é necessário para o completo entendiment
 Durante as aulas, você vai precisar de:
 
 - um notebook com acesso a internet;
-- últimas versões do R e do RStudio instaladas;
+- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
