@@ -104,7 +104,7 @@ Programação:
 
 - conhecimento introdutório de programação em R: 
    - utilização do operador pipe (%>%);
-   - importação de bases em formato de texto (.csv) ou excecl (.xlsx, .xls);
+   - importação de bases em formato de texto (.csv) ou Excel (.xlsx, .xls);
    - manipulação de dados com os pacotes `dplyr` e `tidyr`;
    - visualização de dados com o pacote `ggplot2`.
 
