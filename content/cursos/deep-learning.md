@@ -15,41 +15,17 @@ requisitos: ""
   <h3>Conheça o curso</h3>
 </header>
 
-O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
+Deep learning é...
 
-O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. Você sairá deste curso apto a começar a utilizar o R em suas análises.
+O objetivo deste curso é ... . 
+
+Você sairá deste curso apto a ... .
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
-#### Introdução
+#### Tópico 1
 
-- Apresentação do problema de análise de dados.
-- Ambientação ao R e ao RStudio.
-
-### Manipulação de dados
-
-- O pacote `dplyr`.
-- Filtrando linhas.
-- Ordenando linhas.
-- Selecionando colunas.
-- Criando e modificando colunas.
-- Agregando a base.
-- Juntando bases de dados (*joins*).
-
-### Visualização de dados
-
-- O pacote `ggplot2`.
-- Gráficos de dispersão.
-- Gráficos de barras.
-- Boxplots e histogramas.
-- Gráfico de séries.
-- Customizando os gráficos.
-
-### Relatórios com R Markdown
-
-- O que é uma linguagem de marcação?
-- Criação de relatórios com R Markdown.
-- Criação de dashboards estáticos com o pacote `flexdashboard`.
+#### Tópico 2
 
 
 
@@ -59,10 +35,7 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
   <h3>Para quem é este curso?</h3>
 </header>
 
-Este curso é destinado a estudantes e profissionais que:
-
-- desejam entrar no mundo da ciência de dados, utilizando o R como principal ferramenta;
-- já trabalham com análise de dados e gostariam de incluir o R no seu repertório de ferramentas.
+Este curso é destinado a estudantes e profissionais que ... .
 
 
 
@@ -71,16 +44,33 @@ Este curso é destinado a estudantes e profissionais que:
   <h3>O que eu preciso saber?</h3>
 </header>
 
+Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
+
 #### Necessário
+
+Estatística:
+
+- medidas de posição, como média e mediana;
+- medidas de dispersão, como variância e desvio padrão;
+- interpretação de proporções, como taxas de acerto e erro;
+- intuição de modelos de regressão: o que são e como interpretá-los.
         
-O conhecimento dos seguintes tópicos é necessário para o completo entendimento do curso:
+Programação:
 
-- medidas de posição, como média e mediana.
-- medidas de dispersão, como variância e desvio padrão.
-- interpretação de proporções, como taxas de acerto e erro.
-- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
+- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else);
+- conhecimento básico de programação em R:
+   - sintaxe e vocabulário básico;
+   - criação de objetos e funções;
+   - criação e manipulação de vetores;
+   - criação e manipulação de data frames.
 
+#### Recomendado
 
+Programação:
+
+- utilização do operador pipe (%>%);
+- manipulação de dados com os pacotes `dplyr` e `tidyr`;
+- visualização de dados com o pacote `ggplot2`.
 
 
 <br>
@@ -91,7 +81,7 @@ O conhecimento dos seguintes tópicos é necessário para o completo entendiment
 Durante as aulas, você vai precisar de:
 
 - um notebook com acesso a internet;
-- últimas versões do R e do RStudio instaladas;
+- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
@@ -103,4 +93,4 @@ Também recomendamos levar a fonte do notebook e um adaptador de tomada (as sala
   <h3>Professores</h3>
 </header>
 
-Este curso contará com os seguintes professores: a definir.
+Este curso contará com os seguintes professores:

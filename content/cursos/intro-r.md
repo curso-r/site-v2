@@ -18,7 +18,9 @@ professores: ["Daniel Falbel", "William Amorim"]
 
 O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
-O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. Você sairá deste curso apto a começar a utilizar o R em suas análises.
+O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. 
+
+Você sairá deste curso apto a começar a utilizar o R em suas análises.
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
@@ -72,13 +74,19 @@ Este curso é destinado a estudantes e profissionais que:
   <h3>O que eu preciso saber?</h3>
 </header>
 
-#### Necessário
-        
-O conhecimento dos seguintes tópicos é necessário para o completo entendimento do curso:
 
-- medidas de posição, como média e mediana.
-- medidas de dispersão, como variância e desvio padrão.
+Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
+
+#### Necessário
+
+Estatística:
+
+- medidas de posição, como média e mediana;
+- medidas de dispersão, como variância e desvio padrão;
 - interpretação de proporções, como taxas de acerto e erro.
+
+Programação:
+
 - noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
 
 
@@ -92,7 +100,7 @@ O conhecimento dos seguintes tópicos é necessário para o completo entendiment
 Durante as aulas, você vai precisar de:
 
 - um notebook com acesso a internet;
-- últimas versões do R e do RStudio instaladas;
+- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
