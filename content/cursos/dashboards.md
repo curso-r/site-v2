@@ -17,7 +17,9 @@ requisitos: ""
 
 Dashboards são excelentes ferramentas para comunicar os resultados de uma análise de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
 
-O objetivo deste curso é apresentar os principais pacotes do R para a criação de dashboards. Você sairá deste curso apto a construir dashboards estáticos ou dinâmicos para comunicar utilizando apenas a linguagem R.
+O objetivo deste curso é apresentar os principais pacotes do R para a criação de dashboards. 
+
+Você sairá deste curso apto a construir dashboards estáticos ou dinâmicos para comunicar utilizando apenas a linguagem R.
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
@@ -54,7 +56,7 @@ Este curso é destinado a estudantes e profissionais que precisam construir dash
   <h3>O que eu preciso saber?</h3>
 </header>
 
-O conhecimento de alguns tópicos é necessário para o completo entendimento das aulas. Também recomendamos outros tópicos para uma melhor experiência do curso.
+Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
 
 #### Necessário
         
@@ -83,7 +85,9 @@ Estatística:
 Programação:
 
 - utilização do operador pipe (%>%);
-- importação, manipulação e visualização de dados com pacotes do `tidyverse`.
+- importação de bases em formato de texto (.csv) ou excecl (.xlsx, .xls);
+- manipulação de dados com os pacotes `dplyr` e `tidyr`;
+- visualização de dados com o pacote `ggplot2`.
 
 
 
