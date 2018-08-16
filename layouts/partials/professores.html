@@ -10,7 +10,13 @@
 
     <div class="owl-carousel testimonials-carousel">
       
-      {{ range (where (where .Site.Pages "Section" "equipe") ".Title" "in" .Params.professores) }}
+      {{ $pag := (where (where .Site.Pages "Section" "equipe") "Kind" "page") }}
+      {{ if isset .Params "professores" }}
+        {{ $pag := (where $pag ".Title" "in" .Params.professores) }}
+      {{end}}
+        
+      {{ range ($pag) }}
+      
 
       <div class="testimonial-item">
         <img src="{{.Params.foto}}" class="testimonial-img" alt="">

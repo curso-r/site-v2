@@ -76,17 +76,20 @@
         
     </section><!-- #about -->
     
-    {{partial "professores.html" .}}
-    
     <section id="call-to-action" class="wow fadeIn">
       <div class="container text-center">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
-<button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button><img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-</form>
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
+          <button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button><img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+        </form>
       </div>
     </section><!-- #call-to-action -->
+    
+    
+    {{partial "professores.html" .}}
+    
+    {{partial "footer.html" . }}
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
