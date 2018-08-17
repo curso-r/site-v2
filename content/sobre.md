@@ -11,7 +11,7 @@ Junte-se a nós nessa missão!
 
 # O que fazemos?
 
-Cursos online com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro. Além disso, queremos contribuir e fomentar o estudo da tecnologia no Brasil e é por isso que trabalhamos com o sistema Open Source, no qual qualquer pessoa pode acessar nosso material didático e mandar sugestões para nós.
+Cursos com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro. Além disso, queremos contribuir e fomentar o estudo da tecnologia no Brasil e é por isso que trabalhamos com o sistema Open Source, no qual qualquer pessoa pode acessar nosso material didático e mandar sugestões para nós.
 
 Você pode saber mais sobre nossos cursos [aqui](/cursos).
 
@@ -22,6 +22,6 @@ Em 2016 e 2017, ministramos novamente o curso no programa de verão e, depois de
 
 # O que é R?
 
- R é uma linguagem e um ambiente de desenvolvimento integrado para cálculos de gráficos e estatísticos. Criada por Ross Ihaka e Robert Gentleman (daí o nome “R”), ela é altamente usada por especialistas para desenvolvimento de softwares de estatísticas e análise de dados e está se tornando cada vez mais popular. Saiba mais sobre a linguagem R em [nossos cursos](/cursos).
+R é uma linguagem e um ambiente de desenvolvimento integrado para cálculos de gráficos e estatísticos. Criada por Ross Ihaka e Robert Gentleman (daí o nome “R”), ela é altamente usada por especialistas para desenvolvimento de softwares de estatísticas e análise de dados e está se tornando cada vez mais popular. Saiba mais sobre a linguagem R em [nossos cursos](/cursos).
 
 
