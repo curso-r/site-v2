@@ -5,6 +5,7 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["lubridate"]
 slug: "lubridate"
+minidesc: "lubridate possui um vasto conjunto de funções para trabalhar com datas no R"
 desc: "Em muitos momentos durante a análise trabalhamos com datas. Esse tipo de dado merece um cuidado especial na hora de realizar a sua análise. Neste tutorial vamos falar sobre o pacote lubridate que possui um conjunto de funções muito úteis para quem precisar trabalhar com esse tipo de dado."
 requisitos: ["r-base"]
 layout: "article"

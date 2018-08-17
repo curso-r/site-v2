@@ -9,8 +9,7 @@
               <div class="hexIn">
                 <a class="hexLink" href="{{.URL}}">
                   <img src='/hex/{{ replace (replace .Dir "material" "") "/" ""}}.png' alt="" />
-                  <h1>This is a title</h1>
-                  <p>Some sample text about the article this hexagon leads to</p>
+                  <p>{{.Params.minidesc}}</p>
                 </a>
               </div>
             </li>

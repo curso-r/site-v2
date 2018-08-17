@@ -5,6 +5,7 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["webscraping"]
 slug: "webscraping"
+minidesc: "Web scraping refere-se ao processo de baixar e estruturar dados diretamente da web."
 desc: "Web scraping refere-se ao processo de baixar e estruturar dados diretamente da web. Passaremos pelos princípios básicos de requisições web, como controlá-las por intermédio do R e como obter informações estruturadas de páginas da web."
 requisitos: ["r-base", "purrr"]
 layout: "article"
@@ -332,7 +333,7 @@ d_sabesp %&gt;%
 <li>Muitas buscas e muitas paginações por busca.</li>
 </ul>
 <p>No TJSP temos <em>uma busca e muitas paginações</em>. Acesse a página do <a href="http://esaj.tjsp.jus.br/cjsg/consultaCompleta.do">e-SAJ</a>, digite “acordam” no campo “Pesquisa Livre” e clique em “Pesquisar”, para ter uma ideia de como é essa página.</p>
-<p>A página (acessada no dia 2018-08-16) é uma ferramenta de busca com vários campos, que não permite pesquisa com dados em branco. Na parte de baixo o site mostra uma série de documentos, organizados em páginas de vinte em vinte resultados.</p>
+<p>A página (acessada no dia 2018-08-17) é uma ferramenta de busca com vários campos, que não permite pesquisa com dados em branco. Na parte de baixo o site mostra uma série de documentos, organizados em páginas de vinte em vinte resultados.</p>
 <p>Para realizar a coleta, precisamos de duas funções principais, uma que faz a busca e outra que acessa uma página específica (que será executada várias vezes). Utilizaremos as funções <code>cjsg</code> e <code>cjsg_pag</code>.</p>
 <pre class="r"><code>cjsg_session &lt;- function() {
   rvest::html_session(&#39;http://esaj.tjsp.jus.br/cjsg/consultaCompleta.do&#39;)

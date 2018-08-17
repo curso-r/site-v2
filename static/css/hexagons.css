@@ -65,13 +65,13 @@
   width: 100%;
   padding: 5%;
   box-sizing:border-box;
-  background-color: rgba(0, 128, 128, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   font-weight: 300;
   -webkit-transition:  -webkit-transform .2s ease-out, opacity .3s ease-out;
           transition:          transform .2s ease-out, opacity .3s ease-out;
 }
 .hex h1 {
-  bottom: 50%;
+  bottom: 40%;
   padding-top:50%;
   font-size: 1.5em;
   z-index: 1;
@@ -86,10 +86,9 @@
   left: 45%;
   width: 10%;
   text-align: center;
-  border-bottom: 1px solid #fff;
 }
 .hex p {
-  top: 50%;
+  top: 25%;
   padding-bottom:50%;
   -webkit-transform:translate3d(0,100%,0);
       -ms-transform:translate3d(0,100%,0);
@@ -98,14 +97,12 @@
 
 
 /*** HOVER EFFECT  **********************************************************************/
-/***
 .hexLink:hover h1, .hexLink:focus h1,
 .hexLink:hover p, .hexLink:focus p{
   -webkit-transform:translate3d(0,0,0);
       -ms-transform:translate3d(0,0,0);
           transform:translate3d(0,0,0);
 }
-***/
 
 /*** HEXAGON SIZING AND EVEN ROW INDENTATION *****************************************************************/
 @media (min-width:1201px) { /* <- 5-4  hexagons per row */

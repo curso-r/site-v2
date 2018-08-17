@@ -5,6 +5,7 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["API"]
 slug: "api"
+minidesc: "Construa API's para conectar a sua análise com outros programas."
 desc: "O fluxo da ciência de dados se encerra na parte de comunicação. Essa parte é responsável por transferir todo o conhecimento gerado durante a análise de dados. E isso não é nada fácil. A forma de construir a comunicação depende muito do interlocutor."
 requisitos: ["r-base", "dplyr"]
 layout: "article"
@@ -229,25 +230,13 @@ devtools::install(&#39;preditorIMDb&#39;)</code></pre>
 <pre class="r"><code>r &lt;- httr::POST(&quot;http://cran.ocpu.io/praise/R/praise/json&quot;)
 httr::content(r)
 ## [[1]]
-## [1] &quot;You are bee&#39;s knees!&quot;</code></pre>
+## [1] &quot;You are super!&quot;</code></pre>
 <p>(o pacote <code>praise</code> é um gerador de elogios aleatório)</p>
 <p>E tem mais! Com o serviço do <code>ocpu.io</code> você pode vincular sua conta ao GitHub e deixar todos os seus pacotes funcionarem como APIs automaticamente. Veja em <a href="https://www.opencpu.org/cloud.html" class="uri">https://www.opencpu.org/cloud.html</a> como fazer isso.</p>
 <p>Por exemplo, o post da Curso-R chamado <a href="http://curso-r.com/blog/2017/08/28/2017-08-27-safadao/">Aquele 1% é deep learning</a> foi montado usando OpenCPU como gerador dos textos do Wesley Safadão.</p>
 <pre class="r"><code>r &lt;- httr::POST(&quot;http://jtrecenti.ocpu.io/safadao/R/gen/json&quot;)
 cat(httr::content(r)[[1]])
-## chamego denguinho tesão e carinho
-## paixão| calça acabar uma vez
-## se você os meus enteos
-## ex mais o bribo erminha
-## como tupo boa to na rua
-## vai se amar devo solidão
-## pro cé que sou complora que eu não quero
-## a mulherada provaia gatinha
-## e deixa não é mais ser meu carro pra sempre
-## ah de exploscê
-## descanse do carro onte dela
-## e vai irrinto mais de amo
-## &lt;truncated&gt;</code></pre>
+## 47</code></pre>
 </div>
 </div>
 <div id="plumber-em-producao" class="section level1">

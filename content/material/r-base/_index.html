@@ -5,6 +5,7 @@ date: 2018-07-16
 categories: ["R"]
 tags: ["R-Básico"]
 slug: "r-base"
+minidesc: "Comece com o básico da linguagem R."
 desc: "Neste capítulo vamos introduzir o R, suas principais estruturas de dados e um pequeno vocabulário de funções úteis."
 requisitos: ["rstudio"]
 layout: "article"
@@ -494,7 +495,7 @@ if(x == 1) {
 if(x == 1) {
   Sys.time()
 }
-## [1] &quot;2018-08-16 17:21:38 -03&quot;</code></pre>
+## [1] &quot;2018-08-17 11:08:46 -03&quot;</code></pre>
 <p>O R só vai executar o que está na expressão dentro das chaves <code>{}</code> se o que estiver dentro dos parênteses <code>()</code> retornar <code>TRUE</code>.</p>
 <p>A sintaxe com o <code>else</code> e o <code>if else</code> é</p>
 <pre class="r"><code>if(x &lt; 0) {
@@ -874,7 +875,7 @@ media(1:3)
 }
 
 alea()
-## [1] 7</code></pre>
+## [1] 5</code></pre>
 <p>Veja que construímos uma função sem argumentos. Podemos generalizá-la incluindo os argumentos da função <code>runif()</code>.</p>
 <pre class="r"><code>alea &lt;- function(n, min, max) {
   
@@ -885,9 +886,9 @@ alea()
 }
 
 alea(2, 2, 5)
-## [1] 4 4
+## [1] 2 4
 alea(5, 100, 105)
-## [1] 102 100 104 103 100</code></pre>
+## [1] 103 101 102 104 100</code></pre>
 <p>Observe que não há problema em usar os mesmos nomes para os argumentos. Isso se deve aos <em>environments</em>. Para saber mais, confira <a href="http://curso-r.com/blog/2017/06/19/2017-06-19-environments/">este post</a>.</p>
 <hr />
 <p><strong>10.</strong> Rode <code>help(sample)</code> para descobrir o que a função <code>sample()</code> faz. Em seguida, use-a para escrever uma função que escolha uma linha aleatoriamente de uma matriz e devolva os seus valores.</p>
@@ -904,14 +905,14 @@ linha_alea &lt;- function(matriz) {
 }
 
 matriz
-##           [,1]       [,2]      [,3]      [,4]
-## [1,] 0.4687995 0.72753051 0.5341587 0.7358009
-## [2,] 0.4308675 0.71957269 0.9697627 0.2050370
-## [3,] 0.1325027 0.09501355 0.1442186 0.4221698
-## [4,] 0.4502782 0.13515336 0.1709992 0.3122832
-## [5,] 0.1364699 0.73136240 0.3686238 0.8477290
+##           [,1]      [,2]      [,3]      [,4]
+## [1,] 0.7763454 0.5501072 0.2484578 0.7667625
+## [2,] 0.1434884 0.3344143 0.3152811 0.1780674
+## [3,] 0.8521203 0.8013800 0.9989391 0.4943726
+## [4,] 0.3052678 0.5867451 0.9106655 0.5422106
+## [5,] 0.2602815 0.5857414 0.3084504 0.4021005
 linha_alea(matriz)
-## [1] 0.13250273 0.09501355 0.14421858 0.42216979</code></pre>
+## [1] 0.1434884 0.3344143 0.3152811 0.1780674</code></pre>
 <hr />
 <p><strong>11.</strong> Rode <code>help(paste)</code> e <code>help(names)</code> para descobrir o que as funções <code>paste()</code> e <code>names()</code> fazem. Em seguida, use-as para escrever um código para gerar a fórmula <code>mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb</code> a partir do data frame <code>mtcars</code>.</p>
 <p><strong>Resposta:</strong></p>

@@ -5,6 +5,7 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["Manipulação"]
 slug: "manipulacao"
+minidesc: "Vamos usar os pacotes dplyr e tidyr que facilitam a manipulação de dados."
 desc: "Em muitos projetos de ciência de dados a maior parte do trabalho está em transformar os dados para um formato que seja útil para fazer as análises. Neste tutorial vamos discutir os pacotes dplyr e tidyr que facilitam (e muito) a realização dessa tarefa."
 requisitos: ["r-base"]
 layout: "article"
