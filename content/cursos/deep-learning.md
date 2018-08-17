@@ -15,19 +15,36 @@ requisitos: ""
   <h3>Conheça o curso</h3>
 </header>
 
-Deep learning é...
+Neste curso vamos discutir:
 
-O objetivo deste curso é ... . 
+* o que são redes neurais profundas e como elas funcionam;
+* quais são os softwares utilizados para _treinar_ esses modelos e como eles se relacionam;
+* como treinar modelos de deep learning para alguns problemas de predição.
 
-Você sairá deste curso apto a ... .
+O objetivo deste curso  é se familiarizar com as principais técnicas utilizadas em Deep Learning e conhecer o suficiente para poder se aprofundar no assunto posteriormente. 
+
+No final do curso, o aluno poderá aplicar seus conhecimentos em problemas simples de classificação de textos, imagens e outros problemas de objetivo preditivo..
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
-#### Tópico 1
+#### O que é Deep Learning?
 
-#### Tópico 2
+* Como os modelos de Deep Learnig funcionam;
+* Quais são os softwares utilizados.
 
+####  Redes Neurais Convolucionais (CNN)
 
+* Exemplo de aplicação em imagens
+
+#### Embeddings
+  
+* Exemplo de aplicação em textos
+
+#### Redes Neurais Recorrentes (RNN)
+
+* Exemplo de aplicação em textos
+
+#### Séries temporais usando Deep Learning
 
 
 <br>
@@ -35,10 +52,7 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
   <h3>Para quem é este curso?</h3>
 </header>
 
-Este curso é destinado a estudantes e profissionais que ... .
-
-
-
+Este curso é destinado a estudantes e profissionais que já trabalham com estatística e desejam colocar o Deep Learning em sua caixa de ferramentas de trabalho.
 
 <header class="section-header">
   <h3>O que eu preciso saber?</h3>
@@ -57,6 +71,7 @@ Estatística:
         
 Programação:
 
+- saber ajustar um modelo de regressão no R
 - noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else);
 - conhecimento básico de programação em R:
    - sintaxe e vocabulário básico;
@@ -85,12 +100,3 @@ Durante as aulas, você vai precisar de:
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
-
-
-
-<br>
-<header class="section-header">
-  <h3>Professores</h3>
-</header>
-
-Este curso contará com os seguintes professores:
