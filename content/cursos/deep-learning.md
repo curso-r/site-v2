@@ -9,6 +9,7 @@ preco: "R$690,00"
 banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a justar modelos de deep learning utilizando o R."
 requisitos: ""
+ordem: 5
 ---
 
 <header class="section-header">

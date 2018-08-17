@@ -10,6 +10,7 @@ banner: "img/cursos/intro-r-banner.jpg"
 desc: "Aprenda o básico de manipulação e visualização de dados com R."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
+ordem: 1
 ---
 
 <header class="section-header">

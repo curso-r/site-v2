@@ -1,4 +1,4 @@
-{{ range $i, $member := (where (where .Pages "Params.type" "!=" "completar") "Section" "cursos") }}
+{{ range $i, $member := sort (where (where .Pages "Params.type" "!=" "completar") "Section" "cursos") "Params.ordem" }}
 
   {{ if modBool $i 3 }}
     <div class="row about-cols">

@@ -9,6 +9,7 @@ preco: "R$690,00"
 banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
+ordem: 2
 ---
 
 <header class="section-header">
