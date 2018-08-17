@@ -9,6 +9,7 @@ minidesc: "Construa API's para conectar a sua análise com outros programas."
 desc: "O fluxo da ciência de dados se encerra na parte de comunicação. Essa parte é responsável por transferir todo o conhecimento gerado durante a análise de dados. E isso não é nada fácil. A forma de construir a comunicação depende muito do interlocutor."
 requisitos: ["r-base", "dplyr"]
 layout: "article"
+ordem: 13
 ---
 
 ```{r setup, include=FALSE}

@@ -9,6 +9,7 @@ minidesc: "Comece instalando os pacotes, IDE's necessários para iniciar a sua j
 desc: "Comece instalando os pacotes, IDE's necessários para iniciar a sua jornada no R."
 requisitos: ["rstudio"]
 layout: "article"
+ordem: 1
 ---
 
 ```{r setup, include=FALSE}

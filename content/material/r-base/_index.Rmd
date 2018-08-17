@@ -9,6 +9,7 @@ minidesc: "Comece com o básico da linguagem R."
 desc: "Neste capítulo vamos introduzir o R, suas principais estruturas de dados e um pequeno vocabulário de funções úteis."
 requisitos: ["rstudio"]
 layout: "article"
+ordem: 2
 ---
 
 ```{r setup, include=FALSE}

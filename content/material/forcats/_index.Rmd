@@ -9,6 +9,7 @@ minidesc: "Use o forcats para lidar com variáveis categóricas."
 desc: "As principais funções do forcats servem para alterar a ordem e modificar os níveis de um fator. Para exemplificar a utilidade dessas funções, neste tutorial vamos utilizá-las em situações corriqueiras."
 requisitos: ["r-base", "ggplot", "dplyr"]
 layout: "article"
+ordem: 9
 ---
 
 ```{r setup, include=FALSE}

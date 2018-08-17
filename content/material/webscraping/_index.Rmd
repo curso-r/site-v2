@@ -9,6 +9,7 @@ minidesc: "Web scraping refere-se ao processo de baixar e estruturar dados diret
 desc: "Web scraping refere-se ao processo de baixar e estruturar dados diretamente da web. Passaremos pelos princípios básicos de requisições web, como controlá-las por intermédio do R e como obter informações estruturadas de páginas da web."
 requisitos: ["r-base", "purrr"]
 layout: "article"
+ordem: 14
 ---
 
 ```{r setup, include=FALSE}
