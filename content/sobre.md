@@ -3,11 +3,17 @@ title: "Sobre"
 type: "sobre"
 ---
 
-A tecnologia já está totalmente integrada ao nosso cotidiano, mas nós, do Curso R, acreditamos que ainda existe uma infinidade de descobertas para explorar. E a linguagem R é uma delas. Vem com a gente!
+# Nossa missão é simplificar a ciência de dados para você!
+
+A Curso-R surgiu da nossa vontade de espalhar e explorar o conhecimento da ciência de dados do jeito que você mais precisa: sem complicações. Temos compromisso em capacitá-lo para realizar qualquer atividade na Análise de Dados da linguagem R, trazendo desde as informações mais básicas até as maiores tendências e inovações da área. Tudo aqui é pensado para facilitar o seu aprendizado. 
+
+Junte-se a nós nessa missão!
 
 # O que fazemos?
 
-Cursos especializados com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro.
+Cursos online com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro. Além disso, queremos contribuir e fomentar o estudo da tecnologia no Brasil e é por isso que trabalhamos com o sistema Open Source, no qual qualquer pessoa pode acessar nosso material didático e mandar sugestões para nós.
+
+Você pode saber mais sobre nossos cursos [aqui](/cursos).
 
 # Como começamos?
 
