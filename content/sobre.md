@@ -11,7 +11,7 @@ Junte-se a nós nessa missão!
 
 # O que fazemos?
 
-Cursos com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro. Além disso, queremos contribuir e fomentar o estudo da tecnologia no Brasil e é por isso que trabalhamos com o sistema Open Source, no qual qualquer pessoa pode acessar nosso material didático e mandar sugestões para nós.
+Cursos com profissionais experts em descomplicar a ciência de dados. Aqui, você encontra os mais diversos cursos sobre linguagem R para conhecer e se aprofundar nessa ciência do futuro. Além disso, queremos contribuir e fomentar o estudo da tecnologia no Brasil e é por isso que trabalhamos com ferramentas Open Source, no qual qualquer pessoa pode acessar nosso material didático e mandar sugestões para nós.
 
 Você pode saber mais sobre nossos cursos [aqui](/cursos).
 
