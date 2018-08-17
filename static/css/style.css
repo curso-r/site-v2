@@ -829,12 +829,51 @@ body.mobile-nav-active #mobile-nav-toggle {
   background: none;
 }
 
+#form-curso .cta-submit {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+}
+
 #call-to-action .cta-submit:hover {
   background: #da4d4d;
   border: 2px solid #da4d4d;
 }
 
+#form-curso .cta-submit:hover {
+  background: #da4d4d;
+  border: 2px solid #da4d4d;
+}
+
 #call-to-action .cta-email {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  background: none;
+  text-align: center;
+  margin-right: 5px;
+}
+
+#form-curso .cta-email {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 16px;
