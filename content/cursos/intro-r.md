@@ -104,12 +104,3 @@ Durante as aulas, você vai precisar de:
 - permissão para instalar novos programas.
 
 Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
-
-
-
-<br>
-<header class="section-header">
-  <h3>Professores</h3>
-</header>
-
-Este curso contará com os seguintes professores: a definir.
