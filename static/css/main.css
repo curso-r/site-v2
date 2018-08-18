@@ -2,6 +2,10 @@ body {
   font-family: "Source Sans Pro";
 }
 
+#header-title h3 {
+  color: white;
+}
+
 #navbarNav a {
   color: white;
 }
