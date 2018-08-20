@@ -1,13 +1,13 @@
 ---
 title: "Workshop: Conheça o R"
-data: "dias 26, 27 e 28 de setembro"
-hora: "das 19h às 22h"
+data: "Sábado, 15 de setembro, das 15h às 18h"
+hora: "Workshop de 3 horas"
 local: "FYI Learning Solutions - Av. Paulista, 2006, Conjunto 401 - São Paulo - SP"
 paypal: "2MZLH4BA6KCZU"
 img: "img/cursos/workshop-r.png"
 preco: "R$60,00"
 banner: "img/cursos/workshop-r-banner.png"
-desc: "Aprenda o básico de manipulação e visualização de dados com R."
+desc: "Se familiarize com os principais conceitos de programação e ciência de dados utilizando o R como ferramenta."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 0.5
@@ -17,14 +17,15 @@ ordem: 0.5
   <h3>Conheça o curso</h3>
 </header>
 
-Devido à eficiência e flexibilidade, as linguagens de programação se tornaram protagonistas dentro da ciência de dados. Com comunidades ativas desenvolvendo o que há de mais novo dentro da Estatística e  da Computação, aprender a programar se tornou essencial para aqueles que desejam explorar ao máximo as informações escondidas dentro dos dados.
+Graças à enorme eficiência e flexibilidade, as linguagens de programação se tornaram protagonistas dentro da ciência de dados. Com comunidades ativas desenvolvendo o que há de mais novo dentro da Estatística e da Computação, aprender a programar se tornou essencial para aqueles que desejam explorar ao máximo as informações escondidas dentro das bases de dados.
 
-O objetivo deste workshop é apresentar as principais ideias por trás das linguagens de programação e mostrar por que o R é umas das principais ferramentas utilizadas na análise de dados. Como motivação, exibiremos tarefas rotineiras do Excel que podem ser realizadas de maneira simples, rápida e eficiente utilizando o R.
+O objetivo deste workshop é apresentar as principais ideias por trás das linguagens de programação e mostrar por que o R é umas das principais ferramentas utilizadas para análise de dados. Também elucidaremos as principais habilidades que um cientista de dados precisa ter para se destacar nesse desafiador mercado de trabalho. Como motivação, exibiremos tarefas rotineiras feitas no Excel que podem ser realizadas de maneira simples, rápida e eficiente se utilizarmos o R.
 
-Você sairá deste workshop confiante para aprender diversas linguagens de programação e utilizá-las para analisar os seus dados.
+Você sairá deste workshop confiante para aprender qualquer linguagem de programação e utilizá-la na análise dos seus dados.
 
 Ao decorrer do Workshop, abordaremos os seguintes tópicos:
 
+* Quais as características de um bom cientista de dados?
 * O que são linguagens de programação?
 * Diferenças entre linguagens de programação e programas point-and-click
 * A linguagem R
@@ -32,7 +33,6 @@ Ao decorrer do Workshop, abordaremos os seguintes tópicos:
 * Juntando bases no Excel e no R
 * Fazendo gráficos no Excel e no R
 
-<br>
 <header class="section-header">
   <h3>Para quem é este curso?</h3>
 </header>
@@ -45,7 +45,6 @@ Este curso é destinado a estudantes e profissionais que desejam aprender lingua
 
 Este curso não demanda nenhum pré-requisito.
 
-<br>
 <header class="section-header">
   <h3>O que eu preciso levar?</h3>
 </header>

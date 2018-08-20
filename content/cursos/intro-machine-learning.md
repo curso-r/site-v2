@@ -1,7 +1,7 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: "Previsto para outubro"
-hora: "A definir"
+data: "Previsto para outubro de 2018"
+hora: "Curso de 20 horas"
 local: "IME-USP, São Paulo"
 paypal: ""
 img: "img/cursos/intro-ml-banner.png"

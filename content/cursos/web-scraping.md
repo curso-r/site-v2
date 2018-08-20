@@ -1,11 +1,11 @@
 ---
 title: "Web scraping em R"
 data: "A definir"
-hora: "A definir"
+hora: "Curso de 8 horas"
 local: "A definir"
 paypal: ""
 img: "img/cursos/web-scraping.png"
-preco: "R$690,00"
+preco: "R$500,00"
 banner: "img/cursos/web-scraping-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 requisitos: ""
@@ -26,12 +26,9 @@ Você sairá deste curso apto a construir *scrapers* para coletar dados da inter
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
 - noções de protocolo HTTP e acesso a páginas web;
-
 - pacote `httr` para fazer requisições HTTP e baixar páginas web com o R;
-
 - pacotes xml2, rvest e jsonlite para obter informações estruturadas de
 arquivos .xml, .html e .json;
-
 - pacote pdftools para extrair informações de PDFs.
 
 

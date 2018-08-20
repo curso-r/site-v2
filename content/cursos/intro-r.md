@@ -1,13 +1,13 @@
 ---
 title: "Introdução à programação em R"
-data: "dias 26, 27 e 28 de setembro"
-hora: "das 19h às 22h"
+data: "24, 25, 26, 27 e 28 de setembro, das 19h30 às 22h50"
+hora: "Curso de 16 horas"
 local: "FYI Learning Solutions - Av. Paulista, 2006, Conjunto 401 - São Paulo - SP"
 paypal: "WVA7EUN5WLT5N"
 img: "img/cursos/intro-r.png"
 preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
-desc: "Aprenda o básico de manipulação e visualização de dados com R."
+desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 1
@@ -19,9 +19,9 @@ ordem: 1
 
 O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
-O objetivo deste curso é apresentar os principais conceitos de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Também ensinaremos como criar um dashboard para comunicação dos resultados. 
+O objetivo deste curso é apresentar os conceitos essenciais de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Para motivar ainda mais, ensinaremos também como criar um dashboard em R para a comunicação dos seus resultados. 
 
-Você sairá deste curso apto a começar a utilizar o R em suas análises.
+Você sairá deste curso apto a começar a utilizar o R em todas as suas análises.
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
@@ -30,7 +30,7 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 - Apresentação do problema de análise de dados.
 - Ambientação ao R e ao RStudio.
 
-### Manipulação de dados
+#### Manipulação de dados
 
 - O pacote `dplyr`.
 - Filtrando linhas.
@@ -40,7 +40,7 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 - Agregando a base.
 - Juntando bases de dados (*joins*).
 
-### Visualização de dados
+#### Visualização de dados
 
 - O pacote `ggplot2`.
 - Gráficos de dispersão.
@@ -49,7 +49,7 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 - Gráfico de séries.
 - Customizando os gráficos.
 
-### Relatórios com R Markdown
+#### Relatórios com R Markdown
 
 - O que é uma linguagem de marcação?
 - Criação de relatórios com R Markdown.
@@ -76,9 +76,7 @@ Este curso é destinado a estudantes e profissionais que:
 </header>
 
 
-Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
-
-#### Necessário
+Alguns pré-requisitos são necessários para o completo entendimento das aulas. 
 
 Estatística:
 
