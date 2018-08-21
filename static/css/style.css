@@ -137,11 +137,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-#intro .carousel-fade .carousel-inner .carousel-item {
-  -webkit-transition-property: opacity;
-  transition-property: opacity;
-}
-
 #intro .carousel-fade .carousel-inner .carousel-item,
 #intro .carousel-fade .carousel-inner .active.carousel-item-left,
 #intro .carousel-fade .carousel-inner .active.carousel-item-right {
@@ -164,10 +159,6 @@ h1, h2, h3, h4, h5, h6 {
   transform: translate3d(0, 0, 0);
 }
 
-#intro .carousel-control-prev, #intro .carousel-control-next {
-  width: 10%;
-}
-
 @media (min-width: 1024px) {
   #intro .carousel-control-prev, #intro .carousel-control-next {
     width: 5%;
@@ -178,10 +169,6 @@ h1, h2, h3, h4, h5, h6 {
   background: none;
   font-size: 32px;
   line-height: 1;
-}
-
-#intro .carousel-indicators li {
-  cursor: pointer;
 }
 
 #intro .btn-get-started {
@@ -888,6 +875,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   background: none;
   text-align: center;
   margin-right: 5px;
+  z-index: 1;
 }
 
 #call-to-action .cta-btn {
