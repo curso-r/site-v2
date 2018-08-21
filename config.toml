@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "/"
+baseurl = "https://www.curso-r.com/"
 languageCode = "en-us"
 title = "Curso-R"
 # Enter your tracking code to enable Google Analytics
