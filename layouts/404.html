@@ -1,0 +1,31 @@
+<!doctype html5>
+<html>
+<head>
+  {{ partial "head.html" . }}
+</head>
+  <body data-spy="scroll" data-target="#toc">
+    {{ partial "header.html" . }}
+    
+    <div class="container">
+      
+      <div class="row justify-content-md-center" id="article-title">
+        <h1 data-toc-skip>Erro</h1>
+      </div>  
+      
+      <div class="row">
+        <div class="col-md-12" style="background-color: white; padding-left: 50px; padding-top: 20px;">
+          <h3>Ops!</h3>
+          <p>O nosso site mudou recentemente e pode ser que a página que você está procurando tenha mudado de lugar.</p>
+          <p>Tente fazer uma pesquisa no google assim: "{nome do conteudo buscado} site:https://www.curso-r.com"</p>
+        </div>
+      </div>
+      
+    </div>
+    
+  </body>
+  
+  {{ partial "footer.html" . }}
+  {{ partial "scripts.html" .}}
+  {{ partial "toc.html" . }}
+  
+</html>
