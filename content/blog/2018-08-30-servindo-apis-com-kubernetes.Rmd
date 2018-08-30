@@ -1,0 +1,32 @@
+---
+title: "Servindo API's em R com alta velocidade e escalabilidade usando Kubernetes."
+date: "2018-08-30T00:00:00+00:00"
+tags: ["app", "pacotes"]
+categories: ["r"]
+banner: "img/blog/desafio-recuperacao-img/purple_wave.jpg"
+author: ["Daniel"]
+summary: "Neste post tutorial vamos usar a Google Cloud Platform para disponibilizar um cluster servindo uma API construída em R usando o plumber."
+draft: true
+---
+
+Neste post tutorial vamos usar a Google Cloud Platform para disponibilizar um cluster servindo uma API construída em R usando o plumber. Essa abordagem tem a vantagem de que a sua API ficará em um abiente totalmente escalável, ou seja, dependendo da sua demanda o número de nós servindo a sua API pode aumentar ou diminuir.
+
+# Construindo a sua api com plumber
+
+Podemos criar uma API usando o plumber apenas *decorando* o script que contém as nossas funções. Essa função poderia fazer qualquer coisa, escorar um modelo estatístico, sortear números, criar um gráfico, etc. No exemplo abaixo, criamos uma função `sortear` que recebe um argumento chamado `max` e retorna um número aleatório entre 1 e `max`. 
+
+```{r}
+# *get/sortear
+sortear <- function(max) {
+  sample.int(max, 1L)
+}
+```
+
+Suponha agora que queremos disponibilizar essa função por intermédio de um serviço web. Quero que o usuário possa acessar o endereço `http://meudominio.com/sortear/?max=100` e obtenha um valor entre 1 e 100. Esse é o papel do comentário `# *get/sortear`. Essa *decoração* irá indicar para o plumber que queremos ter um *endpoint* com nome `sortear` que recebe requisições do tipo GET.
+
+Salvando esse trecho de código em um script `plumber.R` podemos iniciar um serviço localmente usando:
+
+TODO
+
+No entanto, em geral queremos que o nosso serviço fique disponível na internet, para que possa ser acessado por outros computadores. Por isso, hospedar a sua API em um servidor é um passo importante.
+
