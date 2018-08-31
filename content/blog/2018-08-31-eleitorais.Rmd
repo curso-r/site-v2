@@ -13,7 +13,7 @@ A pesquisa eleitoral é a forma mais comum de conectar a população geral com c
 
 Uma discussão frequente em debates, redes sociais e conversas de bar é a validade de pesquisas eleitorais. No Brasil, existe uma sensação de descrença nas pesquisas, já que, historicamente, elas erraram os resultados de várias eleições. 
 
-Mas será que a comparação de resultados de pesquisas eleitorais e resultados de eleições é correta? Nesse artigo, argumentarei que não e darei uma ideia de como poderiam ser avaliadas na prática.
+Mas será que a comparação de resultados de pesquisas eleitorais e resultados de eleições é correta? Nesse artigo, argumentarei que **não** e darei uma ideia de como isso poderia funcionar na prática.
 
 ## Pesquisas eleitorais: duas culturas
 
@@ -24,7 +24,7 @@ Do ponto de vista matemático, essas culturas estão intimamente relacionadas e 
 Curiosamente, o principal problema na interpretação de pequisas eleitorais está relacionado com as duas culturas. Considere as seguintes perguntas:
 
 1. Se a eleição fosse hoje, qual seria a proporção de votos do candidato $A$?
-1. Qual a probabilidade do candidado $A$ ganhar a eleição?
+1. Qual a probabilidade do candidato $A$ ganhar a eleição?
 
 A principal afirmação desse artigo é a seguinte:
 
@@ -38,10 +38,12 @@ Isso significa que utilizar resultados de eleições para avaliar a qualidade da
 
 Claro que sim! Modelos estatísticos sempre têm propriedades preditivas. Um modelo preditivo para as eleições, no entanto, deve utilizar muito mais informações do que apenas as intenções de voto dos eleitores. Alguns exemplos de dados adicionais que poderiam ser utilizados:
 
-- Podemos tratar indecisos como dados faltantes. Utilizando pesquisas anteriotes, podemos estimar a proporção de indecisos que votarão em cada candidato, ao invés de simplesmente descartar os dados dos indecisos.
+- Podemos tratar indecisos como dados faltantes. Utilizando pesquisas anteriores, podemos estimar a proporção de indecisos que votarão em cada candidato, ao invés de simplesmente descartar os dados dos indecisos.
 - Historicamente, sabemos que a proporção de brancos e nulos observada nas urnas é diferente do que as pessoas afirmam nas pesquisas. Podemos utilizar esse dado para predizer a proporção de votos brancos e nulos. 
 - Em determinadas regiões, as pessoas mudam o voto de última hora, possivelmente por ações ilegais como propaganda em boca de urna. Podemos utilizar essa informação para ponderar as estimativas obtidas nas pesquisas eleitorais.
 - Podemos utilizar os dados de diversas pesquisas eleitorais ao mesmo tempo, dando pesos diferentes para elas, para predizer os resultados da eleição.
+
+Esses exemplos não são exaustivos. Existem muitas outras formas de considerar todo o conhecimento que temos em nossas predições sobre as eleições.
 
 ## Como podemos avaliar pesquisas eleitorais?
 
@@ -54,7 +56,7 @@ Pesquisas de intenção de voto só podem ser avaliadas através da metodologia 
 
 O problema é que a avaliação das pesquisas sempre acaba sendo subjetiva. Por exemplo, sempre é possível argumentar que uma pesquisa é ruim por não ter utilizado amostragem aleatória simples (AAS) para realização do estudo, o que gera um debate incessante. 
 
-Assim, me parece que a forma mais adequada de avaliar pesquisas de intenção de voto é o atendimento a requisitos formais, como o clarificação sobre o método de condução do estudo. Isso pode ser atigindo com a disponibilização de:
+Assim, me parece que a forma mais adequada de avaliar pesquisas de intenção de voto é o atendimento a requisitos formais, como o clarificação sobre o método de condução do estudo. Isso pode ser atingindo com a disponibilização de:
 
 - Descrição detalhada da metodologia.
 - Apresentação do questionário do estudo.
@@ -76,10 +78,10 @@ $$
 
 onde
 
-- $C$ é o número de candidados
-- $f_{ti}$ são as predições sobre a proporção de votos do cantidado $i$ na data $t$
+- $C$ é o número de candidatos.
+- $f_{ti}$ é a probabilidades de vitória do candidato $i$ na data $t$.
 - $p_t$ é um peso para a predição realizada na data $t$, com a propriedade $\sum_{t=1}^N p_t = 1$. Idealmente, se $t=N$ é a data mais próxima das eleições, então $p_N \geq p_{N-1} \geq \dots \geq p_1$, ou seja, é dado maior peso para predições feitas perto das eleições.
-- $r_i$ é a proporção de votos válidos observados do candidato $i$
+- $r_i$ é zero se o candidato $i$ perdeu e um se o candidato $i$ ganhou.
 
 Minha recomendação é que o TSE defina algumas datas para divulgação de estudos preditivos. Os institutos de pesquisa passariam a divulgar esses estudos nas datas especificadas e, com isso, seria possível elaborar um ranking dos melhores institutos. Essa metodologia já é utilizada pelo BACEN, por exemplo, para [avaliar predições sobre a inflação](https://www4.bcb.gov.br/Pec/GCI/PORT/Focus/top5.asp).
 
@@ -88,7 +90,7 @@ Minha recomendação é que o TSE defina algumas datas para divulgação de estu
 - Não avalie pesquisas de intenção de voto usando os resultados das eleições.
 - A avaliação de qualidade de pesquisas de intenção de voto deve se limitar a i) atendimento a critérios formais e ii) comparação com resultados de outras pesquisas realizadas no mesmo período.
 - Estudos preditivos de resultados de eleições é o que realmente responde ao que a população quer saber.
-- Sugiro que o TSE determine algumas datas para divulgação de modelos preditivos e, posteriormente, um ranking dos melhores institutos.
+- Proponho que o TSE determine algumas datas para divulgação de modelos preditivos e, posteriormente, faça um ranking dos melhores institutos.
 
 Eu sei que o artigo é polêmico, então por favor sejam gentis nos comentários.
 
