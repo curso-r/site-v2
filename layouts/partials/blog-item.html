@@ -6,7 +6,7 @@
       </div>
       <h2 class="title"><a href="{{.URL}}">{{.Title}}</a></h2>
       <p>
-        {{.Summary}}
+        {{ if isset .Params "summary" }}{{ .Params.summary }}{{ else }}{{ .Summary }}{{ end }}
       </p>
     </div>
   </div>
