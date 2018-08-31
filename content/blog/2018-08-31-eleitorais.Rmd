@@ -79,7 +79,7 @@ $$
 onde
 
 - $C$ é o número de candidatos.
-- $f_{ti}$ é a probabilidades de vitória do candidato $i$ na data $t$.
+- $f_{ti}$ é a probabilidade de vitória do candidato $i$ na data $t$.
 - $p_t$ é um peso para a predição realizada na data $t$, com a propriedade $\sum_{t=1}^N p_t = 1$. Idealmente, se $t=N$ é a data mais próxima das eleições, então $p_N \geq p_{N-1} \geq \dots \geq p_1$, ou seja, é dado maior peso para predições feitas perto das eleições.
 - $r_i$ é zero se o candidato $i$ perdeu e um se o candidato $i$ ganhou.
 
