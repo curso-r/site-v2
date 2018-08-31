@@ -62,19 +62,20 @@ draft: false
 </div>
 <div id="como-poderiamos-mudar-essa-realidade" class="section level2">
 <h2>Como poderíamos mudar essa realidade?</h2>
-<p>Se o interesse da sociedade está em (2), por quê não divulgar exatamente isso? Nos Estados Unidos, é exatamente isso que o famoso portal <a href="https://fivethirtyeight.com">FiveThirtyEight</a> se dispôs a fazer. Eles soltam predições periódicas do resultado de eleições e de eventos esportivos. No Brasil, iniciativas como o <a href="http://www.pollingdata.com.br">PollingData</a> do <a href="https://www.linkedin.com/in/neale/?locale=pt_BR">Neale El-Dash</a> fazem o mesmo.</p>
-<p>Avaliar a qualidade de estudos preditivos para responder (2) também é muito mais fácil. Bastaria comparar o resultado do estudo com os resultados das eleições. O único cuidado seria o de não dar o mesmo peso para pesquisas mais antigas e mais recentes. Uma forma de fazer isso é utilizando uma adaptação dos <a href="https://en.wikipedia.org/wiki/Brier_score">scores de Brier</a>:</p>
+<p>Se o interesse da sociedade está em (2), por quê não divulgar exatamente isso? Nos Estados Unidos, é o que o famoso portal <a href="https://fivethirtyeight.com">FiveThirtyEight</a> se dispôs a fazer. Eles soltam predições periódicas dos resultados de eleições e de eventos esportivos. No Brasil, iniciativas como o <a href="http://www.pollingdata.com.br">PollingData</a> do <a href="https://www.linkedin.com/in/neale/?locale=pt_BR">Neale El-Dash</a> fazem o mesmo, com diferentes metodologias.</p>
+<p>Avaliar a qualidade de estudos preditivos para responder (2) é muito mais fácil. Bastaria comparar o resultado do estudo com os resultados das eleições. O único cuidado seria o de, eventualmente, não dar o mesmo peso para pesquisas mais antigas e mais recentes. Uma forma de fazer isso é utilizando uma adaptação dos <a href="https://en.wikipedia.org/wiki/Brier_score">scores de Brier</a>:</p>
 <p><span class="math display">\[
 B = \frac{1}{N}\sum_{t=1}^N\sum_{i=1}^C p_t(f_{ti} - r_i)^2, 
 \]</span></p>
 <p>onde</p>
 <ul>
 <li><span class="math inline">\(C\)</span> é o número de candidatos.</li>
+<li><span class="math inline">\(N\)</span> é a quantidade de pesquisas realizadas.</li>
 <li><span class="math inline">\(f_{ti}\)</span> é a probabilidade de vitória do candidato <span class="math inline">\(i\)</span> na data <span class="math inline">\(t\)</span>.</li>
 <li><span class="math inline">\(p_t\)</span> é um peso para a predição realizada na data <span class="math inline">\(t\)</span>, com a propriedade <span class="math inline">\(\sum_{t=1}^N p_t = 1\)</span>. Idealmente, se <span class="math inline">\(t=N\)</span> é a data mais próxima das eleições, então <span class="math inline">\(p_N \geq p_{N-1} \geq \dots \geq p_1\)</span>, ou seja, é dado maior peso para predições feitas perto das eleições.</li>
 <li><span class="math inline">\(r_i\)</span> é zero se o candidato <span class="math inline">\(i\)</span> perdeu e um se o candidato <span class="math inline">\(i\)</span> ganhou.</li>
 </ul>
-<p>Minha recomendação é que o TSE defina algumas datas para divulgação de estudos preditivos. Os institutos de pesquisa passariam a divulgar esses estudos nas datas especificadas e, com isso, seria possível elaborar um ranking dos melhores institutos. Essa metodologia já é utilizada pelo BACEN, por exemplo, para <a href="https://www4.bcb.gov.br/Pec/GCI/PORT/Focus/top5.asp">avaliar predições sobre a inflação</a>.</p>
+<p>Minha recomendação é que o Tribunal Superior Eleitoral (TSE) defina algumas datas para divulgação de estudos preditivos. Os institutos de pesquisa passariam a divulgar esses estudos nas datas especificadas e, com isso, seria possível elaborar um ranking dos melhores institutos. Essa metodologia já é utilizada pelo BACEN, por exemplo, para <a href="https://www4.bcb.gov.br/Pec/GCI/PORT/Focus/top5.asp">avaliar predições sobre a inflação</a>.</p>
 </div>
 <div id="wrap-up" class="section level2">
 <h2>Wrap-up</h2>

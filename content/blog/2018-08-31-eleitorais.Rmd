@@ -68,9 +68,9 @@ Hoje em dia temos alguns agregadores de pesquisas eleitorais que podem ser utili
 
 ## Como poderíamos mudar essa realidade?
 
-Se o interesse da sociedade está em (2), por quê não divulgar exatamente isso? Nos Estados Unidos, é exatamente isso que o famoso portal [FiveThirtyEight](https://fivethirtyeight.com) se dispôs a fazer. Eles soltam predições periódicas do resultado de eleições e de eventos esportivos. No Brasil, iniciativas como o [PollingData](http://www.pollingdata.com.br) do [Neale El-Dash](https://www.linkedin.com/in/neale/?locale=pt_BR) fazem o mesmo.
+Se o interesse da sociedade está em (2), por quê não divulgar exatamente isso? Nos Estados Unidos, é o que o famoso portal [FiveThirtyEight](https://fivethirtyeight.com) se dispôs a fazer. Eles soltam predições periódicas dos resultados de eleições e de eventos esportivos. No Brasil, iniciativas como o [PollingData](http://www.pollingdata.com.br) do [Neale El-Dash](https://www.linkedin.com/in/neale/?locale=pt_BR) fazem o mesmo, com diferentes metodologias.
 
-Avaliar a qualidade de estudos preditivos para responder (2) também é muito mais fácil. Bastaria comparar o resultado do estudo com os resultados das eleições. O único cuidado seria o de não dar o mesmo peso para pesquisas mais antigas e mais recentes. Uma forma de fazer isso é utilizando uma adaptação dos [scores de Brier](https://en.wikipedia.org/wiki/Brier_score):
+Avaliar a qualidade de estudos preditivos para responder (2) é muito mais fácil. Bastaria comparar o resultado do estudo com os resultados das eleições. O único cuidado seria o de, eventualmente, não dar o mesmo peso para pesquisas mais antigas e mais recentes. Uma forma de fazer isso é utilizando uma adaptação dos [scores de Brier](https://en.wikipedia.org/wiki/Brier_score):
 
 $$
 B = \frac{1}{N}\sum_{t=1}^N\sum_{i=1}^C p_t(f_{ti} - r_i)^2, 
@@ -79,11 +79,12 @@ $$
 onde
 
 - $C$ é o número de candidatos.
+- $N$ é a quantidade de pesquisas realizadas.
 - $f_{ti}$ é a probabilidade de vitória do candidato $i$ na data $t$.
 - $p_t$ é um peso para a predição realizada na data $t$, com a propriedade $\sum_{t=1}^N p_t = 1$. Idealmente, se $t=N$ é a data mais próxima das eleições, então $p_N \geq p_{N-1} \geq \dots \geq p_1$, ou seja, é dado maior peso para predições feitas perto das eleições.
 - $r_i$ é zero se o candidato $i$ perdeu e um se o candidato $i$ ganhou.
 
-Minha recomendação é que o TSE defina algumas datas para divulgação de estudos preditivos. Os institutos de pesquisa passariam a divulgar esses estudos nas datas especificadas e, com isso, seria possível elaborar um ranking dos melhores institutos. Essa metodologia já é utilizada pelo BACEN, por exemplo, para [avaliar predições sobre a inflação](https://www4.bcb.gov.br/Pec/GCI/PORT/Focus/top5.asp).
+Minha recomendação é que o Tribunal Superior Eleitoral (TSE) defina algumas datas para divulgação de estudos preditivos. Os institutos de pesquisa passariam a divulgar esses estudos nas datas especificadas e, com isso, seria possível elaborar um ranking dos melhores institutos. Essa metodologia já é utilizada pelo BACEN, por exemplo, para [avaliar predições sobre a inflação](https://www4.bcb.gov.br/Pec/GCI/PORT/Focus/top5.asp).
 
 ## Wrap-up
 
