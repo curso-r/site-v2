@@ -88,3 +88,30 @@ B = \frac{1}{N}\sum_{t=1}^N\sum_{i=1}^C p_t(f_{ti} - r_i)^2,
 <p>Eu sei que o artigo é polêmico, então por favor sejam gentis nos comentários.</p>
 <p>É isso pessoal. Happy Coding e não esqueçam de acessar o <a href="http://pesqele.conre3.org.br/app">aplicativo pesqEle</a> para monitorar as pesquisas eleitorais!</p>
 </div>
+<div id="errata" class="section level2">
+<h2>Errata</h2>
+<p>Depois de divulgar o texto, recebi algumas sugestões de melhorias. Agradeço pelas contribuições! Preferi colocar comentários adicionais no lugar de substituir o texto original para não causar confusão nos leitores. Segue abaixo.</p>
+<ol style="list-style-type: decimal">
+<li>“elas erraram os resultados de várias eleições.”</li>
+</ol>
+<p>Essa frase está um pouco exagerada. Na verdade, muitas vezes o resultado de eleições acompanha a tendência ajustada com o histórico de levantamentos das pesquisas eleitorais.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>“uma adaptação dos scores de Brier”</li>
+</ol>
+<p>A fórmula está ruim! Como os <span class="math inline">\(p_t\)</span> somam 1, o <span class="math inline">\(1/N\)</span> está aí de bobeira. Então a fórmula que eu sugiro é essa aqui:</p>
+<p><span class="math display">\[
+B = \sum_{t=1}^N\sum_{i=1}^C p_t(f_{ti} - r_i)^2, 
+\]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>“uma pesquisa é ruim por não ter utilizado amostragem aleatória simples (AAS)”</li>
+</ol>
+<p>Quando mencionei AAS, eu quis dizer amostragem probabilística. Acho que quase todos concordam que AAS é péssimo nesses casos por conta da abrangência territorial do Brasil, que torna essa metodologia inexequível.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>“se no dia 03 desse mês foram divulgadas dez pesquisas”</li>
+</ol>
+<p>Aqui é melhor colocar “se no período X foram conduzidas dez pesquisas”. As pesquisas devem ser pareadas pelo período de condução do levantamento das opiniões, não pela data de divulgação.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Você quer substituir pesquisas eleitorais por modelos preditivos?</li>
+</ol>
+<p>Não! Pesquisas eleitorais devem continuar existindo, até porquê elas são o input mais importante para modelos preditivos. A ideia do ranking é que as empresas se voluntariem para competir. A única restrição é que elas devem enviar suas predições para o TSE em datas pré-definidas pelo órgão. Se as datas de submissão fossem diferentes, isso geraria uma competição injusta, pois o instituto A poderia usar a submissão de B para melhorar sua predição.</p>
+</div>

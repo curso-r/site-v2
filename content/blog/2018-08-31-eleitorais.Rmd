@@ -97,3 +97,52 @@ Eu sei que o artigo é polêmico, então por favor sejam gentis nos comentários
 
 É isso pessoal. Happy Coding e não esqueçam de acessar o [aplicativo pesqEle](http://pesqele.conre3.org.br/app) para monitorar as pesquisas eleitorais!
 
+
+## Errata
+
+Depois de divulgar o texto, recebi algumas sugestões de melhorias. Agradeço pelas contribuições! Preferi colocar comentários adicionais no lugar de substituir o texto original para não causar confusão nos leitores. Segue abaixo.
+
+1. "elas erraram os resultados de várias eleições."
+
+Essa frase está um pouco exagerada. Na verdade, muitas vezes o resultado de eleições acompanha a tendência ajustada com o histórico de levantamentos das pesquisas eleitorais.
+
+2. "uma adaptação dos scores de Brier"
+
+A fórmula está ruim! Como os $p_t$ somam 1, o $1/N$ está aí de bobeira. Então a fórmula que eu sugiro é essa aqui:
+
+$$
+B = \sum_{t=1}^N\sum_{i=1}^C p_t(f_{ti} - r_i)^2, 
+$$
+
+3. "uma pesquisa é ruim por não ter utilizado amostragem aleatória simples (AAS)"
+
+Quando mencionei AAS, eu quis dizer amostragem probabilística. Acho que quase todos concordam que AAS é péssimo nesses casos por conta da abrangência territorial do Brasil, que torna essa metodologia inexequível.
+
+4. "se no dia 03 desse mês foram divulgadas dez pesquisas"
+
+Aqui é melhor colocar "se no período X foram conduzidas dez pesquisas". As pesquisas devem ser pareadas pelo período de condução do levantamento das opiniões, não pela data de divulgação.
+
+5. Você quer substituir pesquisas eleitorais por modelos preditivos?
+
+Não! Pesquisas eleitorais devem continuar existindo, até porquê elas são o input mais importante para modelos preditivos. A ideia do ranking é que as empresas se voluntariem para competir. A única restrição é que elas devem enviar suas predições para o TSE em datas pré-definidas pelo órgão. Se as datas de submissão fossem diferentes, isso geraria uma competição injusta, pois o instituto A poderia usar a submissão de B para melhorar sua predição.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
