@@ -41,7 +41,7 @@ O método que eu vou descrever agora consiste basicamente em olhar o código
 da função e procurar nele aonde está a fonte causadora de problemas. 
 
 Existem funções que podem ser diretamente visualizadas no `console`, 
-apenas imprimindo seu nome sem os parentêsis `()` finais, por exemplo:
+apenas imprimindo seu nome sem os parênteses `()` finais, por exemplo:
 
 ```{r}
 soma <- function(x, y){
