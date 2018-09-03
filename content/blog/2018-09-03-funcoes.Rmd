@@ -3,7 +3,7 @@ title: "Uma forma de encontrar erros no R"
 date: "2018-09-03T00:00:00+00:00"
 categories: ["r"]
 tags: ["r"]
-banner: "img/banners/candidatos.jpg"
+banner: "img/banners/funcoes.png"
 author: ["Bruna Wundervald"]
 summary: "O foco deste post é dar uma noção sobre como podemos contornar dificuldades em entender como se dá a utilização de alguma função do R."
 draft: false
