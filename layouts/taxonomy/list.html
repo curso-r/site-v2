@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    {{ partial "head.html" . }}
+  </head>
+  <body>
+    {{ partial "header.html" . }}
+    
+    
+    
+    <section id="cursos">
+      <div class="container">
+        
+        <header class="section-header">
+          <h3>{{.Title}}</h3>
+        </header>
+    
+        {{ $pag := .Paginate ( where .Pages.ByDate.Reverse "Section" "blog" ) 6 }}
+        {{ range $i, $member :=  $pag.Pages}}
+
+        {{ if modBool $i 3 }}
+          <div class="row about-cols">
+        {{ end }}
+      
+        {{ partial "blog-item.html" .}}
+        
+        {{ if (modBool (add $i 1) 3) }}
+        </div>
+        {{ end }}
+        
+        {{ end }}
+        
+      </div>
+      
+      <div class="container" id="paginator" style="justify-content: center;">
+          <div style="text-align: center;">
+            <span style="display: inline-block;">{{ if $pag.HasPrev }} <a href="{{$pag.Prev.URL}}">← Página anterior</a>{{ end }} {{ $pag := $.Paginator }} {{ if gt $pag.TotalPages 1 }}
+              <span>  |  </span> {{ if $pag.HasNext }} <a href="{{$pag.Next.URL}}">Próxima página →</a>{{ end }}
+{{ end }}
+</span>
+          </div>
+      </div>
+      
+    </section><!-- #about -->
+    
+    {{ partial "newsletter.html" . }}
+    
+    {{ partial "footer.html" . }}
+    {{ partial "scripts.html" .}}
+  
+  </body>
+</html>
