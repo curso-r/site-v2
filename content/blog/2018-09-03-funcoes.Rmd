@@ -126,7 +126,7 @@ seguinte pedaço de código, que vai dar um erro:
 mean(c("1", 3))
 ```
 
-Note que isso não é um erro e sim um warning. Mas certamente não é esse o resultado que gostaríamos, e o valor numérico 2, que é a média entre 1 e 3.
+Note que isso não é um erro e sim um *warning*. Mas certamente não é esse o resultado que gostaríamos, e o valor numérico 2, que é a média entre 1 e 3.
 
 Agora, a mensagem é mais explicíta, mas podemos encontrar
 o problema diretamente na função, usando o código da `mean.default`. 
