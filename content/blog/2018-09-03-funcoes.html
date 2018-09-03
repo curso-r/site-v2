@@ -19,7 +19,7 @@ draft: false
 <p>O foco deste post é dar uma noção sobre como podemos contornar o segundo problema: a utilização das funções. Para dar um pouco de contexto, deve-se comentar que os pacotes do R são construídos pela comunidade, de forma voluntária. Logo, nem todas as documentações são escritas de forma tão clara quanto necessário, o que pode gerar confusão em relação a à estrutura dos objetos que devem sem passados a uma função, por exemplo. Atualmente, o CRAN exige um certo rigor no que diz respeito ao bom funcionamento dos códigos dos pacotes, mas isso não se aplica à documentação das funções. Felizmente, essa situação está melhorando, o que pode ser observado com a existência de recomendações como a que está a seguir, retirada do <a href="http://r-pkgs.had.co.nz/">livro do Hadley sobre construção de pacotes</a>:</p>
 <p><img src="https://user-images.githubusercontent.com/4706822/44997538-7730d400-af85-11e8-8383-2679a3adc429.jpg" /> <br></p>
 <p>Enquanto as documentações não são perfeitas, os usuários precisam buscar entender os erros inesperados em suas tarefas de outras formas. O método que eu vou descrever agora consiste basicamente em olhar o código da função e procurar nele aonde está a fonte causadora de problemas.</p>
-<p>Existem funções que podem ser diretamente visualizadas no <code>console</code>, apenas imprimindo seu nome sem os paretêsis <code>()</code> finais, por exemplo:</p>
+<p>Existem funções que podem ser diretamente visualizadas no <code>console</code>, apenas imprimindo seu nome sem os parentêsis <code>()</code> finais, por exemplo:</p>
 <pre class="r"><code>soma &lt;- function(x, y){
   z &lt;- x + y
   z
@@ -45,7 +45,7 @@ z &lt;- x + y</code></pre>
 <pre class="r"><code>mean</code></pre>
 <pre><code>## function (x, ...) 
 ## UseMethod(&quot;mean&quot;)
-## &lt;bytecode: 0x7fbc5b7eb078&gt;
+## &lt;bytecode: 0x7fec7803b1b8&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>E o que isso significa? que essa é uma função genérica da classe S3, que tem métodos para diferentes classes de objetos. Mas como assim?</p>
 <p>Vamos usar o exemplo da função <code>mean</code>, que é usada para o calculo de médias. Quais são os tipos de objeto que podem ser usados nessa função? Em geral, utilizamos vetores, mas ela consegue lidar com outros tipos, como datas. O que queremos dizer aqui é que a mesma função vai conseguir fazer sua tarefa com objetos diferentes, através dos “métodos” da função <code>mean</code>. Um método é uma função associada com um tipo particular de objeto. Podemos verificar quais são os métodos disponíveis com:</p>
@@ -79,7 +79,7 @@ z &lt;- x + y</code></pre>
 ##     }
 ##     .Internal(mean(x))
 ## }
-## &lt;bytecode: 0x7fbc5c58bc98&gt;
+## &lt;bytecode: 0x7fec79256758&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>Voltando ao descobrimento dos erros. Digamos que nós rodamos o seguinte pedaço de código, que vai dar um erro:</p>
 <pre class="r"><code>mean(c(&quot;1&quot;, 3))</code></pre>
