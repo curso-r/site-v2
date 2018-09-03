@@ -32,9 +32,8 @@ essa situação está melhorando, o que pode ser observado com
 a existência de recomendações como a que está a seguir, 
 retirada do [livro do Hadley sobre construção de pacotes](http://r-pkgs.had.co.nz/):
 
-```{r, echo=FALSE}
-knitr::include_graphics("book.png")
-```
+![](https://user-images.githubusercontent.com/4706822/44997538-7730d400-af85-11e8-8383-2679a3adc429.jpg)
+<br>
 
 Enquanto as documentações não são perfeitas, os usuários precisam
 buscar entender os erros inesperados em suas tarefas de outras formas.
