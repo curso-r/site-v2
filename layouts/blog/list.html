@@ -15,6 +15,32 @@
           <h3>Nosso blog</h3>
           <p>Aqui você encontra novidades sobre ciência de dados e R além de conteúdo para se aprofundar.</p>
         </header>
+        
+        <!--
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown button
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {{ range $key, $value := .Site.Taxonomies.categories }}
+            <a href="/categories/{{ $key | urlize  }}" class="dropdown-item">
+              {{ $key | humanize}} ({{ len $value }})
+            </a>
+            {{ end }}
+          </div>
+        </div>
+        -->
+      
+       <div class="categories text-center">
+          {{ range $key, $value := .Site.Taxonomies.categories }}
+          <a href="/categories/{{ $key | urlize  }}">
+            <button class="cta-submit" type="submit">{{ $key | humanize}} ({{ len $value }})</button>
+          </a>
+          {{ end }}
+        </div>
+       
+        
+        <br>
     
         {{ $pag := .Paginate (.Pages.ByDate.Reverse) 6 }}
         {{ range $i, $member :=  $pag.Pages}}
