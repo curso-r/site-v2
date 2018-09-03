@@ -29,6 +29,11 @@
               em {{ dateFormat "02/01/2006" .Params.date }}
           </p>
           {{.Content}}
+          {{ if .Site.DisqusShortname }}
+            <div class="disqus-comments">
+              {{ template "_internal/disqus.html" . }}
+            </div>
+          {{ end }}
         </div>  
         
       </div>
