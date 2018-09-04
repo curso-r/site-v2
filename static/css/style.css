@@ -856,7 +856,28 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .categories div {
-  padding-bottom: 20px;
+  padding-bottom: 50px;
+}
+
+.tags .cta-submit {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 25px;
+  transition: 0.5s;
+  margin-top: 5px;
+  border: 2px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+}
+
+.tags div {
+  position: relative;
 }
 
 #call-to-action .cta-submit:hover {
