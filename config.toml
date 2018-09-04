@@ -19,3 +19,8 @@ publishdir = "public"
     logo = "assets/logocursor.png"
     
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  author = "author"
