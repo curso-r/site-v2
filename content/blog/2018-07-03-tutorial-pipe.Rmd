@@ -1,8 +1,8 @@
 ---
 title: "Por que usar o %>%"
 date: "2018-07-03T20:13:00+03:00"
-tags: ["pipe"]
-categories: ["tutoriais", "r", "tidyverse"]
+tags: ["pipe", "tidyverse"]
+categories: ["tutoriais", "r"]
 banner: "img/banners/pipe.jpg"
 author: ["Caio"]
 summary: "De onde vem e como funciona o operador pipe."

@@ -1,8 +1,8 @@
 ---
 title: "Não use resultados de eleições para avaliar pesquisas eleitorais"
 date: "2018-08-31T00:00:00+00:00"
-tags: ["historia"]
-categories: ["estatistica", "r"]
+tags: ["eleições"]
+categories: ["discussões", "r"]
 banner: "img/banners/candidatos.jpg"
 author: ["Julio"]
 summary: "Será que a comparação de resultados de pesquisas eleitorais e resultados de eleições é correta? Nesse artigo, argumentarei que não e darei uma ideia de como as pesquisas eleitorais poderiam ser avaliadas na prática."
