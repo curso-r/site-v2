@@ -1,0 +1,189 @@
+---
+title: "Uma forma de encontrar erros no R"
+date: "2018-09-03T00:00:00+00:00"
+categories: ["r"]
+tags: ["r"]
+banner: "img/banners/funcoes.png"
+author: ["Bruna Wundervald"]
+summary: "O foco deste post é dar uma noção sobre como podemos contornar dificuldades em entender como se dá a utilização de alguma função do R."
+draft: false
+---
+
+Com uma frequência diária, eu me deparo com pessoas
+tendo dúvidas sobre a realização de tarefas no R, 
+em grupos de Facebook, Telegram, Twitter, e assim 
+por diante. Estas dúvidas tem duas principais fontes:
+
+  1. dificuldades em construir o algoritmo para alcançar o 
+  resultado desejado. 
+  2. dificuldades em entender como se dá a utilização de alguma função. 
+
+O foco deste post é dar uma noção sobre como podemos contornar
+o segundo problema: a utilização das funções. Para dar um 
+pouco de contexto, deve-se comentar que os pacotes do R são 
+construídos pela comunidade, de forma voluntária. Logo, nem 
+todas as documentações são escritas de forma tão clara
+quanto necessário, o que pode gerar confusão em relação a 
+à estrutura dos objetos que devem sem passados a uma função, por exemplo. 
+Atualmente, o CRAN exige um certo rigor no que diz
+respeito ao bom funcionamento dos códigos dos pacotes, mas 
+isso não se aplica à documentação das funções. Felizmente,
+essa situação está melhorando, o que pode ser observado com
+a existência de recomendações como a que está a seguir, 
+retirada do [livro do Hadley sobre construção de pacotes](http://r-pkgs.had.co.nz/):
+
+![](https://user-images.githubusercontent.com/4706822/44997538-7730d400-af85-11e8-8383-2679a3adc429.jpg)
+<br>
+
+Enquanto as documentações não são perfeitas, os usuários precisam
+buscar entender os erros inesperados em suas tarefas de outras formas.
+O método que eu vou descrever agora consiste basicamente em olhar o código 
+da função e procurar nele aonde está a fonte causadora de problemas. 
+
+Existem funções que podem ser diretamente visualizadas no `console`, 
+apenas imprimindo seu nome sem os parênteses `()` finais, por exemplo:
+
+```{r}
+soma <- function(x, y){
+  z <- x + y
+  z
+}
+
+soma
+```
+
+
+Assim, só de rodar o nome da função podemos saber qual é o código
+que a compõe. Se eu tentar fazer, por exemplo:  
+
+```{r, eval=FALSE}
+soma(2, "1")
+```
+
+Temos o erro: 
+
+`Error in x + y : argumento não-numérico para operador binário` 
+
+Causado pelo "1" ser um caractere e não um número, o que não 
+parece estar tão óbvio na mensagem. Copiamos o código da
+função e rodamos linha por linha dele, fornecendo os devidos argumentos, 
+até encontrar o erro: 
+
+```{r, error=TRUE}
+x <- 2
+y <- "1"
+# Código da função soma
+z <- x + y
+```
+
+Encontrando exatamente aonde o erro está, fica muito mais fácil entender
+qual é o próvavel motivo do que apenas tentando interpretar a mensagem
+quando a função não roda. Muitas vezes, a questão é exatamente
+sobre objetos com a estrutura incorreta sendo usados, é isso por acaso
+também é o que gera os erros mais estranhos. 
+
+O exemplo acima é com uma função simples e curta. Comumente você 
+vai se deparar com funções grandes ou que, quando impressas no `console`, 
+não mostram o código, e sim o seu qual método ela utiliza: 
+
+```{r}
+mean
+```
+
+
+
+E o que isso significa? que essa é uma função genérica da classe S3,
+que tem métodos para diferentes classes de objetos. Mas como assim?
+
+Vamos usar o exemplo da função `mean`, que é usada para o calculo
+de médias. Quais são os tipos de objeto que podem ser usados 
+nessa função? Em geral, utilizamos vetores, mas ela consegue
+lidar com outros tipos, como datas. O que queremos dizer aqui 
+é que a mesma função vai conseguir fazer sua tarefa com
+objetos diferentes, através dos "métodos" da função `mean`.
+Um método é uma função associada com um tipo particular de
+objeto. Podemos verificar quais são os métodos disponíveis com:
+
+```{r}
+methods(mean)
+```
+
+(dependendo do pacote, os métodos não estão exportados. Se encontrar problemas com isso, experimente usar o operador `:::`. Por exemplo, `dplyr:::filter.tbl_df`)
+
+Nesse caso, é possível ver o código de um método específico
+imprimindo não só o nome da função, mas a sua extensão com 
+o método desejado:
+
+```{r}
+mean.default
+```
+
+Voltando ao descobrimento dos erros. Digamos que nós rodamos o 
+seguinte pedaço de código, que vai dar um erro: 
+
+
+```{r, error=TRUE}
+mean(c("1", 3))
+```
+
+Note que isso não é um erro e sim um *warning*. Mas certamente não é esse o resultado que gostaríamos, e o valor numérico 2, que é a média entre 1 e 3.
+
+Agora, a mensagem é mais explicíta, mas podemos encontrar
+o problema diretamente na função, usando o código da `mean.default`. 
+Como vimos antes, a função precisa de um vetor de entrada "x":
+
+```{r, eval = TRUE}
+# Definindo o objeto de entrada da função
+x <- c("1", 3)
+
+# Código da mean.default 
+if (!is.numeric(x) && !is.complex(x) && !is.logical(x)) {
+  
+  warning("argument is not numeric or logical: returning NA")
+  return(NA_real_)
+}
+# Paramos aqui porque o problema já foi encontrado
+
+```
+
+Logo na primeira linha do código da função, já temos a
+indicação do problema: o vetor passado não é do tipo numérico, 
+complexo ou lógico. 
+
+# Por quê eu devo procurar entender os erros?
+
+Em linhas gerais, na minha experiência com a procura pelos erros  
+de funções, eu sempre acabo aprendendo algo novo, como por 
+exemplo justamente a correção do erro. A máxima do
+"é errando que se aprende" é altamente aplicável nestes 
+casos. Os erros gerados pelas funções nos levam a procurar
+entendê-los melhor, o que consequentemente leva a uma
+compreensão aprimorada sobre lógica de programação 
+e R em geral. 
+
+Além disso, é bem mais eficiente desenvolver técnicas para resolver seu
+próprio problema. Não é raro que uma pergunta sobre R
+em grupos da internet demore pra ter resposta. Com uma
+busca mais aprofundada pela fonte geradora do erro e sua
+consequente solução, essa espera pode ser evitada (não que
+seja errado fazer perguntas, claro).   
+
+Mais particularmente, eu posso comentar que, já que os 
+pacotes do R são feitos pela comunidade, existe uma grande 
+diversidade de formas de escrita de código presente neles. 
+Assim, o contato com essa diversidade me leva tanto a aprender 
+mais sobre R como formas de refinar o escrita de código. 
+
+
+# Wrap-up
+
+Neste post, eu expliquei como faço para procurar 
+erros em funções do R. Em geral, falamos sobre: 
+
+  - comos mostrar o código fonte de funções simples na tela;
+  - como mostrar o código fonte de funções da classe S3.
+  - como usar estes códigos para identificar o erro;
+  - como podemos aprender com nossos próprios erros;
+  - como este método pode ser útil na economia de tempo com 
+  a resolução de erros;
+
