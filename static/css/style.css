@@ -869,7 +869,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 8px 28px;
   border-radius: 25px;
   transition: 0.5s;
-  margin-top: 5px;
   border: 2px solid #fff;
   color: #fff;
   cursor: pointer;
@@ -878,6 +877,18 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .tags div {
   position: relative;
+}
+
+.tags h1 {
+  font-size: 14px;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin: 0px;
 }
 
 #call-to-action .cta-submit:hover {
