@@ -61,6 +61,10 @@
         $('#toc').append('<div class="tags"><h1 data-toc-skip>Tags</h1>{{ range .Params.tags }}<a href="/tags/{{.}}"><button class="cta-submit" type="submit">{{ . | humanize}}</button></a>{{ end }}</div>');
     });
     
+    $(function() {
+        $('#toc').append('<div class="tags"><h1 data-toc-skip>Categorias</h1>{{ range .Params.categories }}<a href="/tags/{{.}}"><button class="cta-submit" type="submit">{{ . | humanize}}</button></a>{{ end }}</div>');
+    });
+    
   </script>
   
 </html>
