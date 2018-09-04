@@ -6,7 +6,7 @@ categories: ["r", "tutoriais"]
 banner: "img/banners/pesqEle.png"
 author: ["Daniel"]
 summary: ""
-draft: false
+draft: true
 ---
 
 Neste tutorial vamos contruir uma API usando o pacote [`plumber`](https://github.com/trestletech/plumber) e disponibilizá-la na web usando o [now](https://zeit.co/now). Esse post foi inspirado pela dúvida do @Tadeufelipe neste tweet:

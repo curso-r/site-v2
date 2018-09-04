@@ -1,0 +1,26 @@
+---
+title: "Servindo API's em R com alta velocidade e escalabilidade usando Kubernetes."
+date: "2018-08-30T00:00:00+00:00"
+tags: ["app", "pacotes"]
+categories: ["r"]
+banner: "img/blog/desafio-recuperacao-img/purple_wave.jpg"
+author: ["Daniel"]
+summary: "Neste post tutorial vamos usar a Google Cloud Platform para disponibilizar um cluster servindo uma API construída em R usando o plumber."
+draft: true
+---
+
+
+
+<p>Neste post tutorial vamos usar a Google Cloud Platform para disponibilizar um cluster servindo uma API construída em R usando o plumber. Essa abordagem tem a vantagem de que a sua API ficará em um abiente totalmente escalável, ou seja, dependendo da sua demanda o número de nós servindo a sua API pode aumentar ou diminuir.</p>
+<div id="construindo-a-sua-api-com-plumber" class="section level1">
+<h1>Construindo a sua api com plumber</h1>
+<p>Podemos criar uma API usando o plumber apenas <em>decorando</em> o script que contém as nossas funções. Essa função poderia fazer qualquer coisa, escorar um modelo estatístico, sortear números, criar um gráfico, etc. No exemplo abaixo, criamos uma função <code>sortear</code> que recebe um argumento chamado <code>max</code> e retorna um número aleatório entre 1 e <code>max</code>.</p>
+<pre class="r"><code># *get/sortear
+sortear &lt;- function(max) {
+  sample.int(max, 1L)
+}</code></pre>
+<p>Suponha agora que queremos disponibilizar essa função por intermédio de um serviço web. Quero que o usuário possa acessar o endereço <code>http://meudominio.com/sortear/?max=100</code> e obtenha um valor entre 1 e 100. Esse é o papel do comentário <code># *get/sortear</code>. Essa <em>decoração</em> irá indicar para o plumber que queremos ter um <em>endpoint</em> com nome <code>sortear</code> que recebe requisições do tipo GET.</p>
+<p>Salvando esse trecho de código em um script <code>plumber.R</code> podemos iniciar um serviço localmente usando:</p>
+<p>TODO</p>
+<p>No entanto, em geral queremos que o nosso serviço fique disponível na internet, para que possa ser acessado por outros computadores. Por isso, hospedar a sua API em um servidor é um passo importante.</p>
+</div>
