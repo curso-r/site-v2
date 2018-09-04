@@ -1,8 +1,8 @@
 ---
 title: "Uma forma de encontrar erros no R"
 date: "2018-09-03T00:00:00+00:00"
-categories: ["r"]
-tags: ["r"]
+categories: ["r", "tutoriais"]
+tags: ["r", "funções"]
 banner: "img/banners/funcoes.png"
 author: ["Bruna Wundervald"]
 summary: "O foco deste post é dar uma noção sobre como podemos contornar dificuldades em entender como se dá a utilização de alguma função do R."
@@ -45,7 +45,7 @@ z &lt;- x + y</code></pre>
 <pre class="r"><code>mean</code></pre>
 <pre><code>## function (x, ...) 
 ## UseMethod(&quot;mean&quot;)
-## &lt;bytecode: 0x7fbbee53f278&gt;
+## &lt;bytecode: 0x7fc0aaf98b48&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>E o que isso significa? que essa é uma função genérica da classe S3, que tem métodos para diferentes classes de objetos. Mas como assim?</p>
 <p>Vamos usar o exemplo da função <code>mean</code>, que é usada para o calculo de médias. Quais são os tipos de objeto que podem ser usados nessa função? Em geral, utilizamos vetores, mas ela consegue lidar com outros tipos, como datas. O que queremos dizer aqui é que a mesma função vai conseguir fazer sua tarefa com objetos diferentes, através dos “métodos” da função <code>mean</code>. Um método é uma função associada com um tipo particular de objeto. Podemos verificar quais são os métodos disponíveis com:</p>
@@ -79,7 +79,7 @@ z &lt;- x + y</code></pre>
 ##     }
 ##     .Internal(mean(x))
 ## }
-## &lt;bytecode: 0x7fbbf0904a98&gt;
+## &lt;bytecode: 0x7fc0ad13db78&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>Voltando ao descobrimento dos erros. Digamos que nós rodamos o seguinte pedaço de código, que vai dar um erro:</p>
 <pre class="r"><code>mean(c(&quot;1&quot;, 3))</code></pre>
