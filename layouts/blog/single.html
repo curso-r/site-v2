@@ -29,7 +29,7 @@
             {{ if isset .Params "author" }} 
             Por {{ range $index, $author := .Params.author }} 
               {{ if gt $index 0 }},{{ end }} 
-              {{ . }} 
+              <a href="/author/{{ . | urlize }}">{{ . }}</a>
               {{ end }} 
               {{ end }}
               em {{ dateFormat "02/01/2006" .Params.date }}
