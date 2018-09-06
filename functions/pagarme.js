@@ -1,5 +1,5 @@
 exports.handler = function(event, context, callback) {
-    import pagarme from 'pagarme';
+    var pagarme = require('pagarme');
 
     pagarme.client.connect({ api_key: 'SUA_API_KEY' })
       .then(client => client.transactions.capture({ id: "TOKEN", amount: 1000 }));
