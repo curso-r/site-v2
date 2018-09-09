@@ -1,0 +1,286 @@
+---
+title: "Monty hall e diagramas de influência"
+date: "2018-09-09T00:00:00+00:00"
+categories: ["r", "conceitos"]
+tags: ["r", "funções"]
+banner: "img/banners/montyhall.png"
+author: ["Julio"]
+summary: "O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Nesse post mostramos uma solução simples e elegante para o problema usando diagramas de influência e o pacote bnlearn."
+draft: false
+---
+
+Você está num jogo na TV e o apresentador pede para escolher uma entre 3 portas. Atrás de uma dessas portas tem uma **Ferrari** e nas outras duas temos **cabras**. Você escolhe uma porta. Depois, o apresentador retira uma porta que tem uma cabra e pergunta: **você quer trocar de porta?**
+
+A princípio, você pode achar que sua probabilidade de ganhar é 1/2, já que uma das portas foi retirada, então não importa se você troca ou não. Mas a resposta é que sim, vale à pena trocar de porta! A probabilidade de vencer o jogo trocando a porta é de 2/3.
+
+O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Recomendo ler o livro "O Andar do Bêbado", de Leonard Mlodinov, que conta essa e muitas outras histórias interessantes sobre a probabilidade.
+
+Existem várias formas de explicar por quê trocar a porta é a melhor estratégia. A que eu mais gosto é a do próprio Andar do Bêbado, que mostra que, quando você escolhe a primeira porta, você está apostando se acertou ou não a Ferrari. Se você apostar que acertou a Ferrari, não deve trocar a porta e, se você apostar que errou a Ferrari, deve trocar. A aposta de errar a Ferrari de primeira tem probabilidade 2/3, logo, vale à pena trocar.
+
+Nesse post, mostramos uma solução alternativa, simples e elegante para o problema usando diagramas de influência e o pacote `bnlearn`.
+
+
+### Redes bayesianas
+
+As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl (2009), tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.
+
+Da teoria de probabilidades precisamos apenas de alguns resultados básicos sobre probabilidade condicional. Primeiramente, pela definição de probabilidade condicional, sabemos que
+
+$$
+p(x_1, x_2) = p(x_1)p(x_2|x_1).
+$$
+
+Aplicando essa regra iterativamente para $n$ variáveis, temos
+
+$$
+p(x_1, \dots, x_p) = \prod_j p(x_j|x_1,\dots, x_{j-1}).
+$$
+
+Agora, imagine que, no seu problema, a variável aleatória $X_j$ não dependa probabilisticamente de todas as variáveis $X_1,\dots, X_{j-1}$, e sim apenas de um subconjunto $\Pi_j$ dessas variáveis. Fazendo isso, a equação pode ser escrita como
+
+$$
+p(x_1, \dots, x_p) = \prod_j p(x_j|\pi_j).
+$$
+
+Chamamos $\Pi_j$ de **pais** de $X_j$. Esse conjunto pode ser pensado como as variáveis que são suficientes para determinar as probabilidades de $X_j$.
+
+A parte mais legal das redes Bayesianas é que elas podem ser representadas a partir de DAGs (grafos direcionados acíclicos). No grafo, se $X_1$ aponta para $X_2$, então $X_1$ é pai de $X_2$. Por exemplo, esse grafo aqui
+
+<center>
+
+```{r exemplo, echo=FALSE}
+DiagrammeR::DiagrammeR(stringr::str_replace_all("
+graph LR;
+A(X1Estação do ano)-->B(X2Regador ligado)
+A-->C(X3Choveu)
+B-->D(X4Chão Molhado)
+C-->D
+D-->E(X5Chão Escorregadio)
+", "X([0-9])", "<center><b>X\\1</b></center><br/>"))
+```
+
+</center>
+
+representa a distribuição de probabilidades $p(x_1, \dots, x_5)$ com
+
+$$
+p(x_1, \dots, x_5) = p(x_1)p(x_2|x_1)p(x_3|x_1)p(x_4|x_3,x_2)p(x_5|x_4).
+$$
+
+
+### Diagrama de influências
+
+Um diagrama e influências é uma rede Bayesiana com nós de decisão e utilidade (ganhos). Ou seja, é uma junção de três conceitos: 
+
+$$
+\underbrace{\text{prob. condicional} + \text{grafos}}_{\text{rede Bayesiana}} + \text{teoria da decisão} = \text{diagrama de influências}
+$$
+
+Na teoria da decisão, usualmente estamos interessados em maximizar a utilidade esperada. No diagrama, considerando a estrutura de probabilidades dada pela rede Bayesiana e as informações disponíveis, queremos escolher a decisão que faz com que, em média, nosso retorno seja mais alto.
+
+Com diagramas de influências, é possível organizar sistemas complexos com múltiplas decisões, considerando diferentes conjuntos de informações disponíveis. É uma ferramenta realmente muito poderosa.
+
+## Voltando ao Monty Hall
+
+Agora que sabemos um pouquinho de diagramas de influência, podemos desenhar o do Monty Hall:
+
+<center>
+
+```{r diagrama, echo=FALSE}
+DiagrammeR::DiagrammeR(stringr::str_replace_all("
+graph LR;
+A{D1Escolha inicial}-->B(X2Porta retirada);
+C(X1Ferrari)-->B;
+B-->D{D2Trocar porta};
+D-->E[U1Ganhar]
+C-->E
+A-->E
+", "([XDU][0-9])", "<center><b>\\1</b></center><br/>"))
+```
+
+</center>
+
+O jogador tem duas decisões a tomar:
+
+- $D_1$ (`escolha_inicial`): A escolha da porta inicial (`1`, `2`, `3`).
+- $D_2$ (`trocar`): Trocar a porta ou não (`s`, `n`).
+
+Também temos duas fontes de incerteza:
+
+- $X_1$ (`ferrari`): Em qual porta está a Ferrari (`1`, `2`, `3`).
+- $X_2$ (`porta_retirada`): Qual porta foi retirada (`1`, `2`, `3`). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3. 
+
+Finalmente, temos um nó de utilidade:
+
+- $U_1$ (`result`): Ganhei a Ferrari (`ganhei`, `perdi`).
+
+Em R, podemos construir a rede Bayesiana do problema utilizando o pacote `bnlearn`:
+
+```{r grafo, eval=FALSE}
+# nós do grafo
+nodes <- c("escolha_inicial", "ferrari", "porta_retirada", "trocar", "result")
+
+# matriz de adjacências
+edges <- matrix(
+  c("escolha_inicial", "porta_retirada",
+    "ferrari", "porta_retirada",
+    "porta_retirada", "trocar",
+    "trocar", "result",
+    "ferrari", "result",
+    "escolha_inicial", "result"),
+  ncol = 2, 
+  byrow = TRUE)
+
+# criando o grafo a partir de um grafo vazio
+g <- bnlearn::empty.graph(nodes)
+bnlearn::arcs(g) <- edges
+```
+
+O output desse conjunto de operações é um objeto do tipo `bn` com várias propriedades pré calculadas pelo pacote `bnlearn`:
+
+```{r bn, eval=FALSE}
+g
+```
+
+```
+  Random/Generated Bayesian network
+
+  model:
+   [escolha_inicial][ferrari][porta_retirada|escolha_inicial:ferrari][trocar|porta_retirada]
+   [result|escolha_inicial:ferrari:trocar]
+  nodes:                                 5 
+  arcs:                                  6 
+    undirected arcs:                     0 
+    directed arcs:                       6 
+  average markov blanket size:           3.60 
+  average neighbourhood size:            2.40 
+  average branching factor:              1.20 
+
+  generation algorithm:                  Empty 
+```
+
+Agora, vamos escrever todas as combinações possíveis de cenários e guardar num `data.frame` chamado $dados$:
+
+```{r dados, echo=FALSE}
+library(magrittr)
+dados <- tibble::tribble(
+  ~escolha_inicial, ~ferrari, ~porta_retirada, ~trocar, ~result,
+  # escolha inicial 1 -------------------------------------------
+  "1"             , "1"     , "2"            , "n"    , "ganhei",
+  "1"             , "1"     , "2"            , "s"    , "perdi" ,
+  "1"             , "1"     , "3"            , "n"    , "ganhei",
+  "1"             , "1"     , "3"            , "s"    , "perdi" ,
+  "1"             , "2"     , "3"            , "n"    , "perdi" , 
+  "1"             , "2"     , "3"            , "s"    , "ganhei", 
+  "1"             , "3"     , "2"            , "n"    , "perdi" ,
+  "1"             , "3"     , "2"            , "s"    , "ganhei",
+  # escolha inicial 2 -------------------------------------------
+  "2"             , "2"     , "1"            , "n"    , "ganhei",
+  "2"             , "2"     , "1"            , "s"    , "perdi" ,
+  "2"             , "2"     , "3"            , "n"    , "ganhei",
+  "2"             , "2"     , "3"            , "s"    , "perdi" ,
+  "2"             , "1"     , "3"            , "n"    , "perdi" ,
+  "2"             , "1"     , "3"            , "s"    , "ganhei",
+  "2"             , "3"     , "1"            , "n"    , "perdi" ,
+  "2"             , "3"     , "1"            , "s"    , "ganhei",
+  # escolha inicial 3 -------------------------------------------
+  "3"             , "3"     , "2"            , "n"    , "ganhei",
+  "3"             , "3"     , "2"            , "s"    , "perdi" ,
+  "3"             , "3"     , "1"            , "n"    , "ganhei",
+  "3"             , "3"     , "1"            , "s"    , "perdi" ,
+  "3"             , "2"     , "1"            , "n"    , "perdi" ,
+  "3"             , "2"     , "1"            , "s"    , "ganhei", 
+  "3"             , "1"     , "2"            , "n"    , "perdi" ,
+  "3"             , "1"     , "2"            , "s"    , "ganhei"
+) %>% 
+  dplyr::mutate_all(as.factor) %>% 
+  data.frame(stringsAsFactors = TRUE)
+
+knitr::kable(dados)
+```
+
+Finalmente, ajustamos nossa rede Bayesiana, usando a função `bnlearn::bn.fit()`:
+
+```{r modelo, eval=FALSE}
+fit <- bnlearn::bn.fit(g, dados)
+summary(fit)
+```
+
+```
+                Length Class        Mode
+escolha_inicial 4      bn.fit.dnode list
+ferrari         4      bn.fit.dnode list
+porta_retirada  4      bn.fit.dnode list
+trocar          4      bn.fit.dnode list
+result          4      bn.fit.dnode list
+```
+
+A função `bnlearn::cpquery()` (conditional probability query) serve para realizar uma consulta de probabilidades dada a rede ajustada. No nosso caso, a partir de uma escolha inicial qualquer $d_1$, queremos saber o ganho ao trocar é maior que o ganho ao não trocar.
+
+$$
+\mathbb E(U_1\; |\; D_2 = \text{s}, D_1 = d_1) > \mathbb E(U_1\; |\; D_2 = \text{n}, D_1 = d_1).
+$$
+
+Fazendo contas, isso equivale matematicamente a consultar se
+
+$$
+\mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{s}) > \mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{n})
+$$
+
+Agora, podemos consultar $\mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{s})$ com nosso modelo!
+
+```{r query1, eval=FALSE}
+set.seed(13)                    # reprodutibilidade
+bnlearn::cpquery(
+  fitted = fit, 
+  event = (result == "ganhei"), # o que queremos saber?
+  evidence = (trocar == "s"),   # qual informação adicionar?
+  n = 5e6)                      # n grande para aumentar a precisão
+```
+
+```
+[1] 0.6666704
+```
+
+E não é que dá 2/3 mesmo? Da mesma forma, temos
+
+```{r query2, eval=FALSE}
+bnlearn::cpquery(fit, (result == "ganhei"), (trocar == "n"), n = 5e6)
+```
+
+```
+[1] 0.3333187
+```
+
+Resolvido!
+
+## Wrap-up
+
+- Vale à pena trocar a porta!
+- Redes Bayesianas juntam grafos e probabilidades condicionais
+- Diagramas de influência juntam redes Bayesianas e teoria da decisão
+- Essas ferramentas podem ser utilizadas tanto para resolver Monty Hall quanto para ajudar em sistemas complexos.
+
+### Extra
+
+Se você ficou interessada em como eu fiz o diagrama, utilizei o pacote `DiagrammeR`. O código está aqui:
+
+```{r diagrama-code, eval=FALSE}
+diagrama <- "
+graph LR;
+A{D1Escolha inicial}-->B(X2Porta retirada);
+C(X1Ferrari)-->B;
+B-->D{D2Trocar porta};
+D-->E[U1Ganhar]
+C-->E
+A-->E
+"
+# tweak para centralizar e grifar as variáveis
+diagrama <- stringr::str_replace_all(
+  diagrama, 
+  pattern = "([XDU][0-9])", 
+  replacement = "<center><b>\\1</b></center><br/>")
+
+DiagrammeR::DiagrammeR(diagrama)
+```
+
