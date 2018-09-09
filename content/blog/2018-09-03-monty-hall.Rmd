@@ -161,7 +161,7 @@ g
   generation algorithm:                  Empty 
 ```
 
-Com as especificação do problema dada, se gerarmos aleatoriamente todos os cenários, chegamos à essa combinação de casos equiprováveis (ver [Extra 2](extra2))
+Com as especificação do problema dada, se gerarmos aleatoriamente todos os cenários, chegamos à essa combinação de casos equiprováveis (ver Extra 2)
 
 Agora, vamos escrever todas as combinações possíveis de cenários e guardar num `data.frame` chamado `dados`:
 
@@ -257,7 +257,7 @@ Resolvido!
 
 É isso pessoal. Happy coding ;)
 
-### Extra {extra2}
+### Extra
 
 Se você ficou interessada em como eu fiz o diagrama, utilizei o pacote `DiagrammeR`. O código está aqui:
 
