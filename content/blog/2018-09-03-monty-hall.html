@@ -42,7 +42,7 @@ p(x_1, \dots, x_p) = \prod_j p(x_j|\pi_j).
 <p>Chamamos <span class="math inline">\(\Pi_j\)</span> de <strong>pais</strong> de <span class="math inline">\(X_j\)</span>. Esse conjunto pode ser pensado como as variáveis que são suficientes para determinar as probabilidades de <span class="math inline">\(X_j\)</span>.</p>
 <p>A parte mais legal das redes Bayesianas é que elas podem ser representadas a partir de DAGs (grafos direcionados acíclicos). No grafo, se <span class="math inline">\(X_1\)</span> aponta para <span class="math inline">\(X_2\)</span>, então <span class="math inline">\(X_1\)</span> é pai de <span class="math inline">\(X_2\)</span>. Por exemplo, esse grafo aqui</p>
 <center>
-<div id="htmlwidget-1" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<div id="htmlwidget-1" style="width:100%;height:480px;" class="DiagrammeR html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph LR;\nA(<center><b>X1<\/b><\/center><br/>Estação do ano)-->B(<center><b>X2<\/b><\/center><br/>Regador ligado)\nA-->C(<center><b>X3<\/b><\/center><br/>Choveu)\nB-->D(<center><b>X4<\/b><\/center><br/>Chão Molhado)\nC-->D\nD-->E(<center><b>X5<\/b><\/center><br/>Chão Escorregadio)\n"},"evals":[],"jsHooks":[]}</script>
 </center>
 <p>representa a distribuição de probabilidades <span class="math inline">\(p(x_1, \dots, x_5)\)</span> com</p>
@@ -63,7 +63,7 @@ p(x_1, \dots, x_5) = p(x_1)p(x_2|x_1)p(x_3|x_1)p(x_4|x_3,x_2)p(x_5|x_4).
 <h2>Voltando ao Monty Hall</h2>
 <p>Agora que sabemos um pouquinho de diagramas de influência, podemos desenhar o do Monty Hall:</p>
 <center>
-<div id="htmlwidget-2" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<div id="htmlwidget-2" style="width:100%;height:480px;" class="DiagrammeR html-widget"></div>
 <script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\ngraph LR;\nA{<center><b>D1<\/b><\/center><br/>Escolha inicial}-->B(<center><b>X2<\/b><\/center><br/>Porta retirada);\nC(<center><b>X1<\/b><\/center><br/>Ferrari)-->B;\nB-->D{<center><b>D2<\/b><\/center><br/>Trocar porta};\nD-->E[<center><b>U1<\/b><\/center><br/>Ganhar]\nC-->E\nA-->E\n"},"evals":[],"jsHooks":[]}</script>
 </center>
 <p>O jogador tem duas decisões a tomar:</p>

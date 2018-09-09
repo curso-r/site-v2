@@ -48,7 +48,7 @@ A parte mais legal das redes Bayesianas é que elas podem ser representadas a pa
 
 <center>
 
-```{r exemplo, echo=FALSE}
+```{r exemplo, echo=FALSE, out.width="100%"}
 DiagrammeR::DiagrammeR(stringr::str_replace_all("
 graph LR;
 A(X1Estação do ano)-->B(X2Regador ligado)
@@ -86,7 +86,7 @@ Agora que sabemos um pouquinho de diagramas de influência, podemos desenhar o d
 
 <center>
 
-```{r diagrama, echo=FALSE}
+```{r diagrama, echo=FALSE, out.width="100%"}
 DiagrammeR::DiagrammeR(stringr::str_replace_all("
 graph LR;
 A{D1Escolha inicial}-->B(X2Porta retirada);
