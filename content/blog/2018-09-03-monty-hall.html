@@ -21,7 +21,12 @@ draft: false
 
 <p>Você está num jogo na TV e o apresentador pede para escolher uma entre 3 portas. Atrás de uma dessas portas tem uma <strong>Ferrari</strong> e nas outras duas temos <strong>cabras</strong>. Você escolhe uma porta. Depois, o apresentador retira uma porta que tem uma cabra e pergunta: <strong>você quer trocar de porta?</strong></p>
 <p>A princípio, você pode achar que sua probabilidade de ganhar é 1/2, já que uma das portas foi retirada, então não importa se você troca ou não. Mas a resposta é que sim, vale à pena trocar de porta! A probabilidade de vencer o jogo trocando a porta é de 2/3.</p>
-<p><img src="https://imgs.xkcd.com/comics/monty_hall.png" /><!-- --></p>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="https://imgs.xkcd.com/comics/monty_hall.png" alt="Brincadeira do [XKCD](https://xkcd.com/1282/)"  />
+<p class="caption">
+Figure 1: Brincadeira do <a href="https://xkcd.com/1282/">XKCD</a>
+</p>
+</div>
 <p>O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Recomendo ler o livro “O Andar do Bêbado”, de Leonard Mlodinov, que conta essa e muitas outras histórias interessantes sobre a probabilidade.</p>
 <p>Existem várias formas de explicar por quê trocar a porta é a melhor estratégia. A que eu mais gosto é a do próprio Andar do Bêbado, que mostra que, quando você escolhe a primeira porta, você está apostando se acertou ou não a Ferrari. Se você apostar que acertou a Ferrari, não deve trocar a porta e, se você apostar que errou a Ferrari, deve trocar. A aposta de errar a Ferrari de primeira tem probabilidade 2/3, logo, vale à pena trocar.</p>
 <p>Nesse post, mostramos uma solução alternativa, simples e elegante para o problema usando diagramas de influência e o pacote <code>bnlearn</code>.</p>

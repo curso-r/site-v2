@@ -13,7 +13,7 @@ Você está num jogo na TV e o apresentador pede para escolher uma entre 3 porta
 
 A princípio, você pode achar que sua probabilidade de ganhar é 1/2, já que uma das portas foi retirada, então não importa se você troca ou não. Mas a resposta é que sim, vale à pena trocar de porta! A probabilidade de vencer o jogo trocando a porta é de 2/3.
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.cap="Brincadeira do [XKCD](https://xkcd.com/1282/)"}
 knitr::include_graphics("https://imgs.xkcd.com/comics/monty_hall.png")
 ```
 
