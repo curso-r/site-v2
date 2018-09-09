@@ -26,7 +26,7 @@ draft: false
 <p>Nesse post, mostramos uma solução alternativa, simples e elegante para o problema usando diagramas de influência e o pacote <code>bnlearn</code>.</p>
 <div id="redes-bayesianas" class="section level3">
 <h3>Redes bayesianas</h3>
-<p>As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl (2009), tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.</p>
+<p>As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl, tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.</p>
 <p>Da teoria de probabilidades precisamos apenas de alguns resultados básicos sobre probabilidade condicional. Primeiramente, pela definição de probabilidade condicional, sabemos que</p>
 <p><span class="math display">\[
 p(x_1, x_2) = p(x_1)p(x_2|x_1).
@@ -74,7 +74,7 @@ p(x_1, \dots, x_5) = p(x_1)p(x_2|x_1)p(x_3|x_1)p(x_4|x_3,x_2)p(x_5|x_4).
 <p>Também temos duas fontes de incerteza:</p>
 <ul>
 <li><span class="math inline">\(X_1\)</span> (<code>ferrari</code>): Em qual porta está a Ferrari (<code>1</code>, <code>2</code>, <code>3</code>).</li>
-<li><span class="math inline">\(X_2\)</span> (<code>porta_retirada</code>): Qual porta foi retirada (<code>1</code>, <code>2</code>, <code>3</code>). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3.</li>
+<li><span class="math inline">\(X_2\)</span> (<code>porta_retirada</code>): Qual porta foi retirada (<code>1</code>, <code>2</code>, <code>3</code>). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3. Se o apresentador tiver a opção de escolher (que acontece no caso da escolha inicial ser a Ferrari), o apresentador escolhe uma porta para retirar aleatoriamente.</li>
 </ul>
 <p>Finalmente, temos um nó de utilidade:</p>
 <ul>
@@ -95,7 +95,15 @@ edges &lt;- matrix(
   ncol = 2, 
   byrow = TRUE)
 
-# criando o grafo a partir de um grafo vazio
+edges</code></pre>
+<pre><code>##      [,1]              [,2]            
+## [1,] &quot;escolha_inicial&quot; &quot;porta_retirada&quot;
+## [2,] &quot;ferrari&quot;         &quot;porta_retirada&quot;
+## [3,] &quot;porta_retirada&quot;  &quot;trocar&quot;        
+## [4,] &quot;trocar&quot;          &quot;result&quot;        
+## [5,] &quot;ferrari&quot;         &quot;result&quot;        
+## [6,] &quot;escolha_inicial&quot; &quot;result&quot;</code></pre>
+<pre class="r"><code># criando o grafo a partir de um grafo vazio
 g &lt;- bnlearn::empty.graph(nodes)
 bnlearn::arcs(g) &lt;- edges</code></pre>
 <p>O output desse conjunto de operações é um objeto do tipo <code>bn</code> com várias propriedades pré calculadas pelo pacote <code>bnlearn</code>:</p>
@@ -114,7 +122,8 @@ bnlearn::arcs(g) &lt;- edges</code></pre>
   average branching factor:              1.20 
 
   generation algorithm:                  Empty </code></pre>
-<p>Agora, vamos escrever todas as combinações possíveis de cenários e guardar num <code>data.frame</code> chamado <span class="math inline">\(dados\)</span>:</p>
+<p>Com as especificação do problema dada, se gerarmos aleatoriamente todos os cenários, chegamos à essa combinação de casos equiprováveis (ver <a href="extra2">Extra 2</a>)</p>
+<p>Agora, vamos escrever todas as combinações possíveis de cenários e guardar num <code>data.frame</code> chamado <code>dados</code>:</p>
 <table>
 <thead>
 <tr class="header">
@@ -184,6 +193,20 @@ bnlearn::arcs(g) &lt;- edges</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
 <td align="left">2</td>
 <td align="left">1</td>
 <td align="left">n</td>
@@ -212,20 +235,6 @@ bnlearn::arcs(g) &lt;- edges</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">2</td>
-<td align="left">1</td>
-<td align="left">3</td>
-<td align="left">n</td>
-<td align="left">perdi</td>
-</tr>
-<tr class="even">
-<td align="left">2</td>
-<td align="left">1</td>
-<td align="left">3</td>
-<td align="left">s</td>
-<td align="left">ganhei</td>
-</tr>
-<tr class="odd">
-<td align="left">2</td>
 <td align="left">3</td>
 <td align="left">1</td>
 <td align="left">n</td>
@@ -240,31 +249,17 @@ bnlearn::arcs(g) &lt;- edges</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
-<td align="left">3</td>
+<td align="left">1</td>
 <td align="left">2</td>
 <td align="left">n</td>
-<td align="left">ganhei</td>
+<td align="left">perdi</td>
 </tr>
 <tr class="even">
 <td align="left">3</td>
-<td align="left">3</td>
+<td align="left">1</td>
 <td align="left">2</td>
 <td align="left">s</td>
-<td align="left">perdi</td>
-</tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="left">3</td>
-<td align="left">1</td>
-<td align="left">n</td>
 <td align="left">ganhei</td>
-</tr>
-<tr class="even">
-<td align="left">3</td>
-<td align="left">3</td>
-<td align="left">1</td>
-<td align="left">s</td>
-<td align="left">perdi</td>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
@@ -282,29 +277,36 @@ bnlearn::arcs(g) &lt;- edges</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
-<td align="left">1</td>
+<td align="left">3</td>
 <td align="left">2</td>
 <td align="left">n</td>
-<td align="left">perdi</td>
+<td align="left">ganhei</td>
 </tr>
 <tr class="even">
 <td align="left">3</td>
-<td align="left">1</td>
+<td align="left">3</td>
 <td align="left">2</td>
 <td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">n</td>
 <td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
 </tr>
 </tbody>
 </table>
-<p>Finalmente, ajustamos nossa rede Bayesiana, usando a função <code>bnlearn::bn.fit()</code>:</p>
-<pre class="r"><code>fit &lt;- bnlearn::bn.fit(g, dados)
-summary(fit)</code></pre>
-<pre><code>                Length Class        Mode
-escolha_inicial 4      bn.fit.dnode list
-ferrari         4      bn.fit.dnode list
-porta_retirada  4      bn.fit.dnode list
-trocar          4      bn.fit.dnode list
-result          4      bn.fit.dnode list</code></pre>
+<p>Finalmente, ajustamos nossa rede Bayesiana, usando a função <code>bnlearn::bn.fit()</code>.</p>
+<pre class="r"><code>fit &lt;- bnlearn::bn.fit(g, dados)</code></pre>
 <p>A função <code>bnlearn::cpquery()</code> (conditional probability query) serve para realizar uma consulta de probabilidades dada a rede ajustada. No nosso caso, a partir de uma escolha inicial qualquer <span class="math inline">\(d_1\)</span>, queremos saber o ganho ao trocar é maior que o ganho ao não trocar.</p>
 <p><span class="math display">\[
 \mathbb E(U_1\; |\; D_2 = \text{s}, D_1 = d_1) &gt; \mathbb E(U_1\; |\; D_2 = \text{n}, D_1 = d_1).
@@ -335,8 +337,8 @@ bnlearn::cpquery(
 <li>Essas ferramentas podem ser utilizadas tanto para resolver Monty Hall quanto para ajudar em sistemas complexos.</li>
 </ul>
 <p>É isso pessoal. Happy coding ;)</p>
-<div id="extra" class="section level3">
-<h3>Extra</h3>
+<div id="extra-extra2" class="section level3">
+<h3>Extra {extra2}</h3>
 <p>Se você ficou interessada em como eu fiz o diagrama, utilizei o pacote <code>DiagrammeR</code>. O código está aqui:</p>
 <pre class="r"><code>diagrama &lt;- &quot;
 graph LR;
@@ -354,5 +356,54 @@ diagrama &lt;- stringr::str_replace_all(
   replacement = &quot;&lt;center&gt;&lt;b&gt;\\1&lt;/b&gt;&lt;/center&gt;&lt;br/&gt;&quot;)
 
 DiagrammeR::DiagrammeR(diagrama)</code></pre>
+</div>
+<div id="extra-2" class="section level3">
+<h3>Extra 2</h3>
+<p>É possível simular os dados que coloquei no post com uma função simples, que adicionei abaixo. Na verdade, o fato de eu ter considerado somente as combinações únicas de cenários e não os dados simulados abaixo é um pouco roubado, e só funciona porque os cenários calham de ser, de fato, equiprováveis.</p>
+<pre class="r"><code>set.seed(13)
+
+simular_monty_hall &lt;- function(z = 0) {
+  v &lt;- 1:3                                  # opcoes
+  escolha_inicial &lt;- sample(v, 1)           # escolha inicial aleatoria
+  ferrari &lt;- sample(v, 1)                   # ferrari aleatoria
+  
+  # qual porta retirar?
+  if (escolha_inicial == ferrari) {
+    porta_retirada &lt;- sample(setdiff(v, ferrari), 1)
+  } else {
+    porta_retirada &lt;- setdiff(v, c(escolha_inicial, ferrari))
+  }
+  
+  # trocar porta?
+  trocar &lt;- sample(c(&quot;s&quot;, &quot;n&quot;), 1)
+  
+  # calculando resultado
+  if (trocar == &quot;s&quot;) {
+    escolha_final &lt;- setdiff(v, c(escolha_inicial, porta_retirada))
+  } else {
+    escolha_final &lt;- escolha_inicial
+  }
+  result &lt;- ifelse(escolha_final == ferrari, &quot;ganhei&quot;, &quot;perdi&quot;)
+  
+  # guardando no BD
+  tibble::tibble(escolha_inicial, ferrari, porta_retirada, trocar, result)
+}
+
+dados_simulados &lt;- purrr::map_dfr(seq_len(1e4), simular_monty_hall) %&gt;% 
+  dplyr::mutate_all(as.factor)
+
+dplyr::glimpse(dados_simulados)</code></pre>
+<pre><code>Observations: 10,000
+Variables: 5
+$ escolha_inicial &lt;fct&gt; 3, 1, 2, 1, 1, 1, 3, 1, 2, 3, 3, 1, 3, 1, 2, 2, 2,...
+$ ferrari         &lt;fct&gt; 1, 1, 2, 1, 1, 2, 3, 3, 1, 2, 3, 3, 2, 1, 1, 3, 1,...
+$ porta_retirada  &lt;fct&gt; 2, 3, 1, 3, 2, 3, 2, 2, 3, 1, 1, 2, 1, 2, 3, 1, 3,...
+$ trocar          &lt;fct&gt; n, s, s, n, s, n, n, n, n, s, s, s, s, n, n, s, n,...
+$ result          &lt;fct&gt; perdi, perdi, perdi, ganhei, perdi, perdi, ganhei,...</code></pre>
+<p>Os dados do post podem ser obtidos fazendo isso aqui:</p>
+<pre class="r"><code>dados_simulados %&gt;% 
+  dplyr::distinct() %&gt;% 
+  dplyr::arrange(escolha_inicial, ferrari)</code></pre>
+<p>Agradecimentos: Rafael Stern, que me convenceu de que vale à pena mostrar os dados simulados ;)</p>
 </div>
 </div>

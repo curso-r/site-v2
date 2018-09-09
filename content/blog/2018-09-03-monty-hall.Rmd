@@ -22,7 +22,7 @@ Nesse post, mostramos uma solução alternativa, simples e elegante para o probl
 
 ### Redes bayesianas
 
-As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl (2009), tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.
+As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl, tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.
 
 Da teoria de probabilidades precisamos apenas de alguns resultados básicos sobre probabilidade condicional. Primeiramente, pela definição de probabilidade condicional, sabemos que
 
@@ -108,7 +108,7 @@ O jogador tem duas decisões a tomar:
 Também temos duas fontes de incerteza:
 
 - $X_1$ (`ferrari`): Em qual porta está a Ferrari (`1`, `2`, `3`).
-- $X_2$ (`porta_retirada`): Qual porta foi retirada (`1`, `2`, `3`). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3. 
+- $X_2$ (`porta_retirada`): Qual porta foi retirada (`1`, `2`, `3`). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3. Se o apresentador tiver a opção de escolher (que acontece no caso da escolha inicial ser a Ferrari), o apresentador escolhe uma porta para retirar aleatoriamente.
 
 Finalmente, temos um nó de utilidade:
 
@@ -116,7 +116,7 @@ Finalmente, temos um nó de utilidade:
 
 Em R, podemos construir a rede Bayesiana do problema utilizando o pacote `bnlearn`:
 
-```{r grafo, eval=FALSE}
+```{r grafo, eval=TRUE}
 # nós do grafo
 nodes <- c("escolha_inicial", "ferrari", "porta_retirada", "trocar", "result")
 
@@ -130,6 +130,8 @@ edges <- matrix(
     "escolha_inicial", "result"),
   ncol = 2, 
   byrow = TRUE)
+
+edges
 
 # criando o grafo a partir de um grafo vazio
 g <- bnlearn::empty.graph(nodes)
@@ -159,7 +161,9 @@ g
   generation algorithm:                  Empty 
 ```
 
-Agora, vamos escrever todas as combinações possíveis de cenários e guardar num `data.frame` chamado $dados$:
+Com as especificação do problema dada, se gerarmos aleatoriamente todos os cenários, chegamos à essa combinação de casos equiprováveis (ver [Extra 2](extra2))
+
+Agora, vamos escrever todas as combinações possíveis de cenários e guardar num `data.frame` chamado `dados`:
 
 ```{r dados, echo=FALSE}
 library(magrittr)
@@ -175,23 +179,23 @@ dados <- tibble::tribble(
   "1"             , "3"     , "2"            , "n"    , "perdi" ,
   "1"             , "3"     , "2"            , "s"    , "ganhei",
   # escolha inicial 2 -------------------------------------------
+  "2"             , "1"     , "3"            , "n"    , "perdi" ,
+  "2"             , "1"     , "3"            , "s"    , "ganhei",
   "2"             , "2"     , "1"            , "n"    , "ganhei",
   "2"             , "2"     , "1"            , "s"    , "perdi" ,
   "2"             , "2"     , "3"            , "n"    , "ganhei",
   "2"             , "2"     , "3"            , "s"    , "perdi" ,
-  "2"             , "1"     , "3"            , "n"    , "perdi" ,
-  "2"             , "1"     , "3"            , "s"    , "ganhei",
   "2"             , "3"     , "1"            , "n"    , "perdi" ,
   "2"             , "3"     , "1"            , "s"    , "ganhei",
   # escolha inicial 3 -------------------------------------------
+  "3"             , "1"     , "2"            , "n"    , "perdi" ,
+  "3"             , "1"     , "2"            , "s"    , "ganhei",
+  "3"             , "2"     , "1"            , "n"    , "perdi" ,
+  "3"             , "2"     , "1"            , "s"    , "ganhei",
   "3"             , "3"     , "2"            , "n"    , "ganhei",
   "3"             , "3"     , "2"            , "s"    , "perdi" ,
   "3"             , "3"     , "1"            , "n"    , "ganhei",
-  "3"             , "3"     , "1"            , "s"    , "perdi" ,
-  "3"             , "2"     , "1"            , "n"    , "perdi" ,
-  "3"             , "2"     , "1"            , "s"    , "ganhei", 
-  "3"             , "1"     , "2"            , "n"    , "perdi" ,
-  "3"             , "1"     , "2"            , "s"    , "ganhei"
+  "3"             , "3"     , "1"            , "s"    , "perdi" 
 ) %>% 
   dplyr::mutate_all(as.factor) %>% 
   data.frame(stringsAsFactors = TRUE)
@@ -199,20 +203,10 @@ dados <- tibble::tribble(
 knitr::kable(dados)
 ```
 
-Finalmente, ajustamos nossa rede Bayesiana, usando a função `bnlearn::bn.fit()`:
+Finalmente, ajustamos nossa rede Bayesiana, usando a função `bnlearn::bn.fit()`.
 
 ```{r modelo, eval=FALSE}
 fit <- bnlearn::bn.fit(g, dados)
-summary(fit)
-```
-
-```
-                Length Class        Mode
-escolha_inicial 4      bn.fit.dnode list
-ferrari         4      bn.fit.dnode list
-porta_retirada  4      bn.fit.dnode list
-trocar          4      bn.fit.dnode list
-result          4      bn.fit.dnode list
 ```
 
 A função `bnlearn::cpquery()` (conditional probability query) serve para realizar uma consulta de probabilidades dada a rede ajustada. No nosso caso, a partir de uma escolha inicial qualquer $d_1$, queremos saber o ganho ao trocar é maior que o ganho ao não trocar.
@@ -263,7 +257,7 @@ Resolvido!
 
 É isso pessoal. Happy coding ;)
 
-### Extra
+### Extra {extra2}
 
 Se você ficou interessada em como eu fiz o diagrama, utilizei o pacote `DiagrammeR`. O código está aqui:
 
@@ -286,3 +280,62 @@ diagrama <- stringr::str_replace_all(
 DiagrammeR::DiagrammeR(diagrama)
 ```
 
+### Extra 2
+
+É possível simular os dados que coloquei no post com uma função simples, que adicionei abaixo. Na verdade, o fato de eu ter considerado somente as combinações únicas de cenários e não os dados simulados abaixo é um pouco roubado, e só funciona porque os cenários calham de ser, de fato, equiprováveis.
+
+```{r eval=FALSE}
+set.seed(13)
+
+simular_monty_hall <- function(z = 0) {
+  v <- 1:3                                  # opcoes
+  escolha_inicial <- sample(v, 1)           # escolha inicial aleatoria
+  ferrari <- sample(v, 1)                   # ferrari aleatoria
+  
+  # qual porta retirar?
+  if (escolha_inicial == ferrari) {
+    porta_retirada <- sample(setdiff(v, ferrari), 1)
+  } else {
+    porta_retirada <- setdiff(v, c(escolha_inicial, ferrari))
+  }
+  
+  # trocar porta?
+  trocar <- sample(c("s", "n"), 1)
+  
+  # calculando resultado
+  if (trocar == "s") {
+    escolha_final <- setdiff(v, c(escolha_inicial, porta_retirada))
+  } else {
+    escolha_final <- escolha_inicial
+  }
+  result <- ifelse(escolha_final == ferrari, "ganhei", "perdi")
+  
+  # guardando no BD
+  tibble::tibble(escolha_inicial, ferrari, porta_retirada, trocar, result)
+}
+
+dados_simulados <- purrr::map_dfr(seq_len(1e4), simular_monty_hall) %>% 
+  dplyr::mutate_all(as.factor)
+
+dplyr::glimpse(dados_simulados)
+```
+
+```
+Observations: 10,000
+Variables: 5
+$ escolha_inicial <fct> 3, 1, 2, 1, 1, 1, 3, 1, 2, 3, 3, 1, 3, 1, 2, 2, 2,...
+$ ferrari         <fct> 1, 1, 2, 1, 1, 2, 3, 3, 1, 2, 3, 3, 2, 1, 1, 3, 1,...
+$ porta_retirada  <fct> 2, 3, 1, 3, 2, 3, 2, 2, 3, 1, 1, 2, 1, 2, 3, 1, 3,...
+$ trocar          <fct> n, s, s, n, s, n, n, n, n, s, s, s, s, n, n, s, n,...
+$ result          <fct> perdi, perdi, perdi, ganhei, perdi, perdi, ganhei,...
+```
+
+Os dados do post podem ser obtidos fazendo isso aqui:
+
+```{r eval=FALSE}
+dados_simulados %>% 
+  dplyr::distinct() %>% 
+  dplyr::arrange(escolha_inicial, ferrari)
+```
+
+Agradecimentos: Rafael Stern, que me convenceu de que vale à pena mostrar os dados simulados ;)
