@@ -13,12 +13,12 @@ Você está num jogo na TV e o apresentador pede para escolher uma entre 3 porta
 
 A princípio, você pode achar que sua probabilidade de ganhar é 1/2, já que uma das portas foi retirada, então não importa se você troca ou não. Mas a resposta é que sim, vale à pena trocar de porta! A probabilidade de vencer o jogo trocando a porta é de 2/3.
 
-```{r echo=FALSE, fig.cap="Brincadeira do [XKCD](https://xkcd.com/1282/)."}
+```{r echo=FALSE, fig.cap="Brincadeira do [XKCD](https://xkcd.com/1282/).", fig.align='center'}
 knitr::include_graphics("https://imgs.xkcd.com/comics/monty_hall.png")
 ```
 
 
-O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Recomendo ler o livro "O Andar do Bêbado", de Leonard Mlodinov, que conta essa e muitas outras histórias interessantes sobre a probabilidade.
+O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Recomendo ler o livro [O Andar do Bêbado](https://books.google.com.br/books/about/O_andar_do_b%C3%AAbado.html?id=X0niXrHmsZUC&redir_esc=y), de Leonard Mlodinow, que conta essa e muitas outras histórias interessantes sobre a probabilidade.
 
 Existem várias formas de explicar por quê trocar a porta é a melhor estratégia. A que eu mais gosto é a do próprio Andar do Bêbado, que mostra que, quando você escolhe a primeira porta, você está apostando se acertou ou não a Ferrari. Se você apostar que acertou a Ferrari, não deve trocar a porta e, se você apostar que errou a Ferrari, deve trocar. A aposta de errar a Ferrari de primeira tem probabilidade 2/3, logo, vale à pena trocar.
 
@@ -343,4 +343,4 @@ dados_simulados %>%
   dplyr::arrange(escolha_inicial, ferrari)
 ```
 
-Agradecimentos: Rafael Stern, que me convenceu de que vale à pena mostrar os dados simulados ;)
+Agradecimentos: [Rafael Stern](https://www.rafaelstern.science/), que me convenceu de que vale à pena mostrar os dados simulados 😉
