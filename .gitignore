@@ -6,3 +6,5 @@ public/
 .DS_Store
 blogdown/
 .httr-oauth
+node_modules/
+package-lock.json

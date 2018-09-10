@@ -1,0 +1,36 @@
+{
+  "name": "site-curso-r",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "netlify-lambda serve src/",
+    "build": "netlify-lambda build src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curso-r/site-v2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/curso-r/site-v2/issues"
+  },
+  "homepage": "https://github.com/curso-r/site-v2#readme",
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "netlify-lambda": "^0.4.0",
+    "pagarme": "^3.8.0",
+    "webpack": "^4.18.0"
+  },
+  "proxy": {
+    "/.netlify/functions": {
+      "target": "http://localhost:9000",
+      "pathRewrite": {
+        "^/\\.netlify/functions": ""
+      }
+    }
+  }
+}
