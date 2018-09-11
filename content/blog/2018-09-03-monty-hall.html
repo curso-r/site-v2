@@ -1,0 +1,417 @@
+---
+title: "Monty hall e diagramas de influência"
+date: "2018-09-09T00:00:00+00:00"
+categories: ["r", "conceitos"]
+tags: ["r", "modelo", "historia"]
+banner: "img/banners/montyhall.png"
+author: ["Julio"]
+summary: "O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Nesse post mostramos uma solução simples e elegante para o problema usando diagramas de influência e o pacote bnlearn."
+draft: false
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.min.js"></script>
+<script src="/rmarkdown-libs/dagre/dagre-d3.min.js"></script>
+<link href="/rmarkdown-libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/mermaid/dist/mermaid.slim.min.js"></script>
+<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/chromatography/chromatography.js"></script>
+<script src="/rmarkdown-libs/DiagrammeR-binding/DiagrammeR.js"></script>
+
+
+<p>Você está num jogo na TV e o apresentador pede para escolher uma entre 3 portas. Atrás de uma dessas portas tem uma <strong>Ferrari</strong> e nas outras duas temos <strong>cabras</strong>. Você escolhe uma porta. Depois, o apresentador retira uma porta que tem uma cabra e pergunta: <strong>você quer trocar de porta?</strong></p>
+<p>A princípio, você pode achar que sua probabilidade de ganhar é 1/2, já que uma das portas foi retirada, então não importa se você troca ou não. Mas a resposta é que sim, vale à pena trocar de porta! A probabilidade de vencer o jogo trocando a porta é de 2/3.</p>
+<center>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="https://imgs.xkcd.com/comics/monty_hall.png" alt="Brincadeira do [XKCD](https://xkcd.com/1282/)."  />
+<p class="caption">
+Figure 1: Brincadeira do <a href="https://xkcd.com/1282/">XKCD</a>.
+</p>
+</div>
+</center>
+<p>O problema de Monty Hall é talvez o mais eloquente exemplo de como a probabilidade pode confundir a mente humana. Esse problema desafiou a comunidade científica no final do século XX e chegou até a ser considerado um paradoxo. Recomendo ler o livro <a href="https://books.google.com.br/books/about/O_andar_do_b%C3%AAbado.html?id=X0niXrHmsZUC&amp;redir_esc=y">O Andar do Bêbado</a>, de Leonard Mlodinow, que conta essa e muitas outras histórias interessantes sobre a probabilidade.</p>
+<p>Existem várias formas de explicar por quê trocar a porta é a melhor estratégia. A que eu mais gosto é a do próprio Andar do Bêbado, que mostra que, quando você escolhe a primeira porta, você está apostando se acertou ou não a Ferrari. Se você apostar que acertou a Ferrari, não deve trocar a porta e, se você apostar que errou a Ferrari, deve trocar. A aposta de errar a Ferrari de primeira tem probabilidade 2/3, logo, vale à pena trocar.</p>
+<p>Nesse post, mostramos uma solução alternativa, simples e elegante para o problema usando diagramas de influência e o pacote <code>bnlearn</code>.</p>
+<div id="redes-bayesianas" class="section level3">
+<h3>Redes bayesianas</h3>
+<p>As redes Bayesianas são o resultado da combinação de conceitos probabilísticos e conceitos da teoria dos grafos. Segundo Pearl, tal união tem como consequências três benefícios: i) prover formas convenientes para expressar suposições do modelo; ii) facilitar a representação de funções de probabilidade conjuntas; e iii) facilitar o cálculo eficiente de inferências a partir de observações.</p>
+<p>Da teoria de probabilidades precisamos apenas de alguns resultados básicos sobre probabilidade condicional. Primeiramente, pela definição de probabilidade condicional, sabemos que</p>
+<p><span class="math display">\[
+p(x_1, x_2) = p(x_1)p(x_2|x_1).
+\]</span></p>
+<p>Aplicando essa regra iterativamente para <span class="math inline">\(n\)</span> variáveis, temos</p>
+<p><span class="math display">\[
+p(x_1, \dots, x_p) = \prod_j p(x_j|x_1,\dots, x_{j-1}).
+\]</span></p>
+<p>Agora, imagine que, no seu problema, a variável aleatória <span class="math inline">\(X_j\)</span> não dependa probabilisticamente de todas as variáveis <span class="math inline">\(X_1,\dots, X_{j-1}\)</span>, e sim apenas de um subconjunto <span class="math inline">\(\Pi_j\)</span> dessas variáveis. Fazendo isso, a equação pode ser escrita como</p>
+<p><span class="math display">\[
+p(x_1, \dots, x_p) = \prod_j p(x_j|\pi_j).
+\]</span></p>
+<p>Chamamos <span class="math inline">\(\Pi_j\)</span> de <strong>pais</strong> de <span class="math inline">\(X_j\)</span>. Esse conjunto pode ser pensado como as variáveis que são suficientes para determinar as probabilidades de <span class="math inline">\(X_j\)</span>.</p>
+<p>A parte mais legal das redes Bayesianas é que elas podem ser representadas a partir de DAGs (grafos direcionados acíclicos). No grafo, se <span class="math inline">\(X_1\)</span> aponta para <span class="math inline">\(X_2\)</span>, então <span class="math inline">\(X_1\)</span> é pai de <span class="math inline">\(X_2\)</span>. Por exemplo, esse grafo aqui</p>
+<center>
+<div id="htmlwidget-1" style="width:100%;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph LR;\nA(<center><b>X1<\/b><\/center><br/>Estação do ano)-->B(<center><b>X2<\/b><\/center><br/>Regador ligado)\nA-->C(<center><b>X3<\/b><\/center><br/>Choveu)\nB-->D(<center><b>X4<\/b><\/center><br/>Chão Molhado)\nC-->D\nD-->E(<center><b>X5<\/b><\/center><br/>Chão Escorregadio)\n"},"evals":[],"jsHooks":[]}</script>
+</center>
+<p>representa a distribuição de probabilidades <span class="math inline">\(p(x_1, \dots, x_5)\)</span> com</p>
+<p><span class="math display">\[
+p(x_1, \dots, x_5) = p(x_1)p(x_2|x_1)p(x_3|x_1)p(x_4|x_3,x_2)p(x_5|x_4).
+\]</span></p>
+</div>
+<div id="diagrama-de-influencias" class="section level3">
+<h3>Diagrama de influências</h3>
+<p>Um diagrama e influências é uma rede Bayesiana com nós de decisão e utilidade (ganhos). Ou seja, é uma junção de três conceitos:</p>
+<p><span class="math display">\[
+\underbrace{\text{prob. condicional} + \text{grafos}}_{\text{rede Bayesiana}} + \text{teoria da decisão} = \text{diagrama de influências}
+\]</span></p>
+<p>Na teoria da decisão, usualmente estamos interessados em maximizar a utilidade esperada. No diagrama, considerando a estrutura de probabilidades dada pela rede Bayesiana e as informações disponíveis, queremos escolher a decisão que faz com que, em média, nosso retorno seja mais alto.</p>
+<p>Com diagramas de influências, é possível organizar sistemas complexos com múltiplas decisões, considerando diferentes conjuntos de informações disponíveis. É uma ferramenta realmente muito poderosa.</p>
+</div>
+<div id="voltando-ao-monty-hall" class="section level2">
+<h2>Voltando ao Monty Hall</h2>
+<p>Agora que sabemos um pouquinho de diagramas de influência, podemos desenhar o do Monty Hall:</p>
+<center>
+<div id="htmlwidget-2" style="width:100%;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\ngraph LR;\nA{<center><b>D1<\/b><\/center><br/>Escolha inicial}-->B(<center><b>X2<\/b><\/center><br/>Porta retirada);\nC(<center><b>X1<\/b><\/center><br/>Ferrari)-->B;\nB-->D{<center><b>D2<\/b><\/center><br/>Trocar porta};\nD-->E[<center><b>U1<\/b><\/center><br/>Ganhar]\nC-->E\nA-->E\n"},"evals":[],"jsHooks":[]}</script>
+</center>
+<p>O jogador tem duas decisões a tomar:</p>
+<ul>
+<li><span class="math inline">\(D_1\)</span> (<code>escolha_inicial</code>): A escolha da porta inicial (<code>1</code>, <code>2</code>, <code>3</code>).</li>
+<li><span class="math inline">\(D_2\)</span> (<code>trocar</code>): Trocar a porta ou não (<code>s</code>, <code>n</code>).</li>
+</ul>
+<p>Também temos duas fontes de incerteza:</p>
+<ul>
+<li><span class="math inline">\(X_1\)</span> (<code>ferrari</code>): Em qual porta está a Ferrari (<code>1</code>, <code>2</code>, <code>3</code>).</li>
+<li><span class="math inline">\(X_2\)</span> (<code>porta_retirada</code>): Qual porta foi retirada (<code>1</code>, <code>2</code>, <code>3</code>). Essa variável não é sempre aleatória: se eu escolho a porta 1 e a Ferrari está em 2, o apresentador é obrigado a retirar a porta 3. Se o apresentador tiver a opção de escolher (que acontece no caso da escolha inicial ser a Ferrari), o apresentador escolhe uma porta para retirar aleatoriamente.</li>
+</ul>
+<p>Finalmente, temos um nó de utilidade:</p>
+<ul>
+<li><span class="math inline">\(U_1\)</span> (<code>result</code>): Ganhei a Ferrari (<code>ganhei</code>, <code>perdi</code>).</li>
+</ul>
+<p>Em R, podemos construir a rede Bayesiana do problema utilizando o pacote <code>bnlearn</code>:</p>
+<pre class="r"><code># nós do grafo
+nodes &lt;- c(&quot;escolha_inicial&quot;, &quot;ferrari&quot;, &quot;porta_retirada&quot;, &quot;trocar&quot;, &quot;result&quot;)
+
+# matriz de adjacências
+edges &lt;- matrix(
+  c(&quot;escolha_inicial&quot;, &quot;porta_retirada&quot;,
+    &quot;ferrari&quot;, &quot;porta_retirada&quot;,
+    &quot;porta_retirada&quot;, &quot;trocar&quot;,
+    &quot;trocar&quot;, &quot;result&quot;,
+    &quot;ferrari&quot;, &quot;result&quot;,
+    &quot;escolha_inicial&quot;, &quot;result&quot;),
+  ncol = 2, 
+  byrow = TRUE)
+
+edges</code></pre>
+<pre><code>##      [,1]              [,2]            
+## [1,] &quot;escolha_inicial&quot; &quot;porta_retirada&quot;
+## [2,] &quot;ferrari&quot;         &quot;porta_retirada&quot;
+## [3,] &quot;porta_retirada&quot;  &quot;trocar&quot;        
+## [4,] &quot;trocar&quot;          &quot;result&quot;        
+## [5,] &quot;ferrari&quot;         &quot;result&quot;        
+## [6,] &quot;escolha_inicial&quot; &quot;result&quot;</code></pre>
+<pre class="r"><code># criando o grafo a partir de um grafo vazio
+g &lt;- bnlearn::empty.graph(nodes)
+bnlearn::arcs(g) &lt;- edges</code></pre>
+<p>O output desse conjunto de operações é um objeto do tipo <code>bn</code> com várias propriedades pré calculadas pelo pacote <code>bnlearn</code>:</p>
+<pre class="r"><code>g</code></pre>
+<pre><code>  Random/Generated Bayesian network
+
+  model:
+   [escolha_inicial][ferrari][porta_retirada|escolha_inicial:ferrari][trocar|porta_retirada]
+   [result|escolha_inicial:ferrari:trocar]
+  nodes:                                 5 
+  arcs:                                  6 
+    undirected arcs:                     0 
+    directed arcs:                       6 
+  average markov blanket size:           3.60 
+  average neighbourhood size:            2.40 
+  average branching factor:              1.20 
+
+  generation algorithm:                  Empty </code></pre>
+<p>Com as especificação do problema dada, se gerarmos aleatoriamente todos os cenários, chegamos à essa combinação de casos equiprováveis (ver Extra 2)</p>
+<p>Agora, vamos escrever todas as combinações possíveis de cenários e guardar num <code>data.frame</code> chamado <code>dados</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">escolha_inicial</th>
+<th align="left">ferrari</th>
+<th align="left">porta_retirada</th>
+<th align="left">trocar</th>
+<th align="left">result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">n</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">s</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">n</td>
+<td align="left">ganhei</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">1</td>
+<td align="left">s</td>
+<td align="left">perdi</td>
+</tr>
+</tbody>
+</table>
+<p>Finalmente, ajustamos nossa rede Bayesiana, usando a função <code>bnlearn::bn.fit()</code>.</p>
+<pre class="r"><code>fit &lt;- bnlearn::bn.fit(g, dados)</code></pre>
+<p>A função <code>bnlearn::cpquery()</code> (conditional probability query) serve para realizar uma consulta de probabilidades dada a rede ajustada. No nosso caso, a partir de uma escolha inicial qualquer <span class="math inline">\(d_1\)</span>, queremos saber o ganho ao trocar é maior que o ganho ao não trocar.</p>
+<p><span class="math display">\[
+\mathbb E(U_1\; |\; D_2 = \text{s}, D_1 = d_1) &gt; \mathbb E(U_1\; |\; D_2 = \text{n}, D_1 = d_1).
+\]</span></p>
+<p>Fazendo contas, isso equivale matematicamente a consultar se</p>
+<p><span class="math display">\[
+\mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{s}) &gt; \mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{n})
+\]</span></p>
+<p>Agora, podemos consultar <span class="math inline">\(\mathbb P(U_1=\text{ganhei}\; |\; D_2 = \text{s})\)</span> com nosso modelo!</p>
+<pre class="r"><code>set.seed(13)                    # reprodutibilidade
+bnlearn::cpquery(
+  fitted = fit, 
+  event = (result == &quot;ganhei&quot;), # o que queremos saber?
+  evidence = (trocar == &quot;s&quot;),   # qual informação adicionar?
+  n = 5e6)                      # n grande para aumentar a precisão</code></pre>
+<pre><code>[1] 0.6666704</code></pre>
+<p>E não é que dá 2/3 mesmo? Da mesma forma, temos</p>
+<pre class="r"><code>bnlearn::cpquery(fit, (result == &quot;ganhei&quot;), (trocar == &quot;n&quot;), n = 5e6)</code></pre>
+<pre><code>[1] 0.3333187</code></pre>
+<p>Resolvido!</p>
+</div>
+<div id="wrap-up" class="section level2">
+<h2>Wrap-up</h2>
+<ul>
+<li>Vale à pena trocar a porta!</li>
+<li>Redes Bayesianas juntam grafos e probabilidades condicionais</li>
+<li>Diagramas de influência juntam redes Bayesianas e teoria da decisão</li>
+<li>Essas ferramentas podem ser utilizadas tanto para resolver Monty Hall quanto para ajudar em sistemas complexos.</li>
+</ul>
+<p>É isso pessoal. Happy coding ;)</p>
+<div id="extra" class="section level3">
+<h3>Extra</h3>
+<p>Se você ficou interessada em como eu fiz o diagrama, utilizei o pacote <code>DiagrammeR</code>. O código está aqui:</p>
+<pre class="r"><code>diagrama &lt;- &quot;
+graph LR;
+A{D1Escolha inicial}--&gt;B(X2Porta retirada);
+C(X1Ferrari)--&gt;B;
+B--&gt;D{D2Trocar porta};
+D--&gt;E[U1Ganhar]
+C--&gt;E
+A--&gt;E
+&quot;
+# tweak para centralizar e grifar as variáveis
+diagrama &lt;- stringr::str_replace_all(
+  diagrama, 
+  pattern = &quot;([XDU][0-9])&quot;, 
+  replacement = &quot;&lt;center&gt;&lt;b&gt;\\1&lt;/b&gt;&lt;/center&gt;&lt;br/&gt;&quot;)
+
+DiagrammeR::DiagrammeR(diagrama)</code></pre>
+</div>
+<div id="extra-2" class="section level3">
+<h3>Extra 2</h3>
+<p>É possível simular os dados que coloquei no post com uma função simples, que adicionei abaixo. Na verdade, o fato de eu ter considerado somente as combinações únicas de cenários e não os dados simulados abaixo é um pouco roubado, e só funciona porque os cenários calham de ser, de fato, equiprováveis.</p>
+<pre class="r"><code>set.seed(13)
+
+simular_monty_hall &lt;- function(z = 0) {
+  v &lt;- 1:3                                  # opcoes
+  escolha_inicial &lt;- sample(v, 1)           # escolha inicial aleatoria
+  ferrari &lt;- sample(v, 1)                   # ferrari aleatoria
+  
+  # qual porta retirar?
+  if (escolha_inicial == ferrari) {
+    porta_retirada &lt;- sample(setdiff(v, ferrari), 1)
+  } else {
+    porta_retirada &lt;- setdiff(v, c(escolha_inicial, ferrari))
+  }
+  
+  # trocar porta?
+  trocar &lt;- sample(c(&quot;s&quot;, &quot;n&quot;), 1)
+  
+  # calculando resultado
+  if (trocar == &quot;s&quot;) {
+    escolha_final &lt;- setdiff(v, c(escolha_inicial, porta_retirada))
+  } else {
+    escolha_final &lt;- escolha_inicial
+  }
+  result &lt;- ifelse(escolha_final == ferrari, &quot;ganhei&quot;, &quot;perdi&quot;)
+  
+  # guardando no BD
+  tibble::tibble(escolha_inicial, ferrari, porta_retirada, trocar, result)
+}
+
+dados_simulados &lt;- purrr::map_dfr(seq_len(1e4), simular_monty_hall) %&gt;% 
+  dplyr::mutate_all(as.factor)
+
+dplyr::glimpse(dados_simulados)</code></pre>
+<pre><code>Observations: 10,000
+Variables: 5
+$ escolha_inicial &lt;fct&gt; 3, 1, 2, 1, 1, 1, 3, 1, 2, 3, 3, 1, 3, 1, 2, 2, 2,...
+$ ferrari         &lt;fct&gt; 1, 1, 2, 1, 1, 2, 3, 3, 1, 2, 3, 3, 2, 1, 1, 3, 1,...
+$ porta_retirada  &lt;fct&gt; 2, 3, 1, 3, 2, 3, 2, 2, 3, 1, 1, 2, 1, 2, 3, 1, 3,...
+$ trocar          &lt;fct&gt; n, s, s, n, s, n, n, n, n, s, s, s, s, n, n, s, n,...
+$ result          &lt;fct&gt; perdi, perdi, perdi, ganhei, perdi, perdi, ganhei,...</code></pre>
+<p>Os dados do post podem ser obtidos fazendo isso aqui:</p>
+<pre class="r"><code>dados_simulados %&gt;% 
+  dplyr::distinct() %&gt;% 
+  dplyr::arrange(escolha_inicial, ferrari)</code></pre>
+<p>Agradecimentos: <a href="https://www.rafaelstern.science/">Rafael Stern</a>, que me convenceu de que vale à pena mostrar os dados simulados 😉</p>
+</div>
+</div>
