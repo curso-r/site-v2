@@ -5,6 +5,15 @@
         <img src="{{ .Site.BaseURL }}{{.Params.banner}}" alt="" class="img-fluid">
       </div>
       <h2 class="title"><a href="{{.URL}}">{{.Title}}</a></h2>
+      <p class="author">
+            {{ if isset .Params "author" }} 
+            Por {{ range $index, $author := .Params.author }} 
+              {{ if gt $index 0 }},{{ end }} 
+              <a href="/author/{{ . | urlize }}">{{ . }}</a>
+              {{ end }} 
+              {{ end }}
+              em {{ dateFormat "02/01/2006" .Params.date }}
+          </p>
       <p>
         {{ if isset .Params "summary" }}{{ .Params.summary }}{{ else }}{{ .Summary }}{{ end }}
       </p>
