@@ -2,6 +2,48 @@ body {
   font-family: "Source Sans Pro";
 }
 
+#intro .intro-header {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+  
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center;
+}
+
+div.intro-header:after {
+  content: '';
+  opacity: 0.7;
+  background-color: rgba(0,0,0, 0.9);
+  background-size: cover;
+  height: 100%;
+  background-position: center;
+  z-index: -1;
+  position: absolute;
+}
+
+#intro .intro-content {
+  z-index: 12919821;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#intro .carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 #header-title h3 {
   color: white;
 }
