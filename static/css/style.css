@@ -641,7 +641,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   top: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.92);
-  z-index: 9;
+  z-index: 0;
 }
 
 #cursos .container {
@@ -717,6 +717,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #333;
   margin-bottom: 0;
   padding: 0 20px 20px 20px;
+}
+
+#cursos p.author {
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 0 20px 10px 20px;
 }
 
 /* Nosso material */
