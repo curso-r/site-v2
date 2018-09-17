@@ -3,4 +3,4 @@ title: "Política de devolução"
 type: "devolucao"
 ---
 
-Em caso de desistência até o dia do curso, devolvemos o dinheiro investido.
+Reembolsaremos o valor total investido no curso desde que a desistência seja informada por e-mail (contato@curso-r) até a data de início do curso. O valor será reembolsado em até 7 dias a partir da data de comunicação do cancelamento.
