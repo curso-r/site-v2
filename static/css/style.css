@@ -633,6 +633,15 @@ body.mobile-nav-active #mobile-nav-toggle {
   position: relative;
 }
 
+#cursos span.turma-aberta {
+  color: white;
+  background-color: green;
+  padding: 2px;
+  margin-left: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
 #cursos::before {
   content: '';
   position: absolute;

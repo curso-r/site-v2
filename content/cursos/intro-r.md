@@ -11,6 +11,7 @@ desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 1
+aberto: "true"
 ---
 
 <header class="section-header">
