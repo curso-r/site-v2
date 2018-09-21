@@ -1,7 +1,7 @@
 exports.handler = function(event, context, callback) {
     var pagarme = require('pagarme');
 
-    pagarme.client.connect({ api_key: 'SUA_API_KEY' })
+    pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY })
       .then(client => client.transactions.capture({ id: "TOKEN", amount: 1000 }));
       
     callback(null, {
