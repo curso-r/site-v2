@@ -11,14 +11,50 @@ draft: false
 
 
 
+<p>OAuth2 é o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.</p>
 <div id="como-funciona-o-oauth2.0" class="section level2">
 <h2>Como funciona o oauth2.0?</h2>
+<div id="papeis" class="section level3">
+<h3>Papéis</h3>
+<p>A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:</p>
+<ul>
+<li><em>Cliente</em>: É o aplicativo que está tentando acessar a conta do <em>usuário</em>. Ele precisa obter a permissão do <em>usuário</em> antes de poder acessar as informações.</li>
+<li><em>API</em>: É o servidor de recursos que é usado para acessar as informações do <em>usuário</em>.</li>
+<li><em>Servidor de autorização</em>: Esse é o servidor que vai aprovar ou recusar as requisições. Ele pode ser o mesmo servidor que o API. No caso do Auth0 que vamos ver mais tarde, eles são o mesmo servidor.</li>
+<li><em>Dono do recurso</em>: O dono do recurso é a pessoa que está dando acesso de alguma parte das informações da sua conta.</li>
+</ul>
+</div>
+<div id="criando-um-app" class="section level3">
+<h3>Criando um App</h3>
+<p>Antes de começar o processo de autenticação com o OAuth, você deve registrar o seu app com o serviço - no nosso caso, vamos registrá-lo com o Auth0. Ao registrar em geral passamos informações básicas sobre o app e o principal é o <em>redirect URI</em> - que será chamado de <em>callback URL</em> pelo Auth0. O servidor de autenticação só pode redirecionar o usuário para essas URL’s cadastradas após completar a autorização - isso ajuda a evitar alguns tipos de ataques.</p>
+<p>Depois de registrar o seu app você receberá um <em>client ID</em> e um <em>client secret</em>. Em teoria o <em>client ID</em> é informação pública e o <em>client secret</em> não pode ser divulgado. Na prática, como em alguns casos não é possível esconder o <em>client secret</em>, não é muito importante escondê-la. Em alguns o <em>client secret</em> nem é criado (no Auth0 ele é criado).</p>
+</div>
+<div id="o-fluxo-da-autenticacao" class="section level3">
+<h3>O fluxo da autenticação</h3>
+<p>Existem 4 fluxos distintos de autenticação no OAuth2.0. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:</p>
+<ol style="list-style-type: decimal">
+<li>Criamos um link de autenticação para o usuário com as seguintes informações:</li>
+</ol>
+<ul>
+<li><em>client_id</em></li>
+<li><em>redirect_uri</em></li>
+<li><em>scope</em></li>
+<li><em>state</em></li>
+</ul>
+<p>Já falamos dos 2 primeiros. O <em>scope</em> vai indicar quais partes da conta do usuário que o <em>cliente</em> pode ver. O <em>state</em>, uma string aleatória que verificaremos depois. (No R, a criação dessa string é abstraída pelas funções do <code>httr</code>). O link que criamos é algo da forma:</p>
+<pre><code>https://authorization-server.com/auth?response_type=code&amp;
+  client_id=CLIENT_ID&amp;redirect_uri=REDIRECT_URI&amp;scope=photos&amp;state=1234zyx</code></pre>
+<p>Ao acessar este link o usuário vê o que chamamos de prompt de autorização. ALgo do tipo:</p>
+<p><img src="https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67" /></p>
+<p>Se o usuário clicar em <em>Autorizar</em>, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o <em>state</em>. A URL será algo do tipo:</p>
+<pre><code>https://example-app.com/cb?code=AUTH_CODE_HERE&amp;state=1234zyx</code></pre>
+</div>
 </div>
 <div id="configurando-o-auth0" class="section level2">
 <h2>Configurando o Auth0</h2>
-<p>Va para a página <a href="https://manage.auth0.com/#/applications"><em>applications</em></a> e crie um novo app clicando no botão <em>Create Application</em> no canto superior direito.</p>
+<p>Vá para a página <a href="https://manage.auth0.com/#/applications"><em>applications</em></a> e crie um novo app clicando no botão <em>Create Application</em> no canto superior direito.</p>
 <p><img src="https://user-images.githubusercontent.com/4706822/45968930-ac6e9600-c008-11e8-82ee-44767787535c.png" /></p>
-<p>Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o <em>Single Page Application</em>.</p>
+<p>Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o <em>Single Page Application</em>. Selecionamos esse tipo de app para não ter que se preocupar em esconder o <em>client secret</em>.</p>
 <p>Em seguida vá para a aba <em>Settings</em> para configurarmos alguns detalhes do app.</p>
 <p><img src="https://user-images.githubusercontent.com/4706822/45969080-10915a00-c009-11e8-8de4-6f54506e2cb1.png" /></p>
 <p>As coisas mais importantes aqui são:</p>

@@ -24,16 +24,49 @@ A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:
 - *Cliente*: É o aplicativo que está tentando acessar a conta do *usuário*. Ele precisa obter a permissão do *usuário* antes de poder acessar as informações.
 - *API*: É o servidor de recursos que é usado para acessar as informações do *usuário*.
 - *Servidor de autorização*: Esse é o servidor que vai aprovar ou recusar as requisições. Ele pode ser o mesmo servidor que o API. No caso do Auth0 que vamos ver mais tarde, eles são o mesmo servidor.
-- *Dono do recurso*: O dono do recurso é a pessoa que está dando acesso de alguma parte da sua conta.
+- *Dono do recurso*: O dono do recurso é a pessoa que está dando acesso de alguma parte das informações da sua conta.
 
+### Criando um App
+
+Antes de começar o processo de autenticação com o OAuth, você deve registrar o seu app com o serviço - no nosso caso, vamos registrá-lo com o Auth0. Ao registrar em geral passamos informações básicas sobre o app e o principal é o *redirect URI* - que será chamado de *callback URL* pelo Auth0. O servidor de autenticação só pode redirecionar o usuário para essas URL's cadastradas após completar a autorização - isso ajuda a evitar alguns tipos de ataques.
+
+Depois de registrar o seu app você receberá um *client ID* e um *client secret*. Em teoria o *client ID* é informação pública e o *client secret* não pode ser divulgado. Na prática, como em alguns casos não é possível esconder o *client secret*, não é muito importante escondê-la. Em alguns o *client secret* nem é criado (no Auth0 ele é criado).
+
+### O fluxo da autenticação
+
+Existem 4 fluxos distintos de autenticação no OAuth2.0. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:
+
+1) Criamos um link de autenticação para o usuário com as seguintes informações:
+
+- *client_id*
+- *redirect_uri*
+- *scope*
+- *state*
+
+Já falamos dos 2 primeiros. O *scope* vai indicar quais partes da conta do usuário que o *cliente* pode ver. O *state*, uma string aleatória que verificaremos depois. (No R, a criação dessa string é abstraída pelas funções do `httr`). O link que criamos é algo da forma:
+
+```
+https://authorization-server.com/auth?response_type=code&
+  client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos&state=1234zyx
+```
+
+Ao acessar este link o usuário vê o que chamamos de prompt de autorização. ALgo do tipo:
+
+![](https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67)
+
+Se o usuário clicar em *Autorizar*, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o *state*. A URL será algo do tipo:
+
+```
+https://example-app.com/cb?code=AUTH_CODE_HERE&state=1234zyx
+```
 
 ## Configurando o Auth0
 
-Va para a página [*applications*](https://manage.auth0.com/#/applications) e crie um novo app clicando no botão *Create Application* no canto superior direito.
+Vá para a página [*applications*](https://manage.auth0.com/#/applications) e crie um novo app clicando no botão *Create Application* no canto superior direito.
 
 ![](https://user-images.githubusercontent.com/4706822/45968930-ac6e9600-c008-11e8-82ee-44767787535c.png)
 
-Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Single Page Application*.
+Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Single Page Application*. Selecionamos esse tipo de app para não ter que se preocupar em esconder o *client secret*.
 
 Em seguida vá para a aba *Settings* para configurarmos alguns detalhes do app.
 
