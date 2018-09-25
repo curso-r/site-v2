@@ -13,7 +13,19 @@ draft: false
 knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
 ```
 
+OAuth2 é o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.
+
 ## Como funciona o oauth2.0?
+
+### Papéis
+
+A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:
+
+- *Cliente*: É o aplicativo que está tentando acessar a conta do *usuário*. Ele precisa obter a permissão do *usuário* antes de poder acessar as informações.
+- *API*: É o servidor de recursos que é usado para acessar as informações do *usuário*.
+- *Servidor de autorização*: Esse é o servidor que vai aprovar ou recusar as requisições. Ele pode ser o mesmo servidor que o API. No caso do Auth0 que vamos ver mais tarde, eles são o mesmo servidor.
+- *Dono do recurso*: O dono do recurso é a pessoa que está dando acesso de alguma parte da sua conta.
+
 
 ## Configurando o Auth0
 
