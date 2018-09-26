@@ -1,15 +1,17 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: "Previsto para outubro de 2018"
-hora: "Curso de 20 horas"
+data: "22/10 |24/10 | 29/10 | 31/10 | 05/11 | 07/11 | 08/11"
+hora: "das 19h às 22h"
 local: "IME-USP, São Paulo"
 paypal: ""
+link_inscricao: "https://docs.google.com/forms/d/e/1FAIpQLSeZb2B-CDMpH8HN6UtvlNjZSN9ou_Rf_vNj1GEhLXsb8OUFuQ/viewform"
 img: "img/cursos/intro-ml-banner.png"
-preco: "R$750,00"
+preco: "Comunidade IME: R$ 250,00 | Comunidade USP: R$ 500,00 | Comunidade externa: R$ 750,00"
 banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 4
+aberto: "true"
 ---
 
 <header class="section-header">
