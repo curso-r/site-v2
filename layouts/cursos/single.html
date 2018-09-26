@@ -36,6 +36,10 @@
           <p><i class="fa fa-map" aria-hidden="true"></i>  {{.Params.local}}</p>
           <p><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
           
+          {{ if isset .Params "obs"}}
+            <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
+          {{end}}
+          
           {{ if and (isset .Params "paypal") (ne .Params.paypal "" ) }} 
           
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -55,7 +59,7 @@
           
   
           {{ end }}
-  
+          
         </div>
       </div>
     </div>
