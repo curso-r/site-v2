@@ -36,11 +36,11 @@
           <p><i class="fa fa-map" aria-hidden="true"></i>  {{.Params.local}}</p>
           <p><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
           
-          {{ if or (not (isset .Params "paypal")) (eq .Params.paypal "")}} 
+          {{ if isset .Params "obs"}}
+            <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
+          {{end}}
           
-          {{ partial "form-curso.html" . }}
-          
-          {{ else }}
+          {{ if and (isset .Params "paypal") (ne .Params.paypal "" ) }} 
           
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
@@ -48,9 +48,18 @@
             <button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
             <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
           </form>
+          
+          {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
+          
+          <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>
+          
+          {{ else }}
+          
+          {{ partial "form-curso.html" . }}
+          
   
           {{ end }}
-  
+          
         </div>
       </div>
     </div>
@@ -73,22 +82,25 @@
     <section id="call-to-action" class="wow fadeIn">
       <div class="container text-center">
        
-       {{ if or (not (isset .Params "paypal")) (eq .Params.paypal "")}} 
-                  
-                  {{ partial "form-curso.html" . }}
-                  
-                  {{ else }}
-                  
-                  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
-<button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
-<img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-</form>
-
-                  {{ end }}
-       
-       
+       {{ if and (isset .Params "paypal") (ne .Params.paypal "" ) }} 
+          
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
+            <button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
+            <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+          </form>
+          
+          {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
+          
+          <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>
+          
+          {{ else }}
+          
+          {{ partial "form-curso.html" . }}
+          
+  
+          {{ end }}
        
       </div>
     </section><!-- #call-to-action -->
