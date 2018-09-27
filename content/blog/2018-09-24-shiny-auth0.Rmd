@@ -32,7 +32,7 @@ A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:
 
 Antes de começar o processo de autenticação com o OAuth, você deve registrar o seu app com o serviço - no nosso caso, vamos registrá-lo com o Auth0. Ao registrar em geral passamos informações básicas sobre o app e o principal é o *redirect URI* - que será chamado de *callback URL* pelo Auth0. O servidor de autenticação só pode redirecionar o usuário para essas URL's cadastradas após completar a autorização - isso ajuda a evitar alguns tipos de ataques.
 
-Depois de registrar o seu app você receberá um *client ID* e um *client secret*. Em teoria o *client ID* é informação pública e o *client secret* não pode ser divulgado. Na prática, como em alguns casos não é possível esconder o *client secret*, não é muito importante escondê-la. Em alguns o *client secret* nem é criado (no Auth0 ele é criado).
+Depois de registrar o seu app você receberá um *client ID* e um *client secret*. Em teoria o *client ID* é informação pública e o *client secret* (é segredo) e não pode ser divulgado.
 
 ### O fluxo da autenticação
 
@@ -77,7 +77,7 @@ Vá para a página [*applications*](https://manage.auth0.com/#/applications) e c
 
 ![](https://user-images.githubusercontent.com/4706822/45968930-ac6e9600-c008-11e8-82ee-44767787535c.png)
 
-Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Single Page Application*. Selecionamos esse tipo de app para não ter que se preocupar em esconder o *client secret*.
+Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Regular Web Applications*. Selecionamos esse tipo de app para não ter que se preocupar em esconder o *client secret*.
 
 Em seguida vá para a aba *Settings* para configurarmos alguns detalhes do app.
 
@@ -137,6 +137,8 @@ Aqui você indicará a sua `key` e `secret` que obtivemos ao criar um App no Aut
 app <- oauth_app(
   appname = "{coloque um nome para o seu App. (esse nome é opcional)}",
   key = "{coloque aqui o seu Client ID - também chamamos de key",
+  # não é uma boa ideia deixar o secret no código 
+  # use variáveis de ambiente ou o pacote keyring
   secret = "{coloque aqui o seu Client Secret - também chamamos de secret}",
   redirect_uri = APP_URL
 )
