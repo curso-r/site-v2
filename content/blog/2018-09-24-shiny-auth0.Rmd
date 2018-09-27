@@ -1,6 +1,6 @@
 ---
 title: "Autenticação no Shiny com Auth0"
-date: "2018-09-24T00:00:00+00:00"
+date: "2018-09-27T00:00:00+00:00"
 categories: ["r", "tutoriais"]
 tags: ["r", "shiny"]
 banner: "img/banners/montyhall.png"
@@ -13,7 +13,7 @@ draft: false
 knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
 ```
 
-OAuth2 é o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.
+Neste post vamos criar um Shiny App simples usando o Auth0 como servidor de autenticação. O Auth0 implementa o OAuth2, o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.
 
 ## Como funciona o oauth2.0?
 
@@ -34,9 +34,9 @@ Depois de registrar o seu app você receberá um *client ID* e um *client secret
 
 ### O fluxo da autenticação
 
-Existem 4 fluxos distintos de autenticação no OAuth2.0. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:
+Existem 4 fluxos distintos de autenticação no OAuth2.0, cada um utilizado em circuntâncias diferentes. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:
 
-1) Criamos um link de autenticação para o usuário com as seguintes informações:
+Criamos um link de autenticação para o usuário com as seguintes informações:
 
 - *client_id*
 - *redirect_uri*
@@ -50,7 +50,7 @@ https://authorization-server.com/auth?response_type=code&
   client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos&state=1234zyx
 ```
 
-Ao acessar este link o usuário vê o que chamamos de prompt de autorização. ALgo do tipo:
+Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:
 
 ![](https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67)
 
@@ -59,6 +59,15 @@ Se o usuário clicar em *Autorizar*, ele será redirecionado para o seu app pass
 ```
 https://example-app.com/cb?code=AUTH_CODE_HERE&state=1234zyx
 ```
+
+Se o `state` for o mesmo que tiver sido gerado anteriormente, estamos prontos para requisitar o token de acesso. O token de acesso é solicitado pelo app ao servidor de autorização por meio de uma requisição do tipo `POST` que envia as seguintes informações:
+
+* `grant_type`: o nível de autorização requisitada
+* `code`: o código de autenticação gerado no anteriormente
+* `redirect_uri`: a URL de redirecionamente
+* `client_id`: o código do cliente.
+
+Em posse do token, temos o que é necessário para fazer requisições para a API e assim obter as informações que o usuário nos permitiu acesso.
 
 ## Configurando o Auth0
 
@@ -89,7 +98,7 @@ No Auth0 é só isso. Agora vamos para o R.
 
 ## Conectando o R com o Auth0
 
-O código que vamos desenvolver e uma versão adaptada do código que está disponível [neste link](https://gist.github.com/hadley/144c406871768d0cbe66b0b810160528). A diferença é que este faz a auenticação usando a conta do Github e o nosso fará a autenticação com o Auth0.
+O código que vamos desenvolver e uma versão adaptada do código que está disponível [neste link](https://gist.github.com/hadley/144c406871768d0cbe66b0b810160528). A diferença é que este faz a autenticação usando a conta do Github e o nosso fará a autenticação com o Auth0. A versão completa deste código está disponível [aqui](https://github.com/dfalbel/shiny-auth0).
 
 Vamos desenvolver um app simples em Shiny que mostra as informações disponibilizadas pelo usuário. Neste app usaremos duas bibliotecas:
 
@@ -296,6 +305,7 @@ Você poderia ainda conectar o Auth0 com diretórios de autenticação como LDAP
 ## Disclaimer
 
 Não somos especialistas em segurança portanto usem esse código com desconfiança e sempre perguntem a um especialista antes de usar em ambiente de produção.
+
 
 
 

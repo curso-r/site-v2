@@ -1,6 +1,6 @@
 ---
 title: "Autenticação no Shiny com Auth0"
-date: "2018-09-24T00:00:00+00:00"
+date: "2018-09-27T00:00:00+00:00"
 categories: ["r", "tutoriais"]
 tags: ["r", "shiny"]
 banner: "img/banners/montyhall.png"
@@ -11,7 +11,7 @@ draft: false
 
 
 
-<p>OAuth2 é o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.</p>
+<p>Neste post vamos criar um Shiny App simples usando o Auth0 como servidor de autenticação. O Auth0 implementa o OAuth2, o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.</p>
 <div id="como-funciona-o-oauth2.0" class="section level2">
 <h2>Como funciona o oauth2.0?</h2>
 <div id="papeis" class="section level3">
@@ -31,10 +31,8 @@ draft: false
 </div>
 <div id="o-fluxo-da-autenticacao" class="section level3">
 <h3>O fluxo da autenticação</h3>
-<p>Existem 4 fluxos distintos de autenticação no OAuth2.0. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:</p>
-<ol style="list-style-type: decimal">
-<li>Criamos um link de autenticação para o usuário com as seguintes informações:</li>
-</ol>
+<p>Existem 4 fluxos distintos de autenticação no OAuth2.0, cada um utilizado em circuntâncias diferentes. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:</p>
+<p>Criamos um link de autenticação para o usuário com as seguintes informações:</p>
 <ul>
 <li><em>client_id</em></li>
 <li><em>redirect_uri</em></li>
@@ -44,10 +42,18 @@ draft: false
 <p>Já falamos dos 2 primeiros. O <em>scope</em> vai indicar quais partes da conta do usuário que o <em>cliente</em> pode ver. O <em>state</em>, uma string aleatória que verificaremos depois. (No R, a criação dessa string é abstraída pelas funções do <code>httr</code>). O link que criamos é algo da forma:</p>
 <pre><code>https://authorization-server.com/auth?response_type=code&amp;
   client_id=CLIENT_ID&amp;redirect_uri=REDIRECT_URI&amp;scope=photos&amp;state=1234zyx</code></pre>
-<p>Ao acessar este link o usuário vê o que chamamos de prompt de autorização. ALgo do tipo:</p>
+<p>Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:</p>
 <p><img src="https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67" /></p>
 <p>Se o usuário clicar em <em>Autorizar</em>, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o <em>state</em>. A URL será algo do tipo:</p>
 <pre><code>https://example-app.com/cb?code=AUTH_CODE_HERE&amp;state=1234zyx</code></pre>
+<p>Se o <code>state</code> for o mesmo que tiver sido gerado anteriormente, estamos prontos para requisitar o token de acesso. O token de acesso é solicitado pelo app ao servidor de autorização por meio de uma requisição do tipo <code>POST</code> que envia as seguintes informações:</p>
+<ul>
+<li><code>grant_type</code>: o nível de autorização requisitada</li>
+<li><code>code</code>: o código de autenticação gerado no anteriormente</li>
+<li><code>redirect_uri</code>: a URL de redirecionamente</li>
+<li><code>client_id</code>: o código do cliente.</li>
+</ul>
+<p>Em posse do token, temos o que é necessário para fazer requisições para a API e assim obter as informações que o usuário nos permitiu acesso.</p>
 </div>
 </div>
 <div id="configurando-o-auth0" class="section level2">
@@ -71,7 +77,7 @@ A segunda URL é aquela em que o Shiny ficará hospedado. Você não precisa pre
 </div>
 <div id="conectando-o-r-com-o-auth0" class="section level2">
 <h2>Conectando o R com o Auth0</h2>
-<p>O código que vamos desenvolver e uma versão adaptada do código que está disponível <a href="https://gist.github.com/hadley/144c406871768d0cbe66b0b810160528">neste link</a>. A diferença é que este faz a auenticação usando a conta do Github e o nosso fará a autenticação com o Auth0.</p>
+<p>O código que vamos desenvolver e uma versão adaptada do código que está disponível <a href="https://gist.github.com/hadley/144c406871768d0cbe66b0b810160528">neste link</a>. A diferença é que este faz a autenticação usando a conta do Github e o nosso fará a autenticação com o Auth0. A versão completa deste código está disponível <a href="https://github.com/dfalbel/shiny-auth0">aqui</a>.</p>
 <p>Vamos desenvolver um app simples em Shiny que mostra as informações disponibilizadas pelo usuário. Neste app usaremos duas bibliotecas:</p>
 <pre class="r"><code>library(shiny)
 library(httr)</code></pre>
