@@ -40,7 +40,7 @@ draft: false
 <li><em>scope</em></li>
 <li><em>state</em></li>
 </ul>
-<p>Já falamos dos 2 primeiros. O <em>scope</em> vai indicar quais partes da conta do usuário que o <em>cliente</em> pode ver. O <em>state</em>, uma string aleatória que verificaremos depois. (No R, a criação dessa string é abstraída pelas funções do <code>httr</code>). O link que criamos é algo da forma:</p>
+<p>Já falamos dos 2 primeiros. O <em>scope</em> vai indicar quais partes da conta do usuário que o <em>cliente</em> pode ver. O <em>state</em>, uma string aleatória que verificaremos depois. O link que criamos é algo da forma:</p>
 <pre><code>https://authorization-server.com/auth?response_type=code&amp;
   client_id=CLIENT_ID&amp;redirect_uri=REDIRECT_URI&amp;scope=photos&amp;state=1234zyx</code></pre>
 <p>Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:</p>
@@ -99,7 +99,7 @@ Criamos um bloco que faz o seguinte - quando estivermos em uma sessão interativ
   APP_URL &lt;- &quot;https://shiny.curso-r.com&quot;
 }</code></pre>
 <p>Essas devem ser as URL’s que indicamos anteriormente para o Auth0 nos campos <em>Allowed Web Origins</em> e <em>Allowed Callback URLs</em>.</p>
-<p>Agora vamos criar um objeto chamado <code>app</code> que vai armazenar todas as informações relativas ao seu app configurado no Auth0. Colocamos entre <code>{}</code> as infprmações que você deve preencher com os seus dados.</p>
+<p>Agora vamos criar um objeto chamado <code>app</code> que vai armazenar todas as informações relativas ao seu app configurado no Auth0. Colocamos entre <code>{}</code> as informações que você deve preencher com os seus dados.</p>
 <p>Aqui você indicará a sua <code>key</code> e <code>secret</code> que obtivemos ao criar um App no Auth0.</p>
 <pre class="r"><code>app &lt;- oauth_app(
   appname = &quot;{coloque um nome para o seu App. (esse nome é opcional)}&quot;,
@@ -117,14 +117,22 @@ Criamos um bloco que faz o seguinte - quando estivermos em uma sessão interativ
     access = &quot;oauth/token&quot;
 )</code></pre>
 <p>Basicamente, aqui estamos dizendo o seguinte. Para requisitar um <em>token</em> use o endpoint <code>oauth/token</code>, para solicitar autorização, use o endpoint <code>authorize</code> e para solicitar acesso use o endpoint <code>oauth/token</code>.</p>
-<p>Não é recomendado, mas você poderia alterar esses endpoints na sessão <em>Endpoints</em> das configurações avançadas do seu aplciativo no Auth0 - como mostra a imagem abaixo.</p>
+<p>Não é recomendado, mas você poderia alterar esses endpoints na sessão <em>Endpoints</em> das configurações avançadas do seu aplicativo no Auth0 - como mostra a imagem abaixo.</p>
 <p><img src="https://user-images.githubusercontent.com/4706822/45971315-2013a180-c00f-11e8-8a1e-78969a0fc92c.png" /></p>
-<p>O último objeto importante que temos que definir é o <code>scope</code>. Essa string indica quais informações vamos solicitar do usuário para acesso. No nosso caso vamos usar:</p>
+<p>Outro objeto importante que temos que definir é o <code>scope</code>. Essa string indica quais informações vamos solicitar do usuário para acesso. No nosso caso vamos usar:</p>
 <pre class="r"><code>scope &lt;- &quot;openid profile&quot;</code></pre>
 <p>Indicando assim que queremos acesso ao <code>openid</code> e ao perfil do usuário. Mais informações sobre esse <code>scope</code> podem ser encontradas <a href="https://auth0.com/docs/scopes/current/oidc-scopes">aqui</a>.</p>
-<p>Também vamos definir uma função chamada <code>has_auth_code</code>. Ela retorna <code>TRUE</code> quando baseando-se nos parâmetros da URL, parece que existe código do OAuth, caso contrário ela retorna FALSE.</p>
-<pre class="r"><code>has_auth_code &lt;- function(params) {
-  return(!is.null(params$code))
+<p>Por fim, definimos um objeto <code>state</code> uma string aleatória que vai servir para validar que falamos mesmo com o Auth0. Ele deve nos redirecionar para uma página com o mesmo state.</p>
+<pre class="r"><code>state &lt;- paste(sample(c(letters, 0:9), size = 10, replace = TRUE), collapse = &quot;&quot;)</code></pre>
+<p>Também vamos definir uma função chamada <code>has_auth_code</code>. Ela retorna <code>TRUE</code> quando baseando-se nos parâmetros da URL, parece que existe código do OAuth e quando o state é o mesmo que foi enviado para o Auth0, caso contrário ela retorna FALSE.</p>
+<pre class="r"><code>has_auth_code &lt;- function(params, state) {
+    if (is.null(params$code)) {
+        return(FALSE)
+    } else if (params$state != state) {
+        return(FALSE)
+    } else {
+        return(TRUE)
+    }
 }</code></pre>
 </div>
 <div id="construindo-o-ui" class="section level3">
@@ -135,25 +143,25 @@ Criamos um bloco que faz o seguinte - quando estivermos em uma sessão interativ
     verbatimTextOutput(&quot;code&quot;)
 )</code></pre>
 <p>Agora vem a parte <strong>importante</strong>. Uma feature que é pouco conhecida no Shiny, é que o UI pode ser uma função e não somente um objeto. Essa função pode ser usada para modificar a interface baseando-se na requisição.</p>
-<p>No nosso caso, a nossa função <code>uiFunc</code> irá identificar se o parâmetro <code>code</code> foi enviado na * query string<em>. </em> Query string* é um nome que damos aos parâmetros que vem pela URL. No exemplo <code>www.curso-r.com?abb=1&amp;x=2</code> temos os parâmetros <code>abb=1</code> e <code>x=2</code>. No nosso caso precisamos receber um parâmtero <code>code</code> que é usado para obter o <em>token</em> de autenticação.</p>
-<p>Se esse parêmtro não estiver na URL, retornamos uma resposta de redirecionamento - para redirecionar o usuário para a url de autenticação.</p>
+<p>No nosso caso, a nossa função <code>uiFunc</code> irá identificar se o parâmetro <code>code</code> foi enviado na * query string<em>. </em> Query string* é um nome que damos aos parâmetros que vem pela URL. No exemplo <code>www.curso-r.com?abb=1&amp;x=2</code> temos os parâmetros <code>abb=1</code> e <code>x=2</code>. No nosso caso precisamos receber um parâmetro <code>code</code> que é usado para obter o <em>token</em> de autenticação e um parâmetro <em>state</em> que usamos para evitar ataques do tipo <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>.</p>
+<p>Se esses parêmetros não estiverem na URL, retornamos uma resposta de redirecionamento - para redirecionar o usuário para a url de autenticação.</p>
 <pre class="r"><code>uiFunc &lt;- function(req) {
-    if (!has_auth_code(parseQueryString(req$QUERY_STRING))) {
-        url &lt;- oauth2.0_authorize_url(api, app, scope = scope)
+    if (!has_auth_code(parseQueryString(req$QUERY_STRING), state)) {
+        url &lt;- oauth2.0_authorize_url(api, app, scope = scope, state = state)
         redirect &lt;- sprintf(&quot;location.replace(\&quot;%s\&quot;);&quot;, url)
         tags$script(HTML(redirect))
     } else {
         ui
     }
 }</code></pre>
-<p>Com isso, quando o usuário tentar acessar o seu app pela URL direta, como ela não terá o parâmtero code, então o <code>uiFunc</code> vai redirecioná-lo para a página de autenticação. Quando o usuário fizer a autenticação, ele será novamente redirecionado para a mesma URL, no entanto, o Auth0 irá incluir o parâmetro <code>code</code> na requisição, fazendo que a função <code>uiFunc</code> retorne a UI regular do Shiny, e não o redirecionamento.</p>
+<p>Com isso, quando o usuário tentar acessar o seu app pela URL direta, como ela não terá o parâmetro code, então o <code>uiFunc</code> vai redirecioná-lo para a página de autenticação. Quando o usuário fizer a autenticação, ele será novamente redirecionado para a mesma URL, no entanto, o Auth0 irá incluir os parâmetros <code>code</code> e <code>state</code> na requisição, fazendo que a função <code>uiFunc</code> retorne a UI regular do Shiny, e não o redirecionamento.</p>
 </div>
 <div id="construindo-o-server" class="section level3">
 <h3>Construindo o server</h3>
 <p>Vamos definir o server da forma a seguir. Lembre-se que se você estiver usando arquivos separados para ui e server, não precisará colocar a atribuição <code>server &lt;-</code>.</p>
 <pre class="r"><code>server &lt;- function(input, output, session) {
     params &lt;- parseQueryString(isolate(session$clientData$url_search))
-    if (!has_auth_code(params)) {
+    if (!has_auth_code(params, state)) {
         return()
     }
     
@@ -170,9 +178,9 @@ Criamos um bloco que faz o seguinte - quando estivermos em uma sessão interativ
     
     output$code &lt;- renderPrint(content(resp, &quot;text&quot;))
 }</code></pre>
-<p>Agora vamos explicar passo a passo da função <code>server</code>. Nas linhas abaixo estamos obtendo os parâmetros da <em>Query String</em> e em seguida verificamos se existe um parâmetro <code>code</code> (usando a função <code>has_auth_code</code>). Se esse parâmetro não existir fazemos o server para retornando vazio.</p>
+<p>Agora vamos explicar passo a passo da função <code>server</code>. Nas linhas abaixo estamos obtendo os parâmetros da <em>Query String</em> e em seguida verificamos se existe um parâmetro <code>code</code> e se o <code>state</code> retornado é o mesmo que enviamos para o Auth0 (usando a função <code>has_auth_code</code>). Se esses parâmetros não estiverem corretos fazemos o server parar retornando vazio.</p>
 <pre class="r"><code>params &lt;- parseQueryString(isolate(session$clientData$url_search))
-if (!has_auth_code(params)) {
+if (!has_auth_code(params, state)) {
   return()
 }</code></pre>
 <p>Em seguida, dado que existe um parâmetro <code>code</code>, vamos requisitar o token de autorização do OAuth. Isso verifica que o <code>code</code> que temos é válido. No caso de o parâmetro <code>code</code> não ser válido, a função <code>oauth2.0_token</code> retorna um erro parando a execução do server. Fazemos isso da seguinte forma:</p>

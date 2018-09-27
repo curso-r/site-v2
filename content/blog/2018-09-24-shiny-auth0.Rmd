@@ -45,7 +45,7 @@ Criamos um link de autenticação para o usuário com as seguintes informações
 - *scope*
 - *state*
 
-Já falamos dos 2 primeiros. O *scope* vai indicar quais partes da conta do usuário que o *cliente* pode ver. O *state*, uma string aleatória que verificaremos depois. (No R, a criação dessa string é abstraída pelas funções do `httr`). O link que criamos é algo da forma:
+Já falamos dos 2 primeiros. O *scope* vai indicar quais partes da conta do usuário que o *cliente* pode ver. O *state*, uma string aleatória que verificaremos depois. O link que criamos é algo da forma:
 
 ```
 https://authorization-server.com/auth?response_type=code&
@@ -129,7 +129,7 @@ if (interactive()) {
 
 Essas devem ser  as URL's que indicamos anteriormente para o Auth0 nos campos *Allowed Web Origins* e *Allowed Callback URLs*.
 
-Agora vamos criar um objeto chamado `app` que vai armazenar todas as informações relativas ao seu app configurado no Auth0. Colocamos entre `{}` as infprmações que você deve preencher com os seus dados. 
+Agora vamos criar um objeto chamado `app` que vai armazenar todas as informações relativas ao seu app configurado no Auth0. Colocamos entre `{}` as informações que você deve preencher com os seus dados. 
 
 Aqui você indicará a sua `key` e `secret` que obtivemos ao criar um App no Auth0.
 
@@ -157,11 +157,11 @@ api <- oauth_endpoint(
 
 Basicamente, aqui estamos dizendo o seguinte. Para requisitar um *token* use o endpoint `oauth/token`, para solicitar autorização, use o endpoint `authorize` e para solicitar acesso use o endpoint `oauth/token`.
 
-Não é recomendado, mas você poderia alterar esses endpoints na sessão *Endpoints* das  configurações avançadas do seu aplciativo no Auth0 - como mostra a imagem abaixo.
+Não é recomendado, mas você poderia alterar esses endpoints na sessão *Endpoints* das  configurações avançadas do seu aplicativo no Auth0 - como mostra a imagem abaixo.
 
 ![](https://user-images.githubusercontent.com/4706822/45971315-2013a180-c00f-11e8-8a1e-78969a0fc92c.png)
 
-O último objeto importante que temos que definir é o `scope`. Essa string indica quais informações vamos solicitar do usuário para acesso. No nosso caso vamos usar:
+Outro objeto importante que temos que definir é o `scope`. Essa string indica quais informações vamos solicitar do usuário para acesso. No nosso caso vamos usar:
 
 ```{r}
 scope <- "openid profile"
@@ -169,11 +169,23 @@ scope <- "openid profile"
 
 Indicando assim que queremos acesso ao `openid` e ao perfil do usuário. Mais informações sobre esse `scope` podem ser encontradas [aqui](https://auth0.com/docs/scopes/current/oidc-scopes).
 
-Também vamos definir uma função chamada `has_auth_code`. Ela retorna `TRUE` quando baseando-se nos parâmetros da URL, parece que existe código do OAuth, caso contrário ela retorna FALSE.
+Por fim, definimos um objeto `state` uma string aleatória que vai servir para validar que falamos mesmo com o Auth0. Ele deve nos redirecionar para uma página com o mesmo state.
 
 ```{r}
-has_auth_code <- function(params) {
-  return(!is.null(params$code))
+state <- paste(sample(c(letters, 0:9), size = 10, replace = TRUE), collapse = "")
+```
+
+Também vamos definir uma função chamada `has_auth_code`. Ela retorna `TRUE` quando baseando-se nos parâmetros da URL, parece que existe código do OAuth e quando o state é o mesmo que foi enviado para o Auth0, caso contrário ela retorna FALSE.
+
+```{r}
+has_auth_code <- function(params, state) {
+    if (is.null(params$code)) {
+        return(FALSE)
+    } else if (params$state != state) {
+        return(FALSE)
+    } else {
+        return(TRUE)
+    }
 }
 ```
 
@@ -191,14 +203,14 @@ ui <- fluidPage(
 
 Agora vem a parte **importante**. Uma feature que é pouco conhecida no Shiny, é que o UI pode ser uma função e não somente um objeto. Essa função pode ser usada para modificar a interface baseando-se na requisição. 
 
-No nosso caso, a nossa função `uiFunc` irá identificar se o parâmetro `code` foi enviado na * query string*. * Query string* é um nome que damos aos parâmetros que vem pela URL. No exemplo `www.curso-r.com?abb=1&x=2` temos os parâmetros `abb=1` e `x=2`. No nosso caso precisamos receber um parâmtero `code` que é usado para obter o *token* de autenticação.
+No nosso caso, a nossa função `uiFunc` irá identificar se o parâmetro `code` foi enviado na * query string*. * Query string* é um nome que damos aos parâmetros que vem pela URL. No exemplo `www.curso-r.com?abb=1&x=2` temos os parâmetros `abb=1` e `x=2`. No nosso caso precisamos receber um parâmetro `code` que é usado para obter o *token* de autenticação e um parâmetro *state* que usamos para evitar ataques do tipo [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery).
 
-Se esse parêmtro não estiver na URL, retornamos uma resposta de redirecionamento - para redirecionar o usuário para a url de autenticação.
+Se esses parêmetros não estiverem na URL, retornamos uma resposta de redirecionamento - para redirecionar o usuário para a url de autenticação.
 
 ```{r}
 uiFunc <- function(req) {
-    if (!has_auth_code(parseQueryString(req$QUERY_STRING))) {
-        url <- oauth2.0_authorize_url(api, app, scope = scope)
+    if (!has_auth_code(parseQueryString(req$QUERY_STRING), state)) {
+        url <- oauth2.0_authorize_url(api, app, scope = scope, state = state)
         redirect <- sprintf("location.replace(\"%s\");", url)
         tags$script(HTML(redirect))
     } else {
@@ -207,7 +219,7 @@ uiFunc <- function(req) {
 }
 ```
 
-Com isso, quando o usuário tentar acessar o seu app pela URL direta, como ela não terá o parâmtero code, então o `uiFunc` vai redirecioná-lo para a página de autenticação. Quando o usuário fizer a autenticação, ele será novamente redirecionado para a mesma URL, no entanto, o Auth0 irá incluir o parâmetro `code` na requisição, fazendo que a função `uiFunc` retorne a UI regular do Shiny, e não o redirecionamento.
+Com isso, quando o usuário tentar acessar o seu app pela URL direta, como ela não terá o parâmetro code, então o `uiFunc` vai redirecioná-lo para a página de autenticação. Quando o usuário fizer a autenticação, ele será novamente redirecionado para a mesma URL, no entanto, o Auth0 irá incluir os parâmetros `code` e `state` na requisição, fazendo que a função `uiFunc` retorne a UI regular do Shiny, e não o redirecionamento.
 
 ### Construindo o server
 
@@ -216,7 +228,7 @@ Vamos definir o server da forma a seguir. Lembre-se que se você estiver usando 
 ```{r}
 server <- function(input, output, session) {
     params <- parseQueryString(isolate(session$clientData$url_search))
-    if (!has_auth_code(params)) {
+    if (!has_auth_code(params, state)) {
         return()
     }
     
@@ -235,11 +247,11 @@ server <- function(input, output, session) {
 }
 ```
 
-Agora vamos explicar passo a passo da função `server`. Nas linhas abaixo estamos obtendo os parâmetros da *Query String* e em seguida verificamos se existe um parâmetro `code` (usando a função `has_auth_code`). Se esse parâmetro não existir fazemos o server para retornando vazio.
+Agora vamos explicar passo a passo da função `server`. Nas linhas abaixo estamos obtendo os parâmetros da *Query String* e em seguida verificamos se existe um parâmetro `code` e se o `state` retornado é o mesmo que enviamos para o Auth0 (usando a função `has_auth_code`). Se esses parâmetros não estiverem corretos fazemos o server parar retornando vazio.
 
 ```{r}
 params <- parseQueryString(isolate(session$clientData$url_search))
-if (!has_auth_code(params)) {
+if (!has_auth_code(params, state)) {
   return()
 }
 ```
