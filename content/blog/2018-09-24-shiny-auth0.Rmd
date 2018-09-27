@@ -75,13 +75,13 @@ Em posse do token, temos o que é necessário para fazer requisições para a AP
 
 Vá para a página [*applications*](https://manage.auth0.com/#/applications) e crie um novo app clicando no botão *Create Application* no canto superior direito.
 
-![](https://user-images.githubusercontent.com/4706822/45968930-ac6e9600-c008-11e8-82ee-44767787535c.png)
+![](https://user-images.githubusercontent.com/4706822/46171092-f3ad8e80-c275-11e8-8fd7-632818810f35.png)
 
 Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Regular Web Applications*. Selecionamos esse tipo de app para não ter que se preocupar em esconder o *client secret*.
 
 Em seguida vá para a aba *Settings* para configurarmos alguns detalhes do app.
 
-![](https://user-images.githubusercontent.com/4706822/45969080-10915a00-c009-11e8-8de4-6f54506e2cb1.png)
+![](https://user-images.githubusercontent.com/4706822/46171157-1b9cf200-c276-11e8-91d6-462ab9d2f1b7.png)
 
 As coisas mais importantes aqui são:
 
