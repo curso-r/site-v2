@@ -3,7 +3,7 @@ title: "Autenticação no Shiny com Auth0"
 date: "2018-09-27T00:00:00+00:00"
 categories: ["r", "tutoriais"]
 tags: ["r", "shiny"]
-banner: "img/banners/montyhall.png"
+banner: "img/banners/shiny-auth0.jpg"
 author: ["Daniel", "José"]
 summary: "Neste post vamos ensinar o passo a passo para adicionar autenticação em seu aplicativo Shiny usando o Auth0."
 draft: false
@@ -16,6 +16,8 @@ knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
 Neste post vamos criar um Shiny App simples usando o Auth0 como servidor de autenticação. O Auth0 implementa o OAuth2, o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.
 
 ## Como funciona o oauth2.0?
+
+Antes de começarmos - nesta parte do post resumi um pouco o que está escrito [aqui](https://aaronparecki.com/oauth-2-simplified/). Para se aprofundar, vale a pena ler essa postagem do [Aaron Parecki](https://aaronparecki.com/oauth-2-simplified/).
 
 ### Papéis
 
@@ -52,7 +54,7 @@ https://authorization-server.com/auth?response_type=code&
 
 Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:
 
-![](https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67)
+![Img do post https://aaronparecki.com/oauth-2-simplified/](https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67)
 
 Se o usuário clicar em *Autorizar*, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o *state*. A URL será algo do tipo:
 
@@ -306,13 +308,6 @@ Você poderia ainda conectar o Auth0 com diretórios de autenticação como LDAP
 
 Não somos especialistas em segurança portanto usem esse código com desconfiança e sempre perguntem a um especialista antes de usar em ambiente de produção.
 
+## Agradecimentos
 
-
-
-
-
-
-
-
-
-
+Esse post não teria sido possível sem a ajuda do [José de Jesus Filho](https://www.josejesus.info) que nos apresentou a solução depois de muito tempo explorando diversas formar de criar autenticação para seus Shiny's.

@@ -3,7 +3,7 @@ title: "Autenticação no Shiny com Auth0"
 date: "2018-09-27T00:00:00+00:00"
 categories: ["r", "tutoriais"]
 tags: ["r", "shiny"]
-banner: "img/banners/montyhall.png"
+banner: "img/banners/shiny-auth0.jpg"
 author: ["Daniel", "José"]
 summary: "Neste post vamos ensinar o passo a passo para adicionar autenticação em seu aplicativo Shiny usando o Auth0."
 draft: false
@@ -14,6 +14,7 @@ draft: false
 <p>Neste post vamos criar um Shiny App simples usando o Auth0 como servidor de autenticação. O Auth0 implementa o OAuth2, o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.</p>
 <div id="como-funciona-o-oauth2.0" class="section level2">
 <h2>Como funciona o oauth2.0?</h2>
+<p>Antes de começarmos - nesta parte do post resumi um pouco o que está escrito <a href="https://aaronparecki.com/oauth-2-simplified/">aqui</a>. Para se aprofundar, vale a pena ler essa postagem do <a href="https://aaronparecki.com/oauth-2-simplified/">Aaron Parecki</a>.</p>
 <div id="papeis" class="section level3">
 <h3>Papéis</h3>
 <p>A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:</p>
@@ -43,7 +44,10 @@ draft: false
 <pre><code>https://authorization-server.com/auth?response_type=code&amp;
   client_id=CLIENT_ID&amp;redirect_uri=REDIRECT_URI&amp;scope=photos&amp;state=1234zyx</code></pre>
 <p>Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:</p>
-<p><img src="https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67" /></p>
+<div class="figure">
+<img src="https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67" alt="Img do post https://aaronparecki.com/oauth-2-simplified/" />
+<p class="caption">Img do post <a href="https://aaronparecki.com/oauth-2-simplified/" class="uri">https://aaronparecki.com/oauth-2-simplified/</a></p>
+</div>
 <p>Se o usuário clicar em <em>Autorizar</em>, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o <em>state</em>. A URL será algo do tipo:</p>
 <pre><code>https://example-app.com/cb?code=AUTH_CODE_HERE&amp;state=1234zyx</code></pre>
 <p>Se o <code>state</code> for o mesmo que tiver sido gerado anteriormente, estamos prontos para requisitar o token de acesso. O token de acesso é solicitado pelo app ao servidor de autorização por meio de uma requisição do tipo <code>POST</code> que envia as seguintes informações:</p>
@@ -220,4 +224,8 @@ print(content(resp, &quot;parsed&quot;))</code></pre>
 <div id="disclaimer" class="section level2">
 <h2>Disclaimer</h2>
 <p>Não somos especialistas em segurança portanto usem esse código com desconfiança e sempre perguntem a um especialista antes de usar em ambiente de produção.</p>
+</div>
+<div id="agradecimentos" class="section level2">
+<h2>Agradecimentos</h2>
+<p>Esse post não teria sido possível sem a ajuda do <a href="https://www.josejesus.info">José de Jesus Filho</a> que nos apresentou a solução depois de muito tempo explorando diversas formar de criar autenticação para seus Shiny’s.</p>
 </div>
