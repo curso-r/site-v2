@@ -1,6 +1,11 @@
 <!doctype html5>
 <html>
 <head>
+  <meta name="description" content="{{ .Summary | plainify }}">
+  <meta property="og:title" content="{{.Title}}">
+  <meta property="og:description" content="{{.Summary | plainify}}">
+  <meta property="og:image" content="{{ .Site.BaseURL }}{{.Params.banner}}">
+  <meta property="og:url" content="{{.URL}}">
   {{ partial "head.html" . }}
 </head>
   <body data-spy="scroll" data-target="#toc">
