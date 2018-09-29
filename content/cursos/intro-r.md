@@ -1,9 +1,9 @@
 ---
 title: "Introdução à programação em R"
-data: "24, 25, 26, 27 e 28 de setembro, das 19h30 às 22h50"
+data: "À definir"
 hora: "Curso de 16 horas"
-local: "FYI Learning Solutions - Av. Paulista, 2006, Conjunto 401 - São Paulo - SP"
-paypal: "WVA7EUN5WLT5N"
+local: "À definir"
+paypal: ""
 img: "img/cursos/intro-r.png"
 preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
@@ -11,7 +11,6 @@ desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 1
-aberto: "true"
 ---
 
 <header class="section-header">
