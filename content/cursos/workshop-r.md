@@ -1,9 +1,9 @@
 ---
 title: "Workshop: Conheça o R"
-data: "Sábado, 15 de setembro, das 15h às 18h"
+data: "Data a definir"
 hora: "Workshop de 3 horas"
-local: "FYI Learning Solutions - Av. Paulista, 2006, Conjunto 401 - São Paulo - SP"
-paypal: "2MZLH4BA6KCZU"
+local: "Local a definir"
+paypal: ""
 img: "img/cursos/workshop-r.png"
 preco: "R$60,00"
 banner: "img/cursos/workshop-r-banner.png"

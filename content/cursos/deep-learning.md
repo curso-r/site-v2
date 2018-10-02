@@ -3,13 +3,14 @@ title: "Deep learning com R"
 data: "A definir"
 hora: "A definir"
 local: "A definir"
-paypal: ""
+paypal: "sjakjsa"
 img: "img/cursos/deep-learning.png"
 preco: "R$690,00"
 banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a justar modelos de deep learning utilizando o R."
 requisitos: ""
 ordem: 5
+aberto: "true"
 ---
 
 <header class="section-header">

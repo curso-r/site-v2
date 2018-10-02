@@ -11,6 +11,9 @@
         <img src="{{ .Site.BaseURL }}{{$member.Params.img}}" alt="" class="img-fluid">
       </div>
       <h2 class="title"><a href="{{$member.URL}}">{{.Title}}</a></h2>
+      {{if eq $member.Params.aberto "true"}}
+        <span class="turma-aberta">Turma Aberta</span>
+      {{end}}
       <p>
         {{.Params.desc}}
       </p>
