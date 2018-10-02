@@ -1,15 +1,16 @@
 ---
 title: "Deep learning com R"
-data: "A definir"
-hora: "A definir"
-local: "A definir"
-paypal: ""
+data: "10 de novembro"
+hora: "10h às 17h"
+local: "FYI - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+paypal: "NNFDL67W2E2TS"
 img: "img/cursos/deep-learning.png"
-preco: "R$690,00"
+preco: "R$490,00"
 banner: "img/cursos/deep-learning-banner.jpg"
-desc: "Aprenda a justar modelos de deep learning utilizando o R."
+desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
 ordem: 5
+aberto: "true"
 ---
 
 <header class="section-header">
@@ -44,8 +45,6 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 #### Redes Neurais Recorrentes (RNN)
 
 * Exemplo de aplicação em textos
-
-#### Séries temporais usando Deep Learning
 
 
 <br>
