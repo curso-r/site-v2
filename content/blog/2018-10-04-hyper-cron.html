@@ -59,15 +59,11 @@ A função <code>fortunes</code> solta aleatóriamente frases famosas que aparec
 <pre class="r"><code>library(fortunes)
 fortune()
 ## 
-## Patrick Burns: In the old days with S-PLUS, the rule of thumb was that you
-## needed 10 times as much memory as your dataset. [...] R (and current
-## versions of S-PLUS) are more frugal than S-PLUS was back then.
-## Ajay Shah: Hmm, so it&#39;d be interesting to apply current prices of RAM and
-## current prices of R, to work out the break-even point at which it&#39;s better
-## to buy SAS! :-) Without making any calculations, I can&#39;t see how SAS can
-## compete with the price of 4G of RAM.
-##    -- Patrick Burns and Ajay Shah (on whether to use R, S-PLUS or SAS)
-##       R-SIG-Finance (December 2004)</code></pre>
+## My solution when I run into mysteries like this is to put &#39;browser()&#39; in
+## the function just before or after the line of interest. The magnitude and
+## direction of my stupidity usually become clear quickly.
+##    -- Patrick Burns
+##       R-help (February 2006)</code></pre>
 <p>Vamos criar uma função que envia uma mensagem aleatoriamente pelo Telegram. A função poderia ser algo assim:</p>
 <pre class="r"><code>main &lt;- function() {
   bot &lt;- TGBot$new(token = bot_token(&#39;RBot&#39;))
@@ -172,4 +168,5 @@ hyper rmi dfalbel/hyper-cron-r</code></pre>
 <h1>Conclusão</h1>
 <p>Neste post usamos o Hyper e Docker para agendar um script R para rodar de tempos em tempos.
 Sei que tem bastante coisa e não dá para descrever todos os passos com toda precisão necessária para quem está fora do contexto. Por favor, se tiverem problemas ou dúvidas entre em contato para que possa melhorar o post.</p>
+<p>Se você quiser ver o código completo desse tutorial em um lugar só dê uma olhada <a href="https://github.com/dfalbel/hyper-cron-r">neste repositório</a>.</p>
 </div>
