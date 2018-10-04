@@ -1,0 +1,17 @@
+---
+title: "Agendando scripts do R"
+date: "2018-09-27T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/shiny-auth0.jpg"
+author: ["Daniel"]
+summary: ""
+draft: false
+---
+
+O [Caio](https://ctlente.com) já escreveu [aqui no blog](https://www.curso-r.com/blog/2017-11-13-tutorial-cronr/) sobre o CronR, um pacote do R que permite agendar scripts do R para rodar de tempos em tempos. O problema do CronR é que ele necessita que o computador que hospeda o processo fique ligado o tempo todo.
+
+Em geral, não colocamos processos agendados no nosso próprio computador de trabalho, uma vez que nem sempre o deixamos ligado. Por isso, o mais comum é agendar scripts em um servidor que fique sempre ligado, porém deixar um servidor ligado todos os dias o dia inteiro para rodar um script a cada 12h parece desperdício, certo?
+
+É aí que entra o [Hyper.sh](https://www.hyper.sh)! Para quem não conhece o [Hyper](https://www.hyper.sh) é um serviço cloud de hospedagem de containers. Basicamente ele funciona da seguinte maneira: você passa a imagem de um container [Docker](https://www.docker.io) e como você quer executá-la lá dentro. O Hyper pode servir tanto para hospedar apps Shiny, API's em plumber e outros serviços que ficam online o tempo inteiro quanto para executar scripts agendados, e é sobre essa parte que vamos falar nesse post. 
+
