@@ -1,17 +1,280 @@
 ---
 title: "Agendando scripts do R"
-date: "2018-09-27T00:00:00+00:00"
+date: "2018-10-04T00:00:00+00:00"
 categories: ["r", "tutoriais"]
 tags: ["r"]
-banner: "img/banners/shiny-auth0.jpg"
+banner: "img/banners/hyper-cron-r.jpg"
 author: ["Daniel"]
-summary: ""
+summary: "Neste post usamos o Hyper e Docker para agendar um script R para rodar de tempos em tempos sem gastar muito."
 draft: false
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
 
 O [Caio](https://ctlente.com) já escreveu [aqui no blog](https://www.curso-r.com/blog/2017-11-13-tutorial-cronr/) sobre o CronR, um pacote do R que permite agendar scripts do R para rodar de tempos em tempos. O problema do CronR é que ele necessita que o computador que hospeda o processo fique ligado o tempo todo.
 
 Em geral, não colocamos processos agendados no nosso próprio computador de trabalho, uma vez que nem sempre o deixamos ligado. Por isso, o mais comum é agendar scripts em um servidor que fique sempre ligado, porém deixar um servidor ligado todos os dias o dia inteiro para rodar um script a cada 12h parece desperdício, certo?
 
 É aí que entra o [Hyper.sh](https://www.hyper.sh)! Para quem não conhece o [Hyper](https://www.hyper.sh) é um serviço cloud de hospedagem de containers. Basicamente ele funciona da seguinte maneira: você passa a imagem de um container [Docker](https://www.docker.io) e como você quer executá-la lá dentro. O Hyper pode servir tanto para hospedar apps Shiny, API's em plumber e outros serviços que ficam online o tempo inteiro quanto para executar scripts agendados, e é sobre essa parte que vamos falar nesse post. 
+
+# Objetivo
+
+Neste post vamos criar e colocar em produção um script em R que envia para você mesmo no Telegram a cada 2 horas uma mensagem do pacote `fortunes`. Vamos fazer isso simples, mas nada impede de você [criar um bot que avisa que o Bitcoin tá barato](https://www.curso-r.com/blog/2017-08-19-r-telegram-bitcoin/).
+
+# Criando o bot
+
+Antes de mais nada, vamos criar um bot no Telegram. Para isso [clique neste link](https://telegram.me/botfather) e comece a conversar com o BotFather.
+
+![](https://user-images.githubusercontent.com/4706822/46452197-d6465c00-c770-11e8-9262-c2dcdd98e9fa.png)
+
+Você vai ter que dar um nome e usuário para o seu bot e em troca, o BotFather vai retornar um token, parecido com `6768271902:AAGKFXUz7P_Qg2X_pE0ZjKSLPZ45TEX9Z5QL4`.
+
+Esse token é secreto, então não é legal colocá-lo direto no seu script. A forma usual de deixá-lo disponível para o R é colocar no `.Renviron`. 
+
+# Colocando o token no `.Renviron`
+
+O `.Renviron` é um arquivo de configuração do R que permite que você especifique variáveis de ambiente para que fiquem disponíveis para o R. Ele é muito usado para disponibilizar senhas, chaves de API, ... - coisas que são secretas e por isso não é boa prática colocá-las no código.
+
+O jeito mais fácil de abrir o `.Renviron` é usando o pacote `usethis`. O `usethis` é um pacote do R que tem uma série de funções úteis no dia a dia de um desenvolvedor R.
+
+Instale o pacote e depois rode:
+
+```{r}
+usethis::edit_r_environ()
+```
+
+Se você estiver no RStudio, isso vai abrir o arquivo `.Renviron`. Adicione a linha:
+
+```
+R_TELEGRAM_BOT_RBot=6768271902:AAGKFXUz7P_Qg2X_pE0ZjKSLPZ45TEX9Z5QL4
+```
+**Não esqueça** de trocar o token que está aí pelo seu token, gerado pelo BotFather.
+
+Agora vamos testar se está tudo certo. Instale o pacote `telegram` (`install.packages("telegram")`) e rode:
+
+```{r}
+library(telegram)
+bot <- TGBot$new(token = bot_token('RBot'))
+bot$getMe()
+```
+
+Isso deve retornar o nome e username do seu bot.
+
+# Comece um chat com o seu bot
+
+Para começar um chat com o seu bot no Telegram volte para a conversa com o BotFather e clique no link que ele te mandou na última mensagem (a mensagem que veio o token)
+
+![](https://user-images.githubusercontent.com/4706822/46473446-96a26300-c7b6-11e8-8e81-4d8f504f7496.png)
+
+Clique no link e depois comece uma conversa com o seu bot. Agora volte para o R e rode: 
+
+```{r}
+msgs <- bot$getUpdates()
+msgs$message$chat$id[1]
+```
+
+Assim você vai ter o o id do seu chat com o seu bot. Vamos setar esse id como o chat padrão do bot.
+
+```{r}
+bot$set_default_chat_id(137007207)
+```
+
+Podemos então começar a enviar mensagens direto do R com:
+
+```{r}
+bot$sendMessage("Oioioioi")
+```
+
+# Criando o script 
+
+No nosso caso, queremos enviar uma mensagem no telegram com mensagens do pacote `fortunes`.
+A função `fortunes` solta aleatóriamente frases famosas que apareceram na lista de e-mails do R ao longo do tempo.
+
+```{r, eval=TRUE}
+library(fortunes)
+fortune()
+```
+
+Vamos criar uma função que envia uma mensagem aleatoriamente pelo Telegram. A função poderia ser algo assim:
+
+```{r}
+main <- function() {
+  bot <- TGBot$new(token = bot_token('RBot'))
+  bot$set_default_chat_id(137007207)
+  bot$sendMessage(fortune())
+}
+```
+
+Ok? Quando rodamos a função `main()` recebemos uma nova mensagem no Telegram, certo? Por fim, o nosso script pode ser:
+
+```{r}
+library(telegram)
+library(fortunes)
+
+main <- function() {
+  bot <- TGBot$new(token = bot_token('RBot'))
+  bot$set_default_chat_id(user_id('me'))
+  bot$sendMessage(fortune())
+}
+
+main()
+```
+
+Salvei esse código em um arquivo chamado `send_fortune.R`.
+
+Eu gosto de encapsular todo o código em uma função sem argumentos para ser mais fácil para parar a execução em caso de errros durante o código, mas isso vai da forma que você preferir programar. 
+
+# A estrutura do projeto
+
+O nosso projeto possui a seguinte estrutura:
+
+```
+.
+├── Dockerfile
+└── send_fortune.R
+```
+
+O nosso script `.R` e o `Dockerfile` que vamos falar em seguida. Nada impede de termos outros arquivos, ok? O que é necessário é que tanto o Dockerfile quanto o script estejam na mesma pasta.
+
+# Criando o Dockerfile
+
+O Hyper não sabe que o R existe. Ele só sabe executar imagens do Docker. O Docker é uma ferramenta muito poderosa que permite que a partir de um arquivo chamado `Dockerfile` você especifique exatamente o estado de um computador, simulando a instalação de todos os softwares necessários e etc. Não é objetivo deste post explicar exatamente como funciona o Docker, por isso vamos direto ao necessário.
+
+Crie um arquivo chamado `Dockerfile` (sem nenhuma extensão nem nada) e coloque o seguinte dentro dele:
+
+```
+FROM rocker/tidyverse
+
+COPY . /service
+
+# Install the R libraries needed to run the scripts
+RUN R -e "install.packages(c('telegram', 'fortunes'), repos = 'http://cran.us.r-project.org')"
+
+# Execute the target script
+CMD ["Rscript", "/service/send_fortune.R"]
+```
+
+Vou explicar rapidamente o que significa cada linha do Dcoker:
+
+* `FROM rocker/tidyverse` indica que vamos usar como base para o nosso *container* a imagem do `rocker/tidyverse`.
+* `COPY . /service` copia todos os arquivos da pasta (indicado pelo `.`) para a pasta `/service` dentro do container.
+* `RUN R -e "install.packages(c('telegram', 'fortunes'), repos = 'http://cran.us.r-project.org')"` instala os pacotes necessários para a execução do script.
+* `CMD ["Rscript", "/service/send_fortune.R"]` indica o comando que será executado. No nosso caso: execute o script `send_fortune.R` que está na pasta `service/`.
+
+# Construindo e subindo o container
+
+Para usar o nosso container no Hyper, precisamos que ele esteja em um *registry*. O próprio Docker oferece [um serviço gratuito de hospedagem de containers](https://hub.docker.com). Basta criar um login lá.
+
+Para subir um container para o *registry* você precisa ter *buildado* o container localmente. Vamos fazer isso agora. Se você não possui o Docker instalado, instale [por aqui](https://docs.docker.com/install/).
+
+Abra um terminal na pasta do em que estão os arquivos `Dockerfile` e `send_fortune.R` e rode:
+
+```
+docker build -t seu_user_docker/nome_img .
+```
+
+Esse passo transforma o seu `Dockerfile` em uma imagem. O argumento `-t` dá um nome para sua imagem, no caso estamos usando `seu_user_docker/nome_da_img` (No meu caso usei `dfalbel/hyper-cron-r`).
+
+Com o container `buildado` você pode testá-lo fazendo o seguinte:
+
+```
+docker run --env R_TELEGRAM_BOT_RBot=6793020822:AAGKFXUz7P_Qg2X_pshau8432X9ZAKHQL4 dfalbel/hyper-cron-r
+```
+
+Isso deveria enviar uma mensagem para você no telegram. Se não mandar tem algo errado. **Não esqueça** de trocar o valor do Token para o que você obteve no primeiro passo.
+
+Passamos o argumento `--env` para poder passar as variáveis de ambiente que são necessárias para executar o nosso código. No nosso caso, temos que passar o token do Telegram, fiz isso 
+passando o `--env R_TELEGRAM_BOT_RBot=6793020822:AAGKFXUz7P_Qg2X_pshau8432X9ZAKHQL4`.
+
+Agora vamos subir a imagem para o Docker registry. Se você já criou a sua conta [aqui](https://hub.docker.com), rode e siga as inscrições para efetuar o login no CLI do Docker.
+
+```
+docker login
+```
+
+Se seu login deu tudo certo, você pode rodar:
+
+```
+docker push seu_user_docker/nome_da_img
+```
+
+Isso vai fazer o upload da sua imagem para o * registry*. No meu caso usei `docker push dfalbel/hyper-cron-r`.
+
+Se tiver dado tudo certo, você vai conseguir acessar uma página com uma url parecida com essa:
+
+```
+https://hub.docker.com/r/seu_user_docker/nome_da_img/
+```
+
+O Docker hub permite quantas imagens públicas você quiser, mas se não me engano apenas 1 privada. Se você precisar que sua imagem seja privada, tente procurar pelo GCR (Google Container Registry).
+
+# Finalmente, o Hyper
+
+Se você ainda não criou sua conta no Hyper, [crie aqui](https://www.hyper.sh). Também faça o download do CLI deles, [aqui](https://console.hyper.sh/cli/download). As instruções completas de instalação estão [aqui](https://docs.hyper.sh/hyper/GettingStarted/install.html).
+
+Com o hyper instalado e se a sua imagem do Docker for pública basta rodar. Está fora do escopo deste tutorial, mas é possível fazer isso com imagens privadas também.
+
+```
+hyper pull seu_user_docker/nome_da_img/
+```
+
+Isso irá copiar a sua imagem - do *registry* para o Hyper. Agora estamos prontos para criar o processo agendado.
+
+Fazemos isso também com apenas uma linha no Hyper:
+
+```
+hyper cron create  --minute=*/5 --hour=* --name test-cron-job1 --env R_TELEGRAM_BOT_RBot=6793020822:AAGKFXUz7P_Qg2X_pEAHDGJ8432X9Z5QL4 seu_user_docker/nome_da_img/
+```
+
+Mais uma vez, **não esqueça** de trocar o valor do token para o token do seu bot!
+
+O código acima especifica que desejo executar esse container a cada 5 minutos, mas tudo isso pode ser configurado pelas opções do hyper-cron. A documentação completa [está aqui](https://docs.hyper.sh/hyper/Feature/container/cron.html).
+
+Por exemplo, se quiséssemos rodar o script todo dia às 8h da poderíamos colocar:
+
+```
+hyper cron create  --minute=0 --hour=11 --name test-cron-job1 --env R_TELEGRAM_BOT_RBot=6793020822:AAGKFXUz7P_Qg2X_pEAHDGJ8432X9Z5QL4 seu_user_docker/nome_da_img/
+```
+
+Note que no lugar da hora colocamos 11 e não 8, isso se dá porque a hora dos servidores do Hyper é sempre UTC+0, que é 3 horas na frente do fuso de São Paulo.
+
+Se tudo estiver correto, você pode rodar o seguinte no terminal para ver todos os processos agendados:
+
+```
+hyper cron ls
+#$ Name                Schedule            Image                  Command
+#$ test-cron-job1      */5 * * * *         dfalbel/hyper-cron-r
+```
+
+Você também pode olhar o histórico de execuções do seu processo.
+
+```
+hyper cron history test-cron-job1
+#$ Container                   Start                           End                             Status              Message
+#$ test-cron-job1-1538685600   2018-10-04 20:40:00 +0000 UTC   2018-10-04 20:40:39 +0000 UTC   done                Job[test-cron-job1] is success to run
+```
+
+# Custos
+
+O Hyper implica em custos. Ele cobra por segundos de execução do seu script e por GB da sua imagem. Dê uma lida melhor na [página de preços](https://www.hyper.sh/pricing.html).
+
+Quando terminar, para remover tudo e evitar custos depois, rode:
+
+```
+hyper cron rm test-cron-job1
+hyper rmi dfalbel/hyper-cron-r
+```
+
+Substituindo os devidos nomes.
+
+# Conclusão
+
+Neste post usamos o Hyper e Docker para agendar um script R para rodar de tempos em tempos.
+Sei que tem bastante coisa e não dá para descrever todos os passos com toda precisão necessária para quem está fora do contexto. Por favor, se tiverem problemas ou dúvidas entre em contato para que possa melhorar o post.
+
+
+
 
