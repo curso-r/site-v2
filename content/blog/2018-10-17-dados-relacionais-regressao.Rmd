@@ -28,30 +28,90 @@ library(tidyverse)
 library(dtplyr)
 library(data.table)
 library(janitor)
+library(lubridate)
 
 don <- fread("~/Downloads/io/Donations.csv")
 don <- clean_names(don)
+don$donation_received_date <- ymd_hms(don$donation_received_date)
 ```
 
-Para começar vamos tirar uma amostra da base para conseguirmos iterar mais rápido. Depois que tivermos os primeiros resultados podemos rodar para a base inteira.
+Carregamos usando a função `fread` (do pacote `data.table`) que é a forma mais rápida de ler arquivos de texto com R e em seguida usamos a função `clean_names` (do `janitor`) para arrumar o nome das colunas que possuiam espaços e outras coisas que atrapalham na hora de escrever o código. Também convertemos a coluna de data de recebimento da doação em formato de data do R para posteriormente poder fazer cálculos de períodos e etc.
+
+Antes de qualquer outra análise vamos tirar uma amostra da base para conseguirmos iterar mais rápido. Depois que tivermos os primeiros resultados podemos rodar para a base inteira.
 
 É importante notar que a amostra deve ser feita considerando os `donor_id`'s como unidade amostral, e não as doações em si. Pegaremos uma amostra de 500k doadores, que já será suficiente para as análises que queremos fazer. Para isso podemos fazer da seguinte maneira:
 
 ```{r}
+set.seed(13) # para ser reproduzível (e democrático?)
 don_samp <- don %>% 
   distinct(donor_id) %>% 
-  sample_n(500000) %>% 
+  sample_n(100000) %>% 
   left_join(don, by = "donor_id")
 ```
 
+# Janela de tempo
+
+A primeira análise que precisamos fazer servirá para decidir qual será a janela de tempo para considerar a próxima doação. O nosso objetivo é identificar doadores que são propensos a fazer uma próxima doação.
+
+Se pararmos para pensar um pouco no *business* da DonorsChoose.org, é bem provável que exista uma meta de tempo entre as doações de um doador. Qual é o objetivo da organização? Receber uma doação por ano de cada doador? Receber uma doação por trimestre? Ou uma por mês? Essa definição de janela de tempo precisa ser razoavel tanto para as metas da organização quanto com o que de fato acontece na base de dados.
+
+Em primeiro lugar, vamos analisar a distribuição da variável `tempo_entre_doacoes`. Assim podemos ter uma ideia do que está acontecendo.
+O gráfico abaixo mostra na primeira barra o percentual de doações que não tiveram uma doação subsequente. Em seguida as barras mostram a distribuição acumulada do tempo até a próxima doação. Por exemplo: a barra do "30 dias" mostra o percentual das doações cuja a doação precedente ocorreu menos de 30 dias antes.
 
 ```{r}
-x <- don %>% 
+don_samp %>% 
   group_by(donor_id) %>% 
-  filter(n_distinct(donation_id) > 1) %>% 
   mutate(last_donation = lag(donation_received_date, 1, order_by = donation_received_date)) %>% 
   ungroup() %>% 
-  filter(!is.na(last_donation)) %>% 
-  mutate(time_between_donations = as.numeric(difftime(donation_received_date, last_donation, units = "days")))
+  mutate(time_between_donations = as.numeric(difftime(donation_received_date, last_donation, units = "days"))) %>% 
+  summarise(
+    `Não doou \nnovamente` = sum(is.na(time_between_donations))/n(),
+    `No mesmo dia` = sum(time_between_donations < 1, na.rm = TRUE)/n(),
+    `1 dia` = sum(time_between_donations < 2, na.rm = TRUE)/n(),
+    `15 dias` = sum(time_between_donations <= 15, na.rm = TRUE)/n(),
+    `30 dias` = sum(time_between_donations <= 30, na.rm = TRUE)/n(),
+    `180 dias` = sum(time_between_donations <= 180, na.rm = TRUE)/n(),
+    `365 dias` = sum(time_between_donations <= 365, na.rm = TRUE)/n(),
+    `730 dias` = sum(time_between_donations <= 730, na.rm = TRUE)/n()
+  ) %>% 
+  gather("tempo", "prop", ends_with("dias"), ends_with("dia"), ends_with("ente")) %>% 
+  ggplot(aes(x = fct_reorder(tempo, prop) %>% lvls_reorder(c(5, 1,2,3,4,6,7,8)), y = prop)) +
+  geom_col() +
+  theme_minimal() +
+  labs(x = "Tempo até a próxima doação", y = "Proporção de doações") +
+  scale_y_continuous(labels = scales::percent, breaks = c(0.1, 0.2, 0.3, 0.4, 0.5))
 ```
+
+Com esse gráfico conseguimos tirar algumas conclusões:
+
+* Um pouco mais de 40% das doações não possuem uma doação subsequente. Esse número pode estar um pouco inflado pois não fizemos um filtro de doações que ocorream mais de 730 dias atrás. 
+* 25% das doações subsequentes acontecem no mesmo dia da última doação. Na prática, não faria sentido considerar essas doações como novas doações por isso provavelmente teremos que desconsiderar estes casos. 
+* Um pouco menos de 25% das doações subsequentes ocorrem entre 1 dia e 180 dias da última doação. (Fazendo a diferença entre a proporção de 1 dia e a proporção de 180 dias).
+* Um pouco mais de 25% das doações subsequentes ocorrem entre 1 dia e 365 dias da última doação.
+* Pelo outro lado, cerca de 10% das doações acontecem entre 1 dia e 30 dias da última doação. Do ponto de vista do *business* será que faria sentido considerá-las como doações novas? Será que faríamos uma ação de marketing para tentar fazer um doador doar novamente antes de 30 dias da última doação?
+
+Vamos supor que levamos esses dados para a área de negócio da DonorChoose.org e chegamos à seguinte conclusão:
+
+* Queremos prever quem são os doadores que são propensos a doar novamente entre 30 e 365 dias desde a sua última doação.
+
+Por estratégias da organização uma meta importante é conseguir que todos os antigos doadores doem pelo menos uma vez por ano. Não é tão estratégico fazer eles doarem em outras frequências. Inclusive, uma campanha de marketing para doadores que doaram a menos de 30 dias poderia até soar negativo.
+
+Por consequência dessa decisão:
+
+* consideraremos no nosso modelo somente as doações que ocorreram há pelo menos 1 ano (para dar tempo de todas elas terem se convertido). - Não vamos modelar o problema como anaálise de sobrevivência, que nos ajudaria a lidar com essa *censura*.
+* excluiremos as doações que ocorreram entre 0 e 30 dias desde a última doação. 
+* consideraremos as doações que ocorreram depois de 365 dias da última doação como uma não resposta - isto é uma doação que não teve doação subsequente.
+
+# Preparação da base de dados
+
+Agora que definimos algumas regras estamos prontos para iniciar a preparação da base de dados. A primeira coisa que vamos fazer é calcular o que chamamos de variável resposta.
+Ela será da seguinte forma:
+
+* 1, se a doação subsequente ocorrer entre 30 e 365 dias da data desta transação.
+* 0, se não houver uma doação subsequente ou ela ocorrer mais de 365 dias da data da transação.
+
+A unidade amostral do nosso modelo será doação/doador. Na prática o modelo será usado da seguinte forma: dado um doador e a sua última doação qual a probabilidade dele fazer uma doação nos próximos 365 dias. Com isso, o objetivo da organização é aumentar a proporção de doadores que fazem pelo menos uma doação por ano.
+
+
+
 
