@@ -112,6 +112,16 @@ Ela será da seguinte forma:
 
 A unidade amostral do nosso modelo será doação/doador. Na prática o modelo será usado da seguinte forma: dado um doador e a sua última doação qual a probabilidade dele fazer uma doação nos próximos 365 dias. Com isso, o objetivo da organização é aumentar a proporção de doadores que fazem pelo menos uma doação por ano.
 
+Vamos começar calculando a nossa variável resposta:
+
+```{r}
+x <- don_samp %>% 
+  group_by(donor_id) %>% 
+  mutate(next_donation = lag(donation_received_date, 1, order_by = desc(donation_received_date))) %>% 
+  ungroup()
+```
+
+
 
 
 
