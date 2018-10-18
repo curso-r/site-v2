@@ -1,0 +1,57 @@
+---
+title: "De dados relacionais à regressão logística"
+date: "2018-10-17T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/hyper-cron-r.jpg"
+author: ["Daniel"]
+summary: ""
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
+Neste post vamos partir de uma base de dados no formato relacional e prepará-la até a hora de começar a fazer modelagem estatística. 
+
+Utilizaremos um banco de dados disponibilizado pelo DonorsChoose.org. Esse banco de dados contém todas as doações que aconteceram na plataforma desde 2012. 
+
+Nosso objetivo será criar um modelo capaz de prever se doador fará uma nova doação em uma janela fixa de tempo. Para determinar essa janela vamos primeiro analisar o banco de dados.
+
+# Base de dados
+
+Vamos inicialmente carregar a base de dados:
+
+```{r}
+library(tidyverse)
+library(dtplyr)
+library(data.table)
+library(janitor)
+
+don <- fread("~/Downloads/io/Donations.csv")
+don <- clean_names(don)
+```
+
+Para começar vamos tirar uma amostra da base para conseguirmos iterar mais rápido. Depois que tivermos os primeiros resultados podemos rodar para a base inteira.
+
+É importante notar que a amostra deve ser feita considerando os `donor_id`'s como unidade amostral, e não as doações em si. Pegaremos uma amostra de 500k doadores, que já será suficiente para as análises que queremos fazer. Para isso podemos fazer da seguinte maneira:
+
+```{r}
+don_samp <- don %>% 
+  distinct(donor_id) %>% 
+  sample_n(500000) %>% 
+  left_join(don, by = "donor_id")
+```
+
+
+```{r}
+x <- don %>% 
+  group_by(donor_id) %>% 
+  filter(n_distinct(donation_id) > 1) %>% 
+  mutate(last_donation = lag(donation_received_date, 1, order_by = donation_received_date)) %>% 
+  ungroup() %>% 
+  filter(!is.na(last_donation)) %>% 
+  mutate(time_between_donations = as.numeric(difftime(donation_received_date, last_donation, units = "days")))
+```
+
