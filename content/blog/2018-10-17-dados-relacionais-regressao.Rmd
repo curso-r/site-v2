@@ -17,7 +17,7 @@ Neste post vamos partir de uma base de dados no formato relacional e prepará-la
 
 Utilizaremos um banco de dados disponibilizado pelo DonorsChoose.org. Esse banco de dados contém todas as doações que aconteceram na plataforma desde 2012. 
 
-Nosso objetivo será criar um modelo capaz de prever se doador fará uma nova doação em uma janela fixa de tempo. Para determinar essa janela vamos primeiro analisar o banco de dados.
+Vamos supor que o DonorsChoose.org deseja segmentar as suas ações de marketing de acordo com a probabilidade de um doador doar novamente nos próximos meses.Por exemplo, para doadores com alta probabilidade de apoiarem novamente faríamos campanhas mais focadas em selecionar o projeto para apoiar. Para os ex-doadores com menor probabilidade de doar o discurso da campanha poderia ser diferente.
 
 # Base de dados
 
@@ -39,7 +39,7 @@ Carregamos usando a função `fread` (do pacote `data.table`) que é a forma mai
 
 Antes de qualquer outra análise vamos tirar uma amostra da base para conseguirmos iterar mais rápido. Depois que tivermos os primeiros resultados podemos rodar para a base inteira.
 
-É importante notar que a amostra deve ser feita considerando os `donor_id`'s como unidade amostral, e não as doações em si. Pegaremos uma amostra de 500k doadores, que já será suficiente para as análises que queremos fazer. Para isso podemos fazer da seguinte maneira:
+É importante notar que a amostra deve ser feita considerando os `donor_id`'s como unidade amostral, e não as doações em si. Pegaremos uma amostra de 100k doadores, que já será suficiente para as análises que queremos fazer. Para isso podemos fazer da seguinte maneira:
 
 ```{r}
 set.seed(13) # para ser reproduzível (e democrático?)
@@ -53,7 +53,7 @@ don_samp <- don %>%
 
 A primeira análise que precisamos fazer servirá para decidir qual será a janela de tempo para considerar a próxima doação. O nosso objetivo é identificar doadores que são propensos a fazer uma próxima doação.
 
-Se pararmos para pensar um pouco no *business* da DonorsChoose.org, é bem provável que exista uma meta de tempo entre as doações de um doador. Qual é o objetivo da organização? Receber uma doação por ano de cada doador? Receber uma doação por trimestre? Ou uma por mês? Essa definição de janela de tempo precisa ser razoavel tanto para as metas da organização quanto com o que de fato acontece na base de dados.
+Se pararmos para pensar um pouco no *business* da DonorsChoose.org, é bem provável que exista uma meta de tempo entre as doações. Receber uma doação por ano de cada doador? Receber uma doação por trimestre? Ou uma por mês? Essa definição de janela de tempo precisa ser razoável tanto para as metas da organização quanto com o que de fato acontece na base de dados.
 
 Em primeiro lugar, vamos analisar a distribuição da variável `tempo_entre_doacoes`. Assim podemos ter uma ideia do que está acontecendo.
 O gráfico abaixo mostra na primeira barra o percentual de doações que não tiveram uma doação subsequente. Em seguida as barras mostram a distribuição acumulada do tempo até a próxima doação. Por exemplo: a barra do "30 dias" mostra o percentual das doações cuja a doação precedente ocorreu menos de 30 dias antes.
@@ -92,34 +92,150 @@ Com esse gráfico conseguimos tirar algumas conclusões:
 
 Vamos supor que levamos esses dados para a área de negócio da DonorChoose.org e chegamos à seguinte conclusão:
 
-* Queremos prever quem são os doadores que são propensos a doar novamente entre 30 e 365 dias desde a sua última doação.
+* Queremos prever quem são os doadores que são propensos a doar novamente nos próximo ano, dado que não doaram no último mês.
 
-Por estratégias da organização uma meta importante é conseguir que todos os antigos doadores doem pelo menos uma vez por ano. Não é tão estratégico fazer eles doarem em outras frequências. Inclusive, uma campanha de marketing para doadores que doaram a menos de 30 dias poderia até soar negativo.
+Por estratégias da organização uma meta importante é conseguir que todos os antigos doadores doem pelo menos uma vez por ano. Não é tão estratégico fazer eles doarem em outras frequências. Inclusive, uma campanha de marketing para doadores que apoiaram um projeto há menos de 30 dias poderia até soar negativo.
 
 Por consequência dessa decisão:
 
-* consideraremos no nosso modelo somente as doações que ocorreram há pelo menos 1 ano (para dar tempo de todas elas terem se convertido). - Não vamos modelar o problema como anaálise de sobrevivência, que nos ajudaria a lidar com essa *censura*.
-* excluiremos as doações que ocorreram entre 0 e 30 dias desde a última doação. 
-* consideraremos as doações que ocorreram depois de 365 dias da última doação como uma não resposta - isto é uma doação que não teve doação subsequente.
+* consideraremos no nosso modelo somente as doações que ocorreram há pelo menos 1 ano. - Não vamos modelar o problema como anaálise de sobrevivência, que nos ajudaria a lidar com essa *censura*.
+* consideraremos apenas os doadores que não doaram nos últimos 30 dias. 
+* consideraremos as doações que ocorreram depois de 365 dias como não resposta.
 
 # Preparação da base de dados
 
 Agora que definimos algumas regras estamos prontos para iniciar a preparação da base de dados. A primeira coisa que vamos fazer é calcular o que chamamos de variável resposta.
 Ela será da seguinte forma:
 
-* 1, se a doação subsequente ocorrer entre 30 e 365 dias da data desta transação.
-* 0, se não houver uma doação subsequente ou ela ocorrer mais de 365 dias da data da transação.
+* 1, se o doador fez uma doação nos próximos 365 dias.
+* 0, se não fez doação nos próximos 365 dias.
 
-A unidade amostral do nosso modelo será doação/doador. Na prática o modelo será usado da seguinte forma: dado um doador e a sua última doação qual a probabilidade dele fazer uma doação nos próximos 365 dias. Com isso, o objetivo da organização é aumentar a proporção de doadores que fazem pelo menos uma doação por ano.
+A unidade amostral do nosso modelo será doador/mes_t0. Na prática o modelo será usado da seguinte forma: dado um doador e que estamos em outubro, qual a probabilidade de cada um dos meus ex-doadores doar novamente nos próximos 365 dias. A meta do DonorsChoose é fazer com que todos os ex-doadores tenham essa probabilidade alta.
 
-Vamos começar calculando a nossa variável resposta:
+Vamos começar calculando a nossa variável resposta. Precisamos que esse cálculo seja parametrizado pelo que chamamos de `t0` que é o mês em que estaríamos usando o modelo. Na hora de *treinar* o algoritmo vamos *fingir* que voltamos no tempo e que também sabemos o futuro. 
+
+Criamos a função `criar_resposta` que recebe o banco de dados e uma data `t0` e retorna um banco de dados com a resposta para cada `donor_id`.
 
 ```{r}
-x <- don_samp %>% 
-  group_by(donor_id) %>% 
-  mutate(next_donation = lag(donation_received_date, 1, order_by = desc(donation_received_date))) %>% 
-  ungroup()
+criar_resposta <- function(don, t0) {
+  
+  historico <- don %>% 
+    filter(donation_received_date <= t0) %>% 
+    distinct(donor_id)
+    
+  futuro <- don %>% 
+    filter(donation_received_date > t0, donation_received_date <= t0 + days(365)) %>% 
+    group_by(donor_id) %>% 
+    summarise(data_prox_compra = min(donation_received_date)) %>% 
+    mutate(
+      resposta = 1,
+      tempo_prox_compra = difftime(data_prox_compra, t0, units = "days") %>% 
+        as.integer()
+    ) %>% 
+    select(-data_prox_compra)
+  
+  left_join(historico, futuro, by = "donor_id") %>% 
+    mutate(resposta = ifelse(is.na(resposta), 0, resposta))
+}
 ```
+
+Agora vamos analisar a taxa de resposta por mês da base.
+
+```{r}
+respostas <- seq(
+  from = min(don_samp$donation_received_date), 
+  to = max(don_samp$donation_received_date), 
+  by = "1 month"
+  ) %>% 
+  set_names() %>% 
+  map_dfr(~criar_resposta(don_samp, .x), .id = "t0")
+
+
+respostas %>% 
+  group_by(t0) %>% 
+  summarise(taxa = mean(resposta)) %>% 
+  mutate(t0 = ymd_hms(t0)) %>% 
+  ggplot(aes(x = t0, y = taxa)) +
+  geom_col() +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Mês de referência (T0)", y = "Taxa de Resposta") +
+  geom_vline(xintercept = max(don_samp$donation_received_date) - days(365), color = "red", linetype = "dashed")
+```
+
+Vemos que a taxa de resposta cai bastante ao longo do tempo e se estabiliza em 10%. A linha vermelha indica 1 ano antes da maior data da base - a partir daí a taxa de resposta tende a cair mesmo, uma vez que não demos 365 para todos fazerem as suas doações. Por isso, na hora de treinar o nosso modelo podemos apenas usar meses de referência até essa linha vermelha.
+
+Existe também um motivo para a taxa de respostar estar sempre caindo. Existem doadores que doaram uma vez e nunca mais doaram. Com o passar do tempo esses doadores continuam na base, mas já estão muito *frios* e vão inflando a contagem de não respostas. É comum criarmos algum conceito de doador ativo para tentar reduzir a diferença nas taxas de resposta. Uma definição poderia ser:
+
+> Um doador é ativo se fez pelo menos uma doação nos últimos 2 anos.
+
+Em geral esse tempo para se tornar inativo é determinado de forma que pouquíssimos doadores inativos voltam a se tornar doadores novamente.
+
+Vamos calcular o tempo de inatividade para cada doador em t0 e em seguida fazer algumas análises desse tempo com relação à taxa de resposta.
+
+```{r}
+criar_tempo_inativo <- function(don, t0) {
+  don %>% 
+    filter(donation_received_date <= t0) %>% 
+    group_by(donor_id) %>% 
+    summarise(ultima_doacao = max(donation_received_date)) %>% 
+    mutate(
+      tempo_inativo = difftime(t0, ultima_doacao, units = "days") %>% 
+        as.integer()
+    ) %>% 
+    select(-ultima_doacao)
+}
+```
+
+Agora vamos usar essa função para calcular os tempos de inatividade considerando diversos meses de referência.
+
+```{r}
+tempos_inatividade <- seq(
+  from = min(don_samp$donation_received_date), 
+  to = max(don_samp$donation_received_date), 
+  by = "1 month"
+  ) %>% 
+  set_names() %>% 
+  map_dfr(~criar_tempo_inativo(don_samp, .x), .id = "t0")
+```
+
+Em seguida, podemos cruzar essa informação com a resposta para podermos analisá-las em conjunto.
+
+```{r}
+respostas <-  left_join(respostas, tempos_inatividade, by = c("t0", "donor_id"))
+
+respostas %>% 
+  group_by(tempo_inativo) %>% 
+  summarise(taxa = mean(resposta)) %>% 
+  ggplot(aes(x = tempo_inativo, y = taxa)) +
+  geom_line() +
+  labs(x = "Tempo de Inatividade (dias)", y = "Taxa de Resposta") +
+  scale_y_continuous(labels = scales::percent) +
+  geom_hline(yintercept = 0.025, color = "red", linetype = "dashed")
+```
+
+A linha vermelha no gráfico acima cruza o eixo y em 2.5%. Podemos ver que a partir de 1000 dias de inatividade apenas 2.5% dos ex-doadores voltam a fazer uma doação. Como essa variável é muito determinante não faria sentido fazer um modelo que considerasse essas pessoas, por isso vamos considerá-las inativas e excluí-las da base.
+
+Agora podemos voltar ao gráfico com as taxas de resposta por mês de referência, excluindo agora os ex-doadores inativos.
+
+```{r}
+respostas %>% 
+  filter(tempo_inativo <= 1000) %>% 
+  group_by(t0) %>% 
+  summarise(taxa = mean(resposta)) %>% 
+  mutate(t0 = ymd_hms(t0)) %>% 
+  ggplot(aes(x = t0, y = taxa)) +
+  geom_col() +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Mês de referência (T0)", y = "Taxa de Resposta") +
+  geom_vline(xintercept = max(don_samp$donation_received_date) - days(365), color = "red", linetype = "dashed") +
+  geom_vline(xintercept = min(don_samp$donation_received_date) + days(1000), color = "blue", linetype = "dashed")
+```
+
+Agora a linha azul indica 1000 dias após a menor data da base. Não faz sentido considerar os períodos anteriores a essa linha pois a DonnorsChoose não existia antes de 1000 dias daquelas datas para podermos verificar se um doador é inativo.
+
+Vemos que dentro do período entre as linhas azul e vermelha a taxa de resposta é bem estável em torno de 12%.
 
 
 
