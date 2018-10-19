@@ -49,7 +49,7 @@ don_samp <- don %>%
   left_join(don, by = "donor_id")
 ```
 
-# Janela de tempo
+# Variável Resposta
 
 A primeira análise que precisamos fazer servirá para decidir qual será a janela de tempo para considerar a próxima doação. O nosso objetivo é identificar doadores que são propensos a fazer uma próxima doação.
 
@@ -102,8 +102,6 @@ Por consequência dessa decisão:
 * consideraremos apenas os doadores que não doaram nos últimos 30 dias. 
 * consideraremos as doações que ocorreram depois de 365 dias como não resposta.
 
-# Preparação da base de dados
-
 Agora que definimos algumas regras estamos prontos para iniciar a preparação da base de dados. A primeira coisa que vamos fazer é calcular o que chamamos de variável resposta.
 Ela será da seguinte forma:
 
@@ -139,6 +137,8 @@ criar_resposta <- function(don, t0) {
 }
 ```
 
+Essa função também cria uma variável que indica o tempo até a próxima doação. Vamos usá-la para tirar da resposta aquelas doações que acontecem no mesmo dia ou até no dia seguinte à data que selecionamos.
+
 Agora vamos analisar a taxa de resposta por mês da base.
 
 ```{r}
@@ -152,6 +152,7 @@ respostas <- seq(
 
 
 respostas %>% 
+  filter(is.na(tempo_prox_compra) | tempo_prox_compra > 1) %>% 
   group_by(t0) %>% 
   summarise(taxa = mean(resposta)) %>% 
   mutate(t0 = ymd_hms(t0)) %>% 
@@ -216,11 +217,12 @@ respostas %>%
 
 A linha vermelha no gráfico acima cruza o eixo y em 2.5%. Podemos ver que a partir de 1000 dias de inatividade apenas 2.5% dos ex-doadores voltam a fazer uma doação. Como essa variável é muito determinante não faria sentido fazer um modelo que considerasse essas pessoas, por isso vamos considerá-las inativas e excluí-las da base.
 
-Agora podemos voltar ao gráfico com as taxas de resposta por mês de referência, excluindo agora os ex-doadores inativos.
+Agora podemos voltar ao gráfico com as taxas de resposta por mês de referência, excluindo agora os ex-doadores inativos. Também combinamos anteriormente de **não considerar** pessoas que fizeram uma doação no último mês pois, a princípio não seria legal fazer uma comunicação pedindo doações para quem acabou de doar. Também vamos excluir essas pessoas no gráfico abaixo.
 
 ```{r}
 respostas %>% 
-  filter(tempo_inativo <= 1000) %>% 
+  filter(is.na(tempo_prox_compra) | tempo_prox_compra > 1) %>% 
+  filter(tempo_inativo <= 1000, tempo_inativo > 30) %>% 
   group_by(t0) %>% 
   summarise(taxa = mean(resposta)) %>% 
   mutate(t0 = ymd_hms(t0)) %>% 
@@ -235,7 +237,65 @@ respostas %>%
 
 Agora a linha azul indica 1000 dias após a menor data da base. Não faz sentido considerar os períodos anteriores a essa linha pois a DonnorsChoose não existia antes de 1000 dias daquelas datas para podermos verificar se um doador é inativo.
 
-Vemos que dentro do período entre as linhas azul e vermelha a taxa de resposta é bem estável em torno de 12%.
+Vemos que dentro do período entre as linhas azul e vermelha a taxa de resposta é bem estável em torno de 10%.
+
+# Variáveis explicativas
+
+Agora que já criamos a nossa variável resposta, precisamos criar as variáveis que vão nos auxiliar a prever a variável resposta. Chamamos essas variáveis de **variáveis explicativas**. 
+
+Aqui a imaginação é livre, você pode criar qualquer variável que você pense ser relacionada com a nossa variável resposta. É incrível que com uma tabela com apenas 7 colunas (como a nossa) é possível pensar em dezenas de variáveis que podem ajudar a prever.
+
+A única regra para criar as variáveis é que elas não podem conter nenhuma informação que tenha data > t0. Neste caso estaríamos usando informações que não teremos na hora de usar o modelo de fato.
+
+Um pouco antes no post analisamos o `tempo_de_inatividade` que é uma variável que é fortemente relacionada com a resposta. Não podemos esquecer de colocá-la no modelo. 
+
+Antes de começar a escrever o código, vamos pensar em outras variáveis que poderiam ser úteis:
+
+* Quantidade de doações feitas no último ano.
+* Quantidade de doações feitas nos últimos 2 anos.
+* Quantidade de projetos apoiados no último ano.
+* Quantidade de projetos apoiados nos últimos 2 anos.
+* Proporção de doações que incluiam a doação opcional p/ DonorsChoose.
+* Valor total doado no último ano
+* Valor total doado nos últimos 2 anos.
+
+Também podemos usar variáveis que estão na tabela de cadastro dos doadores (Donors.csv). 
+
+* Se o doador é ou não professor
+* O Estado em que mora o doador
+
+Variáveis como cidade exigem cuidados na hora de usar pois possuem muitas categorias. 
+Enfim, essa lista de variáveis é suficiente para construirmos o nosso primeiro modelo. Vamos agora, criar uma função que calcula essas variáveis parametrizando sempre pelo mes de referência.
+
+Essa função é uma função da tabela de doações, da tabela de doadores e do mês de referência.
+
+```{r}
+criar_variaveis_explicativas <- function(don, donnors, t0) {
+  
+  don %>% 
+    filter(donation_received_date <= t0) %>% 
+    group_by(donor_id) %>% 
+    summarise(
+      
+      qtd_doacoes_1 = n_distinct(donation_id[donation_received_date > t0 - months(12)]),
+      qtd_doacoes_2 = n_distinct(donation_id[donation_received_date > t0 - months(24)]),
+      
+      qtd_projetos_1 = n_distinct(project_id[donation_received_date > t0 - months(12)]),
+      qtd_projetos_2 = n_distinct(project_id[donation_received_date > t0 - months(24)]),
+      
+      vl_doado_1 = sum(donation_amount[donation_received_date > t0 - months(12)]),
+      vl_doado_2 = sum(donation_amount[donation_received_date > t0 - months(24)]),
+      
+      prop_doacao_opt = mean(donation_included_optional_donation == "Yes"),
+      
+    )
+    
+  
+}
+```
+
+
+
 
 
 
