@@ -10,7 +10,7 @@ draft: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = TRUE)
 ```
 
 Neste post vamos partir de uma base de dados no formato relacional e prepará-la até a hora de começar a fazer modelagem estatística. 
@@ -33,6 +33,7 @@ library(lubridate)
 don <- fread("~/Downloads/io/Donations.csv")
 don <- clean_names(don)
 don$donation_received_date <- ymd_hms(don$donation_received_date)
+donors <- fread("~/Downloads/io/Donors.csv") %>% clean_names()
 ```
 
 Carregamos usando a função `fread` (do pacote `data.table`) que é a forma mais rápida de ler arquivos de texto com R e em seguida usamos a função `clean_names` (do `janitor`) para arrumar o nome das colunas que possuiam espaços e outras coisas que atrapalham na hora de escrever o código. Também convertemos a coluna de data de recebimento da doação em formato de data do R para posteriormente poder fazer cálculos de períodos e etc.
@@ -239,6 +240,19 @@ Agora a linha azul indica 1000 dias após a menor data da base. Não faz sentido
 
 Vemos que dentro do período entre as linhas azul e vermelha a taxa de resposta é bem estável em torno de 10%.
 
+Dentro deste mesmo tópico, faz sentido definirmos quais serão os meses de referência que usaremos para treinar o modelo e quais meses usaremos para validar. Como a nossa resposta incluir 1 ano para frente, temos que tomar cuidado para que a base de treino não inclua informações da base de validação.
+
+Considere o diagrama abaixo:
+
+![](https://user-images.githubusercontent.com/4706822/47273449-c13c3c00-d56a-11e8-8e54-320b824f0e6f.png)
+
+
+
+
+
+
+
+
 # Variáveis explicativas
 
 Agora que já criamos a nossa variável resposta, precisamos criar as variáveis que vão nos auxiliar a prever a variável resposta. Chamamos essas variáveis de **variáveis explicativas**. 
@@ -270,29 +284,93 @@ Enfim, essa lista de variáveis é suficiente para construirmos o nosso primeiro
 Essa função é uma função da tabela de doações, da tabela de doadores e do mês de referência.
 
 ```{r}
-criar_variaveis_explicativas <- function(don, donnors, t0) {
+criar_variaveis_explicativas <- function(don, donors, t0) {
   
-  don %>% 
+  don <- don %>% 
     filter(donation_received_date <= t0) %>% 
+    mutate(tempo_doacao = as.numeric(difftime(t0, donation_received_date, units = "days")))
+  
+  um_ano <- don %>% 
+    filter(tempo_doacao <= 365) %>%
+    select(-tempo_doacao) %>% 
     group_by(donor_id) %>% 
     summarise(
-      
-      qtd_doacoes_1 = n_distinct(donation_id[donation_received_date > t0 - months(12)]),
-      qtd_doacoes_2 = n_distinct(donation_id[donation_received_date > t0 - months(24)]),
-      
-      qtd_projetos_1 = n_distinct(project_id[donation_received_date > t0 - months(12)]),
-      qtd_projetos_2 = n_distinct(project_id[donation_received_date > t0 - months(24)]),
-      
-      vl_doado_1 = sum(donation_amount[donation_received_date > t0 - months(12)]),
-      vl_doado_2 = sum(donation_amount[donation_received_date > t0 - months(24)]),
-      
-      prop_doacao_opt = mean(donation_included_optional_donation == "Yes"),
-      
+      qtd_doacoes_1 = n_distinct(donation_id),
+      qtd_projetos_1 = n_distinct(project_id),
+      vl_doado_1 = sum(donation_amount),
+      prop_doacao_opt_1 = mean(donation_included_optional_donation == "Yes")
+    )
+  
+  dois_anos <- don %>% 
+    filter(tempo_doacao <= 730) %>% 
+    select(-tempo_doacao) %>% 
+    group_by(donor_id) %>% 
+    summarise(
+      qtd_doacoes_2 = n_distinct(donation_id),
+      qtd_projetos_2 = n_distinct(project_id),
+      vl_doado_2 = sum(donation_amount),
+      prop_doacao_opt_2 = mean(donation_included_optional_donation == "Yes")
     )
     
+  geral <- don %>% 
+    group_by(donor_id) %>% 
+    summarise(ultima_doacao = max(donation_received_date)) %>% 
+    ungroup() %>% 
+    mutate(
+      tempo_inatividade = difftime(t0, ultima_doacao, units = "days") %>% 
+        as.integer()
+    ) %>% 
+    select(-ultima_doacao)
+    
   
+  um_ano %>% 
+    full_join(dois_anos, by = "donor_id") %>% 
+    full_join(geral, by = "donor_id") %>% 
+    left_join(
+      donors %>% select(donor_id, donor_state, donor_is_teacher),
+      by = "donor_id"
+    )
 }
 ```
+
+Agora vamos usar essa função para criar as variáveis em cada mês de referência, entre as linhas azul e vermelha no gráfico anterior.
+
+```{r}
+periodos <- seq(
+  from = min(don_samp$donation_received_date) + days(1000), 
+  to = max(don_samp$donation_received_date) - days(365), 
+  by = "1 month"
+  ) %>% 
+  set_names()
+
+explicativas <-  periodos %>% 
+  map_dfr(~criar_variaveis_explicativas(don_samp, donors,  .x), .id = "t0")
+```
+
+Vamos calcular também as respostas e juntar com a base de variáveis explicativas.
+
+```{r}
+respostas <- periodos %>%  
+  map_dfr(~criar_resposta(don_samp,  .x), .id = "t0")
+
+final <- left_join(respostas, explicativas, by = c("donor_id", "t0")) %>% 
+  filter(tempo_inatividade <= 1000, tempo_inatividade > 30)
+```
+
+A tabela `final` contém todas as informações que podemos usar no nosso modelo.
+
+# Modelagem
+
+Agora estamos prontos para ajustar nosso primeiro modelo. O primeiro passo é separar uma base de dados para validação.
+
+O ideal 
+
+```{r}
+
+```
+
+
+
 
 
 
