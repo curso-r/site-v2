@@ -247,12 +247,6 @@ Considere o diagrama abaixo:
 ![](https://user-images.githubusercontent.com/4706822/47273449-c13c3c00-d56a-11e8-8e54-320b824f0e6f.png)
 
 
-
-
-
-
-
-
 # Variáveis explicativas
 
 Agora que já criamos a nossa variável resposta, precisamos criar as variáveis que vão nos auxiliar a prever a variável resposta. Chamamos essas variáveis de **variáveis explicativas**. 
