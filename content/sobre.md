@@ -23,5 +23,3 @@ Em 2016 e 2017, ministramos novamente o curso no programa de verão e, depois de
 # O que é R?
 
 R é uma linguagem e um ambiente de desenvolvimento integrado para cálculos de gráficos e estatísticos. Criada por Ross Ihaka e Robert Gentleman (daí o nome “R”), ela é altamente usada por especialistas para desenvolvimento de softwares de estatísticas e análise de dados e está se tornando cada vez mais popular. Saiba mais sobre a linguagem R em [nossos cursos](/cursos).
-
-

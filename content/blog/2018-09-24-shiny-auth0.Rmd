@@ -1,0 +1,327 @@
+---
+title: "Autenticação no Shiny com Auth0"
+date: "2018-09-27T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r", "shiny"]
+banner: "img/banners/shiny-auth0.jpg"
+author: ["Daniel", "José"]
+summary: "Neste post vamos ensinar o passo a passo para adicionar autenticação em seu aplicativo Shiny usando o Auth0."
+draft: false
+---
+
+```{r echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
+Neste post vamos criar um Shiny App simples usando o Auth0 como servidor de autenticação. O Auth0 implementa o OAuth2, o principal protocolo de autorização utilizado atualmente na indústria de software. Ele permite que os aplicativos tenham acesso limitado às contas de usuário em serviços HTTP.
+
+## Como funciona o oauth2.0?
+
+Antes de começarmos - nesta parte do post resumi um pouco o que está escrito [aqui](https://aaronparecki.com/oauth-2-simplified/). Para se aprofundar, vale a pena ler essa postagem do [Aaron Parecki](https://aaronparecki.com/oauth-2-simplified/).
+
+### Papéis
+
+A autorização/autenticação feita por meio de OAuth2 envolve 4 papéis:
+
+- *Cliente*: É o aplicativo que está tentando acessar a conta do *usuário*. Ele precisa obter a permissão do *usuário* antes de poder acessar as informações.
+- *API*: É o servidor de recursos que é usado para acessar as informações do *usuário*.
+- *Servidor de autorização*: Esse é o servidor que vai aprovar ou recusar as requisições. Ele pode ser o mesmo servidor que o API. No caso do Auth0 que vamos ver mais tarde, eles são o mesmo servidor.
+- *Dono do recurso*: O dono do recurso é a pessoa que está dando acesso de alguma parte das informações da sua conta.
+
+### Criando um App
+
+Antes de começar o processo de autenticação com o OAuth, você deve registrar o seu app com o serviço - no nosso caso, vamos registrá-lo com o Auth0. Ao registrar em geral passamos informações básicas sobre o app e o principal é o *redirect URI* - que será chamado de *callback URL* pelo Auth0. O servidor de autenticação só pode redirecionar o usuário para essas URL's cadastradas após completar a autorização - isso ajuda a evitar alguns tipos de ataques.
+
+Depois de registrar o seu app você receberá um *client ID* e um *client secret*. Em teoria o *client ID* é informação pública e o *client secret* (é segredo) e não pode ser divulgado.
+
+### O fluxo da autenticação
+
+Existem 4 fluxos distintos de autenticação no OAuth2.0, cada um utilizado em circuntâncias diferentes. No nosso caso vamos usar um método chamado de * Authorization Code*. Esse método funciona da seguinte forma:
+
+Criamos um link de autenticação para o usuário com as seguintes informações:
+
+- *client_id*
+- *redirect_uri*
+- *scope*
+- *state*
+
+Já falamos dos 2 primeiros. O *scope* vai indicar quais partes da conta do usuário que o *cliente* pode ver. O *state*, uma string aleatória que verificaremos depois. O link que criamos é algo da forma:
+
+```
+https://authorization-server.com/auth?response_type=code&
+  client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=photos&state=1234zyx
+```
+
+Ao acessar este link o usuário vê o que chamamos de prompt de autorização. Algo do tipo:
+
+![Img do post https://aaronparecki.com/oauth-2-simplified/](https://camo.githubusercontent.com/f5f44dbf0abc7642d83fe366e97f29fdd3233d9e/68747470733a2f2f6161726f6e70617265636b692e636f6d2f6f617574682d322d73696d706c69666965642f6f617574682d617574686f72697a6174696f6e2d70726f6d70742e706e67)
+
+Se o usuário clicar em *Autorizar*, ele será redirecionado para o seu app passando um código gerado pelo servidor de autorização e o *state*. A URL será algo do tipo:
+
+```
+https://example-app.com/cb?code=AUTH_CODE_HERE&state=1234zyx
+```
+
+Se o `state` for o mesmo que tiver sido gerado anteriormente, estamos prontos para requisitar o token de acesso. O token de acesso é solicitado pelo app ao servidor de autorização por meio de uma requisição do tipo `POST` que envia as seguintes informações:
+
+* `grant_type`: o nível de autorização requisitada
+* `code`: o código de autenticação gerado no anteriormente
+* `redirect_uri`: a URL de redirecionamente
+* `client_id`: o código do cliente.
+
+Em posse do token, temos o que é necessário para fazer requisições para a API e assim obter as informações que o usuário nos permitiu acesso.
+
+## Configurando o Auth0
+
+Vá para a página [*applications*](https://manage.auth0.com/#/applications) e crie um novo app clicando no botão *Create Application* no canto superior direito.
+
+![](https://user-images.githubusercontent.com/4706822/46171092-f3ad8e80-c275-11e8-8fd7-632818810f35.png)
+
+Na próxima tela, dê um nome para o app (esse é o nome que aparecerá na página de login) e selecione o *Regular Web Applications*. Selecionamos esse tipo de app para não ter que se preocupar em esconder o *client secret*.
+
+Em seguida vá para a aba *Settings* para configurarmos alguns detalhes do app.
+
+![](https://user-images.githubusercontent.com/4706822/46171157-1b9cf200-c276-11e8-91d6-462ab9d2f1b7.png)
+
+As coisas mais importantes aqui são:
+
+* `Domain`: indica o endpoint do OAuth2. Vamos nos referir a ele posteriormente como `base_url`.
+* `Client Id`: é a chave do cliente. No nosso código vamos nos referir a ele como `key`.
+* `Client Secret`: é a chave secreta do app. Vamos nos referir a ele como `secret`.
+
+Mais para baixo, na mesma página, vamos configurar o campo *Allowed Callback URLs*, essas são as URL's para as quais permitimos que o usuário seja redirecionado após a autenticação. Também vamos configurar o campo *Allowed Web Origins* para poder indicar quis URL's podem redirecionar para a página de autenticação. 
+
+![](https://user-images.githubusercontent.com/4706822/45969552-631f4600-c00a-11e8-968f-4ceea838d460.png)
+
+No nosso caso, vamos preencher os dois campos com as mesmas URL's. A primeira: `https://localhost:8100` - caminho e porta que vamos usar para testes locais.
+A segunda URL é aquela em que o Shiny ficará hospedado. Você não precisa preencher as duas agora, por enquanto pode deixar somente a URL local enquanto testamos o app localmente.
+
+No Auth0 é só isso. Agora vamos para o R. 
+
+## Conectando o R com o Auth0
+
+O código que vamos desenvolver e uma versão adaptada do código que está disponível [neste link](https://gist.github.com/hadley/144c406871768d0cbe66b0b810160528). A diferença é que este faz a autenticação usando a conta do Github e o nosso fará a autenticação com o Auth0. A versão completa deste código está disponível [aqui](https://github.com/dfalbel/shiny-auth0).
+
+Vamos desenvolver um app simples em Shiny que mostra as informações disponibilizadas pelo usuário. Neste app usaremos duas bibliotecas:
+
+```{r}
+library(shiny)
+library(httr)
+```
+
+### Setup do Oauth
+
+Os códigos nesta sessão podem ser incluidos no arquivo `global.R` ( se você estiver desenvolvendo o seu shiny separando por arquivos `ui.R` e `server.R`) se você estiver usando apenas um `app.R`, esses blocos podem ser incluídos no início do arquivo - antes da chamada por `shinyApp(uiFunc, server)`.
+
+Neste primeiro bloco de código vamos definir qual é a URL que o app está sendo servido.
+Criamos um bloco que faz o seguinte - quando estivermos em uma sessão interativa (por exemplo, rodando pelo RStudio) use a url `APP_URL <- "https://localhost:8100/"`. Já quando estiver em uma sessão não interativa, use `https://shiny.curso-r.com`. 
+
+```{r}
+if (interactive()) {
+  # testing url
+  options(shiny.port = 8100)
+  APP_URL <- "https://localhost:8100/"
+} else {
+  # deployed URL
+  APP_URL <- "https://shiny.curso-r.com"
+}
+```
+
+Essas devem ser  as URL's que indicamos anteriormente para o Auth0 nos campos *Allowed Web Origins* e *Allowed Callback URLs*.
+
+Agora vamos criar um objeto chamado `app` que vai armazenar todas as informações relativas ao seu app configurado no Auth0. Colocamos entre `{}` as informações que você deve preencher com os seus dados. 
+
+Aqui você indicará a sua `key` e `secret` que obtivemos ao criar um App no Auth0.
+
+```{r}
+app <- oauth_app(
+  appname = "{coloque um nome para o seu App. (esse nome é opcional)}",
+  key = "{coloque aqui o seu Client ID - também chamamos de key",
+  # não é uma boa ideia deixar o secret no código 
+  # use variáveis de ambiente ou o pacote keyring
+  secret = "{coloque aqui o seu Client Secret - também chamamos de secret}",
+  redirect_uri = APP_URL
+)
+```
+
+Agora vamos criar um outro objeto chamado `api` que vai armazenar as informações necessárias para determinar os endpoints para as requisições necessárias para fazer a autenticação com o Auth0. Esse objeto nos ajuda a fazer rapidamente um *wrapper* para a API de auenticação do Auth0 - documentada [aqui](https://auth0.com/docs/api/authentication).
+
+```{r}
+api <- oauth_endpoint(
+    base_url = "{coloque aqui o seu Domain - também chamamos de base_url}",
+    request = "oauth/token", 
+    authorize = "authorize",
+    access = "oauth/token"
+)
+```
+
+Basicamente, aqui estamos dizendo o seguinte. Para requisitar um *token* use o endpoint `oauth/token`, para solicitar autorização, use o endpoint `authorize` e para solicitar acesso use o endpoint `oauth/token`.
+
+Não é recomendado, mas você poderia alterar esses endpoints na sessão *Endpoints* das  configurações avançadas do seu aplicativo no Auth0 - como mostra a imagem abaixo.
+
+![](https://user-images.githubusercontent.com/4706822/45971315-2013a180-c00f-11e8-8a1e-78969a0fc92c.png)
+
+Outro objeto importante que temos que definir é o `scope`. Essa string indica quais informações vamos solicitar do usuário para acesso. No nosso caso vamos usar:
+
+```{r}
+scope <- "openid profile"
+```
+
+Indicando assim que queremos acesso ao `openid` e ao perfil do usuário. Mais informações sobre esse `scope` podem ser encontradas [aqui](https://auth0.com/docs/scopes/current/oidc-scopes).
+
+Por fim, definimos um objeto `state` uma string aleatória que vai servir para validar que falamos mesmo com o Auth0. Ele deve nos redirecionar para uma página com o mesmo state.
+
+```{r}
+state <- paste(sample(c(letters, 0:9), size = 10, replace = TRUE), collapse = "")
+```
+
+Também vamos definir uma função chamada `has_auth_code`. Ela retorna `TRUE` quando baseando-se nos parâmetros da URL, parece que existe código do OAuth e quando o state é o mesmo que foi enviado para o Auth0, caso contrário ela retorna FALSE.
+
+```{r}
+has_auth_code <- function(params, state) {
+    if (is.null(params$code)) {
+        return(FALSE)
+    } else if (params$state != state) {
+        return(FALSE)
+    } else {
+        return(TRUE)
+    }
+}
+```
+
+### Construindo o UI
+
+Agora vamos construir a UI do nosso app. Se você estiver usando apenas um `app.R` pode definir os objetos da mesma forma que vamos fazer aqui. Se você estiver usando arquivos separados é só fazer a função que vamos definir a seguir `uiFunc` seja a última expressao do seu arquivo `ui.R`.
+
+Primeiro definimos um objeto chamado `ui` que contém a UI normalmente, como se não estivéssemos criando a autenticação:
+
+```{r}
+ui <- fluidPage(
+    verbatimTextOutput("code")
+)
+```
+
+Agora vem a parte **importante**. Uma feature que é pouco conhecida no Shiny, é que o UI pode ser uma função e não somente um objeto. Essa função pode ser usada para modificar a interface baseando-se na requisição. 
+
+No nosso caso, a nossa função `uiFunc` irá identificar se o parâmetro `code` foi enviado na * query string*. * Query string* é um nome que damos aos parâmetros que vem pela URL. No exemplo `www.curso-r.com?abb=1&x=2` temos os parâmetros `abb=1` e `x=2`. No nosso caso precisamos receber um parâmetro `code` que é usado para obter o *token* de autenticação e um parâmetro *state* que usamos para evitar ataques do tipo [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery).
+
+Se esses parêmetros não estiverem na URL, retornamos uma resposta de redirecionamento - para redirecionar o usuário para a url de autenticação.
+
+```{r}
+uiFunc <- function(req) {
+    if (!has_auth_code(parseQueryString(req$QUERY_STRING), state)) {
+        url <- oauth2.0_authorize_url(api, app, scope = scope, state = state)
+        redirect <- sprintf("location.replace(\"%s\");", url)
+        tags$script(HTML(redirect))
+    } else {
+        ui
+    }
+}
+```
+
+Com isso, quando o usuário tentar acessar o seu app pela URL direta, como ela não terá o parâmetro code, então o `uiFunc` vai redirecioná-lo para a página de autenticação. Quando o usuário fizer a autenticação, ele será novamente redirecionado para a mesma URL, no entanto, o Auth0 irá incluir os parâmetros `code` e `state` na requisição, fazendo que a função `uiFunc` retorne a UI regular do Shiny, e não o redirecionamento.
+
+### Construindo o server
+
+Vamos definir o server da forma a seguir. Lembre-se que se você estiver usando arquivos separados para ui e server, não precisará colocar a atribuição `server <- `.
+
+```{r}
+server <- function(input, output, session) {
+    params <- parseQueryString(isolate(session$clientData$url_search))
+    if (!has_auth_code(params, state)) {
+        return()
+    }
+    
+    token <- oauth2.0_token(
+        app = app,
+        endpoint = api,
+        credentials = oauth2.0_access_token(api, app, params$code),
+        cache = FALSE,
+        user_params = list(grant_type = "authorization_code")
+    )
+    
+    resp <- GET("https://dfalbel.auth0.com/userinfo", config(token = token))
+    
+    
+    output$code <- renderPrint(content(resp, "text"))
+}
+```
+
+Agora vamos explicar passo a passo da função `server`. Nas linhas abaixo estamos obtendo os parâmetros da *Query String* e em seguida verificamos se existe um parâmetro `code` e se o `state` retornado é o mesmo que enviamos para o Auth0 (usando a função `has_auth_code`). Se esses parâmetros não estiverem corretos fazemos o server parar retornando vazio.
+
+```{r}
+params <- parseQueryString(isolate(session$clientData$url_search))
+if (!has_auth_code(params, state)) {
+  return()
+}
+```
+
+Em seguida, dado que existe um parâmetro `code`, vamos requisitar o token de autorização do OAuth. Isso verifica que o `code` que temos é válido. No caso de o parâmetro `code` não ser válido, a função `oauth2.0_token` retorna um erro parando a execução do server. Fazemos isso da seguinte forma:
+
+```{r}
+token <- oauth2.0_token(
+  app = app,
+  endpoint = api,
+  credentials = oauth2.0_access_token(api, app, params$code),
+  cache = FALSE,
+  user_params = list(grant_type = "authorization_code")
+)
+```
+
+Nesse momento, se a autenticação tiver ocorrido corretamente você terá um objeto `token` que deve ser enviado junto com as suas próximas requisições para obter informações sobre o usuário.
+
+Um exemplo do que podemos obter é usar o endpoint `userinfo` para obter informações sobre o perfil do usuário logado. Você poderia usar essas informações para personalizar o app.
+
+```{r}
+resp <- GET("https://dfalbel.auth0.com/userinfo", config(token = token))
+print(content(resp, "parsed"))
+```
+
+```{r}
+# $sub
+# [1] "google-oauth2|ashjkdhique92392"
+# 
+# $given_name
+# [1] "Daniel"
+# 
+# $family_name
+# [1] "Falbel"
+# 
+# $nickname
+# [1] "dfalbel"
+# 
+# $name
+# [1] "Daniel Falbel"
+# 
+# $picture
+# [1] "https://lh6.googleusercontent.com/-KAr2tY871g4/AAAAAAAAAAI/AAAAAAAANMw/ZK4kajskakvs_5ftmk/photo.jpg"
+# 
+# $gender
+# [1] "male"
+# 
+# $locale
+# [1] "pt-BR"
+# 
+# $updated_at
+# [1] "2018-09-24T17:44:49.768Z"
+```
+
+## Mais opções do Auth0
+
+No Auth0 existem diversas opções de login que podem ser configuradas na aba [*Connections*](https://manage.auth0.com/#/connections/social).
+
+![](https://user-images.githubusercontent.com/4706822/45973605-53f1c580-c015-11e8-9206-d7d18b7d27c3.png)
+
+Você também pode impedir que as pessoas se cadastrem no seu app (somente o administrador pode cadastrar usuários) - assim você restringe as pessoas que podem acessar o seu app. Isso pode ser feito na aba *Connections > Database* e em seguida desabilitando o *Sign up*
+
+![](https://user-images.githubusercontent.com/4706822/45973716-9f0bd880-c015-11e8-8d5d-1113c6db68e2.png)
+
+Você poderia ainda conectar o Auth0 com diretórios de autenticação como LDAP, comuns no mundo corporativo.
+
+## Disclaimer
+
+Não somos especialistas em segurança portanto usem esse código com desconfiança e sempre perguntem a um especialista antes de usar em ambiente de produção.
+
+## Agradecimentos
+
+Esse post não teria sido possível sem a ajuda do [José de Jesus Filho](https://www.josejesus.info) que nos apresentou a solução depois de muito tempo explorando diversas formar de criar autenticação para seus Shiny's.
