@@ -24,7 +24,7 @@ Caso você já tenha visto o
 descrito por Hadley Wickham, o fluxo do web scraping vai ser bastante simples
 de entender. Todos os itens a seguir vão se basear neste diagrama:
 
-![](/blog/2018-02-18-fluxo-scraping/cycle.png)
+![](/img/blog/fluxo-scraping/cycle.png)
 
 Cada verbo indica um fase do processo de raspar dados da internet. A caixa
 azulada no meio do diagrama denominada **reprodução** indica um procedimento
@@ -46,7 +46,7 @@ entender se os títulos se comportam da mesma forma em todas. Como a Wikipédia
 é um site organizado, todos os títulos são criados da mesma forma em
 absolutamente todos os artigos.
 
-![](/blog/fluxo-scraping/title.gif)
+![](/img/blog/fluxo-scraping/title.gif)
 
 ### Navegar
 
@@ -65,7 +65,7 @@ o elemento do título e ver qual é o seu
 [XPath](https://en.wikipedia.org/wiki/XPath) (basicamente o endereço do elemento
 no HTML da página): `//*[@id="firstHeading"]`.
 
-![](/blog/fluxo-scraping/inspect.gif)
+![](/img/blog/fluxo-scraping/inspect.gif)
 
 ### Replicar
 
