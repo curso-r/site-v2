@@ -46,7 +46,7 @@ entender se os títulos se comportam da mesma forma em todas. Como a Wikipédia
 é um site organizado, todos os títulos são criados da mesma forma em
 absolutamente todos os artigos.
 
-![](/blog/2018-02-18-fluxo-scraping/title.gif)
+![](/blog/fluxo-scraping/title.gif)
 
 ### Navegar
 
@@ -65,7 +65,7 @@ o elemento do título e ver qual é o seu
 [XPath](https://en.wikipedia.org/wiki/XPath) (basicamente o endereço do elemento
 no HTML da página): `//*[@id="firstHeading"]`.
 
-![](/blog/2018-02-18-fluxo-scraping/inspect.gif)
+![](/blog/fluxo-scraping/inspect.gif)
 
 ### Replicar
 
