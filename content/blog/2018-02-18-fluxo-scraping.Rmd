@@ -51,7 +51,7 @@ absolutamente todos os artigos.
 ### Navegar
 
 Agora precisamos entender de onde vem o dado que queremos extrair. Esse passo
-pode ser extremamente simples simples, mas de vez em quando ele se tornara algo
+pode ser extremamente simples, mas de vez em quando ele se tornara algo
 bastante complexo.
 
 Usando as ferramentas de desenvolvedor do nosso navegador, vamos **navegar**
@@ -143,9 +143,3 @@ Fazer um scraper não é uma tarefa fácil, mas, se toda vez seguirmos um
 método consistente e robusto, podemos melhorar um pouco o nosso trabalho.
 O fluxo do web scraping tenta ser este método, englobando em passos simples
 e razoavelmente bem definidos essa arte que é fazer raspadores web.
-
-Caso você tenha se interessado pelo conteúdo abordado nesse post, nós da
-Curso-R vamos dar um workshop em São Paulos no dia 23/06/2018 sobre
-web scraping com R. Lá você vai ter a oportunidade de aprender em muitos mais
-detalhes como são, no mundo real, os 6 passos do web scraping além de várias
-dicas de como tornar seus scrapers ainda melhores.
