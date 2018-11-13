@@ -242,9 +242,19 @@ Vemos que dentro do período entre as linhas azul e vermelha a taxa de resposta 
 
 Dentro deste mesmo tópico, faz sentido definirmos quais serão os meses de referência que usaremos para treinar o modelo e quais meses usaremos para validar. Como a nossa resposta incluir 1 ano para frente, temos que tomar cuidado para que a base de treino não inclua informações da base de validação.
 
-Considere o diagrama abaixo:
+Considere o diagrama abaixo. Cada linha nele é um mês que poderia ser usado como mês de referência. Os períodos pintados são os períodos que usamos como histórico e os em cinza escuro são os períodos que usaríamos para calcular a resposta.
 
-![](https://user-images.githubusercontent.com/4706822/47273449-c13c3c00-d56a-11e8-8e54-320b824f0e6f.png)
+Para sabermos se o nosso modelo será efetivo, temos que separar uma base de validação que não tenha intersecção de respostas com a base de treino. Por isso, estabelecemos a linha vertical vermelha. 
+
+Veja que os meses que vamos usar para validar (Nov-16 -> Mai 17)
+
+![](https://user-images.githubusercontent.com/4706822/47326680-40e80a80-d640-11e8-9c8d-db1d57ca902d.png)
+
+
+
+
+
+
 
 
 # Variáveis explicativas
