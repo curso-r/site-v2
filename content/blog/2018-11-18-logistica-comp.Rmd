@@ -13,11 +13,14 @@ draft: false
 knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
 ```
 
-Nesse post vamos discutir um pouco sobre regressão logística, tensorflow e modelos lineares generalizados. Não vou economizar nas matemáticas nem nos códigos.
+Nesse post vamos discutir um pouco sobre regressão logística, tensorflow e Modelos Lineares Generalizados (*Generalized Linear Models*, GLMs). Não vou economizar nas matemáticas nem nos códigos.
+
+- Se você não conhece GLMs, recomendo dar uma lida, pelo menos na introdução, do [livro do professor Gilberto A. Paula](https://www.ime.usp.br/~giapaula/texto_2013.pdf). 
+- Se você não conhece o Tensorflow, recomendo ver [a página do RStudio sobre Tensorflow](https://tensorflow.rstudio.com/).
 
 ## Introdução: o `tensorglm`
 
-Um de meus interesses no momento é implementar modelos lineares generalizados (*Generalized Linear Models*, GLMs) usando [Tensorflow](https://tensorflow.org). O Tensorflow é uma biblioteca computacional mantida pela Google que utiliza paralelização e o poder das GPUs (*Graphical Processing Units*) para fazer contas. O Tensorflow foi especialmente desenhado para facilitar o ajuste de redes neurais profundas e outros modelos sofisticados.
+Um de meus interesses no momento é implementar GLMs usando [Tensorflow](https://tensorflow.org). O Tensorflow é uma biblioteca computacional mantida pela Google que utiliza paralelização e o poder das GPUs (*Graphical Processing Units*) para fazer contas. O Tensorflow foi especialmente desenhado para facilitar o ajuste de redes neurais profundas e outros modelos sofisticados.
 
 GLMs são casos particulares de redes neurais. Uma rede neural com apenas uma camada e com funções de perda / verossimilhanças baseadas na Divergência de Kullback-Leibler são exatamente iguais aos GLMs. Por exemplo, essa divergência equivale ao erro quadrático médio para a distribuição gaussiana e *binary-crossentropy* para logística.
 
@@ -77,7 +80,7 @@ x <- rnorm(N)
 sigmoide <- function(eta) 1 / (1 + exp(-eta))
 y <- rbinom(N, 1, sigmoide(1 + 2 * x))
 
-# transformando esses vetores e funções em objetos do tensorflow
+# transformando esses vetores objetos do tensorflow
 x <- tf$to_float(x)
 y <- tf$to_float(y)
 
@@ -100,7 +103,7 @@ $$
 
 onde
 
-- $\nabla$ é o **gradiente** da verossimilhança em relação ao vetor $(\alpha, \beta)$, ou seja, são as derivadas parciais de $l$ em relação à $\alpha$ e $\beta$. Isso dá a direção e intensidade em que os valores devem ser atualizados.
+- $\nabla_{(\alpha, \beta)} l((\alpha, \beta)_{\text{velho}})$ é o **gradiente** da verossimilhança em relação ao vetor $(\alpha, \beta)$, ou seja, são as derivadas parciais de $l$ em relação à $\alpha$ e $\beta$. Isso dá a direção e intensidade em que os valores devem ser atualizados.
 
 - $k$ é chamado de *learning rate*, é um fator usado para controlar o tamanho do passo dado pelo gradiente. Esse valor normalmente é definido à mão. No caso dos GLMs, $k$ é substituído pelo inverso da segunda derivada da $l$ em relação aos parâmetros, gerando assim os algoritmos de Newton-Raphson e Fisher-scoring.
 
@@ -112,8 +115,8 @@ k <- 0.001 # essa é a taxa de aprendizado k: learning rate
 otimizador <- tf$train$GradientDescentOptimizer(k)
 
 # calcular os gradientes e aplicar
-gratientes <- otimizador$compute_gradients(perda)
-atualizar <- otimizador$apply_gradients(gratientes)
+gradientes <- otimizador$compute_gradients(perda)
+atualizar <- otimizador$apply_gradients(gradientes)
 
 # agora realmente iniciamos o tensorflow para fazer as contas
 sess <- tf$Session()
@@ -173,8 +176,8 @@ perda <- -tf$reduce_sum(y*log(mu) + (1-y)*log(1-mu))
 
 k <- 0.001
 otimizador <- tf$train$GradientDescentOptimizer(k)
-gratientes <- otimizador$compute_gradients(perda)
-atualizar <- otimizador$apply_gradients(gratientes)
+gradientes <- otimizador$compute_gradients(perda)
+atualizar <- otimizador$apply_gradients(gradientes)
 
 sess <- tf$Session()
 sess$run(tf$global_variables_initializer())
@@ -228,7 +231,7 @@ Bom, problemas numéricos não são minha especialidade, então agora é hora de
 
 ### Os objetos de classe `family` no R
 
-No R, os GLMs buscam informações de objetos da classe $family()$ para realizar os ajustes. No caso da logística, o objeto é retornado por uma função chamada `binomial()`.
+No R, os GLMs buscam informações de objetos da classe `family()` para realizar os ajustes. No caso da logística, o objeto é retornado por uma função chamada `binomial()`.
 
 ```{r}
 fam <- binomial()
@@ -256,7 +259,7 @@ fam$dev.resid
     <bytecode: 0x55fc8e2253a0>
     <environment: 0x55fca4eb5040>
     
-Hmm, parece que é uma função feita em C. Como as contas da nossa perda (soma, logaritmo, multiplicação e divisão) já são todas implementadas em C, provavelmente a conta foi implementado em C para garantir estabilidade numérica.
+Hmm, parece que é uma função feita em C. Como as contas da nossa perda (soma, logaritmo, multiplicação e divisão) já são todas implementadas em C, provavelmente a conta foi implementada em C para garantir estabilidade numérica.
 
 Olhando o [código-fonte do pacote stats](), encontramos a definição da função. A função é um pouco longa, então eu mantive apenas as partes importantes:
 
@@ -291,6 +294,7 @@ SEXP binomial_dev_resids(SEXP y, SEXP mu, SEXP wt)
 
 Eu não programo muito em C, mas desse código dá para ver duas coisas importantes: i) a função `y_log_y` só faz a conta se o valor de $y$ for diferente de zero, se não, ela já retorna zero; ii) a função `y_log_y` faz a conta $y\log({y}/{\mu})$, ao invés de apenas $y\log({\mu})$. Isso acontece pois no R estamos minimizando o Desvio do modelo, dado por
 
+
 $$
 \begin{aligned}
 &D(\mathbf y, \mu) = 2[l(\mathbf y|\mathbf y) - l(\mathbf y|(\alpha, \beta))]\\
@@ -323,7 +327,9 @@ perda <- tf$reduce_sum(tf$where(y == 0, y_log_y(1-y, 1-mu), y_log_y(y, mu)))
     Iter: 09, alpha=NaN, beta1=NaN, beta2=NaN
     Iter: 10, alpha=NaN, beta1=NaN, beta2=NaN
 
-Hmm, parece que não. Melhor olhar o que o tensorflow faz!
+Hmm, parece que não. Se olharmos mais atentamente para a função desvio, como $y$ pode assumir apenas os valores zero ou um, é possível observar que a conta é equivalente à perda calculada anteriormente. Possivelmente o problema aqui é que o tensorflow não trabalha muito bem com essas condições (`tf$where`) na perda, e isso dá problemas na hora de calcular o gradiente. 
+
+Essa função do R simplesmente não resolve o problema inicial. Melhor olhar o que o tensorflow faz!
 
 ### A binary cross-entropy no Tensorflow
 
@@ -380,5 +386,7 @@ Funcionou! :)
 1. Tensorflow é uma biblioteca interessante a ser explorada.
 2. É possível implementar uma regressão logística do zero em poucos passos.
 3. Precisamos tomar cuidado com problemas numéricos!
+
+No futuro, brincaremos também com o algoritmo IWLS. Será que ele roda mais rápido que a descida de gradiente?
 
 É isso pessoal. Happy coding ;)
