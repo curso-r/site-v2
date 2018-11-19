@@ -17,6 +17,7 @@ Nesse post vamos discutir um pouco sobre regressão logística, tensorflow e Mod
 
 - Se você não conhece GLMs, recomendo dar uma lida, pelo menos na introdução, do [livro do professor Gilberto A. Paula](https://www.ime.usp.br/~giapaula/texto_2013.pdf). 
 - Se você não conhece o Tensorflow, recomendo ver [a página do RStudio sobre Tensorflow](https://tensorflow.rstudio.com/).
+- Se você curte a parte computacional da estatística, [esse livro do LEG-UFPR é obrigatório](http://www.leg.ufpr.br/~paulojus/mcie/MCIE.pdf). Eles são os melhores.
 
 ## Introdução: o `tensorglm`
 
