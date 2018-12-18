@@ -1,0 +1,393 @@
+---
+title: "Regressão logística: aspectos computacionais"
+date: "2018-11-18T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/logistic-comp.jpg"
+author: ["Julio"]
+summary: "Nesse post vamos discutir um pouco sobre regressão logística, tensorflow e modelos lineares generalizados."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
+Nesse post vamos discutir um pouco sobre regressão logística, tensorflow e Modelos Lineares Generalizados (*Generalized Linear Models*, GLMs). Não vou economizar nas matemáticas nem nos códigos.
+
+- Se você não conhece GLMs, recomendo dar uma lida, pelo menos na introdução, do [livro do professor Gilberto A. Paula](https://www.ime.usp.br/~giapaula/texto_2013.pdf). 
+- Se você não conhece o Tensorflow, recomendo ver [a página do RStudio sobre Tensorflow](https://tensorflow.rstudio.com/).
+- Se você curte a parte computacional da estatística, [esse livro do LEG-UFPR é obrigatório](http://www.leg.ufpr.br/~paulojus/mcie/MCIE.pdf). Eles são os melhores.
+
+## Introdução: o `tensorglm`
+
+Um de meus interesses no momento é implementar GLMs usando [Tensorflow](https://tensorflow.org). O Tensorflow é uma biblioteca computacional mantida pela Google que utiliza paralelização e o poder das GPUs (*Graphical Processing Units*) para fazer contas. O Tensorflow foi especialmente desenhado para facilitar o ajuste de redes neurais profundas e outros modelos sofisticados.
+
+GLMs são casos particulares de redes neurais. Uma rede neural com apenas uma camada e com funções de perda / verossimilhanças baseadas na Divergência de Kullback-Leibler são exatamente iguais aos GLMs. Por exemplo, essa divergência equivale ao erro quadrático médio para a distribuição gaussiana e *binary-crossentropy* para logística.
+
+Por isso, não é de se surpreender que já existam soluções prontas para modelos específicos, como regressão linear normal, logística, e até Poisson. No entanto, essas soluções têm duas limitações:
+
+1. Não são extensivas. Por exemplo, não achei códigos para as distribuições normal inversa, gama e binomial negativa.
+
+2. As soluções atuais utilizam o algoritmo **descida de gradiente** para otimização, que é muito legal, mas não se aproveita de alguns resultados que temos na área de GLMs, como o **IWLS** (*Iterated Weighted Least Squares*), que é uma derivação do algoritmo Fisher-scoring, que reduz o problema do ajuste ao cálculo iterado de inversas e multiplicações de matrizes.
+
+Meu intuito é, então, montar uma solução alternativa que funcione igual à função `glm()` do R, mas usando Tensorflow no backend ao invés do algoritmo atual, que é em Fortran. Com isso, espero que o ajuste seja mais eficiente quando os dados são grandes e permita trabalhar com dados que não cabem na memória. 
+
+## A regressão logística
+
+Meu primeiro experimento com o `tensorglm` foi implementar a regressão logística usando tensorflow, com descida de gradiente. Considere o problema
+
+$$P(Y=1\;|\;\mu, x) = \mu = \sigma(\alpha + \beta x),$$
+
+em que $Y$ é nossa variável resposta, $x$ é nossa variável explicativa, $\alpha$ e $\beta$ são os parâmetros que queremos estimar e $\sigma(\cdot)$ é a função sigmoide, cuja inversa é a função de ligação logística.
+
+$$\sigma(\eta) = \frac{1}{1 + e^{-\eta}}$$
+
+Considerando que temos observações $Y_1, \dots, Y_n$ condicionalmente independentes, já temos o suficiente para especificar nosso modelo de regressão logística. O próximo passo é definir, com base nisso, a função que queremos otimizar.
+
+A partir de uma amostra $y_1, \dots, y_n$ e observando que $\mu_i = \sigma(\alpha + \beta x_i)$, a verossimilhança do modelo é dada por
+
+$$
+\mathcal L((\alpha, \beta)|\mathbf y) = \prod_{i=1}^n f(y_i|(\alpha, \beta), x_i) = \prod_{i=1}^n\mu_i^{y_i}(1-\mu_i)^{1-y_i}
+$$
+
+O logaritmo da verossimilhança é dado por
+
+$$
+\begin{aligned}
+l((\alpha, \beta)|\mathbf y) &= \sum_{i=1}^n y_i\log(\mu_i) + (1-y_i)\log(1-\mu_i)\\
+&= \sum_{i=1}^n y_i\log(\sigma(\alpha + \beta x_i)) + (1-y_i)\log(1 - \sigma(\alpha + \beta x_i))
+\end{aligned}
+$$
+
+Nosso objetivo é maximizar $l$ com relação à $\alpha$ e $\beta$.
+
+> Detalhe: essa soma, se multiplicada por `-1`, também é chamada de função de perda
+> *binary cross-entropy*. Por isso que tanto faz você definir GLMs a partir de 
+> $P(Y|x)$ ou a partir da função de perda!
+
+OK, problema dado! vamos implementar usando tensorflow!
+
+```{r}
+library(tensorflow)
+
+# gerando X usando uma distribuição qualquer
+set.seed(123)
+N <- 10000
+x <- rnorm(N)
+
+# gerando y usando distribuição binomial (com n = 1 para ser bernoulli)
+# aqui alpha_gerador = 1 e beta_gerador = 2
+sigmoide <- function(eta) 1 / (1 + exp(-eta))
+y <- rbinom(N, 1, sigmoide(1 + 2 * x))
+
+# transformando esses vetores objetos do tensorflow
+x <- tf$to_float(x)
+y <- tf$to_float(y)
+
+# inicialização das variáveis
+# o parâmetro seed é para permitir reprodutibilidade
+alfa <- tf$Variable(tf$random_normal(shape(1L), seed = 1))
+beta <- tf$Variable(tf$random_normal(shape(1L), seed = 1))
+
+
+# cálculo da perda
+mu <- sigmoide(alfa + beta * x)
+perda <- -tf$reduce_sum(y*log(mu) + (1-y)*log(1-mu))
+```
+
+Feito! Agora podemos usar a magia do tensorflow, que é esperto o suficiente para otimizar essa perda sem a gente se preocupar em calcular derivadas na mão. Para quem não conhece o algoritmo de descida de gradiente, ele funciona assim:
+
+$$
+(\alpha, \beta)_{\text{novo}} = (\alpha, \beta)_{\text{velho}} + k \nabla_{(\alpha, \beta)} l((\alpha, \beta)_{\text{velho}}), 
+$$
+
+onde
+
+- $\nabla_{(\alpha, \beta)} l((\alpha, \beta)_{\text{velho}})$ é o **gradiente** da verossimilhança em relação ao vetor $(\alpha, \beta)$, ou seja, são as derivadas parciais de $l$ em relação à $\alpha$ e $\beta$. Isso dá a direção e intensidade em que os valores devem ser atualizados.
+
+- $k$ é chamado de *learning rate*, é um fator usado para controlar o tamanho do passo dado pelo gradiente. Esse valor normalmente é definido à mão. No caso dos GLMs, $k$ é substituído pelo inverso da segunda derivada da $l$ em relação aos parâmetros, gerando assim os algoritmos de Newton-Raphson e Fisher-scoring.
+
+Detalhe: se você procurar esse algoritmo na internet, você vai encontrar um $-$ e não um $+$. Isso acontece porque estamos usando a verossimilhança e não a perda.
+
+```{r}
+# definindo o otimizador
+k <- 0.001 # essa é a taxa de aprendizado k: learning rate
+otimizador <- tf$train$GradientDescentOptimizer(k)
+
+# calcular os gradientes e aplicar
+gradientes <- otimizador$compute_gradients(perda)
+atualizar <- otimizador$apply_gradients(gradientes)
+
+# agora realmente iniciamos o tensorflow para fazer as contas
+sess <- tf$Session()
+sess$run(tf$global_variables_initializer())
+
+# agora aplicamos a atualização iterativamente
+# normalmente o número de iterações é escolhido dinamicamente
+# a partir da diferença entre os valores velhos e novos calculados.
+# se a diferença é muito pequena, então pode parar.
+iteracoes <- 10
+for (step in seq_len(iteracoes)) {
+  sess$run(atualizar)
+  s <- 'Iter: %02d, alpha=%s, beta=%s\n'
+  cat(sprintf(s, step, round(sess$run(alfa), 3), 
+              round(sess$run(beta), 3)))
+}
+```
+
+    Iter: 01, alpha=2.32, beta=3.593
+    Iter: 02, alpha=1.56, beta=3.409
+    Iter: 03, alpha=1.411, beta=2.989
+    Iter: 04, alpha=1.261, beta=2.665
+    Iter: 05, alpha=1.153, beta=2.422
+    Iter: 06, alpha=1.078, beta=2.257
+    Iter: 07, alpha=1.033, beta=2.154
+    Iter: 08, alpha=1.006, beta=2.095
+    Iter: 09, alpha=0.992, beta=2.062
+    Iter: 10, alpha=0.984, beta=2.045
+
+Parece que funcionou! Agora sabemos ajustar uma regressão logística na mão, com o algoritmo de descida de gradiente... ou será que não?
+
+## O Problema
+
+Vamos considerar o mesmo problema, mas agora com duas explicativas. temos
+
+$$P(Y=1\;|\;\mu, x) = \mu = \sigma(\alpha + \beta_1 x_2+ \beta_2 x_2),$$
+
+As contas são exatamente as mesmas e vou omitir, mostrando apenas o código novo.
+
+```{r}
+# gerando X usando uma distribuição qualquer
+set.seed(1)
+N <- 10000
+x1 <- rnorm(N)
+x2 <- rnorm(N)
+y <- rbinom(N, 1, sigmoide(1 + 2 * x1 + 3 * x2))
+
+x1 <- tf$to_float(x1)
+x2 <- tf$to_float(x2)
+y <- tf$to_float(y)
+alfa <- tf$Variable(tf$random_normal(shape(1L), seed = 1))
+beta1 <- tf$Variable(tf$random_normal(shape(1L), seed = 1))
+beta2 <- tf$Variable(tf$random_normal(shape(1L), seed = 1))
+
+mu <- sigmoide(alfa + beta1 * x1 + beta2 * x2)
+perda <- -tf$reduce_sum(y*log(mu) + (1-y)*log(1-mu))
+
+k <- 0.001
+otimizador <- tf$train$GradientDescentOptimizer(k)
+gradientes <- otimizador$compute_gradients(perda)
+atualizar <- otimizador$apply_gradients(gradientes)
+
+sess <- tf$Session()
+sess$run(tf$global_variables_initializer())
+iteracoes <- 10
+for (step in seq_len(iteracoes)) {
+  sess$run(atualizar)
+  s <- 'Iter: %02d, alpha=%s, beta1=%s, beta2=%s\n'
+  cat(sprintf(s, step, round(sess$run(alfa), 3), 
+              round(sess$run(beta1), 3),
+              round(sess$run(beta2), 3)))
+}
+```
+
+    Iter: 01, alpha=1.674, beta1=2.703, beta2=3.461
+    Iter: 02, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 03, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 04, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 05, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 06, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 07, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 08, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 09, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 10, alpha=NaN, beta1=NaN, beta2=NaN
+
+Oops! Explodiu! Por que será???
+
+Uma forma de corrigir esse problema é considerando uma taxa de aprendizado `k` um pouco menor. Com os mesmos dados e modelo acima, ao fazer
+
+```{r}
+k <- 0.00094
+```
+
+e rodar novamente, já conseguimos chegar nos resultados abaixo. 
+
+    Iter: 01, alpha=1.525, beta1=2.492, beta2=3.205
+    Iter: 02, alpha=1.183, beta1=2.32, beta2=3.36
+    Iter: 03, alpha=1.122, beta1=2.248, beta2=3.34
+    Iter: 04, alpha=1.101, beta1=2.208, beta2=3.296
+    Iter: 05, alpha=1.085, beta1=2.178, beta2=3.254
+    Iter: 06, alpha=1.073, beta1=2.152, beta2=3.216
+    Iter: 07, alpha=1.062, beta1=2.13, beta2=3.183
+    Iter: 08, alpha=1.053, beta1=2.112, beta2=3.154
+    Iter: 09, alpha=1.044, beta1=2.095, beta2=3.13
+    Iter: 10, alpha=1.037, beta1=2.082, beta2=3.109
+
+Mais algumas iterações e o modelo converge.
+
+Mas nós não queremos ficar fazendo um ajuste tão fino no valor de `k`, certo? Afinal, queremos resolver problemas do mundo real, não ficar escolhendo valores de `k`... Outra forma de resolver isso é evitando problemas numéricos nas contas. O cálculo da função de perda, por exemplo, pode ser melhorado. Mas como?
+
+Bom, problemas numéricos não são minha especialidade, então agora é hora de seguir os mestres. Vamos olhar como o R e como o Tensorflow implementam as funções de perda para regressão logística.
+
+### Os objetos de classe `family` no R
+
+No R, os GLMs buscam informações de objetos da classe `family()` para realizar os ajustes. No caso da logística, o objeto é retornado por uma função chamada `binomial()`.
+
+```{r}
+fam <- binomial()
+```
+
+O resultado disso é uma lista com vários métodos implementados. Por exemplo, a variância da binomial é dada por:
+
+```{r}
+fam$variance
+```
+
+    function (mu) 
+    mu * (1 - mu)
+    <bytecode: 0x55fc8e220a18>
+    <environment: 0x55fca4eb5040>
+
+A função de perda é dada pelo método `fam$dev.resids()` (resíduos deviance), e o código fonte é:
+
+```{r}
+fam$dev.resid
+```
+
+    function (y, mu, wt) 
+    .Call(C_binomial_dev_resids, y, mu, wt)
+    <bytecode: 0x55fc8e2253a0>
+    <environment: 0x55fca4eb5040>
+    
+Hmm, parece que é uma função feita em C. Como as contas da nossa perda (soma, logaritmo, multiplicação e divisão) já são todas implementadas em C, provavelmente a conta foi implementada em C para garantir estabilidade numérica.
+
+Olhando o [código-fonte do pacote stats](), encontramos a definição da função. A função é um pouco longa, então eu mantive apenas as partes importantes:
+
+```c
+static R_INLINE
+double y_log_y(double y, double mu)
+{
+    return (y != 0.) ? (y * log(y/mu)) : 0;
+}
+
+SEXP binomial_dev_resids(SEXP y, SEXP mu, SEXP wt)
+{
+
+  /* inicialização de variáveis e verificações */
+  
+  /* rmu e ry são os valores de mu e y transformados para reais */
+  /* rmu e ry são os valores de mu e y transformados para reais */
+  
+    for (i = 0; i < n; i++) {
+      mui = rmu[i];
+      yi = ry[i];
+      rans[i] = 2 * rwt[lwt > 1 ? i : 0] * 
+        (y_log_y(yi, mui) + y_log_y(1 - yi, 1 - mui));
+    }
+  
+  /* outros códigos não muito importantes */
+  
+  UNPROTECT(nprot);
+  return ans;
+}
+```
+
+Eu não programo muito em C, mas desse código dá para ver duas coisas importantes: i) a função `y_log_y` só faz a conta se o valor de $y$ for diferente de zero, se não, ela já retorna zero; ii) a função `y_log_y` faz a conta $y\log({y}/{\mu})$, ao invés de apenas $y\log({\mu})$. Isso acontece pois no R estamos minimizando o Desvio do modelo, dado por
+
+
+$$
+\begin{aligned}
+&D(\mathbf y, \mu) = 2[l(\mathbf y|\mathbf y) - l(\mathbf y|(\alpha, \beta))]\\
+&=2\left[\sum_{i=1}^n y_i\log(y_i) + (1-y_i)\log(1-y_i)\right. - \\
+&\left. -\sum_{i=1}^n y_i\log(\mu_i) + (1-y_i)\log(1-\mu_i)\right] \\
+&=2\left[\sum_{i=1}^n y_i\log\left(\frac{y_i}{\mu_i}\right) + (1-y_i)\log\left(\frac{1-y_i}{1-\mu_i}\right)\right].
+\end{aligned}
+$$
+
+Essa é a formulação usual na literatura de GLMs, que apresenta uma série de propriedades estatísticas. Minimizar o desvio equivale a maximizar a verossimilhança. Será que isso ajuda nos problemas numéricos? Vamos ver:
+
+```{r}
+## mesmos códigos de antes...
+## só substitua a perda por essas duas linhas
+
+y_log_y <- function(y, mu) y * log(y / mu)
+perda <- tf$reduce_sum(tf$where(y == 0, y_log_y(1-y, 1-mu), y_log_y(y, mu)))
+
+## mesmos códigos de antes...
+```
+
+    Iter: 01, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 02, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 03, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 04, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 05, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 06, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 07, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 08, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 09, alpha=NaN, beta1=NaN, beta2=NaN
+    Iter: 10, alpha=NaN, beta1=NaN, beta2=NaN
+
+Hmm, parece que não. Se olharmos mais atentamente para a função desvio, como $y$ pode assumir apenas os valores zero ou um, é possível observar que a conta é equivalente à perda calculada anteriormente. Possivelmente o problema aqui é que o tensorflow não trabalha muito bem com essas condições (`tf$where`) na perda, e isso dá problemas na hora de calcular o gradiente. 
+
+Essa função do R simplesmente não resolve o problema inicial. Melhor olhar o que o tensorflow faz!
+
+### A binary cross-entropy no Tensorflow
+
+Eu escondi de vocês, mas o tensorflow já tem a função de perda implementada: `tf$nn$sigmoid_cross_entropy_with_logits`. Ela já assume que a função de ligação é logística, por isso o `sigmoid_` no início. Traduzindo livremente [o help da função](https://www.tensorflow.org/api_docs/python/tf/nn/sigmoid_cross_entropy_with_logits), temos o seguinte (`z`=$y$ e `x`=$\eta = \alpha + \beta x$)
+
+      z * -log(sigmoid(x)) + (1 - z) * -log(1 - sigmoid(x))
+    = z * -log(1 / (1 + exp(-x))) + (1 - z) * -log(exp(-x) / (1 + exp(-x)))
+    = z * log(1 + exp(-x)) + (1 - z) * (-log(exp(-x)) + log(1 + exp(-x)))
+    = z * log(1 + exp(-x)) + (1 - z) * (x + log(1 + exp(-x))
+    = (1 - z) * x + log(1 + exp(-x))
+    = x - x * z + log(1 + exp(-x))
+
+Para $\eta < 0$ para evitar problemas numéricos com $\exp(-\eta)$, reformulamos para
+
+      x - x * z + log(1 + exp(-x))
+    = log(exp(x)) - x * z + log(1 + exp(-x))
+    = - x * z + log(1 + exp(x))
+
+
+Então, para garantir estabilidade e evitar problemas numéricos, a implementação usa essa formulação equivalente
+
+    max(x, 0) - x * z + log(1 + exp(-abs(x)))
+
+Beleza, vamos tentar!
+
+```{r}
+## mesmos códigos de antes...
+## só substitua a perda por essas duas linhas
+
+## agora não precisa calcular o sigmoide
+# mu <- sigmoide(alfa + beta1 * x1 + beta2 * x2)
+perda <- tf$nn$sigmoid_cross_entropy_with_logits(
+  labels = y, 
+  logits = alfa + beta1 * x1 + beta2 * x2
+)
+## mesmos códigos de antes...
+```
+
+    Iter: 01, alpha=1.674, beta1=2.703, beta2=3.461
+    Iter: 02, alpha=1.276, beta1=2.495, beta2=3.608
+    Iter: 03, alpha=1.197, beta1=2.396, beta2=3.562
+    Iter: 04, alpha=1.164, beta1=2.335, beta2=3.489
+    Iter: 05, alpha=1.14, beta1=2.287, beta2=3.42
+    Iter: 06, alpha=1.12, beta1=2.245, beta2=3.358
+    Iter: 07, alpha=1.102, beta1=2.21, beta2=3.303
+    Iter: 08, alpha=1.086, beta1=2.178, beta2=3.256
+    Iter: 09, alpha=1.073, beta1=2.152, beta2=3.215
+    Iter: 10, alpha=1.061, beta1=2.129, beta2=3.18
+
+Funcionou! :)
+
+## Wrap-up
+
+1. Tensorflow é uma biblioteca interessante a ser explorada.
+2. É possível implementar uma regressão logística do zero em poucos passos.
+3. Precisamos tomar cuidado com problemas numéricos!
+
+No futuro, brincaremos também com o algoritmo IWLS. Será que ele roda mais rápido que a descida de gradiente?
+
+É isso pessoal. Happy coding ;)
