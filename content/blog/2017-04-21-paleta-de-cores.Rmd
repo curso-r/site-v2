@@ -157,7 +157,7 @@ moonrise <- readJPEG("img/moonrise-kingdom.jpg")
 plot(as.raster(moonrise))
 ```
 
-![](/blog/img/moonrise-kingdom.jpg)
+![](/img/blog/paleta-de-cores/moonrise-kingdom.jpg)
 
 ```{r eval=FALSE}
 paleta <- criar_paleta(moonrise, 6)
