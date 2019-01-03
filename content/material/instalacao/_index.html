@@ -14,14 +14,15 @@ ordem: 1
 
 
 
-<p>A seguir apresentamos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais. Também damos um exemplo de como instalar pacotes no R.</p>
+<p>A seguir, apresentaremos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais e como instalar pacotes no R.</p>
 <div id="no-windows" class="section level1">
 <h1>No Windows</h1>
 <div id="instalacao-do-r" class="section level2">
 <h2>Instalação do R</h2>
 <ol style="list-style-type: decimal">
-<li><p>Entre <a href="https://cran.r-project.org/bin/windows/base/">neste link</a> e clique em “Download R x.x.x for Windows”, em que x.x.x é o número da versão mais recente disponível.</p></li>
-<li><p>Salve o arquivo em qualquer pasta do seu computador. No meu caso, salvei na pasta “Downloads”.</p></li>
+<li><p>Entre <a href="https://cran.r-project.org/bin/windows/base/">neste link</a> e clique em
+“Download R x.x.x for Windows”, sendo x.x.x o número da versão mais recente disponível.</p></li>
+<li><p>Salve o arquivo em qualquer pasta do seu computador. Aqui, salvamos na pasta “Downloads”.</p></li>
 </ol>
 <p><img src="/material/instalacao/figures/01-r-salvo.PNG" style="width: 80%;"></p>
 <ol start="3" style="list-style-type: decimal">
@@ -44,8 +45,10 @@ ordem: 1
 <p><img src="/material/instalacao/figures/rstudio-download-opt.PNG" style="width: 70%;"></p>
 <p>Você terá duas opções:</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Se você tiver acesso administrador, baixe a versão que está na lista de <em>Installers for Supported Platforms</em>. Em seguida a instalação será bem simples: fazer o download, abrir o instalador e seguir as instruções, clicando no botão “Avançar”.</p></li>
-<li><p>Se você não tiver acesso de administrador, faça o download da versão que está na lista <em>Zip/Tarballs</em>. (veja imagem acima)</p></li>
+<li><p>Se você tiver acesso administrador, baixe a versão que está na lista de <em>Installers for Supported Platforms</em>. Em seguida a instalação
+será bem simples: fazer o download, abrir o instalador e seguir as instruções, clicando no botão “Avançar”.</p></li>
+<li><p>Se você não tiver acesso de administrador, faça o download da versão
+que está na lista <em>Zip/Tarballs</em>. (veja imagem acima)</p></li>
 </ol>
 <div id="instalando-se-voce-for-administrador" class="section level3">
 <h3>Instalando se você for administrador</h3>
@@ -72,21 +75,10 @@ ordem: 1
 <p><img src="/material/instalacao/figures/rstudio-bin.PNG" style="width: 80%;"></p>
 </div>
 </div>
-<div id="instalacao-de-pacotes-do-r" class="section level2">
-<h2>Instalação de pacotes do R</h2>
-<p>Com o RStudio aberto, você verá a seguinte tela.</p>
-<p><img src="/material/instalacao/figures/rstudio-tidyverse.PNG" style="width: 80%;"></p>
-<p>Para instalar, por exemplo, o pacote <code>tidyverse</code>, digite <code>install.packages(&quot;tidyverse&quot;)</code> no console, como na imagem acima, e aperte <code>Enter</code>. Ao rodar este código uma série de comandos aparecerá no console. No final, se não houve problemas com a instalação, você verá uma mensagem do tipo:</p>
-<pre><code>package ‘tidyverse’ successfully unpacked and MD5 sums checked
-
-The downloaded binary packages are in
-    C:\Users\dfigueiredo\AppData\Local\Temp\Rtmpym4SPN\downloaded_packages</code></pre>
-<p>Ao instalar o <code>tidyverse</code>, você instalará uma série de pacotes muito utilizados no R, como <code>magrittr</code>, <code>dplyr</code>, <code>ggplot2</code>, <code>tidyr</code>, <code>purr</code>, entre outros. Durante o curso, abordaremos com mais detalhes a maioria deles.</p>
-</div>
 </div>
 <div id="no-linux" class="section level1">
 <h1>No Linux</h1>
-<p>Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para <a href="mailto:contato@curso-r.com">contato@curso-r.com</a>. Faremos o possível para ajudá-la(lo).</p>
+<p>Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para <a href="mailto:contato@curso-r.com" class="email">contato@curso-r.com</a>. Faremos o possível para ajudar.</p>
 <div id="instalacao-do-r-1" class="section level2">
 <h2>Instalação do R</h2>
 <ol style="list-style-type: decimal">
@@ -106,4 +98,16 @@ The downloaded binary packages are in
 </ol>
 <p><img src = "https://user-images.githubusercontent.com/8967307/45383704-5ea66680-b5e2-11e8-84df-35d56e7fcbaf.png"></img></p>
 </div>
+</div>
+<div id="instalacao-de-pacotes-qualquer-os" class="section level1">
+<h1>Instalação de pacotes (qualquer OS)</h1>
+<p>Um pacote é um conjunto de funções que têm como objetivo resolver um problema específico. São eles que deixam o R poderoso, capaz de enfrentar qualquer tarefa de análise de dados. A grande vantagem é que qualquer pessoa pode fazer um novo pacote e disponibilizar para a comunidade, o que acelera bastante o desenvolvemento da ferramenta. Dificilmente você vai fazer uma análise apenas com as funções básicas do R e dificilmente não vai existir um pacote com as funções que você precisa.</p>
+<p>Para instalar um pacote, abra o RStudio, digite o comando <code>install.packages(&quot;nome-do-pacote&quot;)</code> no Console e aperte a tecla <code>Enter</code>. Ao rodar o código, uma série de mensagens aparecerá na tela. No final, se não houve problemas com a instalação, você verá uma mensagem do tipo:</p>
+<pre><code>package ‘nome-do-pacote’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\dfigueiredo\AppData\Local\Temp\Rtmpym4SPN\downloaded_packages</code></pre>
+<p>Na imagem abaixo, estamos instalando o pacote <code>tidyverse</code>, que será bastante explorado neste material.</p>
+<p><img src="/material/instalacao/figures/rstudio-tidyverse.PNG" style="width: 80%;"></p>
+<p>Ao instalar o <code>tidyverse</code>, você instalará uma série de pacotes muito úteis para análise dados, como <code>magrittr</code>, <code>dplyr</code>, <code>ggplot2</code>, <code>tidyr</code>, <code>purr</code>, entre outros.</p>
 </div>

@@ -16,7 +16,7 @@ ordem: 1
 knitr::opts_chunk$set(collapse = TRUE, out.width= "75%")
 ```
 
-A seguir apresentamos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais. Também damos um exemplo de como instalar pacotes no R.
+A seguir, apresentaremos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais e como instalar pacotes no R.
 
 # No Windows
 
@@ -31,9 +31,9 @@ knitr::opts_chunk$set(
 ## Instalação do R
 
 1. Entre [neste link](https://cran.r-project.org/bin/windows/base/) e clique em 
-"Download R x.x.x for Windows", em que x.x.x é o número da versão mais recente disponível.
+"Download R x.x.x for Windows", sendo x.x.x o número da versão mais recente disponível.
 
-2. Salve o arquivo em qualquer pasta do seu computador. No meu caso, salvei na pasta "Downloads".
+2. Salve o arquivo em qualquer pasta do seu computador. Aqui, salvamos na pasta "Downloads".
 
 <img src="/material/instalacao/figures/01-r-salvo.PNG" style="width: 80%;">
 
@@ -93,26 +93,9 @@ que está na lista *Zip/Tarballs*. (veja imagem acima)
 
 <img src="/material/instalacao/figures/rstudio-bin.PNG" style="width: 80%;">
 
-## Instalação de pacotes do R
-
-Com o RStudio aberto, você verá a seguinte tela. 
-
-<img src="/material/instalacao/figures/rstudio-tidyverse.PNG" style="width: 80%;">
-
-Para instalar, por exemplo, o pacote `tidyverse`, digite `install.packages("tidyverse")` no console, como na imagem acima, e aperte `Enter`. Ao rodar este código uma série de comandos aparecerá no console. No final, se não houve problemas com a instalação, você verá uma mensagem do tipo:
-
-```
-package ‘tidyverse’ successfully unpacked and MD5 sums checked
-
-The downloaded binary packages are in
-	C:\Users\dfigueiredo\AppData\Local\Temp\Rtmpym4SPN\downloaded_packages
-```
-
-Ao instalar o `tidyverse`, você instalará uma série de pacotes muito utilizados no R, como `magrittr`, `dplyr`, `ggplot2`, `tidyr`, `purr`, entre outros. Durante o curso, abordaremos com mais detalhes a maioria deles.
-
 # No Linux
 
-Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para contato@curso-r.com. Faremos o possível para ajudá-la(lo).
+Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para contato@curso-r.com. Faremos o possível para ajudar.
 
 ## Instalação do R
 
@@ -131,3 +114,23 @@ Como a instalação no Linux depende da distribuição utilizada e, em geral, us
 2. Clique no link referente à distribuição que você utiliza para fazer o download do arquivo de instalação.
 
 <img src = "https://user-images.githubusercontent.com/8967307/45383704-5ea66680-b5e2-11e8-84df-35d56e7fcbaf.png"></img>
+
+
+# Instalação de pacotes (qualquer OS)
+
+Um pacote é um conjunto de funções que têm como objetivo resolver um problema específico. São eles que deixam o R poderoso, capaz de enfrentar qualquer tarefa de análise de dados. A grande vantagem é que qualquer pessoa pode fazer um novo pacote e disponibilizar para a comunidade, o que acelera bastante o desenvolvemento da ferramenta. Dificilmente você vai fazer uma análise apenas com as funções básicas do R e dificilmente não vai existir um pacote com as funções que você precisa.
+
+Para instalar um pacote, abra o RStudio, digite o comando `install.packages("nome-do-pacote")` no Console e aperte a tecla `Enter`. Ao rodar o código, uma série de mensagens aparecerá na tela. No final, se não houve problemas com a instalação, você verá uma mensagem do tipo: 
+
+```
+package ‘nome-do-pacote’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+	C:\Users\dfigueiredo\AppData\Local\Temp\Rtmpym4SPN\downloaded_packages
+```
+
+Na imagem abaixo, estamos instalando o pacote `tidyverse`, que será bastante explorado neste material.
+
+<img src="/material/instalacao/figures/rstudio-tidyverse.PNG" style="width: 80%;">
+
+Ao instalar o `tidyverse`, você instalará uma série de pacotes muito úteis para análise dados, como `magrittr`, `dplyr`, `ggplot2`, `tidyr`, `purr`, entre outros.

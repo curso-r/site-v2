@@ -9,17 +9,54 @@ minidesc: "RStudio é o melhor ambiente para programar em R."
 desc: "O RStudio é uma IDE para o R. Programar em R usando RStudio é muito mais prazeroso uma vez que ele fornece atalhos de teclado para execução do código, autocomplete para nome de variáveis e funções, visualizador de arquivo, gráficos e etc."
 requisitos: ["r-base"]
 layout: "article"
+ordem: 1.1
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# RStudio
+O RStudio é o melhor ambiente disponível para programação em R. Nesta seção, apresentaremos as suas principais funcionalidades, que te deixarão muito mais eficiente na hora de programar em R.
 
-O RStudio é o melhor ambiente de desenvolvimento de códigos em R disponível. Você pode baixá-lo [neste link](https://www.rstudio.com/products/rstudio/download/preview/).
+# Telas
 
-Muitas das ferramentas são aprendidas conforme o uso, e há bons materiais sobre o RStudio na internet (por exemplo, [esta página](https://csgillespie.github.io/efficientR/set-up.html#rstudio)). Uma funcionalidade importante é a criação de projetos, permitindo dividir o trabalho em múltiplos ambientes, cada um com o seu diretório, documentos e *workspace*. A seguir, apresentamos algumas estruturas para a organização de um projeto.
+Ao abrir o RStudio, você verá 4 quadrantes. Observe a figura abaixo.
+
+<img src="/material/rstudio/figures/rstudio-editor.png" style="width: 100%;">
+
+Esses quadrantes representam o **editor**, o **console**, o **environment** e o **output**.  Eles vêm nesta ordem, e depois você pode organizá-los da forma que preferir.
+
+Listamos abaixo as funções dos principais painéis:
+
+- **Editor/Scripts**: é onde escrevemos nossos códigos.
+- **Console**: é onde rodamos o código e recebemos as saídas. O R vive aqui!
+- **Environment**: painel com todos os objetos criados na sessão.
+- **Files**: mostra os arquivos no diretório de trabalho. É possível navegar entre diretórios.
+- **Plots**: painel onde os gráficos serão apresentados.
+- **Help**: janela onde a documentação das funções serão apresentadas.
+- **History**: painel com um histórico dos comandos rodados.
+
+# Atalhos
+
+Conhecer atalhos ajuda bastante quando estamos programando no RStudio. Veja os principais:
+
+- **CTRL+ENTER**: roda a linha selecionada no script. O atalho mais utilizado.
+- **ALT+-**: (<-) sinal de atribuição. Você usará o tempo todo.
+- **CTRL+SHIFT+M**: (%>%) operador *pipe*. Guarde esse atalho, você usará bastante.
+- **CTRL+1**: altera cursor para o script.
+- **CTRL+2**: altera cursor para o console.
+- **CTRL+ALT+I**: cria um chunk no R Markdown.
+- **ALT+SHIFT+K**: janela com todos os atalhos disponíveis.
+
+# Projetos
+
+Uma funcionalidade importante é a criação de projetos, permitindo dividir o trabalho em múltiplos ambientes, cada um com o seu diretório, documentos e *workspace*. 
+
+Para criar um projeto, clique em `New Project...` no Menu `File`. Na caixa de diálogo que aparecerá, clique em `New Directory` para criar o projeto em uma nova pasta ou `Existing Directory` para criar em uma pasta existente. Se você tiver o `Git` instalado, você também pode usar projetos para conectar com repositórios do Github e outras plataformas de desenvolvimento. Para isso, basta clicar em `Version Control`.
+
+<img src="/material/rstudio/figures/projetos.png" style="width: 70%;">
+
+A seguir, apresentamos algumas estruturas para a organização de um projeto.
 
 **Estrutura 1**. Por extensão de arquivo.
 
@@ -60,28 +97,9 @@ project/
   - project.Rproj
 ```
 
-Ao abrir o RStudio, você verá 4 quadrantes. Observe a figura abaixo.
+# Cheatsheets
 
-<img src="/material/rstudio/figures/rstudio-editor.png" style="width: 100%;">
+Se você clicar no Menu `Help` e então em Cheatsheets, você verá algumas opções de *folhas de cola*, um guia de consulta rápido para diversos pacotes e para o próprio RStudio.
 
-Esses quadrantes representam o **editor**, o **console**, o **environment** e o **output**.  Eles vêm nesta ordem, e depois você pode organizá-los da forma que preferir.
+<img src="/material/rstudio/figures/cheatsheet-rstudio.png" style="width: 100%;">
 
-Listamos abaixo as funções dos principais painéis:
-
-- **Editor/Scripts**: é onde escrevemos nossos códigos.
-- **Console**: é onde rodamos o código e recebemos as saídas. O R vive aqui!
-- **Environment**: painel com todos os objetos criados na sessão.
-- **Files**: mostra os arquivos no diretório de trabalho. É possível navegar entre diretórios.
-- **Plots**: painel onde os gráficos serão apresentados.
-- **Help**: janela onde a documentação das funções serão apresentadas.
-- **History**: painel com um histórico dos comandos rodados.
-
-Conhecer atalhos ajuda bastante quando estamos programando no RStudio. Veja os principais:
-
-- **CTRL+ENTER**: roda a linha selecionada no script. Os atalhos mais utilizado.
-- **ALT+-**: (<-) sinal de atribuição. Você usará o tempo todo.
-- **CTRL+SHIFT+M**: (%>%) operador *pipe*. Guarde esse atalho, você usará bastante.
-- **CTRL+1**: altera cursor para o script.
-- **CTRL+2**: altera cursor para o console.
-- **CTRL+ALT+I**: cria um chunk no R Markdown.
-- **ALT+SHIFT+K**: janela com todos os atalhos disponíveis.
