@@ -16,27 +16,22 @@ ordem: 2
 knitr::opts_chunk$set(collapse = TRUE, out.width= "75%")
 ```
 
-# Introdução
-
-A linguagem `R` é bem intuitiva. É possível fazer bastante coisa à base da tentativa e erro! Além disso, grande parte do conhecimento é escalável, isto é, quando você aprende a utilizar um certo tipo de função, o aprendizado pode ser replicado para funções parecidas. Essa ideia ficará bem clara quando falarmos dos pacotes do `tidyverse`, como o `dplyr` e o `ggplot2`.
-
-Quando o aprendizado não for muito intuitivo ou a utilização de uma função for muito complicada, demandando às vezes conhecimento de Estatística ou Programação, você pode acabar precisando de uma forcinha. Felizmente, a comunidade R é bem ativa, e há várias formas de se conseguir ajuda. Nesta seção, vamos listar algumas dessas maneiras. Em seguida, faremos uma introdução ao RStudio, mostrando as suas principais funcionalidades. Então começaremos a conhecer o R, explorando diversos conceitos básicos.
-
 # Pedindo Ajuda
+
+A linguagem `R` é bem intuitiva. É possível fazer bastante coisa à base da tentativa e erro. Além disso, grande parte do conhecimento é escalável, isto é, aprender a utilizar uma função é meio caminho andado para aprender todas as outras funções que operam de forma semelhante. Essa ideia é um dos princípios por trás do `tidyverse`.
+
+No entanto, a intuição não infalível, e recorrentemente vamos precisar de ajuda para rodar alguma função ou descobrir como fazer alguma tarefa no R. Felizmente, a comunidade R é bem ativa e existem vários lugares para buscar respostas. Nesta seção, vamos apresentar as principais maneiras algumas dessas maneiras.
 
 No R, há quatro principais entidades para se pedir ajuda:
 
 - Help/documentação do R (comandos `help(nome_da_funcao)` ou `?nome_da_funcao`)
-
 - Google
-
 - Stack Overflow
-
 - Coleguinha
 
 A busca por ajuda é feita preferencialmente, mas não necessariamente, na ordem acima.
 
-# Documentação do R
+## Documentação do R
 
 A documentação do R serve para você aprender a usar uma determinada função.
 
@@ -48,12 +43,13 @@ help(mean)
 Cinco dicas:
 
 1. Os exemplos no final são particularmente úteis.
-2. Leia a seção **Usage** para ter noção de como usar.
-3. Os parâmetros estão descritos em **Arguments**. Identifique quais tipos de objetos eles recebem.
+2. Leia a seção **Usage** para ter noção de como usar a função.
+3. Os parâmetros da função estão descritos em **Arguments**.
 4. Caso essa função não atenda às suas necessidades, a seção **See Also** sugere funções relacionadas.
 5. Alguns pacotes possuem tutorias de uso mais completos. Esses textos são chamados de `vignettes` e podem ser acessados com a função `vignette(package = 'nomeDoPacote')`. Por exemplo, `vignette(package = 'dplyr')`. Depois de ver a lista de artigos, escolha um nome e rode `vignette(topic = 'nome', package = 'nomeDoPacote')`. Por exemplo, `vignette(topic = 'introduction', package = 'dplyr')`.
+6. Bases de dados presentes em pacotes também têm documentação, e geralmente é possível encontrar o significado de cada variável nela.
 
-# Google
+## Google
 
 Há uma comunidade gigantesca de usuários de R gerando diariamente uma infinidade de conteúdos e discussões. Não raramente, você irá encontrar discussões sobre o seu problema simplesmente jogando o seu erro no Google. Essa deve ser sua primeira tentativa! Pesquisas em inglês aumentam consideravelmente a chance de encontrar uma resposta.
 
@@ -65,15 +61,15 @@ log("5")
 
 <img src="/material/r-base/figures/ajuda_google.png" style="width: 100%;"></img>
 
-# Stack Overflow
+## Stack Overflow
 
 O [Stack Overflow](http://stackoverflow.com/) e o [Stack Overflow em Português](http://pt.stackoverflow.com/) são sites de Pergunta e Resposta amplamente utilizados por todas as linguagens de programação, e o R é uma delas. Nos EUA, chegam até a usar a reputação dos usuários como diferencial no currículo!
 
 Provavelmente o Google lhe indicará uma página deles quando você estiver procurando ajuda. E quando todas as fontes possíveis de ajuda falharem, o Stack Overflow lhe dará o espaço para **criar sua própria pergunta**.
 
-**Um ponto importante**: como fazer uma **boa** pergunta no Stack Overflow?
+> Um ponto importante: como fazer uma **boa** pergunta no Stack Overflow?
 
-No site, tem um tutorial com uma lista de boas práticas, [que se encontra aqui](http://pt.stackoverflow.com/help/how-to-ask). Algumas dicas são
+No site, existe um tutorial com uma lista de boas práticas, [que se encontra aqui](http://pt.stackoverflow.com/help/how-to-ask). Resumindo, as principais dicas são
 
 - ser conciso;
 - ser específico;
@@ -86,9 +82,9 @@ Porém, no caso do R, há outro requisito que vai aumentar muito sua chance de t
 
 - Ser **reprodutível**: o seu código deve rodar fora da sua máquina. Se você não fornecer uma versão do seu problema que rode (ou que imite seu erro), as pessoas vão logo desistir de te ajudar. Por isso, nunca coloque bancos de dados que só você tem acesso. Use bancos de dados que já vem no R ou disponibilize um exemplo (possivelmente anonimizado) em `.csv` na web para baixar. E se precisar utilizar funções diferentes, coloque as `library`'s correspondentes.
 
-# R Markdown
+## R Markdown
 
-O R Markdown é um tipo de documento especial que contém tanto textos quanto códigos em R, tudo escrito no mesmo lugar. 
+O R Markdown é um tipo de documento especial que contém tanto textos em *markdown* quanto *chunks* de códigos em R, tudo escrito no mesmo lugar. 
 
 O *markdown* nada mais é do que um documento de texto com alguns padrões básicos de formatação, como negrito, itálico, títulos, subtítulos, itens e referências cruzadas. Já os *chunks* são pedaços de códigos em R encapsulados por três crases (```). Os códigos são executados sempre que o documento é processado.
 
@@ -98,19 +94,12 @@ isto é um chunk.
 ```")
 ```
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Nota
-</p>
-<p>
-Este site foi escrito em R Markdown. Toda vez que aparecer exemplos de código de R, havia um chunk no .Rmd original.
-</p>
-</div>
+> Este site foi escrito em R Markdown. Toda vez que aparecer exemplos de código de R, havia um chunk no .Rmd original.
 
 Para produção de relatórios, o R Markdown possui algumas vantagens, como:
 
 1. **Simplicidade e foco**. Permite ao usuário o foco na análise e não na formatação do documento.
-1. **Versátil**. Pode ser utilizado para gerar documentos em $\LaTeX$, `Word`, `HTML` e apresentações em `beamer`, `pptx` e `HTML` (de vários tipos). Pode ainda gerar sites, livros, dissertações de mestrado e até mesmo dashboards interativos.
+1. **Versátil**. Pode ser utilizado para gerar documentos em $\LaTeX$, `Word`, `HTML` e apresentações em `beamer`, `pptx` e `HTML`. Pode ainda gerar sites, livros, dissertações de mestrado e até mesmo dashboards interativos.
 1. **Reprodutível**. O R Markdown nada mais é que um arquivo de texto. Além disso, ele tenta te obrigar a fazer o documento mais autocontido possível. Assim, um documento `.Rmd` é fácil de compartilhar e de ser utilizado pelo receptor. Lembre-se, o receptor pode ser o futuro você! Vale enfatizar que a reprodutibilidade é considerada como um dos princípios fundamentais da ciência. Então, só de usar R Markdown, você já está colaborando com o método científico. :)
 1. **Flexível**. É possível configurar e criar *templates* de análises para quaisquer tipos de aplicações e clientes. Os textos podem ser parametrizados por números que variam de versão para versão, mensalmente, por exemplo, tudo escrito somente em R. 
 
@@ -118,67 +107,8 @@ Criar um R Markdown novo no RStudio é fácil. Clique no botão de criar arquivo
 
 <img src="/material/r-base/figures/criar_rmarkdown.png" style="width: 30%;"></img>
 
-Para detalhes sobre como utilizar o R Markdown, leia o  [r4ds](http://r4ds.had.co.nz/r-markdown.html) e [o tutorial do RStudio](http://rmarkdown.rstudio.com/lesson-1.html).
+Para detalhes sobre como utilizar o R Markdown, leia   [esta seção do R4DS](http://r4ds.had.co.nz/r-markdown.html) e [o tutorial do RStudio](http://rmarkdown.rstudio.com/lesson-1.html).
 
-
-# Instalar pacotes
-
-O grande trunfo do R são seus pacotes. Assim, fique bastante à vontade para instalar e atualizar muitos e muitos pacotes ao longo da sua experiência com o R.
-
-Existem três principais maneiras de instalar pacotes. Em ordem de frequência, são:
-
-- Via CRAN (Comprehensive R Archive Network): `install.packages("nome-do-pacote")`.
-- Via Github: `devtools::install_github("nome-do-repo/nome-do-pacote")`.
-- Via arquivo .zip/.tar.gz: `install.packages("C:/caminho/nome-do-pacote.zip", repos = NULL)`.
-
-# Via CRAN
-
-Instale pacotes que não estão na sua biblioteca usando a função `install.packages("nome_do_pacote")`. Por exemplo:
-
-```{r eval = FALSE}
-install.packages("magrittr")
-```
-
-```{r message=TRUE, warning=TRUE, echo=FALSE, eval = FALSE}
-install.packages("magrittr", repos = "https://cloud.r-project.org")
-```
-
-E, de agora em diante, não precisa mais instalar. Basta carregar o pacote com `library(magrittr)`.
-
-<div class='admonition note'>
-<p class='admonition-title'>
-Dica!
-</p>
-<p>
-Escreva nome_do_pacote::nome_da_funcao() se quiser usar apenas uma função de um determinado pacote. O operador :: serve para isso. Essa forma também é útil quando se tem duas funções com o mesmo nome e precisamos garantir que o código vá usar a função do pacote correto.
-</p>
-</div>
-
-# Via Github
-
-Desenvolvedores costumam disponibilizar a última versão de seus pacotes no Github, e alguns deles sequer estão no CRAN. Mesmo assim ainda é possível utilizá-los instalando diretamente pelo github. O comando é igualmente simples:
-
-```{r, eval=FALSE}
-devtools::install_github("rstudio/shiny")
-```
-
-Apenas será necessário o username e o nome do repositório (que geralmente tem o mesmo nome do pacote). No exemplo, o username foi "rstudio" e o repositório foi "shiny". 
-
-Se você não é familiar com o github, não se preocupe! Os pacotes disponibilizados na plataforma geralmente têm um `README` cuja primeira instrução é sobre a instalação. Se não tiver, provavelmente este pacote não te merece! =)
-
-# Via arquivo .zip/.tar.gz
-
-Se você precisar instalar um pacote que está zipado no seu computador (ou em algum servidor), utilize o seguinte comando:
-
-```{r, eval=FALSE}
-install.packages("C:/caminho/para/o/arquivo/zipapo/nome-do-pacote.zip", repos = NULL)
-```
-
-É semelhante a instalar pacotes via CRAN, com a diferença que agora o nome do pacote é o caminho inteiro até o arquivo. O parâmetro `repos = NULL` informa que estamos instalando a partir da máquina local.
-
-A aba ***Packages*** do RStudio também ajuda a administrar os seus pacotes.
-
-<img src="/material/r-base/figures/instalar_pacote_rstudio.png" style="width: 80%;">
 
 # R como calculadora
 
@@ -191,30 +121,39 @@ Pelo console, é possível executar qualquer comando do R.
 Esse comando é uma forma simplificada de criar um vetor de inteiros de 1 a 30.
 Os números que aparecem entre colchetes ([1] e [24]) indicam o índice do primeiro elemento impresso em cada linha.
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Quando compilamos?
-</p>
-<p>
-Quem vem de linguagens como o C ou Java espera que seja necessário compilar o código em texto para o código das máquinas (geralmente um código binário). No R, isso não é necessário. O R é uma linguagem de programação dinâmica que interpreta o seu código enquanto você o executa.
-</p>
-</div>
+> Quando compilamos? Quem vem de linguagens como o C ou Java espera que seja necessário compilar o código em texto para o código das máquinas (geralmente um código binário). No R, isso não é necessário. O R é uma linguagem de programação dinâmica que interpreta o seu código enquanto você o executa.
 
-Tente jogar no console `2 * 2 - (4 + 4) / 2`. Pronto! Com essa simples expressão você já é capaz de pedir ao R para fazer qualquer uma das quatro operações aritméticas básicas. A seguir, apresentamos uma lista resumindo como fazer as principais operações no R.
+
+Tente jogar no console: `2 * 2 - (4 + 4) / 2`. 
+
+Pronto! Com essa simples expressão você já é capaz de pedir ao R para fazer qualquer uma das quatro operações aritméticas básicas. A seguir, apresentamos uma lista resumindo como fazer as principais operações no R.
 
 ```{r}
-1 + 1    # adição
-4 - 2    # subtração
-2 * 3    # multiplicação
-5 / 3    # divisão
-4 ^ 2    # potência
-5 %% 3   # resto da divisão de 5 por 3
-5 %/% 3  # parte inteira da divisão de 5 por 3
+# adição
+1 + 1
+
+# subtração
+4 - 2
+
+# multiplicação
+2 * 3
+
+# divisão
+5 / 3
+
+# potência
+4 ^ 2
+
+# resto da divisão de 5 por 3
+5 %% 3
+
+# parte inteira da divisão de 5 por 3
+5 %/% 3  
 ```
 
 Além do mais, as operações e suas precedências são mantidas como na matemática, ou seja, divisão e multiplicação são calculadas antes da adição e subtração. E os parênteses nunca são demais!
 
-Uma outra forma de executar uma expressão é escrever o código no **editor** e teclar `Ctrl + Enter` ou `Ctrl + R`. Assim, o comando é enviado para o **console**, onde é diretamente executado.
+Uma outra forma de executar uma expressão é escrever o código no **script** e teclar `Ctrl + Enter` ou `Ctrl + R`. Assim, o comando é enviado para o **console**, onde é diretamente executado.
 
 Se você digitar um comando incompleto, como `5 + `, e apertar `Enter`, o R mostrará um `+`, o que não tem nada a ver com somar alguma coisa. Isso significa que o R está esperando que você complete o seu comando. Termine o seu comando ou aperte `Esc` para recomeçar.
 
@@ -250,14 +189,7 @@ a
 ```
 
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Atenção!
-</p>
-<p>
-O R diferencia letras maiúsculas e minúsculas, isto é, <b>a</b> é considerado um objeto diferente de <b>A</b>.
-</p>
-</div>
+> Atenção! O R diferencia letras maiúsculas e minúsculas, isto é, "a" é considerado um objeto diferente de "A".
 
 ## Objetos atômicos
 
@@ -365,14 +297,7 @@ O R alinhou os dois vetores e, como eles não possuíam o mesmo tamanho, foi rep
 
 ## Misturando objetos
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Vetores são homogêneos
-</p>
-<p>
-Os elementos de um vetor são sempre da mesma classe. Ou todos são numéricos, ou são todos character, ou todos são lógicos etc. Não dá para ter um número e um character no mesmo vetor, por exemplo.
-</p>
-</div>
+> Vetores são homogêneos. Os elementos de um vetor são sempre da mesma classe. Ou todos são numéricos, ou são todos character, ou todos são lógicos etc. Não dá para ter um número e um character no mesmo vetor, por exemplo.
 
 Se colocarmos duas ou mais classes diferentes dentro de um mesmo vetor, o R vai forçar que todos os elementos passem a pertencer à mesma classe. O número `1.7` viraria `"1.7"` se fosse colocado ao lado de um `"a"`.
 
@@ -384,7 +309,7 @@ y <- c(TRUE, "a") # character
 
 A ordem de precedência é:
 
-**DOMINANTE** `character > complex > numeric > integer > logical` **RECESSIVO**
+**DOMINANTE** --- `character > complex > numeric > integer > logical` --- **RECESSIVO**
 
 ## Forçando classes explicitamente
 
@@ -405,14 +330,8 @@ x <- c("a", "b", "c")
 as.numeric(x)
 ```
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Observação
-</p>
-<p>
-O <b>NA</b> tem o mesmo papel que o <b>null</b> do SQL. Porém, há um <b>NULL</b> no R também, com diferenças sutis que vamos abordar mais adiante.
-</p>
-</div>
+> Observação. O <b>NA</b> tem o mesmo papel que o <b>null</b> do SQL. Porém, há um <b>NULL</b> no R também, com diferenças sutis que vamos abordar mais adiante.
+
 
 ## Matrizes
 
@@ -458,14 +377,7 @@ levels(fator)
 
 A ordem das categorias de um fator pode importar. Como exemplo, temos as caselas de referência de modelos estatísticos e a ordem das barras de um gráfico. Para ajudar nesta tarefa, consulte o pacote [forcats](https://github.com/tidyverse/forcats).
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Um erro comum e desastroso
-</p>
-<p>
-Quando um vetor de números está como <b>factor</b>, ao tentar transformá-lo em <b>numeric</b>, você receberá um vetor de inteiros que não tem nada a ver com os valores originais!
-</p>
-</div>
+> Um erro comum e desastroso. Quando um vetor de números está como <b>factor</b>, ao tentar transformá-lo em <b>numeric</b>, você receberá um vetor de inteiros que não tem nada a ver com os valores originais!
 
 ```{r, eval=TRUE}
 numeros <- factor(c("10", "55", "55", "12", "10", "-5", "-90"))
@@ -552,13 +464,11 @@ Certamente você se deparará com listas quando for fazer análise de dados com 
 
 ## data.frame
 
-Um `data.frame` é o mesmo que uma tabela do SQL ou um spreadsheet do Excel, por isso são objetos muito importantes. 
-
-Usualmente, seus dados serão importados para um objeto `data.frame`. Em grande parte do curso, eles serão o principal objeto de estudo.
+Um `data.frame` é o mesmo que uma tabela do SQL ou um spreadsheet do Excel, por isso são objetos muito importantes. Usualmente, seus dados serão importados para um objeto `data.frame`. Em grande parte do curso, eles serão o principal objeto de estudo.
 
 Os `data.frame`'s são listas especiais em que todos os elementos possuem **o mesmo comprimento**. Cada elemento dessa lista pode ser pensado como uma coluna da tabela. Seu comprimento representa o número de linhas. 
 
-Já que são listas, essas colunas podem ser de classes diferentes. Essa é a grande diferença entre `data.frame`'s e matrizes. Algumas funções úteis:
+Já que são listas, essas colunas podem ser de classes diferentes. Essa é a grande diferença entre `data.frame`'s e matrizes. Algumas funções úteis para trabalhar com `data.frame`'s :
 
 - `head()` - Mostra as primeiras 6 linhas.
 - `tail()` - Mostra as últimas 6 linhas.
@@ -568,14 +478,12 @@ Já que são listas, essas colunas podem ser de classes diferentes. Essa é a gr
 - `cbind()` - Acopla duas tabelas lado a lado.
 - `rbind()` - Empilha duas tabelas.
 
-O exemplo abaixo mostra que uma lista pode virar `data.frame` se todos os elementos tiverem o mesmo comprimento.
+O exemplo abaixo mostra que uma lista pode virar `data.frame` apenas se todos os elementos tiverem o mesmo comprimento.
 
 ```{r, error=TRUE}
 minha_lista <- list(x = c(1, 2, 3), y = c("a", "b"))
 as.data.frame(minha_lista)
-```
 
-```{r}
 minha_lista <- list(x = c(1, 2, 3), y = c("a", "b", "c"))
 as.data.frame(minha_lista)
 ```

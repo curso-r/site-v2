@@ -15,10 +15,10 @@ ordem: 1
 
 
 <p>A seguir, apresentaremos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais e como instalar pacotes no R.</p>
-<div id="no-windows" class="section level1">
-<h1>No Windows</h1>
-<div id="instalacao-do-r" class="section level2">
-<h2>Instalação do R</h2>
+<div id="instalacao-do-r" class="section level1">
+<h1>Instalação do R</h1>
+<div id="no-windows" class="section level2">
+<h2>No Windows</h2>
 <ol style="list-style-type: decimal">
 <li><p>Entre <a href="https://cran.r-project.org/bin/windows/base/">neste link</a> e clique em
 “Download R x.x.x for Windows”, sendo x.x.x o número da versão mais recente disponível.</p></li>
@@ -36,8 +36,23 @@ ordem: 1
 <p><img src="/material/instalacao/figures/09-conclusao.PNG"></p>
 <p>Pronto! O R está instalado no seu computador!</p>
 </div>
-<div id="instalacao-do-rstudio" class="section level2">
-<h2>Instalação do RStudio</h2>
+<div id="no-linux" class="section level2">
+<h2>No Linux</h2>
+<p>Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para <a href="mailto:contato@curso-r.com" class="email">contato@curso-r.com</a>. Faremos o possível para ajudar.</p>
+<ol style="list-style-type: decimal">
+<li><p>Acesse <a href="https://cran.r-project.org/">este link</a> e clique em <em>Download R for Linux</em>.</p></li>
+<li><p>Em seguida, clique no link referente à distribuição que você utiliza.</p></li>
+</ol>
+<p><img src = "https://user-images.githubusercontent.com/8967307/45383184-db384580-b5e0-11e8-8bac-dd40a4d7e76f.png"></img></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Siga as instruções contidas na página para instalar o R.</li>
+</ol>
+</div>
+</div>
+<div id="instalacao-do-rstudio" class="section level1">
+<h1>Instalação do RStudio</h1>
+<div id="no-windows-1" class="section level2">
+<h2>No Windows</h2>
 <p>Agora vamos instalar o RStudio, a IDE que utilizaremos para editar e executar códigos em R.</p>
 <ol style="list-style-type: decimal">
 <li>Entre <a href="https://www.rstudio.com/products/rstudio/download/">nesta página</a>.</li>
@@ -75,23 +90,8 @@ que está na lista <em>Zip/Tarballs</em>. (veja imagem acima)</p></li>
 <p><img src="/material/instalacao/figures/rstudio-bin.PNG" style="width: 80%;"></p>
 </div>
 </div>
-</div>
-<div id="no-linux" class="section level1">
-<h1>No Linux</h1>
-<p>Como a instalação no Linux depende da distribuição utilizada e, em geral, usuário de Linux são mais experientes, vamos informar apenas as coordenadas até as instruções/arquivos de instalação para cada distribuição. Se você tiver alguma dificuldade durante o processo, por favor envie a sua dúvida para <a href="mailto:contato@curso-r.com" class="email">contato@curso-r.com</a>. Faremos o possível para ajudar.</p>
-<div id="instalacao-do-r-1" class="section level2">
-<h2>Instalação do R</h2>
-<ol style="list-style-type: decimal">
-<li><p>Acesse <a href="https://cran.r-project.org/">este link</a> e clique em <em>Download R for Linux</em>.</p></li>
-<li><p>Em seguida, clique no link referente à distribuição que você utiliza.</p></li>
-</ol>
-<p><img src = "https://user-images.githubusercontent.com/8967307/45383184-db384580-b5e0-11e8-8bac-dd40a4d7e76f.png"></img></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Siga as instruções contidas na página para instalar o R.</li>
-</ol>
-</div>
-<div id="instalacao-do-rstudio-1" class="section level2">
-<h2>Instalação do RStudio</h2>
+<div id="no-linux-1" class="section level2">
+<h2>No Linux</h2>
 <ol style="list-style-type: decimal">
 <li><p>Acesse <a href="https://www.rstudio.com/products/rstudio/download/#download">este link</a>.</p></li>
 <li><p>Clique no link referente à distribuição que você utiliza para fazer o download do arquivo de instalação.</p></li>
@@ -99,15 +99,38 @@ que está na lista <em>Zip/Tarballs</em>. (veja imagem acima)</p></li>
 <p><img src = "https://user-images.githubusercontent.com/8967307/45383704-5ea66680-b5e2-11e8-84df-35d56e7fcbaf.png"></img></p>
 </div>
 </div>
-<div id="instalacao-de-pacotes-qualquer-os" class="section level1">
-<h1>Instalação de pacotes (qualquer OS)</h1>
-<p>Um pacote é um conjunto de funções que têm como objetivo resolver um problema específico. São eles que deixam o R poderoso, capaz de enfrentar qualquer tarefa de análise de dados. A grande vantagem é que qualquer pessoa pode fazer um novo pacote e disponibilizar para a comunidade, o que acelera bastante o desenvolvemento da ferramenta. Dificilmente você vai fazer uma análise apenas com as funções básicas do R e dificilmente não vai existir um pacote com as funções que você precisa.</p>
-<p>Para instalar um pacote, abra o RStudio, digite o comando <code>install.packages(&quot;nome-do-pacote&quot;)</code> no Console e aperte a tecla <code>Enter</code>. Ao rodar o código, uma série de mensagens aparecerá na tela. No final, se não houve problemas com a instalação, você verá uma mensagem do tipo:</p>
-<pre><code>package ‘nome-do-pacote’ successfully unpacked and MD5 sums checked
-
-The downloaded binary packages are in
-    C:\Users\dfigueiredo\AppData\Local\Temp\Rtmpym4SPN\downloaded_packages</code></pre>
-<p>Na imagem abaixo, estamos instalando o pacote <code>tidyverse</code>, que será bastante explorado neste material.</p>
-<p><img src="/material/instalacao/figures/rstudio-tidyverse.PNG" style="width: 80%;"></p>
-<p>Ao instalar o <code>tidyverse</code>, você instalará uma série de pacotes muito úteis para análise dados, como <code>magrittr</code>, <code>dplyr</code>, <code>ggplot2</code>, <code>tidyr</code>, <code>purr</code>, entre outros.</p>
+<div id="instalacao-de-pacotes" class="section level1">
+<h1>Instalação de pacotes</h1>
+<p>Um pacote é um conjunto de funções que têm como objetivo resolver um problema específico. São eles que deixam o R poderoso, capaz de enfrentar qualquer tarefa de análise de dados. Assim, fique bastante à vontade para instalar e atualizar muitos e muitos pacotes ao longo da sua experiência com o R.</p>
+<p>O legal é que qualquer pessoa pode fazer um novo pacote e disponibilizar para a comunidade, o que acelera bastante o desenvolvemento da ferramenta. Dificilmente você vai fazer uma análise apenas com as funções básicas do R e dificilmente não vai existir um pacote com as funções que você precisa.</p>
+<p>Existem três principais maneiras de instalar pacotes. Em ordem de frequência, são:</p>
+<ul>
+<li>Via CRAN (Comprehensive R Archive Network): <code>install.packages(&quot;nome-do-pacote&quot;)</code>.</li>
+<li>Via Github: <code>devtools::install_github(&quot;nome-do-repo/nome-do-pacote&quot;)</code>.</li>
+<li>Via arquivo .zip/.tar.gz: <code>install.packages(&quot;C:/caminho/nome-do-pacote.zip&quot;, repos = NULL)</code>.</li>
+</ul>
+<div id="via-cran" class="section level2">
+<h2>Via CRAN</h2>
+<p>Instale pacotes que não estão na sua biblioteca usando a função <code>install.packages(&quot;nome_do_pacote&quot;)</code>. Por exemplo:</p>
+<pre class="r"><code>install.packages(&quot;magrittr&quot;)</code></pre>
+<p>E, de agora em diante, não precisa mais instalar. Basta carregar o pacote com <code>library(magrittr)</code>.</p>
+<blockquote>
+<p>Escreva nome_do_pacote::nome_da_funcao() se quiser usar apenas uma função de um determinado pacote. O operador :: serve para isso. Essa forma também é útil quando se tem duas funções com o mesmo nome e precisamos garantir que o código vá usar a função do pacote correto.</p>
+</blockquote>
+</div>
+<div id="via-github" class="section level2">
+<h2>Via Github</h2>
+<p>Desenvolvedores costumam disponibilizar a última versão de seus pacotes no Github, e alguns deles sequer estão no CRAN. Mesmo assim ainda é possível utilizá-los instalando diretamente pelo github. O comando é igualmente simples:</p>
+<pre class="r"><code>devtools::install_github(&quot;rstudio/shiny&quot;)</code></pre>
+<p>Apenas será necessário o username e o nome do repositório (que geralmente tem o mesmo nome do pacote). No exemplo, o username foi “rstudio” e o repositório foi “shiny”.</p>
+<p>Se você não é familiar com o github, não se preocupe! Os pacotes disponibilizados na plataforma geralmente têm um <code>README</code> cuja primeira instrução é sobre a instalação. Se não tiver, provavelmente este pacote não te merece! =)</p>
+</div>
+<div id="via-arquivo-.zip-ou-.tar.gz" class="section level2">
+<h2>Via arquivo .zip ou .tar.gz</h2>
+<p>Se você precisar instalar um pacote que está zipado no seu computador (ou em algum servidor), utilize o seguinte comando:</p>
+<pre class="r"><code>install.packages(&quot;C:/caminho/para/o/arquivo/zipapo/nome-do-pacote.zip&quot;, repos = NULL)</code></pre>
+<p>É semelhante a instalar pacotes via CRAN, com a diferença que agora o nome do pacote é o caminho inteiro até o arquivo. O parâmetro <code>repos = NULL</code> informa que estamos instalando a partir da máquina local.</p>
+<p>A aba <strong><em>Packages</em></strong> do RStudio também ajuda a administrar os seus pacotes.</p>
+<p><img src="/material/r-base/figures/instalar_pacote_rstudio.png" style="width: 80%;"></p>
+</div>
 </div>
