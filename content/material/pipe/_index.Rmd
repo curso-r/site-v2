@@ -6,21 +6,21 @@ categories: ["R"]
 tags: ["Pipe"]
 slug: "pipe"
 minidesc: "O pipe (%>%) é uma das funções do R com maior importância na atualidade."
-desc: "O pipe (%>%) é uma das funções do R com maior importância na atualidade. Seu uso revolucionou a forma com que usamos o R e influencia a criação de pacotes com interface intuitiva."
+desc: "O pipe (%>%) é uma das funções do R com maior importância na atualidade. Seu uso revolucionou a forma com que usamos o R e dita a filosofia por trás da construção de diversos pacotes."
 requisitos: ["r-base"]
 layout: "article"
 ordem: 3
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE).
 ```
 
 ```{r, include=FALSE}
 library(magrittr)
 ```
 
-# O operador `%>%`
+# O operador pipe
 
 O operador `%>%` (*pipe*) foi uma das grandes revoluções recentes do R, tornando a leitura de códigos mais lógica, fácil e compreensível. Ele foi introduzido por [Stefan Milton Bache](https://github.com/smbache) no pacote `magrittr` e já existem diversos pacotes construidos para facilitar a sua utilizaçăo.
 
@@ -50,10 +50,10 @@ sqrt(sum(x))
 
 # Agora com o pipe.
 
-x %>% sum %>% sqrt
+x %>% sum() %>% sqrt()
 ```
 
-O caminho que o código `x %>% sum %>% sqrt` seguiu foi enviar o objeto `x` como argumento da função `sum()` e, em seguida, enviar a saida da expressão `sum(x)` como argumento da função `sqrt()`. Observe que escrevemos o código na mesma ordem das operações e que não é necessário colocar os parênteses após o nome das funções.
+O caminho que o código `x %>% sum %>% sqrt` seguiu foi enviar o objeto `x` como argumento da função `sum()` e, em seguida, enviar a saida da expressão `sum(x)` como argumento da função `sqrt()`. Observe que escrevemos o código na mesma ordem das operações. A utilização de parênteses após o nome das funções não é necessário, mas recomendável.
 
 Se você ainda não está convencido com o poder do *pipe*, fica que vai ter bolo!
 
@@ -152,14 +152,7 @@ Pegue algum script que você já tenha programado em R e o reescreva utilizando 
 
 # Respostas
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Nota
-</p>
-<p>
 Não há apenas uma maneira de resolver os exercícios. Você pode encontrar soluções diferentes das nossas, algumas vezes mais eficientes, outras vezes menos. Quando estiver fazendo suas análises, tente buscar o equilíbrio entre eficiência e praticidade. Economizar 1 hora com a execução do código pode não valer a pena se você demorou 2 horas a mais para programá-lo.
-</p>
-</div>
 
 --------------------------------------------------------------------------------
 
