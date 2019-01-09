@@ -13,7 +13,7 @@ ordem: 3
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE).
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 ```{r, include=FALSE}

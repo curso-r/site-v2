@@ -5,7 +5,7 @@ date: 2018-07-17
 categories: ["R"]
 tags: ["Importação"]
 slug: "importacao"
-minidesc: "Importar dados de arquivos é o primeiro passo para você iniciar a sua análise."
+minidesc: "Importar dados de arquivos é o ponto inicial da sua análise."
 desc: "A importação de dados é o primeiro passo no ciclo da ciência de dados. Em boa parte dos casos recebemos arquivos contendo os dados para análise. Esses arquivos podem estar em inúmeros formatos como excel, txt, csv entre outros. Neste tutorial vamos apresentar pacotes e funções que são úteis para realizar esta tarefa."
 requisitos: ["r-base"]
 layout: "article"
@@ -18,39 +18,64 @@ ordem: 4
 <h1>Introdução</h1>
 <p>Nesta seção, vamos introduzir os principais pacotes para importar dados para o R. Mostraremos como importar dados de arquivos de texto e de planilhas do excel.</p>
 <!-- , de extensões de outros programas estatísticos (SAS e SPSS, por exemplo), e como interagir com o SQL. -->
-<p>As funções que apresentaremos aqui carregam os dados em <code>tibbles</code>, que diferem dos data.frames em dois pontos importantes:</p>
+<p>Antes de começarmos, vale a pena tocarmos num ponto importante. As funções de importação do tidyverse carregam os dados em <code>tibbles</code>, que diferem da classe <code>data.frames</code> usual em dois pontos importantes:</p>
 <ul>
-<li><p>imprime os dados na tela de uma forma muito mais organizada, resumida e legível; e</p></li>
+<li><p>imprime os dados na tela de maneira muito mais organizada, resumida e legível; e</p></li>
 <li><p>permite a utilização de <em>list-columns</em>.</p></li>
 </ul>
-<p>Se você não estiver familiarizado com o conceito de <em>list-columns</em>, não se preocupe. Trataremos melhor do assunto no tópico sobre funcionais.</p>
+<p>Se você não estiver familiarizado com o conceito de <em>list-columns</em>, não se preocupe. Trataremos melhor do assunto no tópico <a href="https://www.curso-r.com/material/purrr/">sobre funcionais</a>.</p>
 </div>
 <div id="importando-arquivos-de-texto" class="section level1">
 <h1>Importando arquivos de texto</h1>
 <p>Para importar arquivos de texto para R, como <code>.txt</code> ou <code>.csv</code>, utilizaremos o pacote <code>readr</code>.</p>
-<p>Veja alguns exemplos:</p>
+<p>Como exemplo, utilizaremos uma base de filmes do IMDB, gravada em diversos formatos. Os arquivos podem ser encontrados neste link.</p>
 <pre class="r"><code>library(readr)
 
-dados_txt &lt;- readr::read_table2(file = &quot;data/mtcars.txt&quot;)
-dados_csv &lt;- readr::read_csv(file = &quot;data/mtcars.csv&quot;)</code></pre>
-<div class="admonition note">
-<p class="admonition-title">
-Exercício relâmpago!
-</p>
-<p>
-Descubra qual a diferença entre as funções “read_table()” e “read_table2()”; e as funções “read_csv()” e “read_csv2()”.
-</p>
-</div>
+imdb_csv &lt;- read_csv(file = &quot;imdb.csv&quot;)
+imdb_txt &lt;- read_delim(file = &quot;caminho-para-o-arquivo/imdb.txt&quot;, delim = &quot; &quot;)</code></pre>
+<p>Repare que o argumento <code>file=</code> representa o caminho até o arquivo. Se o arquivo a ser lido não estiver no diretório de trabalho da sua sessão, você precisa especificar o caminho até o arquivo. O argumento <code>delim=</code> indica qual caracter separa cada coluna no arquivo de texto.</p>
+<blockquote>
+<p><strong>Exercício relâmpago!</strong> Descubra qual a diferença entre as funções “read_csv()” e “read_csv2()?”.</p>
+</blockquote>
+<p>Para a maioria das funções <code>read_</code>, existe uma respectiva função <code>write_</code>. Essas funções servem para salvar bases em um formato específico de arquivo. Além do nome do arquivo a ser criado, você também precisa passar o objeto que será gravado. Repare nos exemplos abaixo que você precisa especificar a extensão do arquivo corretamente.</p>
+<pre class="r"><code>write_csv(x = mtcars, path = &quot;mtcars.csv&quot;)
+write_delim(x = mtcars, delim = &quot; &quot;, path = &quot;mtcars.txt&quot;)</code></pre>
 <p>Também é possível salvar objetos, como data.frames em um tipo especial de arquivos, o <code>.rds</code>. A vantagem dessa extensão é guardar a estrutura dos dados salvos, como a classe das colunas de um data.frame. Além disso, é uma boa alternativa para lidar com grandes bancos de dados, já que arquivos <code>.rds</code> serão bem mais compactos do que arquivos Excel.</p>
-<pre class="r"><code>write_rds(mtcars, path = &quot;data/mtcars.rds&quot;)
-dados &lt;- read_rds(path = &quot;data/mtcars.rds&quot;)</code></pre>
+<pre class="r"><code>imdb_rds &lt;- read_rds(path = &quot;imdb.rds&quot;)
+write_rds(mtcars, path = &quot;mtcars.rds&quot;)</code></pre>
 </div>
 <div id="importando-arquivos-do-excel" class="section level1">
 <h1>Importando arquivos do Excel</h1>
 <p>O pacote <code>readxl</code> contém funções para ler dados de arquivos do Excel, como <code>.xls</code> e <code>xlsx</code>.</p>
-<pre class="r"><code>readxl::read_xls(path = &quot;data/mtcars.xls&quot;)
-readxl::read_xlsx(path = &quot;data/mtcars.xlsx&quot;)</code></pre>
+<pre class="r"><code>readxl::read_xls(path = &quot;imdb.xls&quot;)
+readxl::read_xlsx(path = &quot;imdb.xlsx&quot;)</code></pre>
 <p>A funçao <code>read_excel()</code> auto detecta a extensão do arquivo.</p>
-<pre class="r"><code>read_excel(path = &quot;data/mtcars.xls&quot;)
-read_excel(path = &quot;data/mtcars.xlsx&quot;)</code></pre>
+<pre class="r"><code>read_excel(path = &quot;imdb.xls&quot;)
+read_excel(path = &quot;imdb.xlsx&quot;)</code></pre>
+</div>
+<div id="sql" class="section level1">
+<h1>SQL</h1>
+<p>Para importar bases do SQL, podemos usar funções do pacote <code>dplyr</code>. Este pacote será explorado com detalhes na próxima seção.</p>
+<p>Primeiro, precisamos criar uma conexão com o banco de dados. Isso pode ser feito com a função <code>src_sqlite()</code>.</p>
+<pre class="r"><code>conexao &lt;- src_sqlite(&quot;imdb.sqlite&quot;, create = TRUE)</code></pre>
+<p>Para gerar as tabelas, usamos a função<code>tbl()</code>.</p>
+<pre class="r"><code>imdb_sqlite &lt;- tbl(conexao, &quot;imdb&quot;)
+imdb_select &lt;- tbl(conexao, sql(&quot;SELECT titulo, ano, diretor FROM imdb&quot;))</code></pre>
+<p>Por fim, podemos trazer os dados para a memória com a função <code>collect()</code>.</p>
+<pre class="r"><code>collect(imdb_sqlite)
+collect(imdb_select)</code></pre>
+</div>
+<div id="json" class="section level1">
+<h1>.json</h1>
+<p>Arquivos <code>.json</code> são muito úteis para transferência de dados pela internet. Para manipular esse tipo de arquivo no R, podemos utilizar as funções do pacote <code>jsonlite</code>.</p>
+<pre class="r"><code>library(jsonlite)
+imdb_json &lt;- read_json(&quot;imdb.json&quot;)</code></pre>
+</div>
+<div id="arquivos-de-outros-softwares" class="section level1">
+<h1>Arquivos de outros softwares</h1>
+<p>Para ler arquivos gerados por outros softwares, como SPSS, SAS e STATA, você pode usar as funções do pacote <code>haven</code>. Este pacote faz parte do <code>tidyverse</code> e é um wrapper da biblioteca ReadStat, escrita em C.</p>
+<pre class="r"><code>library(haven)
+
+imdb_sas &lt;- read_sas(&quot;dados/imdb.sas7bdat&quot;)
+imdb_spss &lt;- read_spss(&quot;dados/imdb.sav&quot;)</code></pre>
 </div>
