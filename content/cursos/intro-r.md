@@ -1,9 +1,9 @@
 ---
 title: "Introdução à programação em R"
-data: "À definir"
-hora: "Curso de 16 horas"
-local: "À definir"
-paypal: ""
+data: "18, 20, 25 e 27 de Fevereiro de 2018"
+hora: "Das 19h às 23h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+link_inscricao: "https://www.mercadopago.com/mlb/checkout/start?pref_id=393766383-1211fd66-293f-4bb0-a88c-804166ef25ee"
 img: "img/cursos/intro-r.png"
 preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
@@ -11,6 +11,7 @@ desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 1
+aberto: "true"
 ---
 
 <header class="section-header">
