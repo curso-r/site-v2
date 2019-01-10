@@ -260,13 +260,13 @@ Para juntar duas tabelas de dados, podemos utilizar a família de funções `_jo
 
 A figura a seguir esquematiza as operações dessas funções:
 
-```{r transform, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
+```{r, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
 knitr::include_graphics('figures/joins.png')
 ```
 
 A figura a seguir mostra o que acontece quando temos chaves duplicadas em um `left_join()`. A ideia é equivalante para as outras funções.
 
-```{r transform, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
+```{r, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
 knitr::include_graphics('figures/left-join.png')
 ```
 
