@@ -26,7 +26,7 @@ Usualmente, o cientista de dados parte de uma base "crua" e a transforma até ob
 
 A figura abaixo mostra a fase de "disputa" com os dados (*data wrangling*) para deixá-los no formato analítico.
 
-```{r transform, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
+```{r transform, echo=FALSE, fig.align='center'}
 knitr::include_graphics('figures/ciclo-ciencia-de-dados.png')
 ```
 
@@ -89,8 +89,8 @@ O `dplyr` é o pacote mais útil para realizar transformação de dados, aliando
 As principais funções do `dplyr` são:
 
 - `filter()` - filtra linhas
-- `arrange()` - ordena a base
 - `select()` - seleciona colunas
+- `arrange()` - ordena a base
 - `mutate()` - cria/modifica colunas
 - `group_by()` - agrupa a base
 - `summarise()` - sumariza a base
@@ -152,23 +152,6 @@ imdb %>%
 
 -----------------------------------------------------
 
-## Ordenando a base
-
-A função `arrange()` ordena a base segundo uma ou mais colunas. O argumento `desc=` pode ser utilizado para gerar uma ordem decrescente.
-
-```{r}
-imdb %>% 
-  arrange(orcamento)
-
-imdb %>% 
-  arrange(desc(orcamento))
-
-imdb %>% 
-  arrange(desc(ano), titulo)
-```
-
------------------------------------------------------
-
 ## Selecionando colunas
 
 A função `select()` seleciona colunas (variáveis). É possível utilizar nomes, índices, intervalos de variáveis ou utilizar as funções `starts_with(x)`, `contains(x)`, `matches(x)`, `one_of(x)` para selecionar as variáveis.
@@ -198,6 +181,25 @@ imdb %>%
   select(-starts_with("ator"))
 ```
 
+-----------------------------------------------------
+
+## Ordenando a base
+
+A função `arrange()` ordena a base segundo uma ou mais colunas. O argumento `desc=` pode ser utilizado para gerar uma ordem decrescente.
+
+```{r}
+imdb %>% 
+  arrange(orcamento) %>% 
+  select(orcamento, everything())
+
+imdb %>% 
+  arrange(desc(orcamento)) %>% 
+  select(orcamento, everything())
+
+imdb %>% 
+  arrange(desc(ano), titulo) %>% 
+  select(titulo, ano, everything())
+```
 
 -----------------------------------------------------
 
@@ -208,18 +210,21 @@ A função `mutate()` cria ou modifica colunas. Ela é equivalente à função `
 ```{r}
 # A coluna "duracao" é sobrescrita
 imdb %>% 
-  mutate(duracao = duracao/60)
+  mutate(duracao = duracao/60) %>% 
+  select(duracao)
 
 # Criamos uma nova coluna na base
 imdb %>% 
-  mutate(duracao_horas = duracao/60)
+  mutate(duracao_horas = duracao/60) %>% 
+  select(duracao, duracao_horas)
 
 # Podemos fazer diversas operações em um mesmo mutate.
 imdb %>% 
   mutate(
     lucro = receita - orcamento,
     resultado = ifelse(lucro < 0, "prejuizo", "lucro")
-  )
+  ) %>% 
+  select(lucro, resultado)
 ```
 
 -----------------------------------------------------
@@ -260,13 +265,13 @@ Para juntar duas tabelas de dados, podemos utilizar a família de funções `_jo
 
 A figura a seguir esquematiza as operações dessas funções:
 
-```{r, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
+```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics('figures/joins.png')
 ```
 
 A figura a seguir mostra o que acontece quando temos chaves duplicadas em um `left_join()`. A ideia é equivalante para as outras funções.
 
-```{r, echo=FALSE, fig.cap='Transformação no ciclo da ciência de dados.'}
+```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics('figures/left-join.png')
 ```
 
@@ -289,7 +294,8 @@ imdb_gather <- imdb %>%
     key = "importancia_ator", 
     value = "nome_ator", 
     ator_1, ator_2, ator_3
-  )
+  ) %>% 
+  select(nome_ator, importancia_ator, everything())
 
 imdb_gather
 ```
