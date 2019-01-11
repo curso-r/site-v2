@@ -1,15 +1,16 @@
 ---
 title: "Web scraping em R"
-data: "A definir"
-hora: "Curso de 8 horas"
-local: "A definir"
-paypal: ""
+data: "Sábado, 6 de Abril de 2019"
+hora: "Das 9h às 18h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+link_inscricao: "https://www.mercadopago.com/mlb/checkout/start?pref_id=393766383-ca4ad2ef-5865-49b3-a975-64cf7081376d"
 img: "img/cursos/web-scraping.png"
 preco: "R$500,00"
 banner: "img/cursos/web-scraping-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 requisitos: ""
 ordem: 3
+aberto: "true"
 ---
 
 
