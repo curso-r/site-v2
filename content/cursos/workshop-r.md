@@ -1,16 +1,17 @@
 ---
 title: "Workshop: Conheça o R"
-data: "Data a definir"
-hora: "Workshop de 3 horas"
-local: "Local a definir"
-paypal: ""
+data: "Sábado, 20 de Abril de 2019"
+hora: "Das 14h às 17h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+link_inscricao: "https://www.mercadopago.com/mlb/checkout/start?pref_id=393766383-e0d9e344-8b9d-4b67-8548-33df67528f23"
 img: "img/cursos/workshop-r.png"
 preco: "R$60,00"
 banner: "img/cursos/workshop-r-banner.png"
-desc: "Se familiarize com os principais conceitos de programação e ciência de dados utilizando o R como ferramenta."
+desc: "Familiarize-se com os principais conceitos de programação e ciência de dados utilizando o R como ferramenta."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
 ordem: 0.5
+aberto: "true"
 ---
 
 <header class="section-header">
