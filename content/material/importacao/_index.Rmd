@@ -34,7 +34,7 @@ Se você não estiver familiarizado com o conceito de *list-columns*, não se pr
 
 Para importar arquivos de texto para R, como `.txt` ou `.csv`, utilizaremos o pacote `readr`.
 
-Como exemplo, utilizaremos uma base de filmes do IMDB, gravada em diversos formatos. Os arquivos podem ser encontrados neste link.
+Como exemplo, utilizaremos uma base de filmes do IMDB, gravada em diversos formatos. Os arquivos podem ser encontrados [neste link](https://github.com/curso-r/site-v2/raw/master/content/material/importacao/data/imdb.rds).
 
 ```{r}
 library(readr)
