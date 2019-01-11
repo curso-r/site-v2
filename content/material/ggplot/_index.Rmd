@@ -5,7 +5,7 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["ggplot"]
 slug: "ggplot"
-minidesc: "Faça gráficos usando a gramática dos gráficos com pacote ggplot2"
+minidesc: "Faça gráficos de maneira intuitiva com o pacote ggplot2"
 desc: "Visualizar os dados é um dos passos mais importantes na análise de dados. O pacote ggplot2 implementa a gramática dos gráficos permitindo que você produza qualquer gráfico de forma muito intuitiva."
 requisitos: ["r-base"]
 layout: "article"
@@ -20,15 +20,17 @@ knitr::opts_chunk$set(collapse = TRUE, out.width = "75%")
 
 Agora que já temos em mãos as ferramentas para importar, arrumar e transformar os nossos dados, é hora de começarmos a extrair informações deles. Seguindo o nosso bom e velho ciclo da ciência de dados, o próximo passo é a construção de *visualizações*.
 
-<img src="/material/ggplot/figures/data-science.png" style="width: 70%;">
+```{r transform, echo=FALSE, fig.align='center'}
+knitr::include_graphics('figures/ciclo-ciencia-de-dados.png')
+```
 
 A visualização dos dados é uma etapa importantíssima da análise estatística, pois é a partir dela que criamos a intuição necessária para escolher o teste ou modelo mais adequado para o nosso problema.
 
 Visualizações podem ser uma simples medida resumo (frequência, média, variância, mínimo, máximo, ...), um conjunto dessas medidas organizadas em uma tabela ou a representação (de uma parte) dos dados em um gráfico. Nesse tópico, focaremos na construção de gráficos, uma tarefa que, apesar de nem sempre ser conceitualmente ou tecnicamente trivial, é muito facilitada pelas ferramentas disponíveis no R.
 
-Mas antes de mais nada, o que é um gráfico estatístico?
+Mas, antes de mais nada, o que é um gráfico estatístico?
 
-## O que é um gráfico?
+# O que é um gráfico?
 
 A construção de gráficos no R foi revolucionada com a criação do pacote `ggplot2`, fruto da tese de doutorado de [Hadley Wickham](https://github.com/hadley). Essa revolução teve base na filosofia adotada por Hadley ao definir o que deveria ser um gráfico estatístico.
 
@@ -45,11 +47,9 @@ Além de uma filosofia bem fundamentada, o `ggplot2` ainda traz outras vantagens
 - a estrutura padronizada das funções deixa o aprendizado muito mais intuitivo; e
 - é possível criar uma imensa gama de gráficos com poucas linhas de código.
 
-Para discutir os principais aspectos da construção de gráficos com o `ggplot2`, vamos utilizar inicialmente a base disponível no objeto `mtcars`. Essa base de 1974 contém dados extraídos da revista *Motor Trend US* sobre o consumo de combustível e características de performance e engenharia de 32 automóveis.
+Para discutir os principais aspectos da construção de gráficos com o `ggplot2`, vamos continuar utilizando a base de filmes do IMDB apresentada na [seção de manipulação](https://www.curso-r.com/material/manipulacao/). Você pode baixá-la [clicando aqui](https://github.com/curso-r/site-v2/raw/master/content/material/importacao/data/imdb.rds).
 
-Se você não está familiarizado com esta base, rode `help(mtcars)` para mais informações.
-
-Na próxima seção, vamos conhecer as principais funções do `ggplot2` e começar a construir nossos primeiros gráficos. Não se esqueça de instalar e carregar o pacote antes de tentar rodas os exemplos.
+Na próxima seção, vamos conhecer as principais funções do `ggplot2` e começar a construir nossos primeiros gráficos. Não se esqueça de instalar e carregar o pacote antes de rodar os exemplos.
 
 ```{r, eval=FALSE}
 install.packages("ggplot2")
@@ -62,75 +62,84 @@ library(ggplot2)
 
 # As camadas de um gráfico
 
-No `ggplot2`, os gráficos são construídos camada por camada (ou, *layers*, em inglês), sendo a primeira delas dada pela função `ggplot()` (repare que não tem o "2"). Essa função recebe um data frame e cria a camada base do gráfico. Se rodarmos apenas a função `ggplot()`, obteremos um painel em branco.
+No `ggplot2`, os gráficos são construídos camada por camada, sendo a primeira delas dada pela função `ggplot()` (repare que não tem o "2"). Essa função recebe um data frame e cria a camada base do gráfico. Se rodarmos apenas a função `ggplot()`, obteremos um painel em branco.
 
 ```{r}
-ggplot(data = mtcars)
+imdb <- readr::read_rds("data/imdb.rds")
+
+ggplot(data = imdb)
 ```
 
-Apesar de termos passados os dados para a função, precisamos especificar como as observações serão mapeadas nos aspectos visuais do gráfico e quais formas geométricas serão utilizadas para isso. Cada camada do gráfico representará um tipo de mapeamento ou personalização. O código abaixo é um exemplo de um gráfico bem simples, construído a partir das duas principais camadas. 
+Apesar de termos passados os dados para a função, precisamos especificar como as observações serão mapeadas nos aspectos visuais do gráfico e quais formas geométricas serão utilizadas para isso. Cada camada do gráfico representará um tipo de mapeamento ou personalização. 
 
-```{r grafico1}
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = disp, y = mpg))
+O código abaixo constrói um gráfico de dispersão entre as variáveis orçamento e receita.
+
+```{r}
+ggplot(imdb) +
+  geom_point(aes(x = orcamento, y = receita))
 ```
 
-A figura gerada pelo código acima é um gráfico de dispersão. Observe que:
+Observe que:
 
 - como vimos, a primeira camada é dada pela função `ggplot()` e recebe um data frame;
 - a segunda camada é dada pela função `geom_point()`, especificando a forma **geom**étrica utilizada no mapeamento das observações;
-- as camadas são somadas com um `+`;
+- as camadas são unidas com um `+`;
 - o mapeamento na função `geom_point()` recebe a função `aes()`, responsável por descrever como as variáveis serão mapeadas nos aspectos visuais da forma geométrica escolhida, no caso, pontos.
 
 A combinação da função `ggplot()` e de uma ou mais funções `geom_()` definirá o tipo de gráfico gerado.
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Cuidado
-</p>
-<p>
-As camadas dos gráficos são empilhadas utilizando-se o sinal +. Como a estrutura é muito parecida com uma pipe line, é comum trocarmos o + por um %>% no meio do código.
-</p>
-</div>
+**Atenção!** As camadas dos gráficos são empilhadas utilizando-se o sinal `+`. Como a estrutura é muito parecida com uma pipe line, é comum trocarmos o `+` por um `%>%` no meio do código, resultando em erro.
 
-Podemos acrescentar uma terceira camada ao gráfico, agora com uma personalização. Repare como é simples acrescentar labels ao gráfico com a função `labs()`.
+Podemos acrescentar uma terceira camada ao gráfico, gerando a reta `y = x` para visualizarmos os filmes não se pagaram.
 
 ```{r}
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = disp, y = mpg)) +
-  labs(x = "Cilindradas", y = "Milhas/galão")
+ggplot(imdb) +
+  geom_point(mapping = aes(x = orcamento, y = receita)) +
+  geom_abline(intercept = 0, slope = 1, color = "red")
 ```
 
-Agora que você já sabe como a estrutura de camadas do `ggplot` funciona, vamos estudar com mais atenção para que serve a função `aes()`.
+Assim, os pontos abaixo da reta representam os filmes com orçamento maior que a receita, isto é, aqueles que deram prejuízo.
 
-# Aesthetics
+Em vez de utilizarmos a reta `y = x`, podemos pintar os pontos que deram lucro e prejuízo de cores diferentes.
 
-O papel da função `aes()` (de aesthetics, estética em inglês) é indicar a relação entre os dados e cada aspecto visual do gráfico, como qual variável será representada no eixo x, qual será representada no eixo y, a cor e o tamanho dos componentes geométricos etc. Os aspectos que podem ou devem ser mapeados depende do tipo de gráfico que você está construindo.
+```{r}
+library(dplyr)
 
-No exemplo anterior, atribuímos aspectos de posição: ao eixo y mapeamos a variável `mpg` (milhas por galão) e ao eixo x a variável `disp` (cilindradas). Note que os valores dos labels não são mapeados por variáveis, mas sim diretamente especificados.
-
-Outro aspecto que pode ser mapeado nesse gráfico é a cor dos pontos:
-
-```{r mapear_am}
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = disp, y = mpg, color = as.factor(am)))
+imdb %>%
+   mutate(
+    lucro = receita - orcamento,
+    lucro = ifelse(lucro <= 0, "Não", "Sim")
+  ) %>% 
+  filter(!is.na(lucro)) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = orcamento, y = receita, color = lucro))
 ```
 
-Agora, a variável `am` (tipo de transmissão) foi mapeada à cor dos pontos, com pontos vermelhos correspondendo à transmissão automática (valor 0) e pontos azuis à transmissão manual (valor 1). Observe que inserimos a variável `am` como um fator, pois temos interesse apenas nos valores "0" e "1". No entanto, também podemos mapear uma variável contínua à cor dos pontos:
+Aqui temos dois pontos importantes:
 
-```{r mapear_cor}
-ggplot(mtcars) + 
-  geom_point(mapping = aes(x = disp, y = mpg, colour = cyl))
+1. Unimos uma primeira parte de manipulação, utilizando as funções `filter()` e `mutate()`, com o código do gráfico. Essa etapa inicial de transformação da base é muito comum na construção de gráficos.
+
+2. A cor dos pontos foi alterada por meio do atributo `color=`, dentro da função `aes()`.
+
+Também podemos adicionar uma camada especificando os textos que representam cada atributo. Para isso, usamos a função `labs()`.
+
+```{r}
+imdb %>%
+  mutate(
+    lucro = receita - orcamento,
+    lucro = ifelse(lucro <= 0, "Não", "Sim")
+  )  %>%
+  filter(!is.na(lucro)) %>% 
+  ggplot() +
+  geom_point(mapping = aes(x = orcamento, y = receita, color = lucro)) +
+  labs(x = "Orçamento", y = "Arrecadação", color = "Houve lucro?") 
 ```
 
-Aqui, o número de cilindros, `cyl`, é representado pela tonalidade da cor azul. Note que, por padrão, a legenda é inserida automaticamente ao gráfico.
+No ggplot, nós modificamos um gráfico alterando e acrescentando camadas. Agora que você já sabe como essa estrutura funciona, vamos estudar com mais atenção para que serve a função `aes()`.
 
-Também podemos mapear o tamanho dos pontos a uma variável de interesse:
+# Atributos estéticos
 
-```{r mapear_tamanaho}
-ggplot(mtcars) +
-  geom_point(mapping = aes(x = disp, y = mpg, color = cyl, size = wt))
-```
+O papel da função `aes()` (de *aesthetics*, estética em inglês) é indicar a relação entre os dados e cada aspecto visual do gráfico, como qual variável será representada no eixo x, qual será representada no eixo y, a cor e o tamanho dos componentes geométricos etc. Os aspectos que podem ou devem ser mapeados depende do tipo de gráfico que você está construindo.
 
 Segue abaixo uma lista dos aspectos visuais mais utilizados:
 
@@ -140,24 +149,25 @@ Segue abaixo uma lista dos aspectos visuais mais utilizados:
 - `type=`: altera o tipo da forma, geralmente usada para pontos.
 - `linetype=`: altera o tipo da linha.
 
-Até agora, sempre mapeamos um aspecto estético a uma variável. Muitas vezes 
-queremos apenas modificar um aspecto sem mapeá-lo a variáveis.
-Por exemplo, no gráfico a seguir, modificamos a cor de todos os pontos.
+Um erro comum na hora de definir atributos estéticos de um gráfico é utilizar a função `aes()` de forma errada. Repare o que acontece quando tentamos definir diretamente a cor dos pontos dentro dessa função.
 
 ```{r}
-ggplot(mtcars, aes(y = mpg, x = disp)) + 
-  geom_point(color = "red")
+ggplot(imdb) +
+  geom_point(aes(x = orcamento, y = receita, color = "blue"))
 ```
 
-A principal diferença aqui é que especificamos o argumento `color=` fora da função
-`aes()`. Dessa forma, podemos controlar todos os aspectos de uma forma geométrica.
+Estranho, não? O que aconteceu foi o seguinte: a função `aes()` espera uma variável para ser mapeada a cada atributo, então o valor `blue` é tratado como uma nova variável/coluna que tem essa string para todas as observações. Assim, todos pontos têm a mesma cor (vermelha, padrão do ggplot) pois pertencem todos à essa "categoria 'blue'".
+
+No caso, o que gostaríamos é de ter pintado todos os pontos de azul. A forma certa de fazer isso é colocando o atributo `color=` fora da função `aes()`: 
 
 ```{r}
-ggplot(mtcars, aes(y = mpg, x = disp)) + 
-  geom_point(colour = "red", size = 2, shape = 3, alpha = 0.5)
+ggplot(imdb) +
+  geom_point(aes(x = orcamento, y = receita), color = "blue")
 ```
 
-# Geoms
+Vamos agora explorar novos gráficos a partir da família de funções `geom_()`.
+
+# Formas geométricas
 
 Os *geoms* definem qual forma geométrica será utilizada para a visualização das observações. Como já vimos, a função `geom_point()` gera gráficos de dispersão
 transformando pares $(x,y)$ em pontos. Veja a seguir outros *geoms* bastante utilizados:
@@ -173,100 +183,69 @@ transformando pares $(x,y)$ em pontos. Veja a seguir outros *geoms* bastante uti
 
 Veja a seguir como é fácil gerar diversos gráficos diferentes utilizando a mesma estrutura do gráfico de dispersão acima:
 
-```{r}
-ggplot(mtcars) + 
-  geom_boxplot(aes(x = as.factor(cyl), y = mpg))
-```
-
-Note que para fazer um boxplot para cada grupo, precisamos passar um fator para o aspecto x do gráfico.
+### Linhas
 
 ```{r}
-ggplot(mtcars) + 
-  geom_histogram(aes(x = mpg))
+imdb %>% 
+  filter(diretor == "Steven Spielberg") %>%
+  group_by(ano) %>% 
+  summarise(nota_media = mean(nota_imdb, na.rm = TRUE)) %>% 
+  ggplot() +
+  geom_line(aes(x = ano, y = nota_media))
 ```
 
-Enquanto o gráfico e dispersão demandam o mapeamento das posições x e y, o histograma requer apenas a posição x, já que, pela definição do gráfico, o eixo mostra a frequência de cada classe. O mesmo acontece com o gráfico de barras:
+
+### Histograma
 
 ```{r}
-ggplot(mtcars) + 
-  geom_bar(aes(x = as.factor(cyl)))
+ggplot(imdb) + 
+  geom_histogram(aes(x = orcamento), color = "black", fill = "white")
 ```
 
-**Exercício**: explorar novos `geom()`'s e mexer nos mapeamentos estéticos desses novos gráficos. [Essa é uma
-boa referência](http://ggplot2.tidyverse.org/articles/ggplot2-specs.html).
+Enquanto o gráfico e dispersão demandam o mapeamento das posições x e y, o histograma requer apenas a posição x, já que, pela definição do gráfico, o eixo mostra a frequência de cada classe.
 
-<div class='admonition note'>
-<p class='admonition-title'>
-Um padrão para os gráficos
-</p>
-<p>
-Você deve ter percebido que, para fazer um gráfico usando `ggplot2` e a gramática
-dos gráficos, existe um padrão:
-<br> 
-<br>
-ggplot(data = DATA) + GEOM_FUNCTION(mapping = aes(MAPPINGS))
-<br>
-<br>
-Para fazer um gráfico, basta substituir DATA por um banco de dados, GEOM_FUNCTION por
-uma função geométrica e MAPPINGS por uma coleção de <b>mapas estéticos</b>. Isso será muito útil quando você for fazer o seu próprio gráfico.
-</p>
-</div>
-
-Agora, considere os 2 gráficos a seguir.
-
-```{r duplochunk, fig.show='hold', out.width = "50%", message=FALSE, warning=FALSE}
-# esquerda
-ggplot(mtcars) + 
-  geom_point(aes(y = mpg, x = disp))
-# direita
-ggplot(mtcars) + 
-  geom_smooth(aes(y = mpg, x = disp))
-```
-
-Os gráficos são similares e se completam. O da esquerda, mostra como os pontos estão distribuídos, indicando uma relação entre as cilindradas e o consumo de gasolina. Já o gráfico da direita resume essa relação com uma curva de tendência e sua margem de confiança.
-
-Como o `ggplot2` é pensado para que cada gráfico seja feito como uma combinação de camadas, é muito fácil sobrepor esses dois gráficos.
+### Boxplot
 
 ```{r}
-ggplot(mtcars) + 
-  geom_point(aes(y = mpg, x = disp)) +
-  geom_smooth(aes(y = mpg, x = disp))
+imdb %>% 
+  filter(diretor %in% c("Steven Spielberg", "Quentin Tarantino", "Woody Allen")) %>% 
+ggplot() + 
+  geom_boxplot(aes(x = diretor, y = receita))
 ```
 
-Desta forma, sobrepusemos os pontos e a linha de suavização. No entanto, duplicamos alguns trechos no nosso código, o que geralmente não é bom. Imagine se você precisar
-mudar a variável do eixo `y`, você precisará trocar o nome da variável em mais de um
-lugar do código. Para resolver isso, você pode definir o *mapping* apenas uma vez
-dentro da declaração do gráfico, conforme o código a seguir.
+Repare que o boxplot pede uma variável categórica no eixo x.
+
+### Gráfico de barras
+
+Há duas formas de fazer um gráfico de barras. A primeira é utilizando a função `geom_bar()`, quando queremos que a função conte a frequência de cada categoria.
 
 ```{r}
-ggplot(mtcars, aes(y = mpg, x = disp)) + 
-  geom_point() +
-  geom_smooth()
+imdb %>% 
+  filter(ano > 1990) %>% 
+  ggplot() +
+  geom_bar(aes(x = ano), color = "black", fill = "light blue")
 ```
 
-Veja que isso gera o mesmo gráfico!
-
-Veja que mesmo com dois `geom`'s, o `ggplot` segue a mesma regra para mapear as
-variáveis para os aspectos visuais. Por exemplo, se você mapear uma variável para 
-a cor, você obterá o seguinte gráfico.
+Ou a função `geom_col()`, quando já temos essas contagens.
 
 ```{r}
-ggplot(mtcars, aes(y = mpg, x = disp, colour = as.factor(cyl))) + 
-  geom_point() +
-  geom_smooth(method = "lm")
+imdb %>% 
+  count(diretor) %>% 
+  filter(!is.na(diretor)) %>% 
+  dplyr::top_n(5, n) %>%
+  ggplot() +
+  geom_bar(
+    aes(x = diretor, y = n), 
+    stat = "identity", 
+    color = "red", 
+    fill = "pink"
+  )
 ```
 
-O `ggplot2` agora desenhou uma reta para cada um dos grupos de pontos e coloriu
-cada grupo de pontos de uma cor diferente. Em alguns casos, você pode querer mapear
-a cor em apenas uma das camadas do gráfico. Isso pode ser feito da seguinte forma:
 
-```{r}
-ggplot(mtcars, aes(y = mpg, x = disp)) + 
-  geom_point(aes(colour = as.factor(cyl))) +
-  geom_smooth(method = "lm")
-```
+# Juntando gráficos
 
-Agora, cada grupo de pontos tem uma cor, mas a reta é única para todos os pontos.
+
 
 # Facets
 
