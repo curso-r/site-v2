@@ -1,6 +1,6 @@
 ---
 title: "Introdução à programação em R"
-data: "18, 20, 25 e 27 de Fevereiro de 2018"
+data: "18, 20, 25 e 27 de Fevereiro de 2019"
 hora: "Das 19h às 23h"
 local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
 link_inscricao: "https://www.mercadopago.com/mlb/checkout/start?pref_id=393766383-1211fd66-293f-4bb0-a88c-804166ef25ee"
