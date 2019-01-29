@@ -128,7 +128,11 @@ dd {
 }
 
 blockquote {
-  margin: 0 0 1rem;
+  margin: 0 0 20px;
+  padding: 0 20px;
+  border-left: 2px solid rgb(218, 77, 77);
+  color: rgb(63, 57, 57);
+  padding-left: 16px;
 }
 
 dfn {

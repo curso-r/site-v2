@@ -62,6 +62,14 @@ div.intro-header:after {
 }
 }
 
+blockquote {
+  margin: 0 0 20px;
+  padding: 0 20px;
+  border-left: 2px solid rgb(227, 119, 61);
+  color: rgb(153, 143, 143);
+  padding-left: 16px;
+}
+
 /** CSS DA LISTA DE POSTS **/
 
 #post-list {
@@ -116,35 +124,35 @@ div.intro-header:after {
 }
 
 #article h1 {
-  font-size: 32px;
+  font-size: 28px;
 }
 
 #article h1::before {
-  content: "# ";
+  content: "> ";
 }
 
 #article h2 {
-  font-size: 25px;
+  font-size: 23px;
 }
 
 #article h2::before {
-  content: "# ";
+  content: "> ";
 }
 
 #article h3 {
-  font-size: 20px;
-}
-
-#article h3::before {
-  content: "# ";
-}
-
-#article h4 {
   font-size: 18px;
 }
 
+#article h3::before {
+  content: "> ";
+}
+
+#article h4 {
+  font-size: 15px;
+}
+
 #article h4::before {
-  content: "# ";
+  content: "> ";
 }
 
 #article pre {
