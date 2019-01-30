@@ -1,0 +1,169 @@
+---
+title: "Resumo da rstudio::conf 2019"
+date: "2019-01-30T00:00:00+00:00"
+categories: ["r", "divulgação", "discussão"]
+tags: ["r"]
+banner: "img/banners/rstudio-conf.jpg"
+author: ["Bruna Wunderwald"]
+summary: "Nesse post a Bruna conta como foi a sua expericência na rstudio conf que aconteceu esse mês em Austin."
+draft: false
+---
+
+
+
+<p>Na semana passada, eu participei da minha primeira
+<a href="https://www.rstudio.com/conference/"><code>rstudio::conf</code></a>,
+em Austin, no Texas. Essa conferência
+é, como o nome pode sugerir, organizada pelo pessoal do
+<a href="https://www.rstudio.com/"><code>RStudio</code></a>, e tem como objetivo reunir
+workshops e apresentações sobre tudo de R &amp; RStudio
+(“All things R and RStudio”). Eu fui para a conferência com uma das
+<a href="https://blog.rstudio.com/2018/08/10/rstudio-conf-2019-diversity-scholarships/">bolsas de diversidade</a> das 6 oferecidas para pessoas de fora dos Estados
+Unidos. O oferecimento das bolsa já é uma tradição, visto
+que o RStudio é umas das empresas que mais apoia e promove a diversidade
+na nossa comunidade.</p>
+<p>Primeiramente, eu preciso dizer que aproveitei bastante.<br />
+Tudo foi excepcional: os workshops, as apresentações, as pessoas
+extremamente receptivas, a sessão de e-posters, os grupos
+<a href="https://www.rstudio.com/bof/">temáticos de conversa</a>,
+a localização. Algo muito importante é que, em todos os momentos, é
+muito claro o quanto qualquer tipo de julgamento ou assédio não é bem
+vindo ali. Os participantes são respeitados e acolhidos uns pelos
+outros, independente de qualquer característica externa, como
+raça ou gênero. Pode parecer óbvio que em todas as conferências
+e congressos essa deva ser uma constante, mas isso não é o que
+acontece na realidade. Neste post, eu vou falar brevemente sobre
+minha experiência na conferência deste ano.</p>
+<div id="workshop" class="section level1">
+<h1>Workshop</h1>
+<p>Eu participei do workshop de
+<a href="https://github.com/topepo/rstudio-conf-2019">aprendizado de máquina na prática</a>,
+ministrado majoritariamente pelo Max Kuhn. Em resumo, o workshop consistiu em
+apresentar as principais etapas de um projeto envolvendo
+aprendizado de máquina (principios basicos - engenharia de
+covariaveis - modelagem (regressão/classificação)), mas seguindo o
+framework do <a href="https://github.com/tidymodels"><code>tidymodels</code></a>,
+o descendente (e complementar) do <a href="http://topepo.github.io/caret/index.html"><code>caret</code></a>
+que tem como objetivo ser uma interface uniforme de modelagem usando <code>R</code>.</p>
+<p>A razão pela qual se justifica a existência do <code>tidymodels</code> é que
+existe uma grande variância na forma de usar os diferentes pacotes
+de modelagem. A versão <code>tidy</code>, por sua vez, faz o reuso das estruturas de dados,
+tornando mais fácil o encadeamento de funções através do
+<code>pipe</code> e é compatível com programação funcional (<code>purrr</code>). A sequência
+do workshop foi:</p>
+<ul>
+<li><p>Princípios básicos: manipulação de dados com <code>dplyr</code>,
+visualização com <code>ggplot2</code>, um pouco de <code>purrr</code> e <code>quasiquotation</code>
+e modelagem com <code>parsnip</code>.</p></li>
+<li><p>Engenharia de covariáveis e pré-processamento com <code>recipes</code>
+<code>rsample</code>,<code>parsnip</code></p></li>
+<li><p>Modelagem, para regressão e classificação, usando o <code>recipes</code>, <code>caret</code>,
+<code>broom</code> e <code>tidyposterior</code>.</p></li>
+</ul>
+<p>E com isso, o framework foi apresentado do começo ao fim com apliação
+em alguns estudos de caso. Os materiais
+do workshop, claro, estão disponíveis aqui: <a href="https://github.com/topepo/rstudio-conf-2019" class="uri">https://github.com/topepo/rstudio-conf-2019</a></p>
+</div>
+<div id="apresentacoes" class="section level1">
+<h1>Apresentações</h1>
+<p>É realmente meio difícil escolher quais palestras assistir durante
+a rstudio::conf, geralmente são 3 ocorrendo ao mesmo tempo e todas
+são interessantes. Eu preferi escolher que mais se aproximaram dos meis
+interesses pessoais ou que pareciam algo complicado de entender
+por conta própria. Aqui eu vou dar só um overview sobre
+as minhas 3 apresentações favoritas, mas os slides
+e vídeos de todas elas podem ser encontrados
+<a href="https://github.com/kbroman/RStudioConf2019Slides">aqui</a> e
+<a href="https://www.rstudio.com/resources/videos/rstudioconf-2018-talks/">aqui</a>:</p>
+<ul>
+<li><p><a href="https://bit.ly/drob-rstudio-2019">&quot;The unreasonable effectiveness of public work’, David Robinson</a>:
+a palestra foi basicamente sobre a efetividade do compartilhamento
+de conhecimento online. David mostrou como ele mesmo foi convidado
+a trabalhar no <a href="https://pt.stackoverflow.com/">StackOverFlow</a> após
+ter dado uma resposta muito boa à uma das perguntas de lá. A partir
+disso, ele desenvolve e exemplifica porque é tão importante
+a existência de trabalhos públicos (e reprodutíveis!), seja
+no Twitter, blogs, GitHub, etc. A dica fundamental
+do David é: se você já precisou repetir uma mesma coisa várias vezes,
+torne-a “automática”, o que nesse contexto significa</p>
+<ul>
+<li>se você já precisou escrever a mesma função diversas
+vezes, faça um pacote;</li>
+<li>se você já precisou dar o mesmo conselho diversas
+vezes, escreva um post num blog.</li>
+</ul></li>
+</ul>
+<p>Fenomenal. Essa palestra vale muito a pena e eu com certeza vou
+usar ela como referência futura.</p>
+<p><img src="/img/blog/rstudio-conf/david.jpg" /></p>
+<ul>
+<li><p><a href="https://github.com/karthik/rstudio2019">“A guide to modern reproducible data science with R”, Karthik Ram</a>:
+Ok, eu sei, mais uma palestra sobre ciência reproduzível, eu
+realmente quero enfatizar a importância dela aqui. Essa palestra
+complementa a do David, mas nesse caso,
+Karthik nós mostra quais são as ferramentas atuais
+para ciência reproduzível usando R e fornece os links
+para todas elas depois. Ou seja, agora não há mais desculpas:
+temos a motivação e as ferramentas para não compartilhar nossos
+trabalhos e fortalecer a comunidade cada vez mais :)</p></li>
+<li><p><a href="https://github.com/jennybc/tidy-eval-context">“Tidy eval in context”, Jenny Brian</a>:
+<code>non-standard evaluation</code> é algo que eu estou achando extremamente
+útil ultimamente. A maioria dos meus códigos mais
+recentes usam em algum momento, mas até
+antes dessa palestra, eu não poderia dizer que entendia
+100% o que é <code>non-standard evaluation</code>. Jenny apresentou
+casos sobre por que, quando e como usar NSE de forma correta, o que
+clarificou bastante a ideia pra mim.</p></li>
+</ul>
+<p><img src="/img/blog/rstudio-conf/jenny.jpg" /></p>
+</div>
+<div id="bonus-tidyverse-developer-day" class="section level1">
+<h1>Bonus: <code>tidyverse</code> developer day</h1>
+<p>A rstudio::conf tem um evento satélite chamado
+<a href="https://www.tidyverse.org/articles/2018/08/tidyverse-developer-day/"><code>tidyverse</code> developer day</a>, que acontece no dia posterior ao do encerramento do evento.
+Nesse dia, os participantes se reunem para trabalhar em
+algo relacionado ao <code>tidyverse</code> ou algum outro projeto de
+interesse (cada um escolhe o seu). Pode ser resolver uma issue
+no GitHub, escrever um post ou um livro, criar novos projetos
+com as pessoas que estão ali, trabalhar em seus próprios pacotes,
+qualquer coisa. O que isso tem de especial é: você tem a
+oportunidade de estar trabalhando em conjunto com todos os
+membros do RStudio e outros desenvolvedores importantes.
+Eles tiram dúvidas, dão dicas/sugestões, ideias novas.
+Eu foquei em resolver issues do <a href="https://github.com/tidymodels/broom"><code>broom</code></a> e
+pude conversar com os próprios autores do pacote,
+especialmente o <a href="https://github.com/alexpghayes">Alex Hayes</a>,
+sobre o funcionamento do mesmo
+e como ele pode ser aprimorado. Essa é uma forma bem
+efetiva de estimular a participação e criatividade
+de todos e demonstrar que nós podemos contar uns com os outros.</p>
+</div>
+<div id="a-pergunta-que-nao-quer-calar-vale-a-pena" class="section level1">
+<h1>A pergunta que não quer calar: vale a pena?</h1>
+<p>Resposta: sim. Essa foi a conferência mais cara que eu já participei
+(tudo bem, eu tive bolsa, mas quero falar do custo em geral)
+considerando evento + hotel + passagens + visto + outros gastos.
+Com certeza não é um valor que todos os acadêmicos podem
+pagar, mas o RStudio está trabalhando neste problema. Porém,
+apesar do preço eu considero que vale a pena principalmente
+pela parte do <em>networking</em> e de ser uma experiência de conferência
+totalmente diferente das outras. A maioria das pessoas que nós
+conhecemos, seja porque é autor de um bom pacote ou pelos contatos
+via Twitter, estão lá. Isso já configura uma ótima oportunidade
+de estender a rede profissional e acadêmica e o participantes são
+excepcionalmente receptivos. As palestras são absolutamente
+excelentes. Tirando a parte dos minicursos, essa
+não é uma conferência para se aprender a programar em <code>R</code>,
+e sim aprender sobre tudo que é relacionado mas vai além disso.
+Eu tive a impressão de que as palestras são muito cuidadosamente
+selecionadas e apresentadas de forma excepcional, tornando
+experiência de estar ali assistindo realmente única.
+Ano que vem estarei lá novamente na rstudio::conf 2020, que vai
+ser em <a href="https://www.rstudio.com/conference/">São Francisco</a> :)</p>
+</div>
+<div id="ps" class="section level1">
+<h1>PS</h1>
+<p>O Hadley gostou de cachaça e voltei com muitos stickers:</p>
+{{% tweet "1087504282511912961" %}}
+{{% tweet "1085653931030503429" %}}
+</div>
