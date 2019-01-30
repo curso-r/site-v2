@@ -1,10 +1,10 @@
 ---
 title: "Resumo da rstudio::conf 2019"
 date: "2019-01-30T00:00:00+00:00"
-categories: ["r", "divulgação", "discussão"]
+categories: ["r", "divulgação", "discussões"]
 tags: ["r"]
 banner: "img/banners/rstudio-conf.jpg"
-author: ["Bruna Wunderwald"]
+author: ["Bruna Wundervald"]
 summary: "Nesse post a Bruna conta como foi a sua expericência na rstudio conf que aconteceu esse mês em Austin."
 draft: false
 ---
