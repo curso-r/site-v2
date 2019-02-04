@@ -1,0 +1,166 @@
+---
+title: "pvec: O laço perfeito"
+date: "2019-02-10T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/laco_perfeito.png"
+author: ["Julio"]
+summary: "Nesse post vou te mostrar minha função preferida e como ela funciona."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
+Quando usamos laços para rodar algoritmos complexos em uma lista de *inputs*, podemos pensar em *power-ups*. Tratam-se de funcionalidades que ajudam na aplicação dos laços, tanto do ponto de vista de eficiência do código quanto do ponto de vista de eficiência do trabalho do cientista de dados.
+
+Aqui na Curso-R nós já vimos três desses power-ups:
+
+- Como fazer [laços em paralelo](https://www.curso-r.com/blog/2017-03-14-parallel/).
+- Como usar [barras de progresso](https://www.curso-r.com/blog/2017-04-08-progress/)
+- Como fazer [tratamento de erros](https://www.curso-r.com/blog/2017-04-09-try/).
+
+Mas será que tem um jeito de juntar essas três funcionalidades em apenas uma operação?
+
+![](/img/blog/pvec/nao_tinha_agora_tem.jpg)
+
+Sim, é claro que tem. E se algo é possível no R, o [Caio Lente](https://ctlente.com) já fez. Trata-se da operação `pvec()`, do pacote `abjutils`.
+
+Para utilizá-la, você precisará instalar a versão de desenvolvimento do `abjutils` no GitHub:
+
+```{r}
+devtools::install_github("abjur/abjutils")
+```
+
+Pode ser que o `pvec()` não funcione muito bem no Windows. Isso é algo que vamos trabalhar no futuro.
+
+## Como funciona
+
+O `pvec()` recebe duas informações de entrada: uma lista ou vetor de `inputs` e uma função a ser aplicada. O `pvec()` funciona exatamente como um `purrr::map()`, mas retorna um `data.frame` com os outputs.
+
+Por exemplo, digamos que nosso objetivo seja aplicar a função 
+
+```{r}
+funcao <- function(x) {
+  # dorme 1s
+  Sys.sleep(1)
+  # aplica o log
+  log(x)
+}
+```
+
+em uma lista de entradas, dada por
+
+```{r}
+input <- list(1, 2, -1, "a")
+```
+
+O resultado é dado por:
+
+```{r}
+resultado <- abjutils::pvec(input, funcao)
+resultado
+```
+
+    # A tibble: 4 x 3
+         id return output           
+      <int> <chr>  <list>           
+    1     1 result <dbl [1]>        
+    2     2 result <dbl [1]>        
+    3     3 result <dbl [1]>        
+    4     4 error  <S3: simpleError>
+
+Ou seja, o resultado é um `data.frame`, que tem o número de linhas exatamente igual ao comprimento do vetor ou lista de entrada, e três colunas específicas.
+
+1. `id`, que guarda o índice de entrada. Se a lista de entrada é nomeada, `id` guarda esses nomes.
+2. `return` identifica se a aplicação retornou num resultado (`result`) ou erro (`error`)
+3. `output` é uma coluna-lista que contém os resultados. Quando o resultado é um erro, o erro é capturado e colocado no elemento correspondente.
+
+Ou seja, uma característica do `pvec()` é que ele **nunca irá travar**. Se essa operação travar, é porque o computador todo travou.
+
+Outra característica importante do `pvec()` é que ele roda em paralelo. Você pode controlar a quantidade de núcleos de processamento com o parâmetro `.cores`. Por padrão, ele usará o número de núcleos da sua máquina.
+
+Finalmente, o que não poderia faltar no `pvec()` é a utilização de barras de progresso. Por exemplo, considerando como input
+
+```{r}
+input <- list(a = 1, b = 2, c = -1, d = "a",
+              e = 2, f = 3, g = -2, h = "b")
+```
+
+O resultado é
+
+```{r}
+abjutils::pvec(input, funcao)
+```
+
+    Progress: ───────────────────────────────                              100%
+
+    Progress: ──────────────────────────────────────────────────────────── 100%
+
+    # A tibble: 8 x 3
+      id    return output           
+      <chr> <chr>  <list>           
+    1 a     result <dbl [1]>        
+    2 b     result <dbl [1]>        
+    3 c     result <dbl [1]>        
+    4 d     error  <S3: simpleError>
+    5 e     result <dbl [1]>        
+    6 f     result <dbl [1]>        
+    7 g     result <dbl [1]>        
+    8 h     error  <S3: simpleError>
+
+
+Se você quiser desligar a barra de progresso, basta adicionar `.progress = FALSE`.
+
+## O parâmetro `.flatten`
+
+Esse é o parâmetro dos preguiçosos (eu que pedi para o Caio adicionar). Em muitas operações, o resultado que sai no `output` é uma lista de `data.frame`s ou uma lista de vetores. A opção `.flatten` faz `tidyr::unnest()`, empilhando os resultados e colando tudo num vetor ou `data.frame`.
+
+O único problema é que nesse caso não é possível guardar os erros. Por isso, o `pvec()` retorna um warning:
+
+```{r}
+abjutils::pvec(input, funcao, .flatten = TRUE)
+```
+
+    Progress: ──────────────────────────────────────────────────────────── 100%
+
+    # A tibble: 6 x 2
+      id     output
+      <chr>   <dbl>
+    1 a       0    
+    2 b       0.693
+    3 c     NaN    
+    4 e       0.693
+    5 f       1.10 
+    6 g     NaN    
+    
+    Warning message:
+    Since '.flatten = TRUE', a total of 2 errors are being ignored     
+
+Note que o resultado tem 6 linhas, menor que a entrada, que tem 8 elementos. Por isso, use `.flatten` somente quando você tem certeza do que está fazendo.
+    
+## Por trás dos panos: o `furrr`
+
+O `pvec()` só funciona por conta de dois excelentes pacotes:
+
+- o `future`, que é um novo paradigma de computação em paralelo no R.
+- o `furrr`, que faz todo o trabalho sujo e implementa a maioria das operações do `purrr` usando `future`.
+
+Se quiser estudar esses pacotes e implementar suas próprias soluções, recomendo acessar [aqui](https://github.com/HenrikBengtsson/future) e [aqui](https://github.com/DavisVaughan/furrr). Não incluí detalhes desses pacotes aqui para não sair do foco.
+
+Se quiser adicionar opções do `future` no `pvec()`, basta adicioná-las na opção `.options`. Por padrão, passamos `furrr::future_options()` nesse argumento.
+
+### Discussão: o `future` é o futuro do `purrr`?
+
+O `purrr` contém uma série de [discussões no GitHub](https://github.com/tidyverse/purrr/milestone/2) sobre a possibilidade de rodar funções em paralelo e com barras de progresso. Pode ser que a funcionalidade do `pvec()` passe a ser parte oficial no futuro. 
+
+Veremos!
+
+## Wrap-up
+
+1. `abjutils::pvec()` é um `map()` que roda em paralelo, tem barras de progresso e trata erros automaticamente.
+2. Você pode brincar com as opções `.cores`, `.progress` e `.flatten` para controlar o comportamento do `pvec()`. Tome muito cuidado com o `.flatten`, pois ele pode não tratar os erros da forma que você imagina!
+3. Estude `future` e `furrr` se quiser estender as funcionalidades do `pvec()`.
+
+É isso pessoal. Happy coding ;)
