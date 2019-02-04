@@ -31,18 +31,18 @@ get_brmap(&quot;City&quot;, geo.filter = list(State = 33)) %&gt;%
 </div>
 <div id="objetivo" class="section level2">
 <h2>Objetivo</h2>
-<p>Nosso objetivo é fazer mapas temáticos, que são mapas que mapeiam alguma característica das regiões nas cores dessas regiões. O nome específico desse gráfico é mapa coroplético (<a href="https://en.wikipedia.org/wiki/Choropleth_map"><em>choropleth map</em></a>). Vamos fazer três mapas: um de regiões, um de unidades federativas, e um de municípios.</p>
+<p>Nosso objetivo é fazer mapas temáticos, que são mapas que levam alguma característica das regiões a cores dessas regiões. O nome específico desse gráfico é mapa coroplético (<a href="https://en.wikipedia.org/wiki/Choropleth_map"><em>choropleth map</em></a>). Vamos fazer dois deles: um de unidades federativas e um de municípios.</p>
 <p>Para fazer um mapa desse tipo, precisamos de dois insumos principais: i) os dados que vão compor as cores de cada região e ii) os polígonos para desenhar o mapa.</p>
-<p>Geralmente esses dois insumos vêm de bases de dados diferentes, então é importante que exista uma chave que ligue as duas bases através de um <code>join</code>. Se você obteve seus dados de uma fonte oficial, provavelmente você terá o código do município ou da unidade federativa. Se não, provavelmente você terá de cruzar pelos nomes, o que pode ser uma fonte de dores de cabeça.</p>
+<p>Geralmente esses dois insumos vêm de bases de dados diferentes, então é importante que exista uma chave para ligá-las através de um <code>join</code>. Se você obteve seus dados de uma fonte oficial, provavelmente você terá o código do município ou da unidade federativa. Se não, provavelmente você terá de cruzar pelos nomes, o que pode ser uma fonte de dores de cabeça.</p>
 <p>Para reproduzir as análises que seguem, carregue os pacotes <code>tidyverse</code> e <code>brazilmaps</code>:</p>
 <pre class="r"><code>library(tidyverse)
 library(brazilmaps)</code></pre>
 </div>
 <div id="poligonos" class="section level2">
 <h2>Polígonos</h2>
-<p>A melhor fonte oficial para obter os polígonos do Brasil é o Instituto Brasileiro de Geografia e Estatística (IBGE). Lá, você vai encontrar malhas territoriais em um formato chamado <em>shapefile</em>. Esse arquivo, que na verdade é um conjunto de arquivos com dados e metadados, contém as informações necessárias para desenhar os polígonos no seu mapa.</p>
+<p>A melhor fonte oficial para obter os polígonos do Brasil é o <a href="https://mapas.ibge.gov.br/bases-e-referenciais/bases-cartograficas/malhas-digitais">Instituto Brasileiro de Geografia e Estatística (IBGE)</a>. Lá, você vai encontrar malhas territoriais em um formato chamado <em>shapefile</em>. Esse arquivo, que na verdade é um conjunto de arquivos com dados e metadados, contém as informações necessárias para desenhar os polígonos no seu mapa.</p>
 <p>Por muito tempo, a leitura desse tipo de arquivo no R foi uma dor de cabeça. Até 2015 pelo menos, eu utilizava o <code>sp</code> e o <code>maptools</code>, e sempre sofria um pouco para carregar a base e fazer mapas.</p>
-<p>Agora, com o pacote <code>sf</code>, isso ficou bem mais fácil. Atendendo aos princípios <a href="https://www.curso-r.com/blog/2017-02-16-manifesto-tidy/"><em>tidy</em></a>, o <code>sf</code> armazena mapas em <code>data.frame</code>s (<code>tibble</code>s, para ser mais exato), em que cada cada linha é um território, cada coluna representa uma característica desse território, e a lista-coluna <code>geometry</code> contém as informações dos polígonos que representam esse território.</p>
+<p>Agora, com o pacote <code>sf</code>, isso ficou bem mais fácil. Atendendo aos princípios <a href="https://www.curso-r.com/blog/2017-02-16-manifesto-tidy/"><em>tidy</em></a>, o <code>sf</code> armazena mapas em <code>data.frame</code>s, onde cada cada linha é um território, cada coluna representa uma característica desse território, e a lista-coluna <code>geometry</code> contém as informações dos polígonos que representam esse território.</p>
 <p>Como objetos de classe <code>sf</code> são <code>data.frame</code>s, estamos em casa. Todas operações dos amados pacotes <code>dplyr</code> e <code>ggplot2</code> já estão preparadas para lidar com esses objetos, logo a tarefa de trabalhar com mapas se resume à tarefa de transformação e visualização de dados, do jeito que gostamos.</p>
 <p>E como faz para ler esses dados no R? Com o pacote <code>brazilmaps</code>, basta utilizar a função <code>get_brmap()</code>. Essa função recebe parâmetros do tipo de região que se deseja baixar, e também algum filtro que se deseja aplicar. Por exemplo, se você quiser carregar a base no nível Região, utilize</p>
 <pre class="r"><code>library(brazilmaps)
@@ -87,7 +87,7 @@ glimpse(uf_map)</code></pre>
   geom_sf(aes(fill = idh))</code></pre>
 <p><img src="/img/blog/sf-miojo/mapa_uf.png" /></p>
 <p>O gráfico mostra claramente o aspecto regional do IDH nos estados do Brasil.</p>
-<p>Para fazer o gráfico com os municípios, a lógica é a mesma: i) fazer um join das bases com <code>dplyr</code> e ii) usar o <code>ggplot2</code> para desenhar o mapa. O único problema é que o gráfico demora para rodar.</p>
+<p>Para fazer o gráfico com os municípios, a lógica é a mesma: i) fazer um join das bases com <code>dplyr</code> e ii) usar o <code>ggplot2</code> para desenhar o mapa. O único problema é que o gráfico demora para rodar<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <pre class="r"><code>muni_map &lt;- get_brmap(&quot;City&quot;) %&gt;% 
   left_join(pnud_minima, c(&quot;City&quot; = &quot;cod_muni&quot;))
 
@@ -215,4 +215,18 @@ reduce(mapas, magrittr::add)</code></pre>
 </ol>
 <p>Se quiserem ver uma aplicação legal disso, dêem uma olhada nessa <a href="http://www.brunaw.com/blog/rladies-datathon/relatorio.html">análise</a> da <a href="https://brunaw.com">Bruna Wundervald</a> elaborado durante a Datathon do <a href="https://www.meetup.com/pt-BR/R-Ladies-Sao-Paulo/">RLadies-SP</a>.</p>
 <p>É isso pessoal. Happy coding ;)</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1">Não por muito tempo! Veja aqui
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+just more than tripled the speed of geom_sf… in case anyone is interested in spatial plotting…
+</p>
+— Thomas Lin Pedersen (<span class="citation">@thomasp85</span>) <a href="https://twitter.com/thomasp85/status/1092412825899810817?ref_src=twsrc%5Etfw">February 4, 2019</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a href="#fnref1" class="footnote-back">↩</a></li>
+</ol>
 </div>

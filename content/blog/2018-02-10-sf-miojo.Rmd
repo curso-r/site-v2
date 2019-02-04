@@ -42,11 +42,11 @@ OK, mas como fizemos isso, e como podemos criar mapas mais bonitos? É o que ver
 
 ## Objetivo
 
-Nosso objetivo é fazer mapas temáticos, que são mapas que mapeiam alguma característica das regiões nas cores dessas regiões. O nome específico desse gráfico é mapa coroplético ([*choropleth map*](https://en.wikipedia.org/wiki/Choropleth_map)). Vamos fazer três mapas: um de regiões, um de unidades federativas, e um de municípios.
+Nosso objetivo é fazer mapas temáticos, que são mapas que levam alguma característica das regiões a cores dessas regiões. O nome específico desse gráfico é mapa coroplético ([*choropleth map*](https://en.wikipedia.org/wiki/Choropleth_map)). Vamos fazer dois deles: um  de unidades federativas e um de municípios.
 
 Para fazer um mapa desse tipo, precisamos de dois insumos principais: i) os dados que vão compor as cores de cada região e ii) os polígonos para desenhar o mapa.
 
-Geralmente esses dois insumos vêm de bases de dados diferentes, então é importante que exista uma chave que ligue as duas bases através de um `join`. Se você obteve seus dados de uma fonte oficial, provavelmente você terá o código do município ou da unidade federativa. Se não, provavelmente você terá de cruzar pelos nomes, o que pode ser uma fonte de dores de cabeça.
+Geralmente esses dois insumos vêm de bases de dados diferentes, então é importante que exista uma chave para ligá-las através de um `join`. Se você obteve seus dados de uma fonte oficial, provavelmente você terá o código do município ou da unidade federativa. Se não, provavelmente você terá de cruzar pelos nomes, o que pode ser uma fonte de dores de cabeça.
 
 Para reproduzir as análises que seguem, carregue os pacotes `tidyverse` e `brazilmaps`:
 
@@ -57,11 +57,11 @@ library(brazilmaps)
 
 ## Polígonos
 
-A melhor fonte oficial para obter os polígonos do Brasil é o Instituto Brasileiro de Geografia e Estatística (IBGE). Lá, você vai encontrar malhas territoriais em um formato chamado *shapefile*. Esse arquivo, que na verdade é um conjunto de arquivos com dados e metadados, contém as informações necessárias para desenhar os polígonos no seu mapa.
+A melhor fonte oficial para obter os polígonos do Brasil é o [Instituto Brasileiro de Geografia e Estatística (IBGE)](https://mapas.ibge.gov.br/bases-e-referenciais/bases-cartograficas/malhas-digitais). Lá, você vai encontrar malhas territoriais em um formato chamado *shapefile*. Esse arquivo, que na verdade é um conjunto de arquivos com dados e metadados, contém as informações necessárias para desenhar os polígonos no seu mapa.
 
 Por muito tempo, a leitura desse tipo de arquivo no R foi uma dor de cabeça. Até 2015 pelo menos, eu utilizava o `sp` e o `maptools`, e sempre sofria um pouco para carregar a base e fazer mapas.
 
-Agora, com o pacote `sf`, isso ficou bem mais fácil. Atendendo aos princípios [*tidy*](https://www.curso-r.com/blog/2017-02-16-manifesto-tidy/), o `sf` armazena mapas em `data.frame`s (`tibble`s, para ser mais exato), em que cada cada linha é um território, cada coluna representa uma característica desse território, e a lista-coluna `geometry` contém as informações dos polígonos que representam esse território.
+Agora, com o pacote `sf`, isso ficou bem mais fácil. Atendendo aos princípios [*tidy*](https://www.curso-r.com/blog/2017-02-16-manifesto-tidy/), o `sf` armazena mapas em `data.frame`s, onde cada cada linha é um território, cada coluna representa uma característica desse território, e a lista-coluna `geometry` contém as informações dos polígonos que representam esse território.
 
 Como objetos de classe `sf` são `data.frame`s, estamos em casa. Todas operações dos amados pacotes `dplyr` e `ggplot2` já estão preparadas para lidar com esses objetos, logo a tarefa de trabalhar com mapas se resume à tarefa de transformação e visualização de dados, do jeito que gostamos.
 
@@ -139,7 +139,11 @@ uf_map %>%
 
 O gráfico mostra claramente o aspecto regional do IDH nos estados do Brasil. 
 
-Para fazer o gráfico com os municípios, a lógica é a mesma: i) fazer um join das bases com `dplyr` e ii) usar o `ggplot2` para desenhar o mapa. O único problema é que o gráfico demora para rodar.
+Para fazer o gráfico com os municípios, a lógica é a mesma: i) fazer um join das bases com `dplyr` e ii) usar o `ggplot2` para desenhar o mapa. O único problema é que o gráfico demora para rodar[^1].
+
+[^1]: Não por muito tempo! Veja aqui <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">just more than tripled the speed of geom_sf... in case anyone is interested in spatial plotting...</p>&mdash; Thomas Lin Pedersen (@thomasp85) <a href="https://twitter.com/thomasp85/status/1092412825899810817?ref_src=twsrc%5Etfw">February 4, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ```{r}
 muni_map <- get_brmap("City") %>% 
