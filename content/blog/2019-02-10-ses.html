@@ -230,11 +230,11 @@ model &lt;- sampling(ann, data = data)</code></pre>
 ## post-warmup draws per chain=1000, total post-warmup draws=4000.
 ## 
 ##         mean se_mean    sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
-## sigma  29.08    0.13  6.35  19.83  24.67  28.00  32.48  44.15  2284    1
-## l_0   460.56    0.40 21.51 419.08 446.58 460.55 474.16 504.96  2925    1
-## alpha   0.71    0.00  0.20   0.22   0.59   0.73   0.86   0.98  3324    1
+## sigma  28.69    0.11  5.77  19.87  24.62  27.85  31.86  42.07  2627    1
+## l_0   460.73    0.40 20.87 420.83 446.55 460.23 474.43 503.35  2782    1
+## alpha   0.71    0.00  0.20   0.25   0.59   0.73   0.86   0.99  3198    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Feb  4 23:57:49 2019.
+## Samples were drawn using NUTS(diag_e) at Tue Feb  5 00:04:54 2019.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
@@ -244,10 +244,10 @@ model &lt;- sampling(ann, data = data)</code></pre>
 ## 4 chains, each with iter=2000; warmup=1000; thin=1; 
 ## post-warmup draws per chain=1000, total post-warmup draws=4000.
 ## 
-##        mean se_mean   sd   2.5%    25%    50%   75%  97.5% n_eff Rhat
-## l[15] 471.9    0.07 4.49 467.73 468.25 470.29 474.2 483.11  3918    1
+##         mean se_mean  sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
+## l[15] 471.88    0.07 4.4 467.73 468.31 470.27 474.21 482.97  3956    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Feb  4 23:57:49 2019.
+## Samples were drawn using NUTS(diag_e) at Tue Feb  5 00:04:54 2019.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
@@ -276,8 +276,8 @@ production mode.</p>
 <p>Escrevendo o modelo probabilístico com Stan, podemos lidar com cada um desses pontos
 para definir um modelo mais adequado.</p>
 </div>
-<div id="conclusao" class="section level1">
-<h1>Conclusão</h1>
+<div id="conclusao" class="section level2">
+<h2>Conclusão</h2>
 <p>Aprendemos:</p>
 <ul>
 <li>O que são e como funcionam os modelos de suavização exponencial simples.</li>

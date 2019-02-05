@@ -283,7 +283,7 @@ A vatangem é flexibilidade. O [paper do Slawek](https://forecasters.org/wp-cont
 Escrevendo o modelo probabilístico com Stan, podemos lidar com cada um desses pontos
 para definir um modelo mais adequado.
 
-# Conclusão
+## Conclusão
 
 Aprendemos:
 
