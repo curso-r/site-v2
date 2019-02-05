@@ -53,6 +53,7 @@ resultado</code></pre>
 <li><code>output</code> é uma coluna-lista que contém os resultados. Quando o resultado é um erro, o erro é capturado e colocado no elemento correspondente.</li>
 </ol>
 <p>Ou seja, uma característica do <code>pvec()</code> é que ele <strong>nunca irá travar</strong>. Se essa operação travar, é porque o computador todo travou.</p>
+<p>É importante notar que alguns resultados nesse caso são <code>NaN</code>. Isso ocorre pois <code>log(-1)</code> resulta em <code>NaN</code>, acompanhado de um warning. O <code>pvec()</code> não trabalha com warnings.</p>
 <p>Outra característica importante do <code>pvec()</code> é que ele roda em paralelo. Você pode controlar a quantidade de núcleos de processamento com o parâmetro <code>.cores</code>. Por padrão, ele usará o número de núcleos da sua máquina.</p>
 <p>Finalmente, o que não poderia faltar no <code>pvec()</code> é a utilização de barras de progresso. Por exemplo, considerando como input</p>
 <pre class="r"><code>input &lt;- list(a = 1, b = 2, c = -1, d = &quot;a&quot;,

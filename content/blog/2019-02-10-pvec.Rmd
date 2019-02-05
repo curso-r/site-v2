@@ -79,6 +79,8 @@ Ou seja, o resultado é um `data.frame`, que tem o número de linhas exatamente 
 
 Ou seja, uma característica do `pvec()` é que ele **nunca irá travar**. Se essa operação travar, é porque o computador todo travou.
 
+É importante notar que alguns resultados nesse caso são `NaN`. Isso ocorre pois `log(-1)` resulta em `NaN`, acompanhado de um warning. O `pvec()` não trabalha com warnings.
+
 Outra característica importante do `pvec()` é que ele roda em paralelo. Você pode controlar a quantidade de núcleos de processamento com o parâmetro `.cores`. Por padrão, ele usará o número de núcleos da sua máquina.
 
 Finalmente, o que não poderia faltar no `pvec()` é a utilização de barras de progresso. Por exemplo, considerando como input
@@ -139,7 +141,7 @@ abjutils::pvec(input, funcao, .flatten = TRUE)
     Since '.flatten = TRUE', a total of 2 errors are being ignored     
 
 Note que o resultado tem 6 linhas, menor que a entrada, que tem 8 elementos. Por isso, use `.flatten` somente quando você tem certeza do que está fazendo.
-    
+
 ## Por trás dos panos: o `furrr`
 
 O `pvec()` só funciona por conta de dois excelentes pacotes:
