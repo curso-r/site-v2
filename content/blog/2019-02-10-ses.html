@@ -1,0 +1,287 @@
+---
+title: "Suavização exponencial simples com R"
+date: "2019-02-04T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/ses.png"
+author: ["Daniel"]
+summary: "Nesse post vamos implementar o método de suavização exponencial simples com R."
+draft: false
+---
+
+
+
+<p>Esse post serve como introdução aos modelos de suavização exponencial e replica
+um exemplo disponível no livro <a href="https://otexts.com/fpp2/"><em>Forecasting principles and practice</em> (FPP)</a>
+disponível <a href="https://otexts.com/fpp2/ses.html">aqui</a>. Em seguida implementamos usando o
+pacote <a href="https://mc-stan.org/users/interfaces/rstan"><code>rstan</code></a> uma abordagem bayesiana
+para o mesmo problema usando como referência o paper <a href="https://forecasters.org/wp-content/uploads/gravity_forms/7-621289a708af3e7af65a7cd487aee6eb/2015/07/Smyl_Slawek_ISF2015.pdf"><em>Fitting and Extending Exponential Smoothing Models with Stan</em></a>.</p>
+<p>Vamos portanto começar descrevendo o modelo de suavização exponencial simples.
+Fazer um exemplo inicial usando o conhecido pacote <code>forecast</code> e partir para a implementação
+com <code>rstan</code>.</p>
+<div id="suavizacao-exponencial-simples" class="section level2">
+<h2>Suavização exponencial simples</h2>
+<p>Suavização exponencial é uma das principais classes de modelos usados em previsão
+de séries temporais. Essa classe inclui diversos tipos de modelos como o bem conhecido
+<a href="https://otexts.com/fpp2/holt-winters.html">Holt Winters</a> e até o <a href="https://robjhyndman.com/papers/Theta.pdf">Theta Method</a>
+- conhecido por ter ido bem em uma <a href="https://forecasters.org/resources/time-series-data/m3-competition/">M3-competition</a>.</p>
+<p>A suavização exponencial simples, com o próprio nome diz, é o caso particular mais
+simples de suavização exponencial. Esse tipo de modelo serve para quando não existe
+nenhum padrão claro de sazonalidade ou tendência na série.</p>
+<p>Nesta parte introdutória vou parafrasear o próprio Hyndman no <a href="https://otexts.com/fpp2/">FPP</a>.</p>
+<p>Considere que <span class="math inline">\(y_t\)</span> seja a observação no tempo <code>t</code> de uma série temporal. O modelo mais simples
+possível e que também é chamado de ingênuo (<em>naive</em>) seria:</p>
+<p><span class="math display">\[y_{T+1|T} = y_{T}\]</span>
+Isto é, a previsão para <span class="math inline">\(T+1\)</span> dado que conhecemos o valor da série até o instante <span class="math inline">\(T\)</span> seria
+simplesmente o último valor observado da série <span class="math inline">\(y_T\)</span>. Neste modelo, a última observação
+da série é única importante para prever o seu próximo valor.</p>
+<p>Agora considere um modelo chamado <em>Average method</em> em que consideraremos que a previsão
+para a próxima observação da série é a média aritmética de todos os valores anteriores
+da série. Em notação matemática:</p>
+<p><span class="math display">\[y_{T+1|T} = \frac{1}{T}\sum_{t=1}^{T}y_t\]</span></p>
+<p>Neste modelo, todas as observações anteriores da série possuem o mesmo peso (<span class="math inline">\(1/T\)</span>) na previsão
+do próximo valor da série.</p>
+<p>Em geral queremos um meio termo. Não queremos que todas as observações tenham o mesmo
+peso, nem que só a última tenha o maior peso. Poderíamos escrever um modelo assim:</p>
+<p><span class="math display">\[y_{T+1|T} = \sum_{t=1}^{T}\beta_t*y_t\]</span>
+Com <span class="math inline">\(\sum_{t=1}^{T}\beta_t = 1\)</span>. Neste modelo cada observação do passado teria um
+pesinho <span class="math inline">\(\beta_t\)</span> que poderíamos estimar por meio de algum algoritmo. A previsão
+para o próximo período da série seria uma média ponderada das observações passadas.</p>
+<p>No entanto, isso não é viável pois teríamos tantos parâmetros quanto observações.</p>
+<p>Para simplificar esse problema, a suavização exponencial faz a suposição de que o
+peso das observações passadas vai diminuindo conforme elas estão mais distantes do
+ponto que estamos tentando prever. Mais especificamente esses pesos decaem <strong>exponencialmente</strong>
+com o passar do tempo. Portanto, o modelo é reescrito para:</p>
+<p><span class="math display">\[y_{T+1|T} = \alpha y_t + \alpha(1 - \alpha)y_{t-1} + \alpha(1 - \alpha)^2y_{t-2} + ...\]</span></p>
+<p>Em que <span class="math inline">\(0 \le \alpha \le 1\)</span> é o parâmetro de <strong>suavização</strong>. Neste modelo a previsão
+para o próximo período da série é uma média ponderada das observações passadas em
+que os pesos decrescem exponencialmente com uma taxa <span class="math inline">\(\alpha\)</span>.</p>
+<p>Quando <span class="math inline">\(\alpha \approx 0\)</span> então as observações mais distantes damos mais peso para
+as observações mais distantes. Quando <span class="math inline">\(\alpha = 1\)</span> ficamos exatamente com o modelo
+<em>ingênuo</em>.</p>
+<div id="a-forma-de-componentes" class="section level3">
+<h3>A forma de componentes</h3>
+<p>Em suavização exponencial é comum escrever os modelos em forma de componentes.
+Isso facilita extensões como adicionar tendências e sazonalidades. Para fazer
+suavização exponencial simples só precisamos do componente <span class="math inline">\(l_t\)</span> (de <em>level</em>).
+Em outros métodos também usam-se os componentes <span class="math inline">\(b_t\)</span> (tendência) e <span class="math inline">\(s_t\)</span> (sazonalidade).</p>
+<p>Na forma de componente escrevemos o modelo da seguinte forma:</p>
+<ul>
+<li>Equação de previsão: <span class="math inline">\(\hat{y_{t+1|t}} = l_t\)</span>.</li>
+<li>Equação de suavização: <span class="math inline">\(l_t = \alpha y_t + (1 - \alpha )l_{t-1}\)</span></li>
+</ul>
+<p>Note que essa forma é equivalente ao que escrevemos anteriormente - basta substituir
+<span class="math inline">\(l_t\)</span> por <span class="math inline">\(\hat{y_{t+1|t}}\)</span> e <span class="math inline">\(l_{t-1}\)</span> por <span class="math inline">\(\hat{y_{t|t-1}}\)</span> na equação de suavização.</p>
+<p>Escrevendo o modelo desta forma fica fácil de ver que precisamos escolher dois parâmetros:
+<span class="math inline">\(\alpha\)</span> e <span class="math inline">\(l_0\)</span>. Com os dois conseguimos prever qualquer valor da série.</p>
+<p>Antigamente (antes de computadores existirem) era comum definir <span class="math inline">\(l_0\)</span> como o primeiro
+valor observado da série e <span class="math inline">\(\alpha\)</span> uma valor pequeno, por exemplo <span class="math inline">\(0,2\)</span>.</p>
+<p><em>Hoje em dia</em> temos jeitos melhores de encontrar bons valores para <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(l_0\)</span>.</p>
+<p>Podemos minimizar a soma dos quadrados dos resíduos:</p>
+<p><span class="math display">\[SSE = \sum_{t=1}^{T}(y_t - \hat{y}_{t|t-1})^2\]</span></p>
+<p>Ou assumir que <span class="math inline">\(y_t \sim Normal(l_t, \sigma^2)\)</span> e estimar via máxima verossimilhança.
+É isso que a função <code>ses</code> do pacote <code>forecast</code> faz. As contas da verossimilhança são
+chatinhas, mas dá para provar que para suavização exponencial simples as duas abordagens
+são equivalentes.</p>
+<p>Como não é possível resolver algébricamente o problema de minimização, precisamos de
+um algoritmo numérico. A função <code>ses</code> também possui algumas heurísticas para decidir
+os valores iniciais dos parâmetros.</p>
+<p>Tudo isso está escrito no livro <a href="http://www.exponentialsmoothing.net/"><em>Forecasting with Exponential Smoothing</em></a>
+também do Hyndman et al.</p>
+</div>
+</div>
+<div id="exemplo" class="section level2">
+<h2>Exemplo</h2>
+<p>No exemplo, vamos usar esse banco de dados <code>oil</code> que vem no pacote <code>fpp</code> (do livro FPP).
+Esse banco de dados contém a produção anual de petróleo na Arábia Saudita.</p>
+<p>Para o exemplo pegamos dados desde 1996 até 2010.</p>
+<pre class="r"><code>library(forecast)
+library(fpp)
+## Loading required package: fma
+## Loading required package: expsmooth
+## Loading required package: lmtest
+## Loading required package: zoo
+## 
+## Attaching package: &#39;zoo&#39;
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric
+## Loading required package: tseries
+data(oil)
+oildata &lt;- window(oil, start=1996)
+plot(oildata)</code></pre>
+<p><img src="/blog/2019-02-10-ses_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Para ajustar um modelo de suavização exponencial simples com o <code>forecast</code> podemos usar a função
+<code>ses</code>, mas ela já retorna os valores preditos para os próximos anos e não nos dá a oportunidade
+de ver os valores de <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(l_0\)</span> que ela escolheu.</p>
+<pre class="r"><code>ses(oildata)
+##      Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+## 2011       469.2669 433.4186 505.1153 414.4416 524.0923
+## 2012       469.2669 423.6608 514.8730 399.5184 539.0155
+## 2013       469.2669 415.6505 522.8834 387.2676 551.2663
+## 2014       469.2669 408.6902 529.8437 376.6228 561.9110
+## 2015       469.2669 402.4512 536.0827 367.0810 571.4529
+## 2016       469.2669 396.7469 541.7870 358.3571 580.1768
+## 2017       469.2669 391.4597 547.0742 350.2710 588.2629
+## 2018       469.2669 386.5096 552.0243 342.7005 595.8334
+## 2019       469.2669 381.8393 556.6946 335.5579 602.9760
+## 2020       469.2669 377.4061 561.1277 328.7780 609.7559</code></pre>
+<p>Na nomenclatura do Hyndman para os modelos da classe de suavização exponencial,
+a suavização exponencial simples é chamada de ANN. Não vou entrar em detalhes mas,
+isto está descrito <a href="https://otexts.com/fpp2/taxonomy.html">aqui</a>.</p>
+<p>Usamos então a função <code>ets</code> com o argumento <code>model = &quot;ANN&quot;</code>.</p>
+<pre class="r"><code>modelo &lt;- ets(oildata, &quot;ANN&quot;)
+modelo
+## ETS(A,N,N) 
+## 
+## Call:
+##  ets(y = oildata, model = &quot;ANN&quot;) 
+## 
+##   Smoothing parameters:
+##     alpha = 0.7869 
+## 
+##   Initial states:
+##     l = 448.1262 
+## 
+##   sigma:  27.9726
+## 
+##      AIC     AICc      BIC 
+## 144.4110 146.5929 146.5352</code></pre>
+<p>Agora sim, podemos ver os valores estimados para <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(l_0\)</span>.</p>
+<pre class="r"><code>plot(forecast(modelo, h=5))</code></pre>
+<p><img src="/blog/2019-02-10-ses_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Até aqui vimos como funciona o método de suavização exponencial simples, como o pacote
+<code>forecast</code> estima os seus parâmetros (método de máxima verossimilhança) e como fazer
+para ajustar esse modelo com o <code>forecast</code>, bem como obter os valores estimados para
+os parâmteros.</p>
+<p>Agora vamos tentar obter estimativas para os parâmetros <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(l_0\)</span> usando uma
+abordagem bayesiana.</p>
+</div>
+<div id="a-abordagem-bayesiana" class="section level2">
+<h2>A abordagem bayesiana</h2>
+<p>A partir do momento que sabemos escrever o modelo e sabemos todos os parâmetros que
+precisamos estimar fica fácil fazer com Stan.</p>
+<p>Para quem não conhece, Stan é uma plataforma para ajustar modelos probabilísticos e possui
+uma linguagem probabilística própria. Quando você escreve os modelos nessa linguagem,
+o Stan consegue compilar o seu modelo e criar um programa em C++ muito rápido para
+ajustar o seu modelo.</p>
+<p>Abaixo definimos o modelo de suavização exponencial simples usando a linguagem probabilística
+do Stan. Esse código é uma leve adaptação do código que está <a href="https://forecasters.org/wp-content/uploads/gravity_forms/7-621289a708af3e7af65a7cd487aee6eb/2015/07/Smyl_Slawek_ISF2015.pdf">neste paper</a> do Slawek Smyl (esse cara é muito bom, trabalha na Uber e <a href="https://eng.uber.com/m4-forecasting-competition/">ganhou recentemente</a> competições de forecast).</p>
+<p>Veja que na linguagem definimos quais são os dados de entrada:</p>
+<ul>
+<li>n - o tamanho da série</li>
+<li>y - um vetor de tamanho <code>n</code> com valores positivos.</li>
+<li>mean_y - a média dos valores de <code>y</code></li>
+<li>var_y - a variância dos valores de <code>y</code></li>
+</ul>
+<p>Em seguida define quais são os parâmetros:</p>
+<ul>
+<li>sigma - variância do erro</li>
+<li>alpha - parâmetro da suavização exponencial</li>
+<li>l_0 - valor inicial do componente nível.</li>
+</ul>
+<p>Em seguida define os parâmteros transformados - aqueles que podem ser obtidos
+a partir dos valores definidos em <code>parameters</code>.</p>
+<p>Por fim, definimos o modelo.</p>
+<ul>
+<li>Primeiro dizemos que a priori do sigma é a cauda positiva de uma cauchy.</li>
+<li>Depois que a priori para <span class="math inline">\(l_0\)</span> é uma Normal com a mesma média e desvio padrão do que a própria série.</li>
+<li>Falamos que <span class="math inline">\(y_t\)</span> tem distribuição normal com média <span class="math inline">\(l_{t-1}\)</span> e desvio padrão <span class="math inline">\(sigma\)</span>.</li>
+<li>Não especificar uma priori para <span class="math inline">\(\alpha\)</span> indica que estamos assumindo uma priori uniforme no intervalo.</li>
+</ul>
+<pre class="stan"><code>data {
+  int&lt;lower=1&gt; n;
+  vector&lt;lower=0&gt;[n] y;
+  real&lt;lower=0&gt; mean_y;
+  real&lt;lower=0&gt; sd_y;
+}
+parameters {
+  real&lt;lower=0&gt; sigma;
+  real &lt;lower=0,upper=1&gt;alpha;
+  real l_0;
+}
+transformed parameters {
+  vector&lt;lower=0&gt;[n] l;
+  l[1] = l_0;
+  for (t in 2:n) {
+    l[t] = alpha*y[t] + (1-alpha)*(l[t-1]) ;
+  }
+}
+model {
+  sigma ~ cauchy(0,2) T[0,]; // positive side of Cauchy distribution as prior
+  l_0 ~ normal(mean_y, sd_y);
+  for (t in 2:n) {
+    y[t] ~ normal(l[t-1], sigma);
+  }
+}</code></pre>
+<p>Agora ajustamos o modelo e obtemos as estimativas dos parâmetros.</p>
+<pre class="r"><code>library(rstan)
+data &lt;- list(
+  n = length(oildata),
+  y = as.numeric(oildata),
+  mean_y = mean(oildata),
+  sd_y = sd(oildata)
+)
+
+model &lt;- sampling(ann, data = data)</code></pre>
+<pre class="r"><code>print(model, pars = c(&quot;sigma&quot;, &quot;l_0&quot;, &quot;alpha&quot;))
+## Inference for Stan model: 7201dbd28b82b04c1f1a89c8607dc886.
+## 4 chains, each with iter=2000; warmup=1000; thin=1; 
+## post-warmup draws per chain=1000, total post-warmup draws=4000.
+## 
+##         mean se_mean    sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
+## sigma  29.08    0.13  6.35  19.83  24.67  28.00  32.48  44.15  2284    1
+## l_0   460.56    0.40 21.51 419.08 446.58 460.55 474.16 504.96  2925    1
+## alpha   0.71    0.00  0.20   0.22   0.59   0.73   0.86   0.98  3324    1
+## 
+## Samples were drawn using NUTS(diag_e) at Mon Feb  4 23:57:49 2019.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<p>Pelo menos o Stan já nos dá a previsão para 2011 por meio do parâmetro <code>l_15</code>:</p>
+<pre class="r"><code>print(model, par = &quot;l[15]&quot;)
+## Inference for Stan model: 7201dbd28b82b04c1f1a89c8607dc886.
+## 4 chains, each with iter=2000; warmup=1000; thin=1; 
+## post-warmup draws per chain=1000, total post-warmup draws=4000.
+## 
+##        mean se_mean   sd   2.5%    25%    50%   75%  97.5% n_eff Rhat
+## l[15] 471.9    0.07 4.49 467.73 468.25 470.29 474.2 483.11  3918    1
+## 
+## Samples were drawn using NUTS(diag_e) at Mon Feb  4 23:57:49 2019.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<p>Sabemos que é o <code>l[15]</code> pois sabemos que <span class="math inline">\(y_{T+1|T} = l_t\)</span> e <span class="math inline">\(T=15\)</span> na nossa série.</p>
+<p>Bom, como era de se esperar, as estimativas dos parâmetros ficaram parecidas com
+as do pacote <code>forecast</code>. Então por que usar Stan? No forecast ele já me dá a previsão
+com intervalo de confiança - aqui vou ter que escrever tudo do zero.</p>
+<p>A vatangem é flexibilidade. O <a href="https://forecasters.org/wp-content/uploads/gravity_forms/7-621289a708af3e7af65a7cd487aee6eb/2015/07/Smyl_Slawek_ISF2015.pdf">paper do Slawek</a> comenta bastante sobre isso:</p>
+<blockquote>
+<p>First, the variations among consecutive time series
+points are sometimes too large to be fully captured by
+a light-tailed distribution like the Normal Distribution.
+Second, the time series sometimes have growth rates
+faster than linear but slower than exponential. Third,
+the randomness of the time series often grows with
+values. Fourth, from the business side, expert
+subjective information should be integrated into
+forecasting. Last but not least, from the
+implementation side, forecasts should be generated in
+a scalable and automated fashion when hundreds or
+even thousands curves to be forecasted every day. The
+forecasting methodology should require a minimum
+amount of data scientists’ attention when in
+production mode.</p>
+</blockquote>
+<p>Escrevendo o modelo probabilístico com Stan, podemos lidar com cada um desses pontos
+para definir um modelo mais adequado.</p>
+</div>
+<div id="conclusao" class="section level1">
+<h1>Conclusão</h1>
+<p>Aprendemos:</p>
+<ul>
+<li>O que são e como funcionam os modelos de suavização exponencial simples.</li>
+<li>Como ajustá-los com o pacote <code>forecast</code> e como o <code>forecast</code> ajusta esses modelos.</li>
+<li>Como ajustar SES no Stan.</li>
+</ul>
+</div>
