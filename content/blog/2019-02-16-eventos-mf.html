@@ -1,0 +1,104 @@
+---
+title: "Precisamos falar sobre a participação de mulheres em eventos de estatística"
+date: "2019-02-16T00:00:00+00:00"
+categories: ["r", "analises"]
+tags: ["r"]
+banner: "img/banners/gender_eq.png"
+author: ["Bruna Wundervald", "Julio"]
+summary: "Nos últimos anos, vários grupos têm monitorado e denunciado ocorrências desse fenômeno na comunidade científica. Para enriquecer os debates aqui no Brasil, decidimos organizar os dados de três eventos recentes de estatística."
+draft: false
+---
+
+
+
+<div id="introducao" class="section level2">
+<h2>Introdução</h2>
+<p>Esse ano, vamos participar da
+<a href="https://elo.iweventos.com.br/evento/escoladeregressao2019/home">Escola de Modelos de Regressão (EMR-2019)</a>.
+Trata-se de um evento voltado a um nicho da comunidade de estatísticos,
+os <em>regresseiros</em>, e traz avanços importantes na área de Regressão.</p>
+<p>Porém ao olhar a programação do evento ficamos surpresos com a baixa proporção de mulheres dentre palestrantes e coordenadores. Isso é um problema recorrente na comunidade científica, especialmente em congressos: <strong>a maior parte dos eventos acabam apresentando proporções baixas de mulheres</strong>. Nos últimos
+anos, vários grupos têm monitorado e denunciado ocorrências desse fenômeno.
+Para enriquecer os debates aqui no Brasil, decidimos organizar os dados
+de três eventos (2 recentes e um que ainda vai acontecer este ano):</p>
+<ul>
+<li>EMR 2019: O evento que gerou a discussão.</li>
+<li>RBras 2018: Evento sobre estatística aplicada a agronomia.</li>
+<li>Sinape 2018: Maior evento sobre Estatística do Brasil.</li>
+</ul>
+</div>
+<div id="obtencao-dos-dados" class="section level2">
+<h2>Obtenção dos dados</h2>
+<p>Os scripts para obtenção e organização dos dados foram colocados <a href="https://github.com/brunaw/eventos_stats_brasil/tree/master/code">nesse repositório</a>.
+Utilizamos as funções do <code>tidyverse</code> como manda o figurino, e o
+pacote <code>httr</code> para acessar as páginas que contêm as informações.
+No caso da EMR e do Sinape, utilizamos o pacote <code>xml2</code> para extração
+dos conteúdos nas páginas. No caso da RBras, foi necessário utilizar
+o <code>pdftools</code>, pois as informações estavam em um arquivo PDF.</p>
+<p>A classificação do sexo foi feita manualmente. Adotamos a seguinte
+estratégia: criamos uma coluna com “M” de masculino e fomos substituindo
+quando o nome era de uma mulher. O trabalho foi fácil, já que a proporção
+de mulheres era <strong>mais baixa em todos os casos</strong>…</p>
+<p>No total, ficamos com 20 nomes para a EMR 2019 (que ainda não tem a programação
+completa), 68 nomes para o Sinape 2018 e 102 nomes para a RBras 2018.
+Quando a mesma pessoa participa de duas atividades, o nome foi duplicado.</p>
+<p>OBS: No caso da RBras, pegamos sempre o nome do primeiro autor ou primeiro palestrante das conferências. Isso pode ter causado alguma pequena distorção nos resultados, se houver um viés na escolha do primeiro nome dos trabalhos com relação ao sexo.</p>
+</div>
+<div id="resultados" class="section level2">
+<h2>Resultados</h2>
+<p>Observamos a maior discrepância na EMR 2019. A proporção de mulheres é menor 40% em todos os tipos de participação. No caso dos palestrantes, a participação feminina é menor que 20%.</p>
+<p><img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/emr_2019_part_1.png" /></p>
+<p>No Sinape 2018, os resultados se repetem para palestrantes e conferencistas, mas se inverte para coordenadores. Dos 11 coordenadores, 8 são mulheres.</p>
+<p><img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/sinape_2018_part_1.png" /></p>
+<p>Na RBras 2018, observamos novamente menor participação feminina, mas de forma menos gritante que o EMR 2019. No caso dos coordenadores, a participação é igual para homens e mulheres.</p>
+<p><img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/rbras_2018_part_1.png" /></p>
+<p>Considerando os totais de cada evento, temos que a RBras 2018 é a que se aproxima mais de ser paritária, mas ainda longe do ideal, com aproximadante 35% de participação feminina.</p>
+<table>
+<tr style="border-image-width:0px">
+<td>
+<img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/emr_2019_1.png"/>
+</td>
+<td>
+<img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/sinape_2018_1.png"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<img src="https://raw.githubusercontent.com/brunaw/eventos_stats_brasil/master/img/rbras_2018_1.png" style="max-height:300px"/>
+</td>
+</tr>
+</table>
+</div>
+<div id="conclusoes" class="section level2">
+<h2>Conclusões</h2>
+<p>Claramente, existe falta de diversidade nas programações principais
+dos mais importantes eventos de Estatística no Brasil. A desculpa mais
+comum que organizadores de congressos dão para isso é de que não existiam
+mulheres pra convidar, o que não é verdade. Talvez o que falte seja
+o reconhecimento da necessidade de consertar essa falha, e aplicar
+algumas simples medidas, como:</p>
+<ol style="list-style-type: decimal">
+<li>Buscar atingir um mínimo realista de mulheres convidadas a palestrar nos
+eventos.</li>
+<li>Considerar outras minorias de gênero para as posicões.</li>
+<li>Abrir espaço nos eventos para tratar do tema, e evidenciar o quanto
+é importante combater o sexismo na academia. Exemplos de
+eventos de estatística no Brasil com iniciativas parecidas são o
+<a href="https://ser2018.weebly.com/">SeR 2018</a> e o <a href="http://rday.leg.ufpr.br/">RDay 2018</a>.
+Ambos tiveram palestras da Gabriela de Queiroz, fundadora
+do <a href="http://rladies.org">R-Ladies</a>, sobre o assunto em questão.</li>
+</ol>
+<p>E não é só isso, muito mais pode ser feito para promover a diversidade
+em eventos, desde o oferecimento de bolsas para minorias até a
+realização de eventos satélites focados <strong>apenas</strong> nos trabalhos
+delas. Medidas como essa estão cada vez mais populares em diversos
+ramos da ciência, como na ciência computação e inteligência artificial.
+Continuar ignorando esse problema da
+comunidade estatística só tem consequências ruins: perderemos
+relevância e ficaremos para trás.</p>
+<p>No futuro, seria interessante colher e organizar os dados
+de mais eventos, para monitorar e pressionar os comitês organizadores, pois
+ainda temos muito a evoluir para que a comunidade científica deixe de
+priorizar o sexo masculino em conferências.</p>
+<p>Aproveitando: A Gabriela de Queiroz é finalista do <a href="https://www.redhat.com/en/about/women-in-open-source">Women in Open Source Award</a>. Você pode votar na sua finalista preferida <a href="https://www.redhat.com/en/about/women-in-open-source">nesse link</a>.</p>
+</div>
