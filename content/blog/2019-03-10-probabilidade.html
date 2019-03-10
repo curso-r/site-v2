@@ -1,0 +1,102 @@
+---
+title: "Probabilidade e medida: intuição"
+date: "2019-03-10T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/prob.jpg"
+author: ["Julio"]
+summary: "Esse é um post de matemática. Mesmo se você não curte essa faceta da ciência de dados, encorajo vocês a lerem e estudarem esse assunto. Nesse texto vou usar um pouco de teoria dos conjuntos e introduzir a teoria da medida, que é a base matemática de tudo que sabemos sobre probabilidade."
+draft: false
+---
+
+
+
+<p>Esse é um post de <strong>matemática</strong>. Mesmo se você não curte essa faceta da ciência de dados, encorajo vocês a lerem e estudarem esse assunto. Nesse texto vou usar um pouco de <em>teoria dos conjuntos</em> e introduzir a <em>teoria da medida</em>, que é a base matemática de tudo que sabemos sobre probabilidade.</p>
+<p>Aos matemáticos: eu tentei simplificar ao máximo a linguagem, então posso ter cometido alguns deslizes. Não sou o <a href="">Billingsley</a>, então <del>não</del> peço desculpas! ;)</p>
+<div id="objetivo" class="section level3">
+<h3>Objetivo</h3>
+<p>Nosso objetivo é definir matematicamente a <strong>função probabilidade</strong>. Isso é diferente de definir a <strong>interpretação</strong> da probabilidade, como a interpretação frequentista e subjetivista, que é assunto para outro texto.</p>
+<p><strong>Pra quê</strong>? Durante meus estudos, o argumento mais comum usado para me convencer a estudar probabilidade e medida foi: se você constrói toda a estatística – e consequentemente boa parte da ciência – a partir de um objeto matemático, é bom que esse objeto esteja bem definido e funcione direito, né!? Mas nós sabemos que ele está bem definido, pois já disseram isso pra gente em algum momento no passado. Devem ter várias pessoas que já se preocuparam com isso, então deve funcionar!</p>
+<p>Por isso, eu vou te dar outro argumento: se algum dia você montar um novo modelo estatístico e quiser mostrar que ele prevê bem em bases de dados diferentes da sua, você precisará extrair algumas propriedades do seu modelo. E para extrair essas propriedades, você precisará manjar de probabilidade no nível de medida.</p>
+<blockquote>
+<p>Não adianta você ser dono de uma padaria, contratar um padeiro e não saber fazer pão. Um dia seu padeiro vai faltar e você estará ferrado.</p>
+<p>– WUNDERVALD, J.</p>
+</blockquote>
+<p><strong>É difícil</strong>? A definição de probabilidade seria muito simples e intuitiva se não fossem algumas dificuldades associadas ao conjunto dos números reais <span class="math inline">\(\mathbb R\)</span>, e o fato deles serem <strong>não contáveis</strong><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Por isso, convido vocês a entrarem comigo nessa jornada com os seguintes passos:</p>
+<ol style="list-style-type: decimal">
+<li>Vamos tentar definir a probabilidade intuitivamente.</li>
+<li>Vamos verificar que essa definição tem problemas.</li>
+<li>Vamos tirar da cachola uma tal de <span class="math inline">\(\sigma\)</span>-álgebra que, em tese, resolve (2).</li>
+<li>Vamos mostrar que ela de fato resolve (2), mostrando mais um conjunto tirado da cachola: o conjunto dos mensuráveis</li>
+<li>Vamos mostrar que <span class="math inline">\(\sigma\)</span>-álgebras são difíceis de trabalhar.</li>
+<li>Graças ao nosso amigo Caratheodory, tem uma forma de resolver (5) sem nos deixar o cabelo em pé.</li>
+</ol>
+</div>
+<div id="definindo-a-probabilidade-com-intuicao" class="section level3">
+<h3>Definindo a probabilidade com intuição</h3>
+<p>Probabilidade nada mais é que medir eventos, soltando números entre zero e um. Mas o que são eventos, e o que é medir?</p>
+<p>O exemplo mais fácil de <strong>medida</strong> que consigo pensar é a régua. A régua é uma função <span class="math inline">\(\lambda(\cdot)\)</span> que recebe como input um intervalo <span class="math inline">\((a,b]\)</span> e retorna <span class="math inline">\(b-a\)</span>. Ou seja, a função de medida é uma função que trabalha com conjuntos e retorna números reais não-negativos. Mas <span class="math inline">\(b-a\)</span> pode ser maior que um, ou até infinito. Logo, a probabilidade é um caso particular de medida, que recebe como input um conjunto e como output um número no intervalo <span class="math inline">\([0,1]\)</span>.</p>
+<p><img src="/img/blog/probabilidade/ruler.jpg" /></p>
+<p>No caso da régua, daria para resolver isso forçando <span class="math inline">\(0 \leq a &lt; b \leq 1\)</span>. Assim todos os intervalos teriam medida entre zero e um. De fato, quando trabalhamos com variáveis aleatórias</p>
+<p>No entanto, nem tudo na vida são intervalos na reta. Queremos poder calcular probabilidade de chover amanhã, ou então a probabilidade de um cliente ficar inadimplente após 100 dias ou mais. Para isso, precisamos definir um conjunto abstrato <span class="math inline">\(\Omega\)</span>, que chamamos de <strong>espaço amostral</strong>. Esse carinha contém os eventos individuais que estamos interessados, e calculamos probabilidades sobre combinações de pedaços dele.</p>
+<p>Essas combinações de pedaços (ou subconjuntos) de <span class="math inline">\(\Omega\)</span> são os <strong>eventos</strong>. Por exemplo, no caso da chuva <span class="math inline">\(\Omega\)</span> seria <span class="math inline">\(\{\text{chover},\text{não chover}\}\)</span> e calculamos probabilidades sobre <span class="math inline">\(\{\text{não chover}\}\)</span>, <span class="math inline">\(\{\text{chover}\}\)</span>, <span class="math inline">\(\{\text{não chover}\} \text{ ou } \{\text{chover}\}\)</span>, e o vazio <span class="math inline">\(\emptyset\)</span>. No caso da inadimplência, nosso <span class="math inline">\(\Omega\)</span> poderia ser os naturais <span class="math inline">\(\mathbb N\)</span>, por exemplo, e o evento de interesse seria <span class="math inline">\(\{i\in \mathbb N: i \geq 100\}\)</span>.</p>
+<p>Primeiro, defina como <span class="math inline">\(\mathcal P(\Omega)\)</span> como o conjunto de todos os eventos baseados em <span class="math inline">\(\Omega\)</span>. Chamamos esse objeto de <strong>partes</strong> de <span class="math inline">\(\Omega\)</span>. Esse cara é bem grande, pois tem não só o próprio <span class="math inline">\(\Omega\)</span> e o vazio <span class="math inline">\(\emptyset\)</span>, como também todas as possíveis combinações de subconjuntos do <span class="math inline">\(\Omega\)</span>. No caso da chuva, são apenas os quatro eventos citados no parágrafo anterior. No caso da inadimplência, temos todos os números naturais e ainda todas as combinações desses números. No caso da régua então, temos desde o intervalo <span class="math inline">\((0, \frac \pi 4]\)</span> até o <a href="">conjunto de Cantor</a>, o que pode ser bem infinito!</p>
+<p>Segundo, uma propriedade desejável da probabilidade é a aditividade. Ela significa que se eu tiver em mãos dois eventos disjuntos (ou seja, com interseção vazia), a probabilidade de algum desses eventos ocorrer é igual à soma das probabilidades de cada um desses eventos. Essa é uma suposição bem intuitiva no caso da régua. Se você pegar dois intervalos separados de uma reta e medir os dois intervalos de uma vez, isso será equivalente a medir cada um dos intervalos e depois somar. Curiosamente, existem áreas grandes da matemática/estatística que trabalham com medidas que não seguem essa regra. Veja, por exemplo, a medida de <a href="https://en.wikipedia.org/wiki/Possibility_theory">possibilidade</a>.</p>
+<p>Agora estamos prontos para definir a medida de probabilidade. Queremos uma função <span class="math inline">\(\mathbb P(\cdot)\)</span> que tenha as seguintes características:</p>
+<ol style="list-style-type: decimal">
+<li>Recebe um elemento de <span class="math inline">\(\mathcal P(\Omega)\)</span> e retorna um número real não-negativo.</li>
+<li>(<strong>Normalização</strong>) <span class="math inline">\(P(\Omega) = 1\)</span>. Isso obriga a probabilidade a ficar sempre entre zero e um, pois nada tem medida maior que <span class="math inline">\(\Omega\)</span>.</li>
+<li>(<strong>Aditividade</strong>) Para a sequência <span class="math inline">\(A_j\)</span>, <span class="math inline">\(j \in \mathbb N\)</span>, com <span class="math inline">\(A_j \cap A_k = \emptyset\)</span> (disjuntos) para todo <span class="math inline">\(j\)</span> e <span class="math inline">\(k\)</span>, vale <span class="math inline">\(\mathbb P(\cup_j A_j) = \sum_j \mathbb P(A_j)\)</span>.</li>
+</ol>
+<p>Note que, se você pensar que <span class="math inline">\(\cup_j A_j\)</span> é como uma soma dos <span class="math inline">\(A_j\)</span>, a propriedade (3) é o que permite “passar a soma para fora” da probabilidade.</p>
+<p>Note também que eu coloquei aí uma união infinita e contável. Alguns pesquisadores gostam de restringir a medida de probabilidade para uniões finitas apenas. Isso ajuda bastante na parte matemática, mas pode levar a alguns problemas práticos. Isso gerou uma treta enorme entre os matemáticos: leia <a href="http://wwwf.imperial.ac.uk/~bin06/Papers/favcarev.pdf">aqui</a> para uma abordagem histórica do tema. No final, a versão mais popular é a com uniões infinitas.</p>
+<p>Muito bem, esses são os famosos <strong>Axiomas de Kolmogorov</strong>! Ou quase…</p>
+</div>
+<div id="o-problema-de-usar-as-partes-como-a-base-de-tudo" class="section level3">
+<h3>O problema de usar as partes como a base de tudo</h3>
+<p>Eu comentei alguns parágrafos atrás que a coleção <span class="math inline">\(\mathcal P(\Omega)\)</span> pode ser um objeto muito infinito. O problema é que esse conjunto pode ser tão, mas tão grande, que pode bugar a função de probabilidade. Um exemplo famoso de bug se chama <em>conjunto de Vitali</em>: a medida desse evento leva a uma contradição.</p>
+<p>Para explicar esse conjunto, vamos voltar à medida régua <span class="math inline">\(\lambda\)</span>, sem restringir ao zero e um. A régua tem mais uma propriedade interessante: se <span class="math inline">\(x\in \mathbb R\)</span>, o <strong>conjunto transladado</strong> <span class="math inline">\(x+A\)</span>, ou seja, o conjunto formado por todos os elementos de <span class="math inline">\(A\)</span> somados de <span class="math inline">\(x\)</span>, tem a mesma medida que <span class="math inline">\(A\)</span>. Por exemplo, se <span class="math inline">\(A = (a,b]\)</span>, então <span class="math inline">\(A+x = (a+x,b+x]\)</span>, e a medida desse conjunto é</p>
+<p><span class="math display">\[\lambda(A+x) = \lambda((a+x,b+x]) = (b+x)-(a+x) = b-a = \lambda(A).\]</span></p>
+<p>Agora vamos ao exemplo de conjunto não mensurável. O exemplo é um caso de matemágica, ou seja, é bem complicado tirar a intuição dele. Além disso, esse exemplo usa diretamente o axioma da escolha. Mas tudo bem, é um exemplo, e vamos ver que ele funciona.</p>
+<p><strong>Passo 1</strong>. Para cada <span class="math inline">\(x \in \mathbb R\)</span>, defina <span class="math inline">\([x] = \{y\in \mathbb R, y-x \in \mathbb Q\}\)</span>. Ou seja, para cada <span class="math inline">\(x\)</span> criamos um subconjunto de <span class="math inline">\(\mathbb R\)</span> que contém todos os números que subtraídos de <span class="math inline">\(x\)</span> são racionais. Por exemplo, se <span class="math inline">\(x = \sqrt 2\)</span>, <span class="math inline">\([x] = \{\sqrt 2, 2\sqrt 2, \dots\}\)</span> (são muitos casos possíveis). Defina o conjunto de todos os possíveis <span class="math inline">\([x]\)</span> de <span class="math inline">\(\Lambda\)</span>. ou seja, <span class="math inline">\(\Lambda\)</span> é o conjunto dos conjuntos <span class="math inline">\([x]\)</span>, e cada elemento <span class="math inline">\(\alpha \in \Lambda\)</span> é um conjunto que contém uma porção de números reais.</p>
+<p><strong>Passo 2</strong>. Note que para cada conjunto <span class="math inline">\(\alpha \in \Lambda\)</span>, sempre existe um elemento <span class="math inline">\(a \in \alpha\)</span> que está no intervalo <span class="math inline">\((0,1)\)</span>. Agora, para cada <span class="math inline">\(\alpha \in \Lambda\)</span>, pegamos um elemento <span class="math inline">\(a_\alpha \in \alpha\)</span> que está no intervalo <span class="math inline">\((0,1)\)</span>. Finalmente, chamamos <span class="math inline">\(\Omega\)</span> de todos esses conjuntos <span class="math inline">\(a_\alpha\)</span>, e temos <span class="math inline">\(\Omega \subseteq (0,1)\)</span>. Numa imagem:</p>
+<p><img src="/img/blog/probabilidade/exemplo-vitali.png" width="70%" /></p>
+<p>Muito bem. Agora, note que se <span class="math inline">\(p,q \in \mathbb Q\)</span>, então <span class="math inline">\((\Omega+q)\)</span> e <span class="math inline">\((\Omega+p)\)</span> são disjuntos. Na verdade, se não fossem disjuntos, isso significaria que <span class="math inline">\(p=q\)</span> e os conjuntos coincidiriam. Isso acontece porque, se <span class="math inline">\(x \in (\Omega+q)\cap (\Omega+p)\)</span>, então <span class="math inline">\(x\)</span> é um elemento dos dois conjuntos:</p>
+<p><span class="math display">\[x = a+p = b+q \implies b-a=q-p\]</span></p>
+<p>Como <span class="math inline">\(q-p\)</span> é racional, então <span class="math inline">\(b-a\)</span> é racional, logo <span class="math inline">\(b \in [a]\)</span>. Mas nós montamos <span class="math inline">\(\Omega\)</span> com apenas um elemento de cada conjunto <span class="math inline">\([a]\)</span> como esse, então <span class="math inline">\(a=b\)</span>. Logo, <span class="math inline">\(p=q\)</span>.</p>
+<p>Agora, vamos às contas. Estamos interessados em calcular, para <span class="math inline">\(-1&lt;p&lt;1\)</span>, <span class="math inline">\(p \in \mathbb Q\)</span>, a medida</p>
+<p><span class="math display">\[
+\lambda\left(\bigcup_{p} (\Omega + p)\right)
+\]</span></p>
+<p>Por um lado, temos que <span class="math inline">\(\bigcup_{p} (\Omega + p) \subseteq(-1,2)\)</span>. Então,</p>
+<p><span class="math display">\[
+\lambda\left(\bigcup_{p} (\Omega + p)\right) \leq \lambda((-1, 2]) = 3.
+\]</span></p>
+<p>Por outro lado, como os <span class="math inline">\((\Omega + p)\)</span> são disjuntos, temos</p>
+<p><span class="math display">\[\lambda\left(\bigcup_{p} (\Omega + p)\right) = \sum_p\lambda(\Omega+p) = \sum_p\lambda(\Omega)\]</span></p>
+<p>Como estamos somando várias vezes o mesmo termo, e como a soma deve ser menor ou igual a 3, então temos que <span class="math inline">\(\lambda(\Omega) = 0\)</span>. Logo,</p>
+<p><span class="math display">\[
+\lambda\left(\bigcup_{p} (\Omega + p)\right) = 0.
+\]</span></p>
+<p>E agora vem o problema. Para <span class="math inline">\(x \in (0,1)\)</span>, temos que existe um <span class="math inline">\(a \in [x]\)</span> que está em <span class="math inline">\(\Omega\)</span>, certo? E sabemos também que esse <span class="math inline">\(a \in (0,1)\)</span>, porque definimos assim. Como <span class="math inline">\(a \in [x]\)</span>, então <span class="math inline">\(p^* = a - x\)</span> é racional. Além disso, <span class="math inline">\(-1&lt;p^*&lt;1\)</span>, por conta dos valores de <span class="math inline">\(a\)</span> e <span class="math inline">\(x\)</span>. Logo, <span class="math inline">\(x = a + p\)</span>, onde <span class="math inline">\(p=-p^*\)</span>, então <span class="math inline">\(x \in (\Omega + p)\)</span>. Como isso vale para todo <span class="math inline">\(x \in (0,1)\)</span>, temos que</p>
+<p><span class="math display">\[(0,1) \subseteq \bigcup_{p} (\Omega + p)\]</span>
+Logo,</p>
+<p><span class="math display">\[\lambda\left(\bigcup_{p} (\Omega + p)\right) \geq \lambda((0,1)) = 1\]</span></p>
+<p>Ué, mas um número não pode ser zero e maior ou igual a um ao mesmo tempo. Isso é uma contradição. Logo, como encontramos problemas em elementos de <span class="math inline">\(\mathcal P(\Omega)\)</span>, não podemos definir a probabilidade nesse conjunto.</p>
+</div>
+<div id="a-solucao-sigma-algebras" class="section level3">
+<h3>A solução: <span class="math inline">\(\sigma\)</span>-álgebras</h3>
+<p>Uma <span class="math inline">\(\sigma\)</span>-álgebra <span class="math inline">\(\mathcal F\)</span> é um conjunto de subconjuntos, como as partes, mas um pouco menor. Ela tem condições restritivas restritivas:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\Omega \in \mathcal F\)</span></li>
+<li>se <span class="math inline">\(A \in \mathcal F\)</span>, então <span class="math inline">\(A^c \in \mathcal F\)</span>.</li>
+<li>se <span class="math inline">\(A_j \in \mathcal F, j\in \mathbb N\)</span>, então <span class="math inline">\(\cup_j A_j \in \mathcal F\)</span>.</li>
+</ol>
+<p>[este post ainda não está finalizado. Volte depois…]</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Um conjunto contável <span class="math inline">\(A\)</span> é um conjunto que podemos mapear nos naturais <span class="math inline">\(\mathbb N\)</span>. Ou seja, <span class="math inline">\(A\)</span> é contável se conseguirmos montar uma função que associe cada elemento <span class="math inline">\(a \in A\)</span> a um novo elemento <span class="math inline">\(n \in \mathbb N\)</span>. Por exemplo, o conjunto dos inteiros <span class="math inline">\(\mathbb I\)</span> é contável, pois, podemos montar uma função que mapeia os números positivos nos naturais pares e os negativos nos naturais ímpares. Outro exemplo de conjunto contável são os racionais <span class="math inline">\(\mathbb Q\)</span>. Um conjunto não contável são os irracionais (aquele que tem <span class="math inline">\(\pi\)</span>, <span class="math inline">\(e\)</span>, <span class="math inline">\(\sqrt 2\)</span>, etc) e o conjunto dos reais <span class="math inline">\(\mathbb R\)</span>, já que ele contém os irracionais.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
