@@ -30,16 +30,16 @@ Por isso, eu vou te dar outro argumento: se algum dia você montar um novo model
 >
 > -- WUNDERVALD, J.
 
-**É difícil**? A definição de probabilidade seria muito simples e intuitiva se não fossem algumas dificuldades associadas ao conjunto dos números reais $\mathbb R$, e o fato deles serem **não contáveis**[^cont]. Por isso, convido vocês a entrarem comigo nessa jornada com os seguintes passos:
+**É difícil**? SIM! A definição de probabilidade seria muito simples e intuitiva se não fossem algumas dificuldades associadas ao conjunto dos números reais $\mathbb R$, e o fato deles serem **não contáveis**[^cont]. Por isso, convido vocês a entrarem comigo nessa jornada com os seguintes passos:
 
-[^cont]: Um conjunto contável $A$ é um conjunto que podemos mapear nos naturais $\mathbb N$. Ou seja, $A$ é contável se conseguirmos montar uma função que associe cada elemento $a \in A$ a um novo elemento $n \in \mathbb N$. Por exemplo, o conjunto dos inteiros $\mathbb I$ é contável, pois, podemos montar uma função que mapeia os números positivos nos naturais pares e os negativos nos naturais ímpares. Outro exemplo de conjunto contável são os racionais $\mathbb Q$. Um conjunto não contável são os irracionais (aquele que tem $\pi$, $e$, $\sqrt 2$, etc) e o conjunto dos reais $\mathbb R$, já que ele contém os irracionais.
+[^cont]: Um conjunto contável $A$ é um conjunto que podemos mapear nos naturais $\mathbb N$. Ou seja, $A$ é contável se conseguirmos montar uma função que associe cada elemento $a \in A$ a um novo elemento $n \in \mathbb N$. Por exemplo, o conjunto dos inteiros $\mathbb I$ é contável, pois, podemos montar uma função que mapeia os números positivos nos naturais pares e os negativos nos naturais ímpares. Outro exemplo de conjunto contável são os racionais $\mathbb Q$. Um conjunto não contável são os irracionais (aquele que tem $\pi$, $e$, $\sqrt 2$, etc) e o conjunto dos reais $\mathbb R$, já que ele contém os irracionais. Vamos:
 
-1. Vamos tentar definir a probabilidade intuitivamente.
-2. Vamos verificar que essa definição tem problemas.
-3. Vamos tirar da cachola uma tal de $\sigma$-álgebra que, em tese, resolve (2).
-4. Vamos mostrar que ela de fato resolve (2), mostrando mais um conjunto tirado da cachola: o conjunto dos mensuráveis
-5. Vamos mostrar que $\sigma$-álgebras são difíceis de trabalhar.
-6. Graças ao nosso amigo Caratheodory, tem uma forma de resolver (5) sem nos deixar o cabelo em pé.
+1. Tentar definir a probabilidade intuitivamente.
+2. Verificar que essa definição tem problemas.
+3. Tirar da cachola uma tal de $\sigma$-álgebra que, em tese, resolve (2).
+4. Mostrar que ela de fato resolve (2), mostrando mais um conjunto tirado da cachola: o conjunto dos mensuráveis.
+5. Mostrar que $\sigma$-álgebras são difíceis de trabalhar.
+6. Mostrar que tem uma forma de trabalhar (5) sem nos deixar o cabelo em pé, graças ao nosso amigo Caratheodory.
 
 ### Definindo a probabilidade com intuição
 
@@ -135,5 +135,3 @@ Uma $\sigma$-álgebra $\mathcal F$ é um conjunto de subconjuntos, como as parte
 3. se $A_j \in \mathcal F, j\in \mathbb N$, então $\cup_j A_j \in \mathcal F$.
 
 [este post ainda não está finalizado. Volte depois...]
-
-
