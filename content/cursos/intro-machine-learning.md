@@ -1,8 +1,8 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: "18, 20, 25 e 27 de março de 2019"
-hora: "Das 19h às 23h"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+data: "a definir"
+hora: "a definir"
+local: "a definir"
 img: "img/cursos/intro-ml-banner.png"
 preco: "R$750,00"
 banner: "img/cursos/intro-ml.jpg"
