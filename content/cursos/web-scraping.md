@@ -1,8 +1,8 @@
 ---
 title: "Web scraping em R"
-data: "Sábado, 6 de Abril de 2019"
-hora: "Das 9h às 18h"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+data: "a definir"
+hora: "a definir"
+local: "a definir"
 img: "img/cursos/web-scraping.png"
 preco: "R$500,00"
 banner: "img/cursos/web-scraping-banner.jpg"
