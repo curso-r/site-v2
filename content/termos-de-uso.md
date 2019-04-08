@@ -80,4 +80,4 @@ utilização do conteúdo.
 5.1) Junto ao conteúdo disponibilizado no site poderão ser ofertados alguns serviços ao usuário, dentre os quais:
 
 a) A venda online (e-commerce) de cursos e treinamentos da R6, conforme Termos e 
-Condições de Venda desta empresa;
+Condições de Venda desta empresa.
