@@ -1,8 +1,8 @@
 ---
 title: "Introdução à programação em R"
-data: "18, 20, 25 e 27 de Fevereiro de 2019"
-hora: "Das 19h às 23h"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+data: "a definir"
+hora: "a definir"
+local: "a definir"
 img: "img/cursos/intro-r.png"
 preco: "R$690,00"
 banner: "img/cursos/intro-r-banner.jpg"
