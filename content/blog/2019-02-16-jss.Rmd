@@ -1,0 +1,99 @@
+---
+title: "Minha experiência ao publicar no JSS"
+date: "2019-02-05T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r"]
+banner: "img/banners/jss.png"
+author: ["Julio"]
+summary: "."
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+```
+
+## Introdução
+
+Eu não sou fã de journals. Eu tenho a polêmica opinião de que um paper publicado no [*Arxiv*](https://arxiv.org) tem o mesmo valor que um paper publicado na [*Nature*](https://www.nature.com/). Mas minha opinião não vale nada se eu não tiver publicado em algum lugar. Sem publicações "reais", meu problema com a academia não passa de uma reclamação de menino mimado.
+
+Por isso, depois de muitos puxões de orelha de meu orientador no Doutorado e de meus amigos, eu decidi que vou realmente tentar publicar um paper. Para isso, estou tendo de superar todas as barreiras que minha mente impõe, incluindo uma série de técnicas de procastinação. De certa forma, esse post também é uma procastinação.
+
+No entanto, acho que esse post pode ser útil para quem, como eu, tem um interesse enorme na academia, mas tem um bloqueio mental para publicações. Nessa série de posts vou descrever como foi meu processo de submissão, os sofrimentos, angústias e - assim espero - o momento de felicidade ao publicar.
+
+## Sobre a revista
+
+Escolhi o Journal of Statistical Software (JSS) como alvo. Fazendo o balanço das variáveis i) proximidade com meu trabalho, ii) compatibilidade com minha forma open-source de pensar e iii) fator de impacto na minha área (3.801), o JSS é definitivamente o melhor journal. 
+
+A vantagem do JSS é que a submissão deve tipicamente ser um pacote em R, e o paper deve ser uma vignette desse pacote. O código que gera os resultados do paper deve ser 100% reprodutível, e o pacote deve ser devidamente documentado. Preferencialmente, o pacote deve estar no CRAN. Para mim, isso é o cenário perfeito, pois tenho ampla experiência em desenvolvimento de pacotes em R e meu trabalho, essencialmente, gira em torno do pacote `decryptr`.
+
+O problema passa a ser, então, a escrita do paper. A primeira dificuldade é que o texto deve ser em inglês - apesar de eu dominar razoavelmente o inglês, escrever em linguagem científica não é trivial. A segunda dificuldade é que o texto deve ter uma estrutura de paper, e isso para mim é o maior problema. O problema não é, necessariamente, o comprimento nem a forma de escrever. O problema é que eu tenho um bloqueio sempre que penso em escrever nesse formato.
+
+## Estudo
+
+Para iniciar o processo, o primeiro passo foi ler alguns papers famosos do JSS. Buscando no Google Scholar, encontrei 3 papers com muitas citações, que usei como base para escrever o meu:
+
+- [mice: Multivariate imputation by chained equations in R](https://dspace.library.uu.nl/bitstream/handle/1874/44635/SvB-MICE%20in%20R%20-%20Draft.pdf?sequence=1?ref=driverlayer.com/web)
+- [Text Mining Infrastructure in R](http://epub.wu.ac.at/3978/1/textmining.pdf)
+- [kernlab - an S4 package for kernel methods in R](http://epub.wu.ac.at/3999/1/kernlab.pdf)
+
+Também inclui na leitura um autor que eu gosto muito: [Hadley Wickham](http://hadley.nz) e seu artigo [Tidy data](https://img1.wsimg.com/blobby/go/48119c9a-d3e2-49bc-a380-883861a5de98/downloads/1ceacuvb9_987654.pdf)
+
+Outro texto que li foi o do Robert Hyndman sobre [publicações na JSS](https://robjhyndman.com/hyndsight/jss-rpackages/). Também usei como base [essa apresentação do Andrew Parnell](https://andrewcparnell.github.io/how_to_publish_a_paper/publish_a_paper.html#1) sobre como publicar.
+
+Finalmente, mas não menos importante, fiz a leitura dos textos que fazem parte da [missão](https://www.jstatsoft.org/pages/view/mission), [instrução para autores](https://www.jstatsoft.org/pages/view/authors) e [Style Guide](https://www.jstatsoft.org/pages/view/style) do JSS.
+
+### Análise dos papers
+
+Algumas características preliminares dos artigos:
+
+- Todos contém um "in R" ou o nome do pacote no título.
+- São grandes (todos têm mais de 15 páginas, alguns mais de 50).
+- Os papers foram escritos em Rnw (Sweave), não em Rmd (Rmarkdown).
+- Todos os papers iniciam com introdução e revisão bibliográfica, tanto na parte de modelagem quanto na parte de software. Depois, cada um segue sua estrutura, alguns indo mais para modelagem e outros indo mais para o software.
+- Todos têm conclusões sucintas
+- Apenas o textmining tem um apêndice
+
+### Resumo das leituras das instruções
+
+## Sobre o meu paper
+
+Meu paper discorrerá sobre o pacote `decryptr` e suas aplicações para resolver Captchas. Trata-se de uma parte do meu projeto de doutorado no Instituto de Matemática e Estatística da Universidade de São Paulo (IME-USP). Ele é apenas uma parte do projeto pois alguns dos métodos que estou desenvolvendo ainda não fazem parte da versão "estável" do decryptr, como o uso do oráculo para aprimorar o poder preditivo do modelo.
+
+O `decryptr` é um framework para obtenção, classificação e modelagem de problemas envolvendo Captchas. Ele permite que o usuário utilize modelos pré-treinados para resolver Captchas específicos, presentes no `decryptrModels`, mas também permite que o usuário ajuste o seu próprio modelo.
+
+O `decryptr` contém apenas 7 funções exportadas:
+
+- download_captcha: baixar um ou vários Captchas da internet
+- read_captcha: carrega uma imagem de Captcha no R
+- classify: classificar manualmente a resposta de um Captcha
+- join_captcha: prepara um conjunto de Captchas lidos para modelagem
+- train_model: treina um modelo a partir de uma base
+- load_model: carrega um modelo do `decryptrModels`
+- decrypt: resolve um Captcha usando um modelo treinado
+
+Eu ainda não estou plenamente satisfeito com o framework atual, mas dificilmente existirá uma breaking change. Por isso, algumas alterações vão acontecer durante o trabalho.
+
+## Escolhas difíceis
+
+- Apesar de não ser o padrão usado nos papers famosos, escolhi escrever em Rmarkdown e sofrer as consequências. Escolhi isso pois tenho muito mais familiaridade com o RMarkdown e acredito que vale à pena tomar o risco de precisar transcrever depois para Rnw.
+- Título: esse foi tranquilo, até. Decidi repetir o do `kernlab`, començando pelo nome do pacote, dizendo o que ele faz, e finalizando com um "in R".
+- Sobre o termo Captcha. CAPTCHA é uma sigla e teoricamente deveria ser tudo maiúsculo. No entanto, um texto cheio de CAPTCHAs escritos não é gostoso de ler. Por isso, decidi utilizar a forma Captcha, tratando a sigla como um nome próprio.
+- Esqueleto do artigo: 
+
+### Notação
+
+Uma parte bastante complicada para mim foi a escolha da notação a ser utilizada. Por um lado, eu gosto muito da notação estatística das coisas, escolhendo uma distribuição para a variável resposta e escrevendo a verossimilhança. Por outro lado, na área de redes neurais, já existe muito material disponível com as definições de ativação (função de ligação), função de perda (verossimilhança) e outros cognatos.
+
+$$
+
+$$
+
+
+
+## Tempo de publicação
+
+Todos os artigos publicados no JSS têm uma data de submissão e uma data de publicação. Analisando esses tempos, é possível ter uma ideia de quanto demora para publicar no JSS. O único problema dessa análise é que não temos os dados de casos que ainda estão em processo de revisão.
+
+Essa análise será realizada somente depois da submissão. Enquanto isso, podemos usar como *proxy* [esse texto](https://ntguardian.wordpress.com/2018/08/05/time-to-accept-it-publishing-in-the-journal-of-statistical-software/) que discute o tema e é razoavelmente recente.
+
