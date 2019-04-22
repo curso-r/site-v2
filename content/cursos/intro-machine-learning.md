@@ -1,15 +1,16 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: "a definir"
-hora: "a definir"
-local: "a definir"
+data: "12, 14, 15, 19, 21 e 22 de agosto de 2019"
+hora: "das 19h às 22h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 img: "img/cursos/intro-ml-banner.png"
-preco: "R$750,00"
+link_inscricao: "https://link.pagar.me/lH1vJqajqV"
+preco: "R$800,00"
 banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 4
-aberto: "false"
+aberto: "true"
 ---
 
 <header class="section-header">

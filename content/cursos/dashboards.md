@@ -1,15 +1,16 @@
 ---
-title: "Dashboards"
-data: "A definir"
-hora: "A definir"
-local: "A definir"
-paypal: ""
+title: "Dashboards com R"
+data: "1º, 8 e 15  de junho de 2019"
+hora: "das 10h às 17h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
+link_inscricao: "https://link.pagar.me/lSyhWFpi54"
 img: "img/cursos/dashboards.png"
-preco: "R$690,00"
+preco: "R$750,00"
 banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
 ordem: 2
+aberto: "true"
 ---
 
 <header class="section-header">
