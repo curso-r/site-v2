@@ -1,5 +1,6 @@
 ---
 title: "Estágio: Comunicação"
+type: "simples"
 ---
 
 A Curso-R está com vaga aberta para estágio na área de comunicação, e você que ama tecnologia, está sempre ligada(o) nas redes sociais, gosta de escrever e tem curiosidade sobre a área de análise de dados é nossa(o) candidata(o) ideal. 
