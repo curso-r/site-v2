@@ -1,9 +1,9 @@
 ---
-title: "Vagas Curso-R YO"
+title: "Vagas Curso-R"
 type: "simples"
 ---
 
-Trabalhe na Curso-R! agaga
+Trabalhe na Curso-R
 
 No momento estamos com as seguintes vagas abertas:
 
