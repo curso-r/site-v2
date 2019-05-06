@@ -1,7 +1,7 @@
 ---
 title: "Introdução à programação em R"
-data: "27, 29 e 30 de maio e 3, 5 e 6 de junho de 2019"
-hora: "das 19h às 22h"
+data: "dias 27, 29 e 30 de maio e 3, 5 e 6 de junho de 2019, das 19h às 22h"
+hora: "18 horas de curso"
 local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 img: "img/cursos/intro-r.png"
 preco: "R$750,00"

@@ -1,7 +1,7 @@
 ---
 title: "Dashboards com R"
-data: "1º, 8 e 15  de junho de 2019"
-hora: "das 10h às 17h"
+data: "dias 1º, 8 e 15  de junho de 2019, das 10h às 17h"
+hora: "18 horas de curso"
 local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 link_inscricao: "https://link.pagar.me/lSyhWFpi54"
 img: "img/cursos/dashboards.png"
