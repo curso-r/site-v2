@@ -11,7 +11,7 @@ draft: false
 ---
 
 O objetivo principal do pacote [Kuber](https://github.com/curso-r/kuber) é
-ajuda com computações massivamente paralelas. Ele usa o kubernetes e o 
+ajudar com computações massivamente paralelas. Ele usa o kubernetes e o 
 docker de modo a criar um contêiner que automaticamente executa tarefas em
 paralelo via expansão. Se você já usa o Google Cloud Platform, o Kuber
 também consegue automaticamente criar clusters, executar computações e
