@@ -1,10 +1,10 @@
 ---
 title: "Caio Lente"
 cargo: "Sócio e Professor"
-foto: "/img/equipe/caio.jpg"
-facebook: "https://www.facebook.com/ctlente"
-linkedin: "https://www.linkedin.com/in/caio-lente-698bb779/"
-twitter: "https://twitter.com/ctlente"
-github: "https://github.com/ctlente"
-bio: "Bacharelando em Ciência da Computação com foco em Inteligência Artificial pelo IME-USP e estagiário na Platipus Consultoria. Programador desde os 15 anos, começou a se apaixonar pelo R em 2016 e agora não fala em outra coisa. Metido a designer, maníaco da organização e metade texano."
+foto: "https://avatars2.githubusercontent.com/u/7017340?s=460&v=4"
+facebook: "#"
+linkedin: "https://www.linkedin.com/in/clente"
+twitter: "#"
+github: "https://github.com/clente"
+bio: "Mestrando em Ciência da Computação no IME-USP e cientista de dados na Terranova Consultoria. Programador desde os 15 anos, começou a se apaixonar pelo R em 2016 e agora não fala em outra coisa. Metido a designer, maníaco da organização e metade texano."
 ---
