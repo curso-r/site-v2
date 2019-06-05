@@ -6,7 +6,6 @@ local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista,
 img: "img/cursos/intro-r.png"
 preco: "R$750,00"
 banner: "img/cursos/intro-r-banner.jpg"
-link_inscricao: "https://link.pagar.me/lSyc503tn4"
 desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
