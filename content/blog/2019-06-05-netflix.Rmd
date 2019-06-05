@@ -1,0 +1,80 @@
+---
+title: "Analisando dados do Netflix"
+date: "2019-03-10T00:00:00+00:00"
+categories: ["r", "analises"]
+tags: ["r"]
+banner: "img/banners/prob.jpg"
+author: ["Julio"]
+summary: "Neste post, vamos brincar com uma base bem simples de "
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
+theme_set(theme_minimal())
+```
+
+```{r}
+library(tidyverse)
+
+netflix <- read_csv("../../static/data/netflix/NetflixViewingHistory.csv")
+```
+
+```{r}
+netflix <- netflix %>% 
+  mutate(
+    Date = lubridate::mdy(Date),
+    mes = lubridate::month(Date, label = TRUE, locale = "pt_BR.UTF-8"),
+    ano = lubridate::year(Date),
+    mes_ano = Date,
+    programa = str_remove(Title, ":.*")
+  )
+
+lubridate::day(netflix$mes_ano) <- 1
+```
+
+
+```{r}
+netflix %>% 
+  count(mes_ano) %>% 
+  ggplot(aes(x = mes_ano, y = n)) +
+  geom_line() +
+  geom_smooth(se = FALSE, color = "#e50914") +
+  geom_vline(
+    aes(xintercept = as.numeric(mes_ano[mes_ano == "2019/01/01"])), 
+    linetype = 2, 
+    color = "red"
+  ) +
+  labs(x = "Ano", y = "Frequência")
+```
+
+```{r}
+netflix %>% 
+  count(mes, ano) %>% 
+  group_by(mes) %>% 
+  summarise(freq_media = mean(n)) %>% 
+  ggplot(aes(x = mes, y = freq_media)) +
+  geom_col(fill = "#e50914", color = "black") +
+  labs(x = "Mês", y = "Frequência média")
+```
+
+```{r}
+netflix %>% 
+  count(ano) %>% 
+  ggplot(aes(x = ano, y = n)) +
+  geom_col(fill = "#e50914", color = "black") +
+  labs(x = "Ano", y = "Frequência média") +
+  scale_x_continuous(breaks = min(netflix$ano):max(netflix$ano))
+```
+
+```{r}
+netflix %>% 
+  count(programa) %>%
+  top_n(10, n) %>% 
+  mutate(programa = fct_reorder(programa, n)) %>% 
+  ggplot(aes(x = programa, y = n)) +
+  geom_col(fill = "#e50914", color = "black") +
+  labs(x = "Série", y = "Frequência média") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+```
+
