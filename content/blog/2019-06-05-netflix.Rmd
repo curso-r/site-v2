@@ -6,7 +6,7 @@ tags: ["r", "Netflix"]
 banner: "img/banners/binge.jpg"
 author: ["William"]
 summary: "Neste post, vamos brincar com o histórico de visualização do Netflix."
-draft: true
+draft: false
 ---
 
 ```{r setup, include=FALSE}
