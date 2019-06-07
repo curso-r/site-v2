@@ -32,7 +32,7 @@ Como explicado no link divulgado pela Gabriela, para baixar a base basta seguir 
 
 - No final da página, clicar em **Download all**.
 
-### 2. Lendo a base  e fazendo algumas manipulações
+## 2. Lendo a base  e fazendo algumas manipulações
 
 A base vem em um arquivo `.csv` com duas colunas:
 
@@ -60,9 +60,18 @@ theme_set(theme_minimal())
 
 netflix <- read_csv("../../static/data/netflix/NetflixViewingHistory.csv")
 
+# A depender do idioma que você configurou no Netflix, a data pode vir num formato diferente.
+parseia_data <- function(x) {
+  data <- lubridate::dmy(x)
+  if(sum(is.na(data)) > 0) {
+    data <- lubridate::mdy(x)
+  }
+  return(data)
+}
+
 netflix <- netflix %>% 
   mutate(
-    Date = lubridate::mdy(Date),
+    Date = parseia_data(Date),
     mes = lubridate::month(Date, label = TRUE, locale = "pt_BR.UTF-8"),
     ano = lubridate::year(Date),
     dia_sem = lubridate::wday(Date, label = TRUE, locale = "pt_BR.UTF-8"),
@@ -76,6 +85,8 @@ lubridate::day(netflix$mes_ano) <- 1
 
 # A coluna mes_ano é a coluna Date com o dia do mês sempre igual a 1.
 # Isso facilita a agredação da base por mês.
+
+ex1 <- tibble(date = c("14/01/19", "20/09/20"), date2 = c("12/30/2019", "10/01/15"))
 ```
 
 ## 3. Resultados

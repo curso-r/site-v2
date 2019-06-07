@@ -30,8 +30,9 @@ Qual foi o primeiro filme ou a primeira série a que você assistiu quando assin
 <li><p>Entrar na página <a href="https://www.netflix.com/viewingactivity">netflix.com/viewingactivity</a>.</p></li>
 <li><p>No final da página, clicar em <strong>Download all</strong>.</p></li>
 </ul>
-<div id="lendo-a-base-e-fazendo-algumas-manipulacoes" class="section level3">
-<h3>2. Lendo a base e fazendo algumas manipulações</h3>
+</div>
+<div id="lendo-a-base-e-fazendo-algumas-manipulacoes" class="section level2">
+<h2>2. Lendo a base e fazendo algumas manipulações</h2>
 <p>A base vem em um arquivo <code>.csv</code> com duas colunas:</p>
 <ul>
 <li><p>título da série/filme que você assistiu;</p></li>
@@ -51,9 +52,18 @@ theme_set(theme_minimal())
 
 netflix &lt;- read_csv(&quot;../../static/data/netflix/NetflixViewingHistory.csv&quot;)
 
+# A depender do idioma que você configurou no Netflix, a data pode vir num formato diferente.
+parseia_data &lt;- function(x) {
+  data &lt;- lubridate::dmy(x)
+  if(sum(is.na(data)) &gt; 0) {
+    data &lt;- lubridate::mdy(x)
+  }
+  return(data)
+}
+
 netflix &lt;- netflix %&gt;% 
   mutate(
-    Date = lubridate::mdy(Date),
+    Date = parseia_data(Date),
     mes = lubridate::month(Date, label = TRUE, locale = &quot;pt_BR.UTF-8&quot;),
     ano = lubridate::year(Date),
     dia_sem = lubridate::wday(Date, label = TRUE, locale = &quot;pt_BR.UTF-8&quot;),
@@ -66,8 +76,9 @@ netflix &lt;- netflix %&gt;%
 lubridate::day(netflix$mes_ano) &lt;- 1
 
 # A coluna mes_ano é a coluna Date com o dia do mês sempre igual a 1.
-# Isso facilita a agredação da base por mês.</code></pre>
-</div>
+# Isso facilita a agredação da base por mês.
+
+ex1 &lt;- tibble(date = c(&quot;14/01/19&quot;, &quot;20/09/20&quot;), date2 = c(&quot;12/30/2019&quot;, &quot;10/01/15&quot;))</code></pre>
 </div>
 <div id="resultados" class="section level2">
 <h2>3. Resultados</h2>
