@@ -39,14 +39,14 @@ Qual foi o primeiro filme ou a primeira série a que você assistiu quando assin
 <li><p>data em que o título foi assistido.</p></li>
 </ul>
 <p>O título traz informação sobre o nome do filme ou da série e, se for uma série, também a temporada e o episódio. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.</p>
-<p>À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo <code>: Season</code> na coluna Título, podemos criar a coluna <em>categoria</em>. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:</p>
+<p>À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo <code>: Season</code> na coluna Título, podemos criar a coluna <em>categoria</em> para separar as séries dos filmes/documentários. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:</p>
 <ul>
 <li><p>mês da visualização;</p></li>
 <li><p>ano da visualização;</p></li>
 <li><p>dia da semana em que o título foi visualizado;</p></li>
 <li><p>programa.</p></li>
 </ul>
-<p>A construção da nova coluna <code>programa</code>, no caso das séries, supõe que tudo o que aparece depois do <code>:</code> nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.</p>
+<p>A construção da coluna <code>programa</code>, no caso das séries, supõe que tudo o que aparece depois do <code>:</code> nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.</p>
 <pre class="r"><code>library(tidyverse)
 theme_set(theme_minimal())
 
@@ -129,7 +129,7 @@ ex1 &lt;- tibble(date = c(&quot;14/01/19&quot;, &quot;20/09/20&quot;), date2 = c
   ggplot(aes(x = programa, y = n)) +
   geom_col(fill = &quot;#e50914&quot;, color = &quot;black&quot;) +
   geom_text(aes(label = n, y = n/2), color = &quot;white&quot;) +
-  labs(x = &quot;Série&quot;, y = &quot;Frequência média&quot;) +
+  labs(x = &quot;Série&quot;, y = &quot;Total de visualizações&quot;) +
   coord_flip()</code></pre>
 <p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
@@ -142,5 +142,6 @@ ex1 &lt;- tibble(date = c(&quot;14/01/19&quot;, &quot;20/09/20&quot;), date2 = c
 <li><p>faça o upload da base;</p></li>
 <li><p>clique na imagem gerada com o botão direito para copiá-la ou salvá-la e compartilhe com a gente no Twitter ou Facebook!</p></li>
 </ul>
+<p>Vale lembrar que a construção dos gráficos supõe algumas heurísticas que eu criei baseado apenas na minha base. Invariavelmente acontecerão algumas classificações erradas, mas se o app não gerar os gráficos para a sua base, por favor nos avise que tentaremos arrumar.</p>
 <p>Dúvidas, críticas e sugestões, é só deixar um comentário!</p>
 </div>

@@ -42,7 +42,7 @@ A base vem em um arquivo `.csv` com duas colunas:
 
 O título traz informação sobre o nome do filme ou da série e, se for uma série, também a temporada e o episódio. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.
 
-À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo `: Season` na coluna Título, podemos criar a coluna *categoria*. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:
+À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo `: Season` na coluna Título, podemos criar a coluna *categoria* para separar as séries dos filmes/documentários. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:
 
 - mês da visualização;
 
@@ -52,7 +52,7 @@ O título traz informação sobre o nome do filme ou da série e, se for uma sé
 
 - programa.
 
-A construção da nova coluna `programa`, no caso das séries, supõe que tudo o que aparece depois do `:` nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.
+A construção da coluna `programa`, no caso das séries, supõe que tudo o que aparece depois do `:` nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.
 
 ```{r}
 library(tidyverse)
@@ -153,7 +153,7 @@ netflix %>%
   ggplot(aes(x = programa, y = n)) +
   geom_col(fill = "#e50914", color = "black") +
   geom_text(aes(label = n, y = n/2), color = "white") +
-  labs(x = "Série", y = "Frequência média") +
+  labs(x = "Série", y = "Total de visualizações") +
   coord_flip()
 ```
 
@@ -168,6 +168,8 @@ Eu criei um aplicativo web usando Shiny para que você possa fazer essa mesma an
 - faça o upload da base;
 
 - clique na imagem gerada com o botão direito para copiá-la ou salvá-la e compartilhe com a gente no Twitter ou Facebook!
+
+Vale lembrar que a construção dos gráficos supõe algumas heurísticas que eu criei baseado apenas na minha base. Invariavelmente acontecerão algumas classificações erradas, mas se o app não gerar os gráficos para a sua base, por favor nos avise que tentaremos arrumar.
 
 Dúvidas, críticas e sugestões, é só deixar um comentário!
 
