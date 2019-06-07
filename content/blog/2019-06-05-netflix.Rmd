@@ -46,6 +46,10 @@ Para gerar mais informações a partir dessa base, eu criei as seguintes colunas
 
 - ano da visualização;
 
+- indicador de dia da semana;
+
+- indicador de série;
+
 - programa.
 
 A construção da nova coluna `programa`, no caso das séries, supõe que tudo o que aparece depois do `:` nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.
@@ -61,6 +65,9 @@ netflix <- netflix %>%
     Date = lubridate::mdy(Date),
     mes = lubridate::month(Date, label = TRUE, locale = "pt_BR.UTF-8"),
     ano = lubridate::year(Date),
+    dia_sem = lubridate::wday(Date, label = TRUE, locale = "pt_BR.UTF-8"),
+    categoria = str_detect(Title, ": [Season|Part|Book|Capítulo|Chapter|Vol.|Volume|SEASON]"),
+    categoria = ifelse(categoria, "Séries", "Filmes/Docs."),
     mes_ano = Date,
     programa = str_remove(Title, ":.*")
   )
@@ -93,13 +100,12 @@ Para entender o meu comportamento ao longo do ano, fiz um gráfico da número m�
 
 ```{r}
 netflix %>% 
-  count(mes, ano) %>% 
-  group_by(mes) %>% 
+  count(mes, ano, categoria) %>% 
+  group_by(mes, categoria) %>% 
   summarise(freq_media = mean(n)) %>% 
   mutate(freq_media = round(freq_media)) %>% 
-  ggplot(aes(x = mes, y = freq_media)) +
-  geom_col(fill = "#e50914", color = "black") +
-  geom_text(aes(label = freq_media, y = freq_media/2), color = "white") +
+  ggplot(aes(x = mes, y = freq_media, fill = categoria)) +
+  geom_col() +
   labs(x = "Mês", y = "Frequência média")
 ```
 
@@ -107,18 +113,27 @@ Fiz também o gráfico por ano, contando o número de programas assistidos por a
 
 ```{r}
 netflix %>% 
-  count(ano) %>% 
-  ggplot(aes(x = ano, y = n)) +
-  geom_col(fill = "#e50914", color = "black") +
-  labs(x = "Ano", y = "Frequência total") +
-  geom_text(aes(label = n, y = n/2), color = "white") +
+  count(ano, categoria) %>% 
+  ggplot(aes(x = ano, y = n, fill = categoria)) +
+  geom_col() +
+  labs(x = "Ano", y = "Frequência total", fill = "") +
   scale_x_continuous(breaks = min(netflix$ano):max(netflix$ano))
 ```
+
+```{r}
+netflix %>% 
+  count(dia_sem, categoria) %>% 
+  ggplot(aes(x = dia_sem, y = n, fill = categoria)) +
+  geom_col() +
+  labs(x = "Dia da semana", y = "Frequência total", fill = "")
+```
+
 
 Por fim, contei as séries que mais assisti. O resultado representa bem o meu gosto: 9 das 10 séries são comédias.
 
 ```{r}
 netflix %>% 
+  filter(categoria  == "Séries") %>% 
   count(programa) %>%
   top_n(10, n) %>% 
   mutate(programa = fct_reorder(programa, n)) %>% 
