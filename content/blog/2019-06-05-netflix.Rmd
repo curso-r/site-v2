@@ -75,7 +75,7 @@ netflix <- netflix %>%
     mes = lubridate::month(Date, label = TRUE, locale = "pt_BR.UTF-8"),
     ano = lubridate::year(Date),
     dia_sem = lubridate::wday(Date, label = TRUE, locale = "pt_BR.UTF-8"),
-    categoria = str_detect(Title, ": [Season|Part|Book|Capítulo|Chapter|Vol.|Volume|SEASON]"),
+    categoria = str_detect(Title, ": "),
     categoria = ifelse(categoria, "Séries", "Filmes/Docs."),
     mes_ano = Date,
     programa = str_remove(Title, ":.*")
