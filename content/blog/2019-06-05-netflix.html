@@ -1,8 +1,8 @@
 ---
 title: "Analisando o seu histórico do Netflix"
 date: "2019-06-06T00:00:00+00:00"
-categories: ["r", "analises"]
-tags: ["r"]
+categories: ["r", "análises"]
+tags: ["r", "Netflix"]
 banner: "img/banners/binge.jpg"
 author: ["William"]
 summary: "Neste post, vamos brincar com o histórico de visualização do Netflix."
@@ -12,6 +12,7 @@ draft: true
 
 
 <p>Motivado pelo tweet da jornalista de dados <a href="https://twitter.com/gabrielacaesar">Gabriela Caesar</a>, resolvi pegar a base do meu histórico no Netflix e montar algumas visualizações para descobrir como venho utilizando a plataforma nesses últimos anos.</p>
+<center>
 <blockquote class="twitter-tweet" data-lang="en">
 <p lang="pt" dir="ltr">
 Qual foi o primeiro filme ou a primeira série a que você assistiu quando assinou a Netflix? No meu caso, em março de 2016, vi “House of Cards: Temporada 1: Capítulo 1” e “De Volta ao Jogo”. Baixe o seu histórico da Netflix aqui: <a href="https://t.co/EzG2nki18I">https://t.co/EzG2nki18I</a>
@@ -19,6 +20,7 @@ Qual foi o primeiro filme ou a primeira série a que você assistiu quando assin
 — gabriela caesar (<span class="citation">@gabrielacaesar</span>) <a href="https://twitter.com/gabrielacaesar/status/1136119301822459904?ref_src=twsrc%5Etfw">June 5, 2019</a>
 </blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
 <p>A seguir, explico o passo a passo da análise e apresento os resultados.</p>
 <div id="pegar-a-base" class="section level2">
 <h2>1. Pegar a base</h2>
@@ -28,18 +30,19 @@ Qual foi o primeiro filme ou a primeira série a que você assistiu quando assin
 <li><p>Entrar na página <a href="https://www.netflix.com/viewingactivity">netflix.com/viewingactivity</a>.</p></li>
 <li><p>No final da página, clicar em <strong>Download all</strong>.</p></li>
 </ul>
-<div id="lendo-a-base-fazendo-algumas-manipulacoes" class="section level3">
-<h3>2. Lendo a base fazendo algumas manipulações</h3>
+<div id="lendo-a-base-e-fazendo-algumas-manipulacoes" class="section level3">
+<h3>2. Lendo a base e fazendo algumas manipulações</h3>
 <p>A base vem em um arquivo <code>.csv</code> com duas colunas:</p>
 <ul>
 <li><p>título da série/filme que você assistiu;</p></li>
 <li><p>data em que o título foi assistido.</p></li>
 </ul>
-<p>O título traz informação sobre o nome da série, a temporada e o episódio. Não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.</p>
-<p>Para gerar mais informações a partir dessa base, eu criei as seguintes colunas a partir delas:</p>
+<p>O título traz informação sobre o nome do filme ou da série e, se for uma série, também a temporada e o episódio. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.</p>
+<p>À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo <code>: Season</code> na coluna Título, podemos criar a coluna <em>categoria</em>. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:</p>
 <ul>
 <li><p>mês da visualização;</p></li>
 <li><p>ano da visualização;</p></li>
+<li><p>dia da semana em que o título foi visualizado;</p></li>
 <li><p>programa.</p></li>
 </ul>
 <p>A construção da nova coluna <code>programa</code>, no caso das séries, supõe que tudo o que aparece depois do <code>:</code> nos nomes dos títulos é informação sobre temporada e episódio. Assim, removendo essa informação, podemos contar quantas vezes assistimos cada série, independentemente do episódio.</p>
@@ -53,6 +56,9 @@ netflix &lt;- netflix %&gt;%
     Date = lubridate::mdy(Date),
     mes = lubridate::month(Date, label = TRUE, locale = &quot;pt_BR.UTF-8&quot;),
     ano = lubridate::year(Date),
+    dia_sem = lubridate::wday(Date, label = TRUE, locale = &quot;pt_BR.UTF-8&quot;),
+    categoria = str_detect(Title, &quot;: [Season|Part|Book|Capítulo|Chapter|Vol.|Volume|SEASON]&quot;),
+    categoria = ifelse(categoria, &quot;Séries&quot;, &quot;Filmes/Docs.&quot;),
     mes_ano = Date,
     programa = str_remove(Title, &quot;:.*&quot;)
   )
@@ -65,7 +71,7 @@ lubridate::day(netflix$mes_ano) &lt;- 1
 </div>
 <div id="resultados" class="section level2">
 <h2>3. Resultados</h2>
-<p>Primeiro, fiz um gráfico para ver a série do número de títulos assistidos ao longo do tempo (eu assinei a Netflix em julho de 2012). Entre um pico de visualização ou outro (maratonas), a minha frequência foi mais ou menos constante ao longo dos anos, com exceção à 2019 (reta pontilhada), que bate com a reta final do meu Doutorado.</p>
+<p>Primeiro, fiz um gráfico para ver a série temporal do número de títulos assistidos ao longo do tempo (eu assinei a Netflix em julho de 2012). Entre um pico de visualização ou outro (as famosas maratonas), a minha frequência foi mais ou menos constante ao longo dos anos, com exceção à 2019 (reta pontilhada), cuja queda coincide com a reta final do meu Doutorado.</p>
 <pre class="r"><code>netflix %&gt;% 
   count(mes_ano) %&gt;% 
   ggplot(aes(x = mes_ano, y = n)) +
@@ -78,28 +84,34 @@ lubridate::day(netflix$mes_ano) &lt;- 1
   ) +
   labs(x = &quot;Ano&quot;, y = &quot;Frequência&quot;)</code></pre>
 <p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Para entender o meu comportamento ao longo do ano, fiz um gráfico da número médio de títulos assistidos por mês. Talvez um reflexo dos meus anos letivos, julho é o mês que em média eu mais assisti Netflix.</p>
+<p>Para ver quais meses do ano eu assisto mais netflix, eu fiz um gráfico do número médio de títulos assistido por mês do ano. Talvez um reflexo de 12 anos na universidade, julho, mês de férias letivas, é o que em média eu mais assisti Netflix.</p>
 <pre class="r"><code>netflix %&gt;% 
-  count(mes, ano) %&gt;% 
-  group_by(mes) %&gt;% 
+  count(mes, ano, categoria) %&gt;% 
+  group_by(mes, categoria) %&gt;% 
   summarise(freq_media = mean(n)) %&gt;% 
   mutate(freq_media = round(freq_media)) %&gt;% 
-  ggplot(aes(x = mes, y = freq_media)) +
-  geom_col(fill = &quot;#e50914&quot;, color = &quot;black&quot;) +
-  geom_text(aes(label = freq_media, y = freq_media/2), color = &quot;white&quot;) +
+  ggplot(aes(x = mes, y = freq_media, fill = categoria)) +
+  geom_col() +
   labs(x = &quot;Mês&quot;, y = &quot;Frequência média&quot;)</code></pre>
 <p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>Fiz também o gráfico por ano, contando o número de programas assistidos por ano. 2018 foi o campeão, mas com certeza foi influência do meu pai e da minhã irmã, que usaram o meu perfil por um tempo.</p>
 <pre class="r"><code>netflix %&gt;% 
-  count(ano) %&gt;% 
-  ggplot(aes(x = ano, y = n)) +
-  geom_col(fill = &quot;#e50914&quot;, color = &quot;black&quot;) +
-  labs(x = &quot;Ano&quot;, y = &quot;Frequência total&quot;) +
-  geom_text(aes(label = n, y = n/2), color = &quot;white&quot;) +
+  count(ano, categoria) %&gt;% 
+  ggplot(aes(x = ano, y = n, fill = categoria)) +
+  geom_col() +
+  labs(x = &quot;Ano&quot;, y = &quot;Frequência total&quot;, fill = &quot;&quot;) +
   scale_x_continuous(breaks = min(netflix$ano):max(netflix$ano))</code></pre>
 <p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Por fim, contei as séries que mais assisti. O resultado representa bem o meu gosto: 9 das 10 séries são comédias.</p>
+<p>Analisando agora o dia da semana, sem surpresa: fins de semana ganham. Mas é curioso que eu costumo assistir mais filmes às sextas do que no resto da semana.</p>
 <pre class="r"><code>netflix %&gt;% 
+  count(dia_sem, categoria) %&gt;% 
+  ggplot(aes(x = dia_sem, y = n, fill = categoria)) +
+  geom_col() +
+  labs(x = &quot;Dia da semana&quot;, y = &quot;Frequência total&quot;, fill = &quot;&quot;)</code></pre>
+<p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Por fim, contei as séries que mais assisti. O resultado representa bem o meu gosto: 8 das 10 séries são comédias (sendo que o desenho Avatar nem fui eu quem assistiu).</p>
+<pre class="r"><code>netflix %&gt;% 
+  filter(categoria  == &quot;Séries&quot;) %&gt;% 
   count(programa) %&gt;%
   top_n(10, n) %&gt;% 
   mutate(programa = fct_reorder(programa, n)) %&gt;% 
@@ -108,7 +120,7 @@ lubridate::day(netflix$mes_ano) &lt;- 1
   geom_text(aes(label = n, y = n/2), color = &quot;white&quot;) +
   labs(x = &quot;Série&quot;, y = &quot;Frequência média&quot;) +
   coord_flip()</code></pre>
-<p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/blog/2019-06-05-netflix_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="faca-os-graficos-para-os-seus-dados" class="section level2">
 <h2>4. Faça os gráficos para os seus dados</h2>
@@ -117,6 +129,7 @@ lubridate::day(netflix$mes_ano) &lt;- 1
 <li><p>baixe a sua base como descrito no passo 1 deste post;</p></li>
 <li><p>acesse o seguinte link <a href="https://rseis.shinyapps.io/shinyNetflix/" class="uri">https://rseis.shinyapps.io/shinyNetflix/</a>;</p></li>
 <li><p>faça o upload da base;</p></li>
-<li><p>clique na imagem gerada com o botão direito para copiá-la ou salvá-la.</p></li>
+<li><p>clique na imagem gerada com o botão direito para copiá-la ou salvá-la e compartilhe com a gente no Twitter ou Facebook!</p></li>
 </ul>
+<p>Dúvidas, críticas e sugestões, é só deixar um comentário!</p>
 </div>

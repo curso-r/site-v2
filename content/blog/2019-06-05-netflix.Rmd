@@ -1,8 +1,8 @@
 ---
 title: "Analisando o seu histórico do Netflix"
 date: "2019-06-06T00:00:00+00:00"
-categories: ["r", "analises"]
-tags: ["r"]
+categories: ["r", "análises"]
+tags: ["r", "Netflix"]
 banner: "img/banners/binge.jpg"
 author: ["William"]
 summary: "Neste post, vamos brincar com o histórico de visualização do Netflix."
@@ -15,8 +15,10 @@ knitr::opts_chunk$set(collapse = TRUE, warning = FALSE, message = FALSE)
 
 Motivado pelo tweet da jornalista de dados [Gabriela Caesar](https://twitter.com/gabrielacaesar), resolvi pegar a base do meu histórico no Netflix e montar algumas visualizações para descobrir como venho utilizando a plataforma nesses últimos anos.
 
+<center>
 <blockquote class="twitter-tweet" data-lang="en"><p lang="pt" dir="ltr">Qual foi o primeiro filme ou a primeira série a que você assistiu quando assinou a Netflix? No meu caso, em março de 2016, vi &quot;House of Cards: Temporada 1: Capítulo 1&quot; e &quot;De Volta ao Jogo&quot;. Baixe o seu histórico da Netflix aqui: <a href="https://t.co/EzG2nki18I">https://t.co/EzG2nki18I</a></p>&mdash; gabriela caesar (@gabrielacaesar) <a href="https://twitter.com/gabrielacaesar/status/1136119301822459904?ref_src=twsrc%5Etfw">June 5, 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>
 
 A seguir, explico o passo a passo da análise e apresento os resultados.
 
@@ -30,7 +32,7 @@ Como explicado no link divulgado pela Gabriela, para baixar a base basta seguir 
 
 - No final da página, clicar em **Download all**.
 
-### 2. Lendo a base fazendo algumas manipulações
+### 2. Lendo a base  e fazendo algumas manipulações
 
 A base vem em um arquivo `.csv` com duas colunas:
 
@@ -38,17 +40,15 @@ A base vem em um arquivo `.csv` com duas colunas:
 
 - data em que o título foi assistido.
 
-O título traz informação sobre o nome da série, a temporada e o episódio. Não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.
+O título traz informação sobre o nome do filme ou da série e, se for uma série, também a temporada e o episódio. A data corresponde ao dia, mês e ano que o título foi assistido, sem informação da hora. Sempre começamos a assistir qualquer título, uma nova linha é gerada na base, independentemente se assistimos por 1 minuto ou até o final.
 
-Para gerar mais informações a partir dessa base, eu criei as seguintes colunas a partir delas:
+À princípio, não temos informação sobre a categoria (filme, série, documentário etc) ou duração de cada programa. No entanto, supondo que séries sempre terão padrões do tipo `: Season` na coluna Título, podemos criar a coluna *categoria*. Além dela, para gerar mais informações, eu criei as seguintes colunas a partir da base original:
 
 - mês da visualização;
 
 - ano da visualização;
 
-- indicador de dia da semana;
-
-- indicador de série;
+- dia da semana em que o título foi visualizado;
 
 - programa.
 
@@ -80,7 +80,7 @@ lubridate::day(netflix$mes_ano) <- 1
 
 ## 3. Resultados
 
-Primeiro, fiz um gráfico para ver a série do número de títulos assistidos ao longo do tempo (eu assinei a Netflix em julho de 2012). Entre um pico de visualização ou outro (maratonas), a minha frequência foi mais ou menos constante ao longo dos anos, com exceção à 2019 (reta pontilhada), que bate com a reta final do meu Doutorado.
+Primeiro, fiz um gráfico para ver a série temporal do número de títulos assistidos ao longo do tempo (eu assinei a Netflix em julho de 2012). Entre um pico de visualização ou outro (as famosas maratonas), a minha frequência foi mais ou menos constante ao longo dos anos, com exceção à 2019 (reta pontilhada), cuja queda coincide com a reta final do meu Doutorado.
 
 ```{r}
 netflix %>% 
@@ -96,7 +96,7 @@ netflix %>%
   labs(x = "Ano", y = "Frequência")
 ```
 
-Para entender o meu comportamento ao longo do ano, fiz um gráfico da número médio de títulos assistidos por mês. Talvez um reflexo dos meus anos letivos, julho é o mês que em média eu mais assisti Netflix.
+Para ver quais meses do ano eu assisto mais netflix, eu fiz um gráfico do número médio de títulos assistido por mês do ano. Talvez um reflexo de 12 anos na universidade, julho, mês de férias letivas, é o que em média eu mais assisti Netflix.
 
 ```{r}
 netflix %>% 
@@ -120,6 +120,8 @@ netflix %>%
   scale_x_continuous(breaks = min(netflix$ano):max(netflix$ano))
 ```
 
+Analisando agora o dia da semana, sem surpresa: fins de semana ganham. Mas é curioso que eu costumo assistir mais filmes às sextas do que no resto da semana.
+
 ```{r}
 netflix %>% 
   count(dia_sem, categoria) %>% 
@@ -129,7 +131,7 @@ netflix %>%
 ```
 
 
-Por fim, contei as séries que mais assisti. O resultado representa bem o meu gosto: 9 das 10 séries são comédias.
+Por fim, contei as séries que mais assisti. O resultado representa bem o meu gosto: 8 das 10 séries são comédias (sendo que o desenho Avatar nem fui eu quem assistiu).
 
 ```{r}
 netflix %>% 
@@ -154,6 +156,9 @@ Eu criei um aplicativo web usando Shiny para que você possa fazer essa mesma an
 
 - faça o upload da base;
 
-- clique na imagem gerada com o botão direito para copiá-la ou salvá-la.
+- clique na imagem gerada com o botão direito para copiá-la ou salvá-la e compartilhe com a gente no Twitter ou Facebook!
+
+Dúvidas, críticas e sugestões, é só deixar um comentário!
+
 
 
