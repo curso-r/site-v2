@@ -85,13 +85,13 @@ Tentei separar uma lista pessoal de coisas que definitivamente quero estudar mai
 
 - **Tidyverse**
   - Pacote `vroom`: O autor do pacote, Jim Hester, me convenceu de que o vroom é real deal. 
-  - Pacote `usethis`: O filhinho da Jenny Bryan é realmente muito legal
+  - Pacote `usethis`: O filhinho da Jenny Bryan é realmente muito legal. É um dos meus pacotes preferidos.
   - Pacote `rray`: Pacote mega interessante do Davis Vaughan para tratar arrays no R de uma forma mais intuitiva. Definitivamente vale tentar!
 - **Workflow, ensino e comunicação**
   - Pacote `remedy`: com esse pacote, podemos adicionar diversos atalhos no RStudio para acelerar a escrita de documentos RMarkdown. Farei um post sobre esse pacote em breve.
   - Pacote `ghactions`: é uma espécie de generalização do Travis CI, aplicado diretamente e gratuitamente pelo GitHub. Eu tenho até dificuldade de pensar nas possibilidades desse pacote, que são muitas!
   - Pacote `crrri`: esse pacote permite abrir o chrome dentro do RStudio, o que pode tornar a experiência de desenvolver web scrapers muito mais fluida e interativa. Vale à pena tentar.
-  - Pacote `ghclass`: achei esse app muito interessante para ser usado em salas de aula. 
+  - Pacote `ghclass`: achei esse pacote interessante para ser usado em salas de aula. 
 - **Shiny**:
   - Pacote `shinyEventLogger`: Esse pacote pode ser utilizado para verificar o que o seu shiny está fazendo e otimizar nas partes que ele está lento. Com um pouco de programação ele pode ser muito útil para apps complexos.
   - Pacote `shinymeta`: O pacote do Joe Cheng parece realmente muito útil para gerar relatórios reprodutíveis a partir dos apps. Provavelmente esse é o melhor jeito de fazer isso, e resolve um problema bem difícil, que supera diversas ferramentas de BI. Ainda está incipiente, mas quando ficar maduro, será um diferencial absurdo do shiny.
