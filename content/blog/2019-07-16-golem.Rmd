@@ -61,10 +61,15 @@ Essa é uma estrutura de pacotes do R, com algumas coisas a mais.
 
 O mais interessante de um app criado dessa forma é que os arquivos `ui.R` e `server.R` ficam praticamente vazios. Isso acontece porque todo o trabalho sujo está sendo feito pelas funções `app_ui()` e `app_server()`, que agora são funções documentadas do seu pacote.
 
-## Cuidados a serem tomados
+## Características interessantes
+
+- Com o `golem`, é fácil de criar uma imagem Docker do seu app, o que facilita o deploy em escala. Atualmente, estou testando formas de integrar essa funcionalidade com a Google Cloud Platform, e parece bem promissor.
+- O `golem` te obriga a documentar tudo o que você faz. Isso pode parecer entediante no início, mas se paga no futuro.
+- Existem funções que facilitam a utilização de *javascript* e *css* no app, o que geralmente é algo doloroso no desenvolvimento de apps no shiny.
 
 ## Vídeo
 
+Montei um vídeo rápido mostrando a utilização do golem na construção de um app simples, colocado no shinyapps.io. Se quiser acessar esse app, o link está na descrição do vídeo!
 
 É isso. Happy coding ;)
 
