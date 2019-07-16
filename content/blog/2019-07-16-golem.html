@@ -1,0 +1,57 @@
+---
+title: "Shiny apps empacotados com golem"
+date: "2019-07-14"
+tags: ["golem", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/user2019.jpg"
+author: ["Julio"]
+summary: "Pacote para desenvolver shiny apps dentro de pacotes."
+draft: false
+---
+
+
+
+<p>Desenvolver shiny apps é muito divertido, mas dá trabalho. Os apps começam com uma ideia simples, mas vão crescendo até o ponto que não conseguimos mais entender onde estão os pedaços do app.</p>
+<p>Para resolver esse problema, os <a href="https://shiny.rstudio.com/articles/modules.html">módulos</a> foram criados. Com módulos, é possível separar pedaços de um shiny em scripts separados, que são adicionados como funções dentro do app principal. Os módulos facilitam muito a manutenção dos apps.</p>
+<p>No entanto, novos problemas podem surgir em apps complexos. Um módulo pode usar funções de certo pacote, e às vezes esquecemos de checar se ele existe quando o app for colocado em produção. Além disso, como existem vários jeitos de organizar os arquivos que contém os scripts dos módulos dentro do projeto, cada app acaba ficando com uma estrutura diferente.</p>
+<p>Para resolver esse problema, uma alternativa muito útil é desenvolver o shiny dentro de um pacote. Dessa forma, as dependências são checadas automaticamente, os módulos se tornam funções do pacote e tudo deve ficar documentado e organizado por padrão. Eu tenho essa prática desde 2018, quando percebi que meus apps estavam ficando muito complicados de manter.</p>
+<p>O pacote <code>golem</code> é a generalização dessa ideia. O pacote sugere um fluxo de trabalho excelente para desenvolver seu app dentro de um pacote do R. O pacote ainda não está no CRAN, então use com cuidado. Várias coisas podem mudar!</p>
+<p>Eu acredito que a melhor documentação possível do <code>golem</code> é a que está na <a href="https://thinkr-open.github.io/golem/">própria página do pacote</a>. Eu simplesmente segui o tutorial indicado e em 5 minutos estava com meu app modular e funcionando perfeitamente. Por isso, vou apenas destacar alguns detalhes que considero importantes e podem acabar despercebidos numa primeira leitura.</p>
+<p>Como o <code>golem</code> trata de shiny apps dentro de pacotes, o ideal é que você tenha algum conhecimento em desenvolvimento de pacotes. Se tiver interesse, o melhor material possível sobre isso é o <a href="http://r-pkgs.org" class="uri">http://r-pkgs.org</a>.</p>
+<div id="como-o-golem-funciona" class="section level2">
+<h2>Como o golem funciona?</h2>
+<p>O pacote é uma espécie de <code>usethis</code> para shiny apps. Aliás, se você não conhece o <code>usethis</code>, pare tudo o que você está fazendo e <a href="https://usethis.r-lib.org/">acesse essa página</a>. Ao criar um shiny app com o template do <code>golem</code>, você verá uma estrutura de arquivos assim</p>
+<pre><code>DESCRIPTION               
+¦--dev/                # desenvolvimento
+  ¦--01_start.R           
+  ¦--02_dev.R           
+  ¦--03_deploy.R           
+  ¦--run_dev.R
+¦--inst/               # aqui fica o aplicativo
+  ¦--app                
+    ¦--server.R       
+    ¦--ui.R           
+    ¦--www/          
+      ¦--favicon.ico
+¦--man/               # documentação das funções/módulos do pacote
+    ¦--run_app.Rd      
+NAMESPACE             # informa as funções que o pacote importa e exporta
+myapp.Rproj           # projeto
+¦--R/                 # aqui ficam os módulos e as funções que geram ui e server
+  ¦--app_server.R       
+  ¦--app_ui.R           
+  ¦--run_app.R   </code></pre>
+<p>Essa é uma estrutura de pacotes do R, com algumas coisas a mais.</p>
+<ul>
+<li>A pasta <code>dev/</code>, que geralmente não existe em pacotes, contém o tutorial que o usuário deve seguir para fazer o setup e o desenvolvimento do app. O ideal é ler esses scripts e ir rodando tudo com calma, verificando o que cada função altera nos seus arquivos.</li>
+<li>A paste <code>inst/</code> é uma pasta especial que é copiada diretamente na pasta do pacote, sem nenhuma modificação. É graças à ela que conseguimos acessar arquivos através da função <code>system.file()</code>, por exemplo. Por isso, é nessa pasta que fica o nosso shiny app de verdade.</li>
+</ul>
+<p>O mais interessante de um app criado dessa forma é que os arquivos <code>ui.R</code> e <code>server.R</code> ficam praticamente vazios. Isso acontece porque todo o trabalho sujo está sendo feito pelas funções <code>app_ui()</code> e <code>app_server()</code>, que agora são funções documentadas do seu pacote.</p>
+</div>
+<div id="cuidados-a-serem-tomados" class="section level2">
+<h2>Cuidados a serem tomados</h2>
+</div>
+<div id="video" class="section level2">
+<h2>Vídeo</h2>
+<p>É isso. Happy coding ;)</p>
+</div>
