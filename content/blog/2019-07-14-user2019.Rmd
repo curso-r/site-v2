@@ -1,0 +1,135 @@
+---
+title: "Minha experiência na useR!2019"
+date: "2019-07-14"
+tags: ["evento"]
+categories: ["evento", "r"]
+banner: "img/banners/user2019.jpg"
+author: ["Julio"]
+summary: "Highlights do maior evento sobre R do mundo."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Entre os dias 8 e 12 de julho de 2019 aconteceu a [**useR**, em Toulouse, França](http://user2019.r-project.org/). A useR é um evento bem tradicional e ocorre desde o ano de 2004. Tive a felicidade de participar pela primeira vez esse ano, juntamente com [William Amorim](https://www.curso-r.com/author/william/), [Daniel Falbel](https://github.com/dfalbel), [Beatriz Milz](https://twitter.com/beamilz) e Angélica Custódio. Também encontrei o professor [Elias Krainski](http://www.leg.ufpr.br/~elias/), da UFPR, que nos introduziu à professora [Laurie Baker](https://www.researchgate.net/profile/Laurie_Baker2), que também andou com a gente durante o evento.
+
+Se eu pudesse resumir minha experiência a uma palavra, seria **pertencimento**. Sinto que a comunidade do R é verdadeiramente inclusiva e se esforça o máximo possível para que as pessoas de todos os lugares do mundo, de todas as culturas, sintam-se bem vindas e relevantes para produção do conhecimento científico. Essa sensação de pertencimento é tão importante quanto os avanços técnicos -- que com certeza foram mostrados, e foram incríveis -- pois potencializa a produção de soluções e incentiva a colaboração, dentre muitas outras vantagens. É óbvio que ainda temos um caminho enorme a seguir nesse sentido, mas acredito que estamos indo muito bem.
+
+# Highlights de cada dia
+
+## Dia -1: Tidy dev day!
+
+Já pensou em sentar com o Hadley Wickham, a Jenny Bryan e outros para ajudar a resolver issues do `dplyr` e do `ggplot2`? Bom, o tidy dev day é exatamente isso!
+
+Infelizmente eu não participei do evento, então não tenho muito para escrever. O que sei é que as pessoas colocaram post-its na lousa para as pessoas irem pegando e fazendo pull requests nas issues dos pacotes do `tidyverse`.
+
+Quem sabe a Bea ou a Angélica explicam melhor pra gente!
+
+```{r, fig.cap="Bea e Angélica no tidy dev day."}
+knitr::include_graphics("/img/blog/user2019/tidydev.jpg")
+```
+
+## Dia 0: Cursos!
+
+Também não participei dos cursos, mas não importa muito, pois vi todos os materiais apresentados ao mesmo tempo que meus amigos. Todos os cursos estão abertos por aí, basta fuçar no twitter e entrar no github dos autores. 
+
+E como nossa comunidade é maravilhosa, é claro que alguém já criou um repositório para colocar todos os links:
+
+https://github.com/sowla/useR2019-materials/
+
+## Dia 1: Uma palestra cheia de <3
+
+O que dizer da palestra da [Julia Stewart Lowndes](https://www.youtube.com/watch?v=Z8PqwFPqn6Y)? Acho que a palavra é: **inspiradora**. Ela mostrou como fazer ciência aberta potencializa os trabalhos e gera resultados efetivos. E mostrou como o ecossistema do R é essencial para isso. E sério, usar desenhos com o tema Star Wars foi uma ideia genial.
+
+```{r, fig.cap="Que vontade de abraçar esses slides."}
+knitr::include_graphics(c("/img/blog/user2019/julia-1.png", 
+                          "/img/blog/user2019/julia-2.png"))
+```
+
+## Dia 2: shiny, ensino e comunidade
+
+No dia 2, ficou claro o impacto do shiny na comunidade R. Muitas apresentações corporativas sobre como usar o shiny de forma escalável, como monitorar desempenho etc. Algumas pessoas chegaram até a comentar que a quantidade de falas sobre shiny foi *excessiva*, até porque a useR é, tradicionalmente, um evento acadêmico. Eu não pude sentir isso pois o shiny é uma parte essencial do meu trabalho, mas creio que essa seja uma possível crítica construtiva ao evento.
+
+Outra coisa que ficou clara é como a comunidade R quer ajudar o resto do mundo a entrar na ciência de dados. É muito bonito. Ver a apresentação do Colin Rundel sobre o pacote `ghclass`, bem como diversos case studies sobre ensino de R em comunidades diversas e outras ferramentas e desafios para ensinar pessoas de todas as idades renovou meu compromisso com a missão da Curso-R, que é descomplicar a ciência de dados aqui no Brasil.
+
+Destaque para a [palestra da Bea Milz](https://beatrizmilz.github.io/useR2019/), feita em conjunto com a [Bruna Wundervald](https://brunaw.com), sobre a experiência do RLadies no capítulo de São Paulo. Foi muito tocante, e nós da Curso-R ficamos muito felizes com o slide de agradecimento <3
+
+```{r, fig.cap="Palestra da Bea Milz sobre o RLadies São Paulo."}
+knitr::include_graphics("/img/blog/user2019/bea.jpg")
+```
+
+
+## Dia 3: mais shiny, vroom, auth0!
+
+A [palestra do Joe Cheng](https://www.youtube.com/watch?v=5KByRC6eqC8&feature=youtu.be&t=697) foi excelente. É muito legal ver como ele se mantém humilde sendo um dos fundadores da RStudio e criador do shiny. Ele falou sobre o pacote `shinymeta`, ainda em construção, para adicionar a funcionalidade de gerar relatórios reprodutíveis diretamente do shiny. O mais legal foi ver o processo de desenvolvimento dele, que mostra que mesmo os grandes programadores -- talvez principalmente? -- sofrem ao não saber como fazer/planejar as soluções e pedem ajuda da comunidade para conseguir encontrar um caminho.
+
+Outro highlight do dia foi a apresentação do pacote `vroom`, pelo [Jim Hester](https://speakerdeck.com/jimhester/vroom). Trata-se de um pacote que lê arquivos de texto muito rápido, ganhando muitas vezes do próprio `data.table::fread()`. O mais legal foi ver a cara de incredulidade de todos que estavam assistindo, pois antes isso nem parecia possível. Claro que os benchmarks do `vroom` precisam ser olhados com cuidado, pois é um sistema de leitura preguiçoso, diferente do `readr` e do `data.table`. Mas mesmo assim parece que o `vroom`, em média, é mais eficiente que os concorrentes.
+
+E fala sério, olha que capa legal dos slides
+
+```{r, fig.cap="Life's too short to read slow."}
+knitr::include_graphics("/img/blog/user2019/vroom.jpg")
+```
+
+Nesse dia eu também apresentei sobre o [auth0](https://github.com/curso-r/auth0), um pacote que fizemos para facilitar a vida de quem quer adicionar autenticação em shiny apps. Foi uma experiência muito legal! Apesar de serem apenas 5 minutos e do meu inglês ruim, acho que deu para passar a ideia geral do pacote e tenho certeza de que mais pessoas vão utilizar!
+
+```{r, fig.cap="Eu falando sobre o auth0, provavelmente a palavra 'Awesome', pois disseram que eu abusei dessa palavra na fala."}
+knitr::include_graphics("/img/blog/user2019/auth0.jpg")
+```
+
+# Pacotes que definitivamente quero estudar
+
+Tentei separar uma lista pessoal de coisas que definitivamente quero estudar mais e contribuir nos próximos tempos.
+
+- **Tidyverse**
+  - Pacote `vroom`: O autor do pacote, Jim Hester, me convenceu de que o vroom é real deal. 
+  - Pacote `usethis`: O filhinho da Jenny Bryan é realmente muito legal. É um dos meus pacotes preferidos.
+  - Pacote `rray`: Pacote mega interessante do Davis Vaughan para tratar arrays no R de uma forma mais intuitiva. Definitivamente vale tentar!
+- **Workflow, ensino e comunicação**
+  - Pacote `remedy`: com esse pacote, podemos adicionar diversos atalhos no RStudio para acelerar a escrita de documentos RMarkdown. Farei um post sobre esse pacote em breve.
+  - Pacote `ghactions`: é uma espécie de generalização do Travis CI, aplicado diretamente e gratuitamente pelo GitHub. Eu tenho até dificuldade de pensar nas possibilidades desse pacote, que são muitas!
+  - Pacote `crrri`: esse pacote permite abrir o chrome dentro do RStudio, o que pode tornar a experiência de desenvolver web scrapers muito mais fluida e interativa. Vale à pena tentar.
+  - Pacote `ghclass`: achei esse pacote interessante para ser usado em salas de aula. 
+- **Shiny**:
+  - Pacote `shinyEventLogger`: Esse pacote pode ser utilizado para verificar o que o seu shiny está fazendo e otimizar nas partes que ele está lento. Com um pouco de programação ele pode ser muito útil para apps complexos.
+  - Pacote `shinymeta`: O pacote do Joe Cheng parece realmente muito útil para gerar relatórios reprodutíveis a partir dos apps. Provavelmente esse é o melhor jeito de fazer isso, e resolve um problema bem difícil, que supera diversas ferramentas de BI. Ainda está incipiente, mas quando ficar maduro, será um diferencial absurdo do shiny.
+  - Pacote `golem`: O golem é uma forma estruturada de organizar apps do shiny na forma de pacotes. É uma espécie de `usethis` para shiny. Antes da useR, eu achava o golem bacana. Agora eu acho essencial.
+
+# Extra
+
+Outra coisa legal da useR é que as famosas da comunidade estão a uma cutucada de distância. Se você gosta de tietar seus ídolos, assim como eu, deveria fazer isso pelo menos uma vez. Tirei foto com o Hadley, falei com a filha do Romain François, troquei ideia com o Dirk Eddelbuetel e outras pessoas da comunidade que parecem tão distantes, mas são tão próximas.
+
+Por isso, vou encerrar meu post com algumas fotinhos legais
+
+```{r, fig.cap="Fiquei tão nervoso na foto com o Hadley que coloquei o copo na frente da câmera."}
+knitr::include_graphics("/img/blog/user2019/hadley-copo.jpg")
+```
+
+```{r, fig.cap="Depois pedi para tirar foto com ele e tampei o William, além de ter ficado com um sorriso horrível. O Hadley, obviamente, estava ótimo. Olha esses óculos, muito estilosos!"}
+knitr::include_graphics("/img/blog/user2019/hadley-mao.jpg")
+```
+
+```{r, fig.cap="Lexie, filha do Romain François (o do cabelo colorido), brincando com o Daniel Falbel. Coisa mais fofa!", out.width="40%"}
+knitr::include_graphics("/img/blog/user2019/lexie.jpg")
+```
+
+```{r, fig.cap="Playmobil com um pipe no escudo, da ThinkR", out.width="80%"}
+knitr::include_graphics("/img/blog/user2019/playmobil.jpg")
+```
+
+```{r, fig.cap="Turma dos BR (+Laurie) na useR!", out.width="100%"}
+knitr::include_graphics("/img/blog/user2019/brasileiros.jpg")
+```
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+
