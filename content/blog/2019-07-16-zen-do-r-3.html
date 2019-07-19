@@ -1,0 +1,130 @@
+---
+title: "Rproj e diretórios (Zen do R parte 3)"
+date: "2019-07-16"
+tags: ["zen-do-r"]
+categories: ["livro", "r"]
+banner: "img/banners/zen-do-r-3.jpg"
+author: ["Caio"]
+summary: "Como usar projetos no R para nunca mais
+perder um arquivo importante."
+draft: false
+---
+
+
+
+<p>Nesta série de posts, estamos apresentamos a todos a nossa primeira tentativa de
+escrever um livro: <a href="https://curso-r.github.io/zen-do-r/"><em>O Zen do R</em></a>! Durante
+as próximas semanas, todas as quartas, traremos para o nosso blog os capítulos
+que já escrevemos do livro e responderemos qualquer pergunta sobre o conteúdo.</p>
+<p>Hoje o assunto é como usar projetos no R para nunca mais perder um arquivo
+importante.</p>
+<div id="rproj-e-diretorios" class="section level1">
+<h1>Rproj e diretórios</h1>
+<p>Um programador iniciante corre o risco de não gerenciar seus projetos. Muitas
+vezes seus arquivos de código ficarão espalhados pelos infinitos diretórios de
+seu computador, esperando a primeira oportunidade de sumir para sempre. No R
+isso não é diferente: organizar arquivos é uma parte integral do processo de
+programação.</p>
+<p>Felizmente o RStudio possui uma ferramenta incrível que auxilia na tarefa de
+consolidar todos os recursos necessários para uma análise. Denominados
+“projetos”, eles não passam de pastas comuns com um arquivo <code>.Rproj</code>.</p>
+<p>O primeiro passo para organizar um bom ambiente de trabalho para análises de
+dados é criar um diretório onde todos os seus programas R podem viver. No meu
+computador eu tenho a pasta <code>~/Documents/Dev/R/</code>, mas não importa onde ela
+está, apenas que seja um lugar o qual você lembre sem dificuldades. Tendo
+criado um esse <em>workspace</em>, é importante registrá-lo como o seu ambiente de
+trabalho no RStudio: basta selecioná-lo em
+<strong>Tools &gt; Global Options… &gt; Browse</strong>.</p>
+<p><img src="/img/blog/zen-do-r/02_wd.png" style="display: block; margin: auto;" /></p>
+<p>Desta forma, toda vez que você iniciar um novo projeto no R, ele por parão
+usará essa nova pasta como ambiente padrão! Se você já tiver alguns arquivos
+espalhados pelo seu computador, traga eles para o seu diretório de programas.</p>
+<p>O segundo passo no processo de organização dos seus projetos é um pouco mais
+complexo e demanda mais atenção. Não basta juntar todos os arquivos em um só
+lugar, é importante colocá-los em subdiretórios para que a sua pasta
+não vire um equivalente virtual a uma mesa desorganizada. Assim como em uma
+mesa cada papel e cada utensílio tem uma gaveta, cada arquivo precisa fazer
+parte de um projeto.</p>
+<p>É nesse ponto que os “projetos” do RStudio dialogam com os projetos da vida
+real. Em uma empresa, cada cliente é um projeto; na academia, cada pesquisa é
+um projeto; e assim por diante. Cada projeto seu deve ter a sua própria pasta
+para que seja fácil encontrar todos os códigos e dados pertencentes a um único
+assunto. Mas esta não deve ser uma pasta comum, ela deve ser um projeto.</p>
+<p>O código listado abaixo demonstra como criar um projeto no RStudio. Basta
+apenas um comando e ele já fará tudo que for necessário para preparar o seu
+ambiente de desenvolvimento.</p>
+<pre class="r"><code>usethis::create_project(&quot;~/Documents/Dev/R/Proj/&quot;)
+#&gt; ✔ Creating &#39;~/Documents/Dev/R/Proj/&#39;
+#&gt; ✔ Setting active project to &#39;~/Documents/Dev/R/Proj&#39;
+#&gt; ✔ Creating &#39;R/&#39;
+#&gt; ✔ Writing &#39;Proj.Rproj&#39;
+#&gt; ✔ Adding &#39;.Rproj.user&#39; to &#39;.gitignore&#39;
+#&gt; ✔ Opening &#39;~/Documents/Dev/R/Proj/&#39; in new RStudio session
+#&gt; ✔ Setting active project to &#39;Proj&#39;</code></pre>
+<p>Cada linha da saída do comando representa algo que ele fez para preparar o
+projeto. A mais importante é a quarta linha, que cria o arquivo <code>Proj.Rproj</code>;
+ele indica para o RStudio que aquele diretório será a raiz de um projeto e que,
+portanto, várias outras funcionalidades podem ser ativadas. Por exemplo,
+clicando duas vezes neste arquivo já carrega o RStudio com os arquivos de
+<code>Proj</code>.</p>
+<p>Importante também é a pasta <code>R/</code> criada. Nela você deve colocar todos os seus
+arquivos de código referentes àquele projeto com nomes que descrevam bem o que
+cada um faz. Se você seguiu o conselho anterior e juntou todos os seus códigos
+no seu diretório de trabalho, crie um projeto novo para cada grupo de programas
+que vocẽ tiver detectado. Talvez um para exercícios de R, um para cada cliente,
+um para uma nova ideia, etc. Cada um deles deve ter um nome descritivo e
+conter, em sua pasta R, todos os arquivos necessários para aquela análise.</p>
+<div id="diretorio-de-trabalho" class="section level2">
+<h2>Diretório de trabalho</h2>
+<p>Mas a funcionalidade mais importante dentre todas as já citadas é o conceito do
+<em>working directory</em> ou diretório de trabalho. No canto esquerdo superior do
+Console do RStudio existe um caminho denominado diretório de trabalho, que é
+essencialmente a raiz do seu projeto. Muitos programadores que aprenderam R há
+muito tempo conhecem uma função chamada <code>setwd()</code>; se você nunca ouviu falar
+disso, não se preocupe e continue assim, mas se você costuma usá-la, siga
+prestando atenção.</p>
+<p><img src="/img/blog/zen-do-r/02_console.png" style="display: block; margin: auto;" /></p>
+<p>O R dá a possibilidade de mudar, instantaneamente, o diretório de trabalho.
+Isso que dizer que os caminhos relativos para arquivos podem mudar em questão
+de linhas. O exemplo abaixo demonstra superficialmente como isso funciona:</p>
+<pre class="r"><code># Abrindo dois arquivos em diretórios diferentes
+
+setwd(&quot;~/Downloads&quot;)
+a &lt;- read.csv(&quot;a.csv&quot;)
+
+setwd(&quot;~/Documents/Dev/R/Proj&quot;)
+b &lt;- read.csv(&quot;b.csv&quot;)
+
+write.csv(a, &quot;c.csv&quot;)</code></pre>
+<p>Isso não parece tão problemático à primeira vista, mas usar <code>setwd()</code> cria um
+vício difícil de abandonar. Essa função estimula que os seus projetos continuem
+desorganizados com arquivos espalhados pelo computador, mas também confunde o
+programador na hora de salvar arquivos. Onde será salvo o arquivo <code>c.csv</code>?
+De onde veio o arquivo <code>a.csv</code> ou de onde veio o <code>b.csv</code>? E se essa linha fosse
+mudada de lugar para antes do segundo <code>setwd()</code>? São perguntas difíceis de
+responder caso você não esteja atento ao código todo.</p>
+<p>A solução que os projetos oferecem para isso é fazer com que o diretório de
+trabalho seja sempre a pasta do projeto. Neste caso é como se, ao abrir o
+RStudio, ele executasse o comando <code>setwd("~/Documents/Dev/R/Proj")</code>
+automaticamente. Mas como ler então o arquivo <code>a.csv</code>?</p>
+<pre class="r"><code># Duas formas de ler a.csv
+
+a &lt;- read.csv(&quot;~/Downloads/a.csv&quot;)
+
+file.copy(&quot;~/Downloads/a.csv&quot;, &quot;a.csv&quot;)
+a &lt;- read.csv(&quot;a.csv&quot;)</code></pre>
+<p>A primeira forma deixa explícito que aquele arquivo não faz parte do projeto e
+que portanto deve ser tratado como temporário. A segunda forma, mais indicada,
+é trazer o arquivo para dentro do projeto! Se ele é importante, é essencial que
+ele esteja junto com todos os outros dados de Proj. Com o código acima, o
+comando <code>write.csv(a, "c.csv")</code> salvaria <code>c.csv</code> dentro do projeto sem sombra
+de dúvidas.</p>
+<p>Os principais benefícios de não usar <code>setwd()</code> são dois: saber sempre onde os
+arquivos utilizados estão/serão salvos e poder compartilhar um projeto com
+qualquer pessoa. <code>setwd()</code> depende que seja explicitado um caminho dentro do
+seu computador e isso nem sempre é verdade no computador de outra pessoa;
+fazendo com que todos os arquivos estejam no projeto e com caminhos relativos
+nos códigos permite que outro usuário replique a sua análise sem ter que
+modificar nem uma linha do programa.</p>
+</div>
+</div>
