@@ -9,7 +9,6 @@ banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
 ordem: 2
-aberto: "true"
 ---
 
 <header class="section-header">
