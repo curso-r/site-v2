@@ -11,7 +11,7 @@ draft: false
 
 
 
-<p>O <code>{dplyr}</code> é um pacote incrível. Permite realizar operações difíceis de forma iterada e intuitiva. Uma grande facilidade do <code>{dplyr}</code> é a possibilidade de utilizar os nomes das variáveis sem encapsular com aspas. Isso torna a programação mais fluida e compreensível.</p>
+<p>O <code>{dplyr}</code> é um pacote incrível pois permite realizar operações difíceis de forma iterada e intuitiva. Uma grande facilidade do <code>{dplyr}</code> é a possibilidade de utilizar os nomes das variáveis sem encapsular com aspas, o que torna a programação mais fluida e compreensível.</p>
 <p>Por exemplo, é fácil argumentar que</p>
 <pre class="r"><code>mtcars %&gt;% 
   summarise(soma = sum(cyl ^ 2))</code></pre>
@@ -21,7 +21,7 @@ draft: false
 <p>ou ainda</p>
 <pre class="r"><code>mtcars %&gt;% 
   mutate(cyl = sum(mtcars[[&quot;cyl&quot;]] ^ 2))</code></pre>
-<p>No entanto, ao usar muito o <code>{dplyr}</code>, passamos a querer utilizá-lo em todos os contextos possíveis. Por exemplo, ao criar uma nova função, ou ao criar Shiny apps. Nesse caso, gostaríamos de fazer algo do tipo</p>
+<p>No entanto, ao usar o <code>{dplyr}</code> com frequência, passamos a querer colocá-lo em todos os contextos possíveis, como novas função ou Shiny apps. Assim, gostaríamos de fazer algo do tipo</p>
 <pre class="r"><code>minha_fn &lt;- function(dados, variavel) {
   dados %&gt;% 
     summarise(nova_variavel = sum(variavel ^ 2))
@@ -31,14 +31,14 @@ draft: false
   minha_fn(cyl)</code></pre>
 <pre><code># &gt; Error: object &#39;cyl&#39; not found </code></pre>
 <p>Você já se deparou com essa situação? É bem frustrante. A verdade é que o <code>tidyverse</code> foi desenvolvido com foco em facilitar o trabalho de <strong>análise</strong>, com o custo de dificultar o trabalho de <strong>programação</strong>.</p>
-<p>Porém, graças a avanços recentes no pacote <code>{rlang}</code>, isso está ficando mais fácil. Nesse post vou mostrar 3 casos casos comuns e suas soluções. Para casos mais complicados, recomendo dar uma olhada no <a href="https://tidyeval.tidyverse.org/index.html">livro sobre Tidyeval</a>.</p>
+<p>Porém, graças a avanços recentes no pacote <code>{rlang}</code>, isso está ficando mais fácil. Nesse post vou mostrar três casos casos comuns de programação com o tidyverse, e suas soluções. Para casos mais complicados, recomendo dar uma olhada no <a href="https://tidyeval.tidyverse.org/index.html">livro sobre Tidyeval</a>.</p>
 <blockquote>
 <p>Para reproduzir esse post, você precisará ter pelo menos a versão <code>0.4.0</code> do <code>{rlang}</code> instalado na sua máquina!</p>
 </blockquote>
 <div id="quero-que-minha-funcao-receba-um-nome-sem-aspas" class="section level2">
 <h2>Quero que minha função receba um nome sem aspas</h2>
-<p>Para isso, podemos usar o quentíssimo operador <code>{{}}</code>. Esse operador consegue informar as funções do <code>{dplyr}</code> (e seus amigos <code>{tidyr}</code>, <code>{ggplot2}</code> etc) que olhem para a variável de dentro da base de dados, ao invés de um objeto supostamente passado como argumento da função.</p>
-<p>Assim, a função anterior fica simples assim:</p>
+<p>Para isso, podemos usar o quentíssimo operador <code>{{}}</code>, que foi oficialmente apresentado na useR!2019, em Tolouse. Esse operador informa as funções do <code>{dplyr}</code> (e seus amigos <code>{tidyr}</code>, <code>{ggplot2}</code> etc) que olhem para a variável de dentro da base de dados, ao invés de um objeto supostamente passado como argumento da função.</p>
+<p>Com isso, a função anterior fica simples assim:</p>
 <pre class="r"><code>minha_fn_sem_aspas &lt;- function(dados, variavel) {
   dados %&gt;% 
     summarise(nova_variavel = sum({{variavel}} ^ 2))
@@ -62,7 +62,7 @@ draft: false
 </div>
 <div id="quero-que-minha-funcao-receba-uma-string" class="section level2">
 <h2>Quero que minha função receba uma string</h2>
-<p>Para isso, teremos de usar o objeto especial <code>.data</code>. Ele simplesmente permite que você acesse a informação dos dados antes de aplicar a nova função. É muito similar à utilização do <code>.</code> do pacote <code>{magrittr}</code>, para quem conhece.</p>
+<p>Para isso, teremos de usar o objeto especial <code>.data</code>. Ele permite que você acesse a informação dos dados antes de aplicar a nova função. É muito similar ao <code>.</code> do pacote <code>{magrittr}</code>, para quem já conhece.</p>
 <pre class="r"><code>minha_fn_com_aspas &lt;- function(dados, variavel) {
   dados %&gt;% 
     summarise(nova_variavel = sum(.data[[variavel]] ^ 2))
@@ -82,7 +82,8 @@ draft: false
 </tr>
 </tbody>
 </table>
-<p>Show! Uma observação: a diferença essencial entre usar <code>.data</code> e <code>.</code> é que o primeiro consegue lidar com grupos, e o segundo não. Por exemplo, esses códigos têm resultados diferentes:</p>
+<p>Show! Esse provavelmente é o caso da maioria dos Shiny apps, pois acessamos as informações através de <code>input$id_input</code>, que geralmente é uma string.</p>
+<p><strong>Observação</strong>: uma diferença essencial entre usar <code>.data</code> e <code>.</code> é que o primeiro consegue lidar com grupos, e o segundo não. Por exemplo, esses códigos têm resultados diferentes:</p>
 <pre class="r"><code>mtcars %&gt;% 
   group_by(cyl) %&gt;% 
   summarise(nova_variavel = sum(.data[[&quot;cyl&quot;]] ^ 2))</code></pre>
@@ -137,7 +138,7 @@ draft: false
 </div>
 <div id="quero-que-minha-funcao-crie-uma-coluna-com-nome-variavel" class="section level2">
 <h2>Quero que minha função crie uma coluna com nome variável</h2>
-<p>E se você quiser mudar o nome de <code>nova_variavel</code> e incluir isso como argumento da função? Nesse caso, é necessário introduzir o operador <code>:=</code>. E o resto pode ser resolvido com <code>{{}}</code>, simplesmente:</p>
+<p>E se você quiser mudar o nome de <code>nova_variavel</code> e incluir isso como argumento da função? Nesse caso, é necessário introduzir o operador <code>:=</code>, e o resto é resolvido com <code>{{}}</code>:</p>
 <pre class="r"><code>minha_fn_sem_aspas_novo_nome &lt;- function(dados, variavel, nome) {
   dados %&gt;% 
     summarise({{nome}} := sum({{variavel}} ^ 2))
@@ -157,7 +158,7 @@ draft: false
 </tr>
 </tbody>
 </table>
-<p>Curiosamente, essa solução também funciona com aspas:</p>
+<p>Curiosamente, essa solução também funciona com as aspas:</p>
 <pre class="r"><code>mtcars %&gt;% 
   minha_fn_sem_aspas_novo_nome(cyl, &quot;novo_nome&quot;)</code></pre>
 <table>
@@ -176,10 +177,10 @@ draft: false
 <div id="wrap-up" class="section level2">
 <h2>Wrap-up</h2>
 <ul>
-<li>O pacote que está por trás da programação com <code>{dplyr}</code> é o <code>{rlang}</code>.</li>
-<li>Use <code>{{variavel}}</code> quando não quiser colocar aspas na sua variável.</li>
-<li>Use <code>.data[[&quot;variavel&quot;]]</code> quando quiser colocar aspas na sua variável.</li>
-<li>Use <code>{{nome}} := ...</code> quando quiser criar colunas com nomes variáveis.</li>
+<li>O pacote que está por trás da programação com <code>{dplyr}</code> e amigos é o <code>{rlang}</code>.</li>
+<li>Use <code>{{variavel}}</code> quando não quiser colocar aspas no argumento da função.</li>
+<li>Use <code>.data[[&quot;variavel&quot;]]</code> quando quiser colocar aspas no argumento da função.</li>
+<li>Use <code>{{nome}} := ...</code> quando quiser criar colunas com nomes que estão no argumento da função.</li>
 </ul>
 <p>É isso. Happy coding ;)</p>
 </div>
