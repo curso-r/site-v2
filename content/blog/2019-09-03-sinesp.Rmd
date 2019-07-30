@@ -1,0 +1,141 @@
+---
+title: "Minha experiência na useR!2019"
+date: "2019-07-14"
+tags: ["evento"]
+categories: ["evento", "r"]
+banner: "img/banners/user2019.jpg"
+author: ["Julio"]
+summary: "Highlights do maior evento sobre R do mundo."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+No dia XXX o Ministro da Justiça, Sérgio Moro, fez a seguinte declaração no Twitter:
+
+O legal de existirem dados abertos é que podemos checar essas informações e criar análises mais aprofundadas sobre o tema. Infelizmente, ainda não foram disponibilizados os dados do primeiro bimestre de 2019, que fazem parte do Tweet do Moro. Mas isso não é um problema, pois podemos
+
+Nesta rápida análise, mostro como baixar os dados a partir do portal de dados abertos https://dados.gov.br. Para isso, utilizarei o `tidyverse`, `httr` e `xml2`.
+
+```{r}
+library(tidyverse)
+```
+
+## Parte 1: Download
+
+Como o dados.gov.br é um portal muito bem feito, é possível baixar todos
+
+```{r eval=FALSE}
+# caminho do diretório
+path_sinesp <- "~/data-raw/sinesp/"
+# cria o diretório
+fs::dir_create(path_sinesp)
+
+# link do SINESP no dados.gov.br
+u_sinesp <- paste0("http://dados.gov.br/dataset",
+                   "/sistema-nacional-de-estatisticas-de-seguranca-publica")
+
+u_sinesp %>%
+  # carrega a página
+  httr::GET() %>%
+  # parseia o código fonte da página
+  xml2::read_html() %>%
+  # identifica todas as tags que contêm os links
+  xml2::xml_find_all("//ul[@class='dropdown-menu']//a") %>%
+  # extrai a lista todos os links
+  xml2::xml_attr("href") %>%
+  # seleciona apenas os arquivos xlsx da lista
+  str_subset("xlsx") %>%
+  # essa parte faz o loop de download. Demora ~1 minuto
+  walk(~httr::GET(.x, httr::write_disk(paste0(path_sinesp, basename(.x)))))
+
+```
+
+
+## Parte 2: Importação e arrumação
+
+```{r, eval=FALSE}
+d_sinesp <- path_sinesp %>% 
+  # lista os arquivos
+  fs::dir_ls() %>%
+  # lê todos os arquivos xlsx e empilha
+  map_dfr(readxl::read_excel, col_types = "text", .id = "file") %>%
+  # define os nomes das colunas
+  set_names(c("file", "uf", "tipo_crime", "mes_ano", "valor")) %>%
+  # transforma os valores para os tipos corretos
+  mutate(
+    # transformando string em data
+    mes_ano = lubridate::dmy(paste0("01/", mes_ano)),
+    # arrumando tipo de crime
+    tipo_crime = str_to_title(tipo_crime),
+    valor = as.numeric(valor),
+    # cria uma coluna com o bimestre
+    bimestre = lubridate::floor_date(mes_ano, "bimonth")
+  )
+```
+## Parte 3: Transformação
+
+Nesse código, meu objetivo foi reproduzir a tabela do Ministro da Justiça, mas adicionando as mudanças ocorridas entre 2015-2016, 2016-2017 e 2017-2018. 
+
+```{r}
+results <- d_sinesp %>%
+  group_by(bimestre, tipo_crime) %>%
+  summarise(valor = sum(valor, na.rm = TRUE)) %>%
+  ungroup() %>%
+  filter(lubridate::month(bimestre) == 1,
+         lubridate::year(bimestre) >= 2015) %>%
+  arrange(tipo_crime, bimestre) %>%
+  group_by(tipo_crime) %>%
+  mutate(vl_lag = lag(valor)) %>%
+  ungroup() %>%
+  filter(!is.na(vl_lag)) %>%
+  mutate(razao = scales::percent(valor / vl_lag - 1),
+         bim1 = lubridate::year(bimestre)) %>%
+  select(bim1, tipo_crime, razao) %>%
+  spread(bim1, razao, sep = "_")
+
+knitr::kable(results)
+```
+
+A tabela mostra que o primeiro bimestre de 2018, se comparado ao de 2017, também apresenta quedas em todos os tipos de crime, com exceção de estupro e roubo de cargas. Além disso, como será possível ver no próximo gráfico, as variações percentuais acima de 20% na tabela ocorrem em crimes com pequeno volume absoluto de ocorrências. Isso é esperado, pois quando o valor absoluto é pequeno, pequenas mudanças podem significar grandes variações percentuais. Por exemplo, se uma contagem vai de 150 para 120 (queda de 30), a queda é de 20%, mas se outra contagem vai de 1000 para 900 (queda de 100), a queda percentual é de 10%
+
+## Parte 4: Visualização
+
+Nesse gráfico, mostrei a série bimestral de ocorrências por tipo de crime, buscando identificar tendências de subida ou queda. 
+
+```{r, fig.height=5, fig.width=9}
+d_sinesp %>%
+  group_by(bimestre, tipo_crime) %>%
+  summarise(valor = sum(valor, na.rm = TRUE)) %>%
+  ungroup() %>%
+  filter(lubridate::year(bimestre) >= 2015) %>%
+  ggplot(aes(x = bimestre, y = valor)) +
+  geom_line() +
+  geom_vline(xintercept = as.Date("2018-01-01"), colour = "red", linetype = 2) +
+  facet_wrap(~tipo_crime, scales = "free_y", ncol = 3) +
+  theme_bw()
+```
+
+Pelo gráfico, é possível identificar que, em diversos tipos de crime, existe uma tendência de queda após o primeiro bimestre de 2018. Ou seja, não se pode atribuir a queda nas estatísticas de ocorrências ao novo governo de 2019. A queda vertiginosa no volume de estupros é bem curiosa.
+
+
+
+## Comentários
+
+## Wrap-up
+
+- Dado aberto é a melhor forma de tornar as informações disponibilizadas publicamente auditáveis
+
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+
