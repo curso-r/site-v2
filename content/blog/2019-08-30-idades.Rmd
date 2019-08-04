@@ -26,7 +26,7 @@ Para mim, nada dá mais prazer do que tornar uma base de dados pública suja em 
 
 1. Reprodutibilidade é essencial.
 2. O trade-off entre tempo investido e qualidade da base não é linear.
-3. 
+3. A faxina é contínua.
 
 
 ## O ciclo da faxina de dados
