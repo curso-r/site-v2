@@ -1,0 +1,87 @@
+---
+title: "Shiny Apps Empacotados com o golem"
+date: "2019-07-31"
+tags: ["golem", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/golem.png"
+author: ["Julio"]
+summary: "Pacote para desenvolver shiny apps dentro de pacotes."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Desenvolver shiny apps é muito divertido, mas dá trabalho. Os apps começam com uma ideia simples, mas vão crescendo até o ponto que não conseguimos mais entender onde estão os pedaços do app.
+
+Para resolver esse problema, os [módulos](https://shiny.rstudio.com/articles/modules.html) foram criados. Com módulos, é possível separar pedaços de um shiny em scripts separados, que são adicionados como funções dentro do app principal. Os módulos facilitam muito a manutenção dos apps.
+
+No entanto, novos problemas podem surgir em apps complexos. Um módulo pode usar funções de certo pacote, e às vezes esquecemos de checar se ele existe quando o app for colocado em produção. Além disso, como existem vários jeitos de organizar os arquivos que contém os scripts dos módulos dentro do projeto, cada app acaba ficando com uma estrutura diferente.
+
+Para resolver esse problema, uma alternativa muito útil é desenvolver o shiny dentro de um pacote. Dessa forma, as dependências são checadas automaticamente, os módulos se tornam funções do pacote e tudo deve ficar documentado e organizado por padrão. Eu tenho essa prática desde 2018, quando percebi que meus apps estavam ficando muito complicados de manter.
+
+O pacote `golem` é a generalização dessa ideia. O pacote sugere um fluxo de trabalho excelente para desenvolver seu app dentro de um pacote do R. O pacote ainda não está no CRAN, então use com cuidado. Várias coisas podem mudar!
+
+Eu acredito que a melhor documentação possível do `golem` é a que está na [própria página do pacote](https://thinkr-open.github.io/golem/). Eu simplesmente segui o tutorial indicado e em 5 minutos estava com meu app modular e funcionando perfeitamente. Por isso, vou apenas destacar alguns detalhes que considero importantes e podem acabar despercebidos numa primeira leitura.
+
+Como o `golem` trata de shiny apps dentro de pacotes, o ideal é que você tenha algum conhecimento em desenvolvimento de pacotes. Se tiver interesse, o melhor material possível sobre isso é o http://r-pkgs.org.
+
+## Como o golem funciona?
+
+O pacote é uma espécie de `usethis` para shiny apps. Aliás, se você não conhece o `usethis`, pare tudo o que você está fazendo e [acesse essa página](https://usethis.r-lib.org/). Ao criar um shiny app com o template do `golem`, você verá uma estrutura de arquivos assim
+
+```
+DESCRIPTION               
+¦--dev/                # desenvolvimento
+  ¦--01_start.R           
+  ¦--02_dev.R           
+  ¦--03_deploy.R           
+  ¦--run_dev.R
+¦--inst/               # aqui fica o aplicativo
+  ¦--app                
+    ¦--server.R       
+    ¦--ui.R           
+    ¦--www/          
+      ¦--favicon.ico
+¦--man/               # documentação das funções/módulos do pacote
+    ¦--run_app.Rd      
+NAMESPACE             # informa as funções que o pacote importa e exporta
+myapp.Rproj           # projeto
+¦--R/                 # aqui ficam os módulos e as funções que geram ui e server
+  ¦--app_server.R       
+  ¦--app_ui.R           
+  ¦--run_app.R   
+```
+
+Essa é uma estrutura de pacotes do R, com algumas coisas a mais.
+
+- A pasta `dev/`, que geralmente não existe em pacotes, contém o tutorial que o usuário deve seguir para fazer o setup e o desenvolvimento do app. O ideal é ler esses scripts e ir rodando tudo com calma, verificando o que cada função altera nos seus arquivos.
+- A paste `inst/` é uma pasta especial que é copiada diretamente na pasta do pacote, sem nenhuma modificação. É graças à ela que conseguimos acessar arquivos através da função `system.file()`, por exemplo. Por isso, é nessa pasta que fica o nosso shiny app de verdade.
+
+O mais interessante de um app criado dessa forma é que os arquivos `ui.R` e `server.R` ficam praticamente vazios. Isso acontece porque todo o trabalho sujo está sendo feito pelas funções `app_ui()` e `app_server()`, que agora são funções documentadas do seu pacote.
+
+## Características interessantes
+
+- Com o `golem`, é fácil de criar uma imagem Docker do seu app, o que facilita o deploy em escala. Atualmente, estou testando formas de integrar essa funcionalidade com a Google Cloud Platform, e parece bem promissor.
+- O `golem` te obriga a documentar tudo o que você faz. Isso pode parecer entediante no início, mas se paga no futuro.
+- Existem funções que facilitam a utilização de *javascript* e *css* no app, o que geralmente é algo doloroso no desenvolvimento de apps no shiny.
+
+## Vídeo
+
+Montei um vídeo rápido mostrando a utilização do golem na construção de um app simples, colocado no shinyapps.io. Se quiser acessar esse app, o link está na descrição do vídeo!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CRYxSBMxaSI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+O áudio ficou um pouco baixo e o meu computador estava fazendo um pouco de barulho. Mas você pode simplesmente ver sem o áudio, ele nem importa muito.
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+
