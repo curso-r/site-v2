@@ -1,9 +1,9 @@
 ---
 title: "Movimento da faxina de dados"
-date: "2019-07-31"
-tags: ["golem", "shiny"]
-categories: ["tutoriais", "r"]
-banner: "img/banners/golem.png"
+date: "2019-08-31"
+tags: ["janitor", "faxina"]
+categories: ["discussoes", "r"]
+banner: "img/banners/janitor-mov"
 author: ["Julio"]
 summary: "A faxina de dados é uma etapa essencial do ciclo da ciência de dados, que nunca será automatizada. Seja parte desse movimento."
 draft: false
@@ -23,7 +23,7 @@ Vários estudos e experiências pessoais apontam que o estatístico passa boa pa
 
 Para mim, nada dá mais prazer do que pegar uma base de dados pública suja e transformá-la algo simples de consumir! Mais do que fornecer respostas prontas, a faxina de dados democratiza a ciência de dados, pois permite que outras pessoas realizem análises com as bases montadas.
 
-Acho até engraçada essa sensação, pois quando finalmente chego na parte de modelagem, o tesão não é o mesmo. Claro, o que modelos estatísticos fazem é impressionante, mas eu pessoalmente fico mais feliz vendo as pessoas desenvolvendo esses modelos do que eu mesmo.
+Acho engraçada essa sensação, pois quando finalmente chego na parte de modelagem, o tesão não é o mesmo. Claro, o que modelos estatísticos fazem é impressionante, mas eu pessoalmente fico mais feliz vendo as pessoas desenvolvendo esses modelos do que eu mesmo.
 
 Dito isso, o que torna a faxina de dados uma etapa divertida? Acredito que são três coisas:
 
@@ -52,63 +52,5 @@ E aí, deu uma animada para a faxina de dados? Faça parte desse movimento e con
 <!-- 1. Reprodutibilidade é essencial. -->
 <!-- 2. O trade-off entre tempo investido e qualidade da base não é linear. -->
 <!-- 3. A faxina é contínua. -->
-
-
-```{r eval=F}
-library(tidyverse)
-library(lubridate)
-
-d_bach <- read_csv("~/Downloads/bacharel_010819.csv") %>% 
-  janitor::clean_names() %>% 
-  mutate(
-    dt_nasc = if_else(dt_nasc == "00/00/0000", NA_character_, dt_nasc),
-    dt_nasc = dmy(dt_nasc),
-    status = toupper(status),
-    status = if_else(str_detect(status, "BAIX|SUSP"), "BAIXADO", status),
-    idade = interval(dt_nasc, Sys.Date()) / duration(num = 1, units = "years")
-  ) %>% 
-  filter(status %in% c(NA_character_, "ATIVO"), is.na(idade) | idade > 0)
-
-glimpse(d_bach)
-
-d_bach %>% 
-  filter(conre == "CONRE 3", idade > 90) %>% 
-  select(nome, cpf) %>% 
-  arrange(nome) %>% 
-  knitr::kable()
-
-```
-
-```{r eval=F}
-library(ggridges)
-
-d_bach %>% 
-  mutate(conre = fct_reorder(conre, idade)) %>% 
-  ggplot() +
-  geom_density_ridges(aes(x = idade, y = conre), 
-                      quantile_lines = TRUE, quantiles = 2,
-                      bandwidth = 3.6, alpha = .6, 
-                      fill = "royalblue") +
-  scale_x_continuous(limits = c(0, NA), breaks = 0:10 * 12) +
-  theme_minimal(16) +
-  ggtitle("Distribuição das idades", 
-          "Estatísticos ativos em cada CONRE")
-```
-
-```{r eval=F}
-d_bach %>% 
-  group_by(conre) %>% 
-  summarise(`> 80` = sum(idade > 80), 
-            `> 90` = sum(idade > 90),
-            `> 100` = sum(idade > 100)) %>% 
-  knitr::kable()
-```
-
-
-
-
-
-
-
 
 
