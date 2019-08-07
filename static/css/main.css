@@ -2,6 +2,10 @@ body {
   font-family: "Source Sans Pro";
 }
 
+.container {
+  padding: 30px 15px 15px 15px !important;
+}
+
 #intro .intro-header {
   background-repeat: no-repeat;
   background-position: center;
@@ -37,7 +41,7 @@ div.intro-header:after {
 }
 
 #header-title h3 {
-  color: white;
+  color: #111c;
 }
 
 #navbarNav a {
@@ -106,6 +110,8 @@ blockquote {
 
 #article-container {
   margin-bottom: 50px;
+  background-color: #fff;
+  max-width: max-content;
 }
 
 #article-title {
@@ -115,44 +121,54 @@ blockquote {
   font-family: "Source Sans Pro";
 }
 
-#article {
+@media (min-width: 901px) {
+  #article {
   background-color: white;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 200px;
+  padding-right: 200px;
   padding-top: 15px;
   font-family: "Source Sans Pro";
+ }
 }
+
+@media (max-width: 900px) {
+  #article {
+  background-color: white;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 15px;
+  font-family: "Source Sans Pro";
+ }
+}
+
+@media (max-width: 400px) {
+  #article {
+  background-color: white;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 15px;
+  font-family: "Source Sans Pro";
+ }
+}
+
+
+
+
 
 #article h1 {
-  font-size: 28px;
-}
-
-#article h1::before {
-  content: "> ";
-}
-
-#article h2 {
-  font-size: 23px;
-}
-
-#article h2::before {
-  content: "> ";
-}
-
-#article h3 {
   font-size: 18px;
 }
 
-#article h3::before {
-  content: "> ";
+#article h2 {
+  font-size: 16px;
+}
+
+#article h3 {
+  font-size: 14px;
 }
 
 #article h4 {
-  font-size: 15px;
-}
-
-#article h4::before {
-  content: "> ";
+  font-size: 12px;
 }
 
 #article pre {
