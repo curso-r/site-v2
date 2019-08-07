@@ -1,0 +1,56 @@
+---
+title: "Movimento da faxina de dados"
+date: "2019-08-31"
+tags: ["janitor", "faxina"]
+categories: ["discussoes", "r"]
+banner: "img/banners/janitor-mov.jpg"
+author: ["Julio"]
+summary: "A faxina de dados é uma etapa essencial do ciclo da ciência de dados, que nunca será automatizada. Seja parte desse movimento."
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Fazer a faxina/normalização/ETL/outros nomes é a etapa mais trabalhosa do ciclo da ciência de dados. Essa é a parte mais difícil de automatizar do nosso trabalho, pois está intimamente relacionada com o correto entendimento problema de negócio. Muitas vezes esse problema é desconhecido e  -- até onde sei -- ainda não existem modelos capazes de descobrir qual o objetivo deles mesmos.
+
+Então, sabe aquele seu modelo fantástico de florestas profundas ou redes aleatórias (pun intended)? Ele nada fará, ou fará coisa errada, se sua variável resposta não estiver bem montada. E aquele seu gráfico de pizza que faz *voosh*? Não impressionará ninguém se suas categorias não estiverem padronizadas. E por aí vai.
+
+Vários estudos e experiências pessoais apontam que o estatístico passa boa parte de seu tempo arrumando dados. E isso é visto como uma das dores da carreira de ciência de dados. Mas quem disse que a faxina precisa ser chata? 
+
+Para mim, nada dá mais prazer do que pegar uma base de dados pública suja e transformá-la algo simples de consumir! Mais do que fornecer respostas prontas, a faxina de dados democratiza a ciência de dados, pois permite que outras pessoas realizem análises com as bases montadas.
+
+Acho engraçada essa sensação, pois quando finalmente chego na parte de modelagem, o tesão não é o mesmo. Claro, o que modelos estatísticos fazem é impressionante, mas eu pessoalmente fico mais feliz vendo as pessoas desenvolvendo esses modelos do que eu mesmo.
+
+Dito isso, o que torna a faxina de dados uma etapa divertida? Acredito que são três coisas:
+
+### Você aprenderá muito de programação, de estatística e de negócio no processo.
+   
+- Se não entender de negócio, não saberá que a base pode conter um viés de seleção.
+- Se não entender de programação, ficará horas trabalhando num Excel, e quando passar para seu amiguinho ele te dirá que você mexeu na versão errada do arquivo.
+- Se você não entender de estatística, além de não saber nem o que é viés de seleção, o esforço para produzir sua base final pode se mostrar inútil na etapa de análise.
+   
+### Você terá de tomar decisões que afetam completamente os resultados do projeto.
+
+- A arrumação é delicada, pois existem momentos em que não existe uma boa decisão a se tomar. Descartar casos sujos demais, colocar categorias no "outros", se esforçar para produzir uma variáel inútil, entre outras decisões podem ser a diferença entre criar um modelo que prevê bem e mal, ou entre finalizar o projeto dentro ou fora do prazo.
+- Para tomar essas decisões, é preciso muito cuidado com o negócio. Especialmente em problemas de análise supervisionada, é importante entender quais informações estão disponíveis e quais não estão no momento de ajustar modelos. Muitas vezes isso não é claro só olhando para os dados, e você precisará se virar.
+    
+### Utilizar o R e o `tidyverse` no processo é, por si só, uma experiência inesquecível.
+
+- É impressionante o que se consegue fazer em algumas linhas de código do R, especialmente com os pacotes `dplyr`, `tidyr` e `purrr`.
+- O ganho em eficiência de trabalho (tempo dedicado a resolver um problema, não tempo de execução de código) é incomparável. Arrumar dados com o `tidyverse` é mais fácil do que arrumar as camisetas do meu guarda-roupa.
+- Nada dá mais prazer do que desenvolver um trabalho que pode ser reproduzido. Você nunca desperdiça seu tempo, pois, i) se precisar rodar novamente, não precisará programar novamente; e ii) se não precisar rodar novamente, os pedaços de código que você escreveu ainda poderão ser reaproveitados em trabalhos futuros, e ainda ajudar a comunidade.
+
+E aí, deu uma animada para a faxina de dados? Faça parte desse movimento e conte sua experiência para a gente! Você pode mandar mensagens pelos comentários do post ou por nosso e-mail, contato@curso-r.com.
+
+É isso. Happy coding ;)
+
+
+<!-- 1. Reprodutibilidade é essencial. -->
+<!-- 2. O trade-off entre tempo investido e qualidade da base não é linear. -->
+<!-- 3. A faxina é contínua. -->
+
+
