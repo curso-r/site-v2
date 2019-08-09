@@ -106,6 +106,64 @@ blockquote {
   color: grey;
 }
 
+/*** CSS DO MATERIAL ***/
+
+@media (min-width: 901px) {
+  #material-container {
+  font-size: 17px;
+  padding-left: 160px;
+  padding-right: 160px;
+  font-family: "Source Sans Pro";
+  background-color: #fff;
+ }
+}
+
+@media (max-width: 900px) {
+  #material-container {
+  font-size: 17px;
+  padding-left: 80px;
+  padding-right: 80px;
+  font-family: "Source Sans Pro";
+  background-color: #fff;
+ }
+}
+
+@media (max-width: 400px) {
+  #material-container {
+  font-size: 17px;
+  padding-left: 40px;
+  padding-right: 40px;
+  font-family: "Source Sans Pro";
+  background-color: #fff;
+ }
+}
+
+#material-container h1 {
+  font-size: 26px;
+  color: #111c !important;
+}
+
+#material-container h2 {
+  font-size: 23px;
+  color: #111c !important;
+}
+
+#material-container h3 {
+  font-size: 20px;
+  color: #111c !important;
+}
+
+#material-container h4 {
+  font-size: 17px;
+  color: #111c !important;
+}
+
+#material-container img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /*** CSS DO ARTIGO ***/
 
 #article-container {
@@ -124,8 +182,8 @@ blockquote {
 @media (min-width: 901px) {
   #article {
   background-color: white;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding-left: 230px;
+  padding-right: 230px;
   padding-top: 15px;
   font-family: "Source Sans Pro";
  }
@@ -152,23 +210,28 @@ blockquote {
 }
 
 
-
-
+#article {
+  font-size: 17px;
+}
 
 #article h1 {
-  font-size: 18px;
+  font-size: 26px;
+  color: #111c !important;
 }
 
 #article h2 {
-  font-size: 16px;
+  font-size: 23px;
+  color: #111c !important;
 }
 
 #article h3 {
-  font-size: 14px;
+  font-size: 20px;
+  color: #111c !important;
 }
 
 #article h4 {
-  font-size: 12px;
+  font-size: 17px;
+  color: #111c !important;
 }
 
 #article pre {
@@ -184,7 +247,7 @@ blockquote {
 }
 
 #author-date {
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
 }
 
@@ -206,7 +269,7 @@ nav[data-toggle='toc'] {
 }
 
 nav[data-toggle=toc] .nav>li>a {
- color: #777777; 
+ color: #777777;
 }
 
 nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:focus, nav[data-toggle=toc] .nav-link.active:hover {
