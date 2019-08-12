@@ -11,6 +11,7 @@
   ======================================================= -->
   
   {{ partial "head.html" . }}
+  <script src="https://assets.pagar.me/checkout/1.1.0/checkout.js"></script>
 </head>
 
 <body>
@@ -51,7 +52,41 @@
           
           {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
           
-          <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>
+          <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
+          
+          <script>
+            var button = document.querySelector('#pagamento');
+
+            // Abrir o modal ao clicar no botão
+            button.addEventListener('click', function() {
+        
+              // inicia a instância do checkout
+              var checkout = new PagarMeCheckout.Checkout({
+                encryption_key: 'ek_test_KNHbR5j1vGsAH0cstlEWjEGRjngGBy',
+                success: function(data) {
+                  console.log(data);
+                },
+                error: function(err) {
+                	console.log(err);
+                },
+                close: function() {
+                	console.log('The modal has been closed.');
+                }
+              });
+              
+              checkout.open({
+                amount: 8000,
+                buttonText: 'Pagar',
+                buttonClass: 'botao-pagamento',
+                customerData: 'true',
+                createToken: 'true',
+                paymentMethods: 'credit_card, boleto'
+              });
+              
+            })
+              
+          </script>
+          
           
           {{ else }}
           
