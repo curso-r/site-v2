@@ -12,6 +12,7 @@
   
   {{ partial "head.html" . }}
   <script src="https://assets.pagar.me/checkout/1.1.0/checkout.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -41,16 +42,7 @@
             <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
           {{end}}
           
-          {{ if and (isset .Params "paypal") (ne .Params.paypal "" ) }} 
-          
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick">
-            <input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
-            <button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
-            <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-          </form>
-          
-          {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
+          {{ if and (isset .Params "aberto") (ne .Params.aberto "" ) }} 
           
           <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
           
@@ -62,9 +54,18 @@
         
               // inicia a instância do checkout
               var checkout = new PagarMeCheckout.Checkout({
-                encryption_key: 'ek_test_KNHbR5j1vGsAH0cstlEWjEGRjngGBy',
+                encryption_key: 'ek_test_KNHbR5j1vGsAH0cstlEWjEGRjngGBy',   
                 success: function(data) {
                   console.log(data);
+                  axios.get('https://pagarme-checkout-sqczz7t5ya-uc.a.run.app/captura?token=' + data.token + '&amount={{ .Params.unit_price }}')
+                        .then(function (response) {
+                          // handle success
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          // handle error
+                          console.log(error);
+                        })
                 },
                 error: function(err) {
                 	console.log(err);
@@ -75,24 +76,31 @@
               });
               
               checkout.open({
-                amount: 8000,
+                amount: {{ .Params.unit_price }},
                 buttonText: 'Pagar',
                 buttonClass: 'botao-pagamento',
                 customerData: 'true',
                 createToken: 'true',
-                paymentMethods: 'credit_card, boleto'
+                paymentMethods: 'credit_card, boleto',
+                items: [
+                  {
+                    id: '{{ .Params.id }}',
+                    title: '{{ .Params.title }}',
+                    unit_price: {{ .Params.unit_price }},
+                    quantity: 1,
+                    tangible: true
+                  }
+                ]
               });
               
             })
               
           </script>
           
-          
           {{ else }}
           
           {{ partial "form-curso.html" . }}
-          
-  
+        
           {{ end }}
           
         </div>
