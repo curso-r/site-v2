@@ -32,7 +32,7 @@ p {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
-  margin: 0 0 20px 0;
+  margin: 50px 0 20px 0;
   padding: 0;
   text-transform: uppercase;
 }
@@ -480,6 +480,39 @@ body.mobile-nav-active #mobile-nav-toggle {
   text-align: center;
   padding-bottom: 30px;
   color: #333;
+}
+
+.section-header h1 {
+  font-size: 32px !important;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 5px;
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+
+.section-header h1::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 120px;
+  height: 1px;
+  background: #ddd;
+  bottom: 1px;
+  left: calc(50% - 60px);
+}
+
+.section-header h1::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: #da4d4d;
+  bottom: 0;
+  left: calc(50% - 20px);
 }
 
 /* Section with background

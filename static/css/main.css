@@ -114,33 +114,30 @@ blockquote {
 
 /*** CSS DO MATERIAL ***/
 
-@media (min-width: 901px) {
+.col-sm-2-material {
+  flex: none;
+  width: 200px;
+}
+
+@media (min-width: 700px) {
   #material-container {
-  font-size: 17px;
-  padding-left: 160px;
-  padding-right: 160px;
+  background-color: white;
   font-family: "Source Sans Pro";
-  background-color: #fff;
+  width: 650px;
+  margin: auto;
+  flex: none;
  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 699px) {
   #material-container {
-  font-size: 17px;
-  padding-left: 80px;
-  padding-right: 80px;
+  background-color: white;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
   font-family: "Source Sans Pro";
-  background-color: #fff;
- }
-}
-
-@media (max-width: 400px) {
-  #material-container {
-  font-size: 17px;
-  padding-left: 40px;
-  padding-right: 40px;
-  font-family: "Source Sans Pro";
-  background-color: #fff;
+  margin: auto;
+  flex: none;
  }
 }
 
@@ -168,6 +165,25 @@ blockquote {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+#material-container p {
+  font-size: 17px;
+}
+
+.sticky-top {
+  top: 20px;
+}
+
+.hex-material img {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+}
+
+.hex-material hr {
+  margin: none;
 }
 
 /*** CSS DO ARTIGO ***/
@@ -265,6 +281,7 @@ nav[data-toggle='toc'] {
 
 nav[data-toggle=toc] .nav>li>a {
  color: #777777;
+ font-size: 16px;
 }
 
 nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:focus, nav[data-toggle=toc] .nav-link.active:hover {
