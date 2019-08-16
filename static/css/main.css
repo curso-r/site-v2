@@ -2,6 +2,12 @@ body {
   font-family: "Source Sans Pro";
 }
 
+.tags {
+  padding: 10px;
+  margin: auto;
+  text-align: center;
+}
+
 .container {
   padding: 30px 15px 15px 15px !important;
 }
@@ -167,9 +173,8 @@ blockquote {
 /*** CSS DO ARTIGO ***/
 
 #article-container {
-  margin-bottom: 50px;
   background-color: #fff;
-  max-width: max-content;
+  max-width: none;
 }
 
 #article-title {
@@ -179,36 +184,26 @@ blockquote {
   font-family: "Source Sans Pro";
 }
 
-@media (min-width: 901px) {
+@media (min-width: 700px) {
   #article {
   background-color: white;
-  padding-left: 230px;
-  padding-right: 230px;
   padding-top: 15px;
   font-family: "Source Sans Pro";
+  width: 650px;
+  margin: auto;
  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 699px) {
   #article {
   background-color: white;
-  padding-left: 40px;
-  padding-right: 40px;
   padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
   font-family: "Source Sans Pro";
+  margin: auto;
  }
 }
-
-@media (max-width: 400px) {
-  #article {
-  background-color: white;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 15px;
-  font-family: "Source Sans Pro";
- }
-}
-
 
 #article {
   font-size: 17px;
