@@ -14,7 +14,6 @@ ordem: 1
 
 
 
-<p>A seguir, apresentaremos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais e como instalar pacotes no R.</p>
 <div id="instalacao-do-r" class="section level1">
 <h1>Instalação do R</h1>
 <div id="no-windows" class="section level2">
@@ -105,13 +104,13 @@ que está na lista <em>Zip/Tarballs</em>. (veja imagem acima)</p></li>
 <p>O legal é que qualquer pessoa pode fazer um novo pacote e disponibilizar para a comunidade, o que acelera bastante o desenvolvemento da ferramenta. Dificilmente você vai fazer uma análise apenas com as funções básicas do R e dificilmente não vai existir um pacote com as funções que você precisa.</p>
 <p>Existem três principais maneiras de instalar pacotes. Em ordem de frequência, são:</p>
 <ul>
-<li>Via CRAN (Comprehensive R Archive Network): <code>install.packages(&quot;nome-do-pacote&quot;)</code>.</li>
-<li>Via Github: <code>devtools::install_github(&quot;nome-do-repo/nome-do-pacote&quot;)</code>.</li>
-<li>Via arquivo .zip/.tar.gz: <code>install.packages(&quot;C:/caminho/nome-do-pacote.zip&quot;, repos = NULL)</code>.</li>
+<li>Via CRAN (Comprehensive R Archive Network): <code>install.packages("nome-do-pacote")</code>.</li>
+<li>Via Github: <code>devtools::install_github("nome-do-repo/nome-do-pacote")</code>.</li>
+<li>Via arquivo .zip/.tar.gz: <code>install.packages("C:/caminho/nome-do-pacote.zip", repos = NULL)</code>.</li>
 </ul>
 <div id="via-cran" class="section level2">
 <h2>Via CRAN</h2>
-<p>Instale pacotes que não estão na sua biblioteca usando a função <code>install.packages(&quot;nome_do_pacote&quot;)</code>. Por exemplo:</p>
+<p>Instale pacotes que não estão na sua biblioteca usando a função <code>install.packages("nome_do_pacote")</code>. Por exemplo:</p>
 <pre class="r"><code>install.packages(&quot;magrittr&quot;)</code></pre>
 <p>E, de agora em diante, não precisa mais instalar. Basta carregar o pacote com <code>library(magrittr)</code>.</p>
 <blockquote>
