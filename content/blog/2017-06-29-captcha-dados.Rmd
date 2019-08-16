@@ -1,8 +1,8 @@
 ---
 title: "Quebrando CAPTCHAs - Parte IV: Trabalhando com a imagem completa"
 date: "2017-07-31T13:07:31+02:00"
-tags: ["r", "captcha"]
-categories: ["r"]
+tags: ["captcha"]
+categories: ["análises"]
 banner: "img/banners/captcha_04.png"
 author: ["Julio"]
 draft: false

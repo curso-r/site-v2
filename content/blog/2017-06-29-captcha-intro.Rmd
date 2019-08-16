@@ -1,8 +1,8 @@
 ---
 title: "Quebrando CAPTCHAs - Introdução"
 date: "2017-06-28T13:07:31+02:00"
-tags: ["r", "captcha"]
-categories: ["r"]
+tags: ["captcha"]
+categories: ["discussões"]
 banner: "img/banners/captcha_01.png"
 author: ["Julio"]
 draft: false

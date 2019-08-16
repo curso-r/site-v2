@@ -2,7 +2,7 @@
 title: "Quebrando Captchas - Parte V: Fazendo redes convolucionais na mão"
 date: "2017-11-12T23:26:00+03:00"
 tags: ["captcha"]
-categories: ["análises", "r"]
+categories: ["análises"]
 banner: "img/banners/captcha_05.png"
 author: ["Julio"]
 summary: "Nesse post vou mostrar como ajustar redes neurais convolucionais na mão. Muita mão na massa envolvida, muitos captchas e muita diversão. Vamos juntos desmistificar a magia negra do deep learning..."
@@ -33,7 +33,6 @@ library(keras)</code></pre>
 <p>Para os retoques finais nas imagens, vamos usar o pacote <code>magick</code>. Meu intuito inicial era usar a função <code>image_convolve()</code> desse pacote, mas infelizmente essa operação é limitada. Acabei usando apenas funções para juntar imagens e fazer gifs. Se quiser mais detalhes sobre o <code>magick</code>, veja o excelente post <a href="http://curso-r.com/blog/2017/06/01/2017-06-01-a-kind-of-magick/">A kind of magick</a>, feito pelo <a href="http://curso-r.com/author/william/">William Amorim</a>.</p>
 <pre class="r"><code># install.packages(&quot;magick&quot;)
 library(magick)
-## Warning: package &#39;magick&#39; was built under R version 3.4.4
 ## Linking to ImageMagick 6.9.9.39
 ## Enabled features: cairo, fontconfig, freetype, lcms, pango, rsvg, webp
 ## Disabled features: fftw, ghostscript, x11</code></pre>
@@ -283,10 +282,7 @@ w_list[[1]]</code></pre>
 <p>E como será que ficam essas imagens? Abaixo, temos o resultado da aplicação dos doze kernels. A maioria parece estar extraindo partes das letras. A sétima (posição <code>(2,3)</code>) parece estar pegando o ruído e a quarta parece guardar a imagem original.</p>
 <p><img src="/blog/2017-11-10-captcha-conv_files/figure-html/unnamed-chunk-24-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p>O gif animado abaixo mostra a aplicação do oitavo kernel da nossa lista. Com esse kernel dá pra pegar bem o padrão das letras, não é?</p>
-<div class="figure">
-<img src="/img/blog/captcha-conv/captcha_conv.gif" />
-
-</div>
+<p><img src="/img/blog/captcha-conv/captcha_conv.gif" /></p>
 <p>No próximo nível, vamos convoluir mais 48 kernels. Essa operação será feita com todos os doze filtros atuais, ou seja, é uma contaiada que não acaba mais. Para simplificar as contas e para permitir a obtenção de padrões diferentes, faz sentido simplificar a imagem. Para isso, usamos o <em>max pooling</em>.</p>
 <div id="aplicando-max-pooling" class="section level4">
 <h4>Aplicando max pooling</h4>
@@ -435,10 +431,7 @@ all.equal(sort(res), sort(w_calculado), tolerance = 1e-6)</code></pre>
 <h4>Visualizando na imagem original</h4>
 <p>Aqui fiz um esforço para tentar entender de qual parte da imagem original esses resultados estão pegando informações. Para isso, re-escalei essas imagens de resolução mais baixa na última convolução para o tamanho original do captcha (<code>50x180</code>) e depois multipliquei os valores das matrizes pelos valores da imagem original.</p>
 <p>O resultado foi esse gif. Cada imagem é um dos canais obtidos.</p>
-<div class="figure">
-<img src="/img/blog/captcha-conv/captcha_conv_final.gif" />
-
-</div>
+<p><img src="/img/blog/captcha-conv/captcha_conv_final.gif" /></p>
 <p>Parece que os filtros são capazes de pegar as curvas que as letras fazem no captcha. Mas não tenho opinião formada sobre isso. Digam aí nos comentários o que vocês acham!</p>
 </div>
 </div>

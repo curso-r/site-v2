@@ -1,8 +1,8 @@
 ---
 title: "Quebrando CAPTCHAs - Parte IV: Trabalhando com a imagem completa"
 date: "2017-07-31T13:07:31+02:00"
-tags: ["r", "captcha"]
-categories: ["r"]
+tags: ["captcha"]
+categories: ["análises"]
 banner: "img/banners/captcha_04.png"
 author: ["Julio"]
 draft: false
@@ -12,7 +12,7 @@ summary: "No último post sobre CAPTCHAs nós vimos que a segmentação das imag
 
 
 <blockquote>
-<p>Esse post assume uma versão mais antiga do <code>decryptr</code> para instalar a versão usada use: <code>devtools::install_github(&quot;decryptr/decryptr@05bfd48&quot;)</code></p>
+<p>Esse post assume uma versão mais antiga do <code>decryptr</code> para instalar a versão usada use: <code>devtools::install_github("decryptr/decryptr@05bfd48")</code></p>
 </blockquote>
 <p>No último post sobre <a href="http://curso-r.com/tags/captcha/">CAPTCHAs</a> nós vimos que a segmentação das imagens (separar uma imagem em várias imagens, uma para cada caractere) é um problema complicado. Definir uma largura fixa ou utilizar outros métodos ad-hoc para segmentar as imagens pode dar bons frutos, mas não é o suficiente para quebrar CAPTCHAs mais complexos, como o da Receita Federal.</p>
 <p>Alguns meses atrás, tentamos resolver esse problema de várias formas. Uma delas foi utilizar algoritmos de agrupamento (<span class="math inline">\(k\)</span>-médias) ou de identificação de conjuntos conectados. Esses algoritmos se mostraram instáveis e não aumentaram muito o poder preditivo. Outra ideia que tentamos foi criar vários critérios de corte fixos e incluir todas as colunas geradas na base de dados. Mas isso deixou nos deixou com uma dimensão muito grande pra tratar, e parecia que os modelos precisavam de muito mais dados pra começarem a funcionar.</p>
