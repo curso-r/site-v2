@@ -1,0 +1,199 @@
+---
+title: "Comunidade R Brasil no Telegram"
+date: "2019-09-14"
+tags: ["comunidade"]
+categories: ["analise", "r"]
+banner: "img/banners/telegram-rbrasil.png"
+author: ["Julio"]
+summary: "Nesse post, baixamos os dados do Telegram da comunidade RBrasil e fizemos alguns gráficos divertidos."
+draft: false
+---
+
+
+
+<p>O que faz o R ser tão legal é a comunidade que está por trás dela. Existem várias formas de acessar essa comunidade: pelo <a href="https://stackoverflow.com/questions/tagged/r">stackoverflow</a>, <a href="https://twitter.com/search?q=%23rstats">twitter</a>, <a href="https://pt-br.facebook.com/groups/1410023525939155/">facebook</a>, entre outras. Nesse post vou falar um pouquinho sobre a comunidade RBrasil no <a href="https://t.me/rbrasiloficial">telegram</a>, usando dados!</p>
+<p>A comunidade <span class="citation">@rbrasiloficial</span> foi criada em 2015 pelo Felipe Barros e já tem mais de mil inscritos. O canal é utilizado para tirar dúvidas, discutir sobre o futuro do R, divulgar trabalhos e dar pitacos sobre as coisas que estão acontecendo.</p>
+<p>Nesse post vou mostrar como importar e arrumar os dados, e algumas visualizações da base de conversas do Telegram.</p>
+<div id="importando-os-dados" class="section level2">
+<h2>Importando os dados</h2>
+<p>O Telegram já possui uma ferramenta para exportar os chats. Basta clicar nas opções do chat e mandar exportar. Então vou assumir que esses dados já estão em mãos.</p>
+<p>Os dados estão disponíveis no formato HTML. Para ler um arquivo, montei o seguinte código:</p>
+<pre class="r"><code>library(magrittr)
+
+ler_html_telegram &lt;- function(html_file) {
+  # pega todas as mensagens
+  divs &lt;- xml2::read_html(html_file) %&gt;% 
+    xml2::xml_find_all(&quot;//div[@class=&#39;message default clearfix&#39;]&quot;)
+  
+  # nome da pessoa
+  nomes &lt;- divs %&gt;% 
+    xml2::xml_find_all(&quot;./div/div[@class=&#39;from_name&#39;]&quot;) %&gt;% 
+    xml2::xml_text() %&gt;% 
+    stringr::str_squish()
+  
+  # data e hora da mensagem
+  data_horas &lt;- divs %&gt;% 
+    xml2::xml_find_all(&quot;./div/div[@class=&#39;pull_right date details&#39;]&quot;) %&gt;% 
+    xml2::xml_attr(&quot;title&quot;) %&gt;% 
+    lubridate::dmy_hms()
+  
+  # texto da mensagem
+  textos &lt;- divs %&gt;% 
+    purrr::map(xml2::xml_find_first, &quot;./div/div[@class=&#39;text&#39;]&quot;) %&gt;% 
+    purrr::map_chr(xml2::xml_text) %&gt;% 
+    stringr::str_squish()
+  
+  # retorna numa tabela
+  tibble::tibble(
+    data_hora = data_horas,
+    nome = nomes,
+    texto = textos
+  )
+}</code></pre>
+<p>Depois, basta listar todos os arquivos e carregar cada arquivo usando <code>purrr::map_dfr()</code>:</p>
+<pre class="r"><code>path &lt;- &quot;~/Downloads/Telegram Desktop/ChatExport_17_08_2019/&quot;
+todos_arquivos &lt;- fs::dir_ls(path, regexp = &quot;messages&quot;)
+
+d_msg &lt;- purrr::map_dfr(
+  todos_arquivos, 
+  ler_html_telegram, 
+  .id = &quot;arquivo&quot;
+)</code></pre>
+<p>No final, fiquei com uma base de dados com 26.980 linhas e 4 colunas.</p>
+<p>Contas deletadas ganharam no volume de mensagens… Mas acho que não queremos considerá-las pois temos várias pessoas nessa contagem. O grande Marcelo Ventura Freire venceu no número de mensagens! Eu também estou no páreo :)</p>
+<pre class="r"><code>d_msg %&gt;% 
+  dplyr::count(nome, sort = TRUE) %&gt;% 
+  dplyr::mutate(prop = scales::percent(n/sum(n))) %&gt;% 
+  head(10) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">nome</th>
+<th align="right">n</th>
+<th align="left">prop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Deleted Account</td>
+<td align="right">3101</td>
+<td align="left">11.5%</td>
+</tr>
+<tr class="even">
+<td align="left">Marcelo Ventura Freire</td>
+<td align="right">2313</td>
+<td align="left">8.6%</td>
+</tr>
+<tr class="odd">
+<td align="left">Charles Lula da Silva</td>
+<td align="right">1897</td>
+<td align="left">7.0%</td>
+</tr>
+<tr class="even">
+<td align="left">Leonard de Assis</td>
+<td align="right">1677</td>
+<td align="left">6.2%</td>
+</tr>
+<tr class="odd">
+<td align="left">Sillas Gonzaga</td>
+<td align="right">1540</td>
+<td align="left">5.7%</td>
+</tr>
+<tr class="even">
+<td align="left">Julio Trecenti</td>
+<td align="right">1130</td>
+<td align="left">4.2%</td>
+</tr>
+<tr class="odd">
+<td align="left">Bruna Wundervald</td>
+<td align="right">951</td>
+<td align="left">3.5%</td>
+</tr>
+<tr class="even">
+<td align="left">Andre Mesquita</td>
+<td align="right">818</td>
+<td align="left">3.0%</td>
+</tr>
+<tr class="odd">
+<td align="left">Fernando Barbalho</td>
+<td align="right">696</td>
+<td align="left">2.6%</td>
+</tr>
+<tr class="even">
+<td align="left">George Santiago</td>
+<td align="right">611</td>
+<td align="left">2.3%</td>
+</tr>
+</tbody>
+</table>
+<p>E no tempo, como que fica? Parece que no início o volume de mensagens era mais alto, e depois entramos num patamar estável.</p>
+<pre class="r"><code>library(ggplot2)
+d_msg %&gt;% 
+  dplyr::mutate(mes = lubridate::floor_date(data_hora, &quot;month&quot;)) %&gt;% 
+  dplyr::count(mes) %&gt;% 
+  ggplot(aes(x = mes, y = n)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal(16)</code></pre>
+<p><img src="/img/blog/telegram/tempo-tot.png" /></p>
+<p>No gráfico seguinte, peguei as doze pessoas que falaram mais historicamente e avaliei a evolução mensal de mensagens. Temos de tudo: os constantes, os que sumiram, os que ressurgiram das cinzas e os que chegaram para ficar.</p>
+<pre class="r"><code>d_msg %&gt;% 
+  dplyr::filter(nome != &quot;Deleted Account&quot;) %&gt;% 
+  dplyr::mutate(nome = forcats::fct_lump(nome, 12),
+                nome = as.character(nome),
+                mes = lubridate::floor_date(data_hora, &quot;month&quot;)) %&gt;% 
+  dplyr::filter(nome != &quot;Other&quot;) %&gt;% 
+  dplyr::count(mes, nome, sort = TRUE) %&gt;% 
+  tidyr::complete(mes, nome, fill = list(n = 0)) %&gt;% 
+  ggplot(aes(x = mes, y = n)) +
+  geom_line() +
+  facet_wrap(~nome) +
+  labs(x = &quot;Mês&quot;, y = &quot;Quantidade de mensagens&quot;) +
+  theme_bw()</code></pre>
+<p><img src="/img/blog/telegram/tempo-pessoa.png" /></p>
+<p>E qual é o horário que as pessoas interagem mais? Parece que é às 16 horas, aquele horário que a pessoa está ferrada no trabalho e precisa pedir uma ajuda aos amigos…</p>
+<pre class="r"><code>d_msg %&gt;% 
+  dplyr::mutate(hora = factor(lubridate::hour(data_hora))) %&gt;% 
+  ggplot(aes(x = hora)) +
+  geom_bar(fill = &quot;royalblue&quot;) +
+  theme_minimal(14) +
+  ggtitle(&quot;Hora das mensagens&quot;)</code></pre>
+<p><img src="/img/blog/telegram/hora.png" /></p>
+<p>E o dia da semana? Terça-feira wins!</p>
+<pre class="r"><code>d_msg %&gt;% 
+  dplyr::mutate(wd = lubridate::wday(data_hora, label = TRUE)) %&gt;% 
+  ggplot(aes(x = wd)) +
+  geom_bar(fill = &quot;pink2&quot;) +
+  theme_minimal(14) +
+  ggtitle(&quot;Dia da semana das mensagens&quot;)</code></pre>
+<p><img src="/img/blog/telegram/dia-semana.png" /></p>
+<p>E claro, não poderia faltar um wordcloud…</p>
+<pre class="r"><code># dá pra criar funções anônimas assim ;)
+# esse é um limpador bem safado que fiz em 1 min
+limpar &lt;- . %&gt;% 
+  abjutils::rm_accent() %&gt;% 
+  stringr::str_to_title() %&gt;% 
+  stringr::str_remove_all(&quot;[^a-zA-Z0-9 ]&quot;) %&gt;% 
+  stringr::str_squish()
+
+# tirar palavras que nao quero
+banned &lt;- tidytext::get_stopwords(&quot;pt&quot;) %&gt;% 
+  dplyr::mutate(palavra = limpar(word))
+
+cores &lt;- viridis::viridis(10, begin = 0, end = 0.8)
+
+d_msg %&gt;% 
+  tidytext::unnest_tokens(palavra, texto) %&gt;% 
+  dplyr::mutate(palavra = limpar(palavra)) %&gt;% 
+  dplyr::anti_join(banned, &quot;palavra&quot;) %&gt;% 
+  dplyr::count(palavra, sort = TRUE) %&gt;% 
+  with(wordcloud::wordcloud(
+    palavra, n, scale = c(5, .1), 
+    min.freq = 80, random.order = FALSE,
+    colors = cores
+  ))</code></pre>
+<p><img src="/img/blog/telegram/wordcloud.png" /></p>
+<p>Fiz poucos gráficos para te deixar com vontade de brincar mais. Gostou da brincadeira? Então faça suas próprias análises do seu chat preferido do Telegram!</p>
+<p>É isso. Happy coding ;)</p>
+</div>
