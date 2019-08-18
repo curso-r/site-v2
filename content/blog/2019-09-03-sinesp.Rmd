@@ -1,8 +1,8 @@
 ---
 title: "Verificando afirmações com dados abertos"
-date: "2019-09-14"
+date: "2019-09-27"
 tags: ["evento"]
-categories: ["evento", "r"]
+categories: ["análises", "r"]
 banner: "img/banners/dadosgovbr.png"
 author: ["Julio"]
 summary: "Nesse post, analisamos dados do SINESP para verificar as informações de um tweet do Ministri Sérgio Moro sobre a queda nas ocorrências de crimes no primeiro bimestre de 2018."

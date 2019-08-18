@@ -1,8 +1,8 @@
 ---
 title: "Programando com o tidyverse"
-date: "2019-08-21"
-tags: ["evento"]
-categories: ["evento", "r"]
+date: "2019-08-23"
+tags: ["rlang"]
+categories: ["tutoriais", "r"]
 banner: "img/banners/rlang.png"
 author: ["Julio"]
 summary: "Ao usar muito o {dplyr}, passamos a querer utilizá-lo em todos os contextos possíveis. Mas isso gera dificuldades na hora de criar funções. Nesse post vamos discutir como resolver isso usando os novos recursos do pacote {rlang}"

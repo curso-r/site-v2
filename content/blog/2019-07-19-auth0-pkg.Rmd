@@ -1,8 +1,8 @@
 ---
 title: "Autenticação em Shiny Apps com o pacote auth0"
 date: "2019-08-12"
-tags: ["evento"]
-categories: ["evento", "r"]
+tags: ["auth0"]
+categories: ["tutoriais", "r"]
 banner: "img/banners/auth0-pkg.png"
 author: ["Julio"]
 summary: "Atualização do post anterior no tema, mostrando como fazer autenticação em shiny apps usando o serviço Auth0."

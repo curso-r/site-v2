@@ -2,7 +2,7 @@
 title: "Top 3 pacotes pra usar com rmarkdown"
 date: "2017-07-15T23:26:00+03:00"
 tags: ["r-markdown", "rstudio"]
-categories: ["top-10", "r"]
+categories: ["top 10", "r"]
 banner: "img/banners/tufte.jpg"
 author: ["Fernando"]
 summary: "Neste post, vou listar três pacotes que são úteis pra fazer relatórios bonitos em Rmarkdown."

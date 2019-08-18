@@ -1,8 +1,8 @@
 ---
 title: "Escrevendo livros com R e bookdown"
-date: "2019-08-28"
-tags: ["evento"]
-categories: ["evento", "r"]
+date: "2019-09-06"
+tags: ["bookdown"]
+categories: ["tutoriais", "r"]
 banner: "img/banners/bookdown.png"
 author: ["Julio"]
 summary: "Depois de ler esse post você conseguirá criar e publicar livros em 6 minutos."

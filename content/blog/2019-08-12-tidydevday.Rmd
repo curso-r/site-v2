@@ -2,7 +2,7 @@
 title: "Tidyverse developer day 2019"
 date: "2019-08-16"
 tags: ["evento"]
-categories: ["evento", "r"]
+categories: ["divulgação", "r"]
 banner: "img/banners/tidydevday.png"
 author: ["Beatriz Milz", "Angélica Custódio"]
 summary: "Este post tem como objetivo relatar a experiência de participar do Tidyverse Developer Day 2019, e tem como autoras a Beatriz Milz e a Angélica Custódio."
