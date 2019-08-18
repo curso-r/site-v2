@@ -1,0 +1,90 @@
+---
+title: "Escrevendo livros com R e bookdown"
+date: "2019-08-28"
+tags: ["evento"]
+categories: ["evento", "r"]
+banner: "img/banners/bookdown.png"
+author: ["Julio"]
+summary: "Depois de ler esse post você conseguirá criar e publicar livros em 6 minutos."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Esse post é um tutorial rápido de como você pode criar um livro usando o pacote `{bookdown}`. Eu uso esse pacote para escrever todos os meus grandes relatórios e até minha tese de mestrado. A filosofia dele é a mesma que a do markdown: o foco é o conteúdo; o formato fica pra depois. 
+
+Esse é um pacote maravilhoso, mas um pouco espinhudo, pois não é fácil lidar com vários formatos distintos. Para dominar o `{bookdown}`, recomendo que você leia o livro feito pelo Yihui Xie: https://bookdown.org/yihui/bookdown/. O Yihui é também o autor do `{knitr}`, `{rmarkdown}`, `{pagedown}`, e do excepcional `{xaringan}`. Os pacotes dele têm todos a mesma característica: são extremamente úteis, mas às vezes te mordem.
+
+Nesse post, apresento um vídeo-tutorial faço apenas alguns comentários adicionais
+
+### Vídeo
+
+Prometo que vou melhorar o áudio nos próximos tutoriais.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q84H6UTyGU0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### O que faz o que?
+
+Para criar um livro com `{bookdown}`, você só precisa de dois componentes, descritos abaixo
+
+1. Um arquivo `index.Rmd` ou `index.md`, com o seguinte conteúdo:
+
+```
+---
+site: bookdown::bookdown_site
+---
+
+# 
+```
+
+2. Rodar a operação
+
+```{r eval=FALSE}
+rmarkdown::render_site(
+  "caminho/do/livro", 
+  output_format = "bookdown::gitbook"
+)
+```
+
+O primeiro componente diz que seu markdown deve ser compilado como um livro do `{bookdown}`. Isso substitui a função `rmarkdown::default_site()`, que é o padrão para desenvolver sites usando RMarkdown. Isso fica para outro post!
+
+Já o segundo componente é o que compila o site de fato. O parâmetro `output_format` é o que controla a saída. Existem três opções principais de formatos no `{bookdown}`: `gitbook` (HTML), `pdf_book` (PDF) e `gitbook` (E-pub).
+
+> Outra forma mais enxuta, mas menos geral de obter o mesmo é utilizando a função
+> `bookdown::render_book()` no lugar de `rmarkdown::render_site()`. Nesse caso,
+> não é necessário adicionar a tag `site: bookdown::bookdown_site` no arquivo
+> `index.Rmd`/`index.md`.
+
+### E se eu quiser que meu site tenha vários formatos?
+
+Você pode fazer isso trocando `output_format` por um vetor. No entanto, existem formas mais organizadas. Nesse caso, a recomendação é criar um arquivo `_output.yml`, contendo os outputs que você quer ter, por exemplo
+
+```yaml
+bookdown::gitbook:
+  caption: false
+bookdown::pdf_book
+```
+
+Note que é possível adicionar parâmetros ao livro, que podem controlar o template que vamos utilizar, por exemplo.
+
+Outra forma de fazer isso é diretamente no `index.Rmd`:
+
+```
+---
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    caption: false
+  bookdown::pdf_book
+---
+
+# meu livro 
+```
+
+### E se eu quiser quebrar meu livro em vários arquivos?
+
+Sem problemas. Basta criar arquivos com uma ordem específica, como `01_introducao.Rmd`, `02_introducao.Rmd`, etc. Esses arquivos são agregados num grande `Rmd` antes de ser compilado.
+
+Por enquanto é isso. Farei mais posts sobre markdown, pois é muito útil e divertido! Happy coding ;)
