@@ -1,0 +1,192 @@
+---
+title: "Programando com o tidyverse"
+date: "2019-08-21"
+tags: ["evento"]
+categories: ["evento", "r"]
+banner: "img/banners/rlang.png"
+author: ["Julio"]
+summary: "Ao usar muito o {dplyr}, passamos a querer utilizá-lo em todos os contextos possíveis. Mas isso gera dificuldades na hora de criar funções. Nesse post vamos discutir como resolver isso usando os novos recursos do pacote {rlang}"
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE, out.width = "50%")
+```
+
+O `{dplyr}` é um pacote incrível pois permite realizar operações difíceis de forma iterada e intuitiva. Uma grande facilidade do `{dplyr}` é a possibilidade de utilizar os nomes das variáveis sem encapsular com aspas, o que torna a programação mais fluida e compreensível.
+
+Por exemplo, é fácil argumentar que
+
+```{r, eval=FALSE}
+mtcars %>% 
+  summarise(soma = sum(cyl ^ 2))
+```
+
+é mais intuitivo que
+
+```{r, eval=FALSE}
+mtcars %>% 
+  summarise(cyl = sum(mtcars$cyl ^ 2))
+```
+
+ou ainda
+
+```{r, eval=FALSE}
+mtcars %>% 
+  mutate(cyl = sum(mtcars[["cyl"]] ^ 2))
+```
+
+No entanto, ao usar o `{dplyr}` com frequência, passamos a querer colocá-lo em todos os contextos possíveis, como novas função ou Shiny apps. Assim, gostaríamos de fazer algo do tipo
+
+```{r, eval=FALSE}
+minha_fn <- function(dados, variavel) {
+  dados %>% 
+    summarise(nova_variavel = sum(variavel ^ 2))
+}
+```
+
+No entanto, ao experimentar isso, temos o erro
+
+```{r}
+mtcars %>% 
+  minha_fn(cyl)
+```
+
+    # > Error: object 'cyl' not found 
+
+
+Você já se deparou com essa situação? É bem frustrante. A verdade é que o `tidyverse` foi desenvolvido com foco em facilitar o trabalho de __análise__, com o custo de dificultar o trabalho de __programação__.
+
+Porém, graças a avanços recentes no pacote `{rlang}`, isso está ficando mais fácil. Nesse post vou mostrar três casos casos comuns de programação com o tidyverse, e suas soluções. Para casos mais complicados, recomendo dar uma olhada no [livro sobre Tidyeval](https://tidyeval.tidyverse.org/index.html).
+
+> Para reproduzir esse post, você precisará ter pelo menos a versão `0.4.0` do `{rlang}` instalado na sua máquina!
+
+## Quero que minha função receba um nome sem aspas
+
+Para isso, podemos usar o quentíssimo operador `{{}}`, que foi oficialmente apresentado na useR!2019, em Tolouse. Esse operador informa as funções do `{dplyr}` (e seus amigos `{tidyr}`, `{ggplot2}` etc) que olhem para a variável de dentro da base de dados, ao invés de um objeto supostamente passado como argumento da função.
+
+Com isso, a função anterior fica simples assim:
+
+```{r}
+minha_fn_sem_aspas <- function(dados, variavel) {
+  dados %>% 
+    summarise(nova_variavel = sum({{variavel}} ^ 2))
+}
+```
+
+E sua utilização: 
+
+```{r}
+mtcars %>% 
+  minha_fn_sem_aspas(cyl)
+```
+
+| nova_variavel|
+|-------------|
+|          1324|
+
+Zero trauma.
+
+## Quero que minha função receba uma string
+
+Para isso, teremos de usar o objeto especial `.data`. Ele permite que você acesse a informação dos dados antes de aplicar a nova função. É muito similar ao `.` do pacote `{magrittr}`, para quem já conhece.
+
+```{r}
+minha_fn_com_aspas <- function(dados, variavel) {
+  dados %>% 
+    summarise(nova_variavel = sum(.data[[variavel]] ^ 2))
+}
+```
+
+E sua utilização: 
+
+```{r}
+mtcars %>% 
+  minha_fn_com_aspas("cyl")
+```
+
+| nova_variavel|
+|-------------|
+|          1324|
+
+
+Show! Esse provavelmente é o caso da maioria dos Shiny apps, pois acessamos as informações através de `input$id_input`, que geralmente é uma string.
+
+__Observação__: uma diferença essencial entre usar `.data` e `.` é que o primeiro consegue lidar com grupos, e o segundo não. Por exemplo, esses códigos têm resultados diferentes:
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(nova_variavel = sum(.data[["cyl"]] ^ 2))
+```
+
+| cyl| nova_variavel|
+|---|-------------|
+|   4|           176|
+|   6|           252|
+|   8|           896|
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(nova_variavel = sum(.[["cyl"]] ^ 2))
+```
+
+| cyl| nova_variavel|
+|---|-------------|
+|   4|          1324|
+|   6|          1324|
+|   8|          1324|
+
+Para a lista completa de diferenças, veja `?rlang::.data`.
+
+## Quero que minha função crie uma coluna com nome variável
+
+E se você quiser mudar o nome de `nova_variavel` e incluir isso como argumento da função? Nesse caso, é necessário introduzir o operador `:=`, e o resto é resolvido com `{{}}`:
+
+```{r}
+minha_fn_sem_aspas_novo_nome <- function(dados, variavel, nome) {
+  dados %>% 
+    summarise({{nome}} := sum({{variavel}} ^ 2))
+}
+```
+
+E sua utilização: 
+
+```{r}
+mtcars %>% 
+  minha_fn_sem_aspas_novo_nome(cyl, novo_nome)
+```
+
+| novo_nome|
+|---------|
+|      1324|
+
+Curiosamente, essa solução também funciona com as aspas:
+
+```{r}
+mtcars %>% 
+  minha_fn_sem_aspas_novo_nome(cyl, "novo_nome")
+```
+
+| novo_nome|
+|---------|
+|      1324|
+
+## Wrap-up
+
+- O pacote que está por trás da programação com `{dplyr}` e amigos é o `{rlang}`.
+- Use `{{variavel}}` quando não quiser colocar aspas no argumento da função.
+- Use `.data[["variavel"]]` quando quiser colocar aspas no argumento da função.
+- Use `{{nome}} := ...` quando quiser criar colunas com nomes que estão no argumento da função.
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+
