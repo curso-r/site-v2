@@ -123,7 +123,7 @@ blockquote {
   #material-container {
   background-color: white;
   font-family: "Source Sans Pro";
-  width: 650px;
+  width: 730px;
   margin: auto;
   flex: none;
  }
@@ -144,21 +144,25 @@ blockquote {
 #material-container h1 {
   font-size: 26px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #material-container h2 {
   font-size: 23px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #material-container h3 {
   font-size: 20px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #material-container h4 {
   font-size: 17px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #material-container img {
@@ -228,21 +232,25 @@ blockquote {
 #article h1 {
   font-size: 26px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h2 {
   font-size: 23px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h3 {
   font-size: 20px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h4 {
   font-size: 17px;
   color: #111c !important;
+  margin-top: 40px;
 }
 
 #article pre {
