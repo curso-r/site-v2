@@ -1,6 +1,6 @@
 ---
 title: ".RData e .Rhistory (Zen do R parte 2)"
-date: "2019-07-10"
+date: "2019-07-10T00:00:00+00:00"
 tags: ["zen do R"]
 categories: ["tutoriais"]
 banner: "img/banners/zen-do-r-2.jpg"
