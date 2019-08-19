@@ -16,6 +16,8 @@ ordem: 1.1
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
+# Introdução
+
 O RStudio é o melhor ambiente disponível para programação em R. Nesta seção, apresentaremos as suas principais funcionalidades, que te deixarão muito mais eficiente na hora de programar em R.
 
 # Telas

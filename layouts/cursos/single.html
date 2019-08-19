@@ -49,6 +49,18 @@
             <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
           </form>
           
+          {{ else if and (isset .Params "checkout") (ne .Params.checkout "" ) }}
+          
+          <form method="POST" action="/comprar">
+            <script type="text/javascript"
+              src="https://assets.pagar.me/checkout/checkout.js"
+              data-encryption-key="ek_test_Ec8KhxISQ1tug1b8bCGxC2nXfxqRmk"
+              data-customer-data="true"
+              data-create-token="true"
+              data-amount="1000">
+            </script>
+          </form>
+          
           {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
           
           <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>

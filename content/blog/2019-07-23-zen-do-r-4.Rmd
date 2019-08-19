@@ -1,8 +1,8 @@
 ---
 title: "Git e GitHub (Zen do R parte 4)"
 date: "2019-07-23"
-tags: ["zen-do-r"]
-categories: ["livro", "r"]
+tags: ["zen do R", "github"]
+categories: ["tutoriais"]
 banner: "img/banners/zen-do-r-4.jpg"
 author: ["Caio"]
 summary: "Como usar o Git e o GitHub para fazer controle

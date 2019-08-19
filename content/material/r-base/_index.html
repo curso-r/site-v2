@@ -259,7 +259,7 @@ vetor1 * vetor2
 <blockquote>
 <p>Vetores são homogêneos. Os elementos de um vetor são sempre da mesma classe. Ou todos são numéricos, ou são todos character, ou todos são lógicos etc. Não dá para ter um número e um character no mesmo vetor, por exemplo.</p>
 </blockquote>
-<p>Se colocarmos duas ou mais classes diferentes dentro de um mesmo vetor, o R vai forçar que todos os elementos passem a pertencer à mesma classe. O número <code>1.7</code> viraria <code>&quot;1.7&quot;</code> se fosse colocado ao lado de um <code>&quot;a&quot;</code>.</p>
+<p>Se colocarmos duas ou mais classes diferentes dentro de um mesmo vetor, o R vai forçar que todos os elementos passem a pertencer à mesma classe. O número <code>1.7</code> viraria <code>"1.7"</code> se fosse colocado ao lado de um <code>"a"</code>.</p>
 <pre class="r"><code>y &lt;- c(1.7, &quot;a&quot;)  # character
 y &lt;- c(TRUE, 2)   # numeric
 y &lt;- c(TRUE, &quot;a&quot;) # character</code></pre>
@@ -442,7 +442,7 @@ if(x == 1) {
 if(x == 1) {
   Sys.time()
 }
-## [1] &quot;2019-01-07 17:34:18 -02&quot;</code></pre>
+## [1] &quot;2019-08-19 18:14:58 -03&quot;</code></pre>
 <p>O R só vai executar o que está na expressão dentro das chaves <code>{}</code> se o que estiver dentro dos parênteses <code>()</code> retornar <code>TRUE</code>.</p>
 <p>A sintaxe com o <code>else</code> e o <code>if else</code> é</p>
 <pre class="r"><code>if(x &lt; 0) {
@@ -605,7 +605,7 @@ x &lt;- 1:n
 y &lt;- 5 + 2 * x + rnorm(n, sd = 30)
 plot(x, y)</code></pre>
 <p><img src="/material/r-base/_index_files/figure-html/unnamed-chunk-38-1.png" width="75%" /></p>
-<p>O parâmetro <code>type = &quot;l&quot;</code> indica que queremos que os pontos sejam interligados por linhas.</p>
+<p>O parâmetro <code>type = "l"</code> indica que queremos que os pontos sejam interligados por linhas.</p>
 <pre class="r"><code>plot(x, y, type = &quot;l&quot;)</code></pre>
 <p><img src="/material/r-base/_index_files/figure-html/unnamed-chunk-39-1.png" width="75%" /></p>
 </div>
@@ -826,7 +826,7 @@ media(1:3)
 }
 
 alea()
-## [1] 4</code></pre>
+## [1] 8</code></pre>
 <p>Veja que construímos uma função sem argumentos. Podemos generalizá-la incluindo os argumentos da função <code>runif()</code>.</p>
 <pre class="r"><code>alea &lt;- function(n, min, max) {
   
@@ -837,9 +837,9 @@ alea()
 }
 
 alea(2, 2, 5)
-## [1] 4 2
+## [1] 4 3
 alea(5, 100, 105)
-## [1] 101 102 102 103 103</code></pre>
+## [1] 101 104 105 102 101</code></pre>
 <p>Observe que não há problema em usar os mesmos nomes para os argumentos. Isso se deve aos <em>environments</em>. Para saber mais, confira <a href="http://curso-r.com/blog/2017/06/19/2017-06-19-environments/">este post</a>.</p>
 <hr />
 <p><strong>10.</strong> Rode <code>help(sample)</code> para descobrir o que a função <code>sample()</code> faz. Em seguida, use-a para escrever uma função que escolha uma linha aleatoriamente de uma matriz e devolva os seus valores.</p>
@@ -856,14 +856,14 @@ linha_alea &lt;- function(matriz) {
 }
 
 matriz
-##           [,1]      [,2]       [,3]       [,4]
-## [1,] 0.2983895 0.2101763 0.09932624 0.01755480
-## [2,] 0.9418885 0.2771207 0.03813396 0.04712458
-## [3,] 0.8709271 0.4075664 0.31208692 0.19123202
-## [4,] 0.8863390 0.6283265 0.24282039 0.90323225
-## [5,] 0.6756611 0.7467092 0.02503118 0.11847966
+##           [,1]        [,2]      [,3]      [,4]
+## [1,] 0.5983035 0.271268710 0.1041378 0.8081555
+## [2,] 0.1272590 0.001899282 0.0262577 0.2617585
+## [3,] 0.6990443 0.333766474 0.4608654 0.5149115
+## [4,] 0.4297517 0.227522596 0.6247019 0.4743193
+## [5,] 0.5315838 0.426228065 0.4818493 0.6258397
 linha_alea(matriz)
-## [1] 0.8863390 0.6283265 0.2428204 0.9032322</code></pre>
+## [1] 0.6990443 0.3337665 0.4608654 0.5149115</code></pre>
 <hr />
 <p><strong>11.</strong> Rode <code>help(paste)</code> e <code>help(names)</code> para descobrir o que as funções <code>paste()</code> e <code>names()</code> fazem. Em seguida, use-as para escrever um código para gerar a fórmula <code>mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb</code> a partir do data frame <code>mtcars</code>.</p>
 <p><strong>Resposta:</strong></p>
@@ -875,5 +875,5 @@ dir &lt;- paste(variaveis[-1], collapse = &quot; + &quot;)
 formula &lt;- paste0(esq, dir)
 as.formula(formula)
 ## mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb</code></pre>
-<p>Observe que a função <code>paste0()</code> é equivalente à função <code>paste()</code> com o argumento <code>sep = &quot;&quot;</code>.</p>
+<p>Observe que a função <code>paste0()</code> é equivalente à função <code>paste()</code> com o argumento <code>sep = ""</code>.</p>
 </div>

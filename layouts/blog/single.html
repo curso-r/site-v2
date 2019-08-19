@@ -17,19 +17,24 @@
         <h3 data-toc-skip>{{ .Title }}</h3>
       </header>
       
+      <div class="tags">
+        {{ range .Params.categories }}
+          {{ if ne . "r" }}
+             <a href="/tags/{{.}}">
+             <button class="cta-submit" type="submit">{{ . | humanize}}</button>
+            </a>
+          {{ end }}
+        {{ end }}
+        {{ range .Params.tags }}
+        <a href="/tags/{{.}}">
+          <button class="cta-submit" type="submit">{{ . | humanize}}</button>
+        </a>
+        {{ end }}
+      </div>
+      
+      
       <div class="row">
-        
-        <div class="col-sm-3">
-          
-          
-          <nav id="toc" data-toggle="toc" class="sticky-top"></nav>  
-          
-          
-           
-          
-        </div>
-        
-        <div class="col-sm-9" id="article">
+        <div id="article">
           <p class="text-right" id="author-date">
             {{ if isset .Params "author" }} 
             Por {{ range $index, $author := .Params.author }} 
@@ -59,17 +64,5 @@
   
   {{ partial "scripts.html" .}}
   {{ partial "toc.html" . }}
-  
-  <script>
-    
-    $(function() {
-        $('#toc').append('<div class="tags"><h1 data-toc-skip>Tags</h1>{{ range .Params.tags }}<a href="/tags/{{.}}"><button class="cta-submit" type="submit">{{ . | humanize}}</button></a>{{ end }}</div>');
-    });
-    
-    $(function() {
-        $('#toc').append('<div class="tags"><h1 data-toc-skip>Categorias</h1>{{ range .Params.categories }}<a href="/tags/{{.}}"><button class="cta-submit" type="submit">{{ . | humanize}}</button></a>{{ end }}</div>');
-    });
-    
-  </script>
   
 </html>

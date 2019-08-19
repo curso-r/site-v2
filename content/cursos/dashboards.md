@@ -5,6 +5,7 @@ hora: "18 horas de curso"
 local: "a definir"
 img: "img/cursos/dashboards.png"
 preco: "R$750,00"
+checkout: true
 banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
