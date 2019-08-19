@@ -1,0 +1,33 @@
+---
+title: "Quebrando Captchas - Parte VII: Oráculos"
+date: "2019-10-12T00:00:00+00:00"
+categories: ["r", "tutoriais"]
+tags: ["r", "captcha"]
+banner: "img/banners/captcha_07.png"
+author: ["Julio"]
+summary: "Nesse post não vou falar da companhia Oracle, muito menos de Pythia, a oráculo de Delphi. Aqui vou mostrar uma parte pouco discutida dos captchas, que é a possibilidade de usar oráculos para aprender."
+draft: false
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, echo=FALSE, eval=FALSE, include=FALSE}
+image_read('../../static/img/banners/captcha_01.png') %>%
+  image_crop("420x100+0+101") %>%
+  image_border(color = 'white', "0x108") %>%
+  image_noise() %>%
+  image_noise() %>%
+  image_annotate('#6', size = 80, font = 'ubuntu',
+                 location = '+300+10', color = 'red') %>%
+  image_annotate('Oráculos', size = 40, font = 'ubuntu',
+                 color = 'black', location = '+10+240') %>%
+  image_write("../../static/img/banners/captcha_07.png")
+```
+
+
+
+
+
+
+
+
