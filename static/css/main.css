@@ -2,6 +2,16 @@ body {
   font-family: "Source Sans Pro";
 }
 
+.tags {
+  padding: 10px;
+  margin: auto;
+  text-align: center;
+}
+
+.container {
+  padding: 30px 15px 15px 15px !important;
+}
+
 #intro .intro-header {
   background-repeat: no-repeat;
   background-position: center;
@@ -37,7 +47,7 @@ div.intro-header:after {
 }
 
 #header-title h3 {
-  color: white;
+  color: #111c;
 }
 
 #navbarNav a {
@@ -102,10 +112,89 @@ blockquote {
   color: grey;
 }
 
+/*** CSS DO MATERIAL ***/
+
+.col-sm-2-material {
+  flex: none;
+  width: 200px;
+}
+
+@media (min-width: 700px) {
+  #material-container {
+  background-color: white;
+  font-family: "Source Sans Pro";
+  width: 730px;
+  margin: auto;
+  flex: none;
+ }
+}
+
+@media (max-width: 699px) {
+  #material-container {
+  background-color: white;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  font-family: "Source Sans Pro";
+  margin: auto;
+  flex: none;
+ }
+}
+
+#material-container h1 {
+  font-size: 26px;
+  color: #111c !important;
+  margin-top: 40px;
+}
+
+#material-container h2 {
+  font-size: 23px;
+  color: #111c !important;
+  margin-top: 40px;
+}
+
+#material-container h3 {
+  font-size: 20px;
+  color: #111c !important;
+  margin-top: 40px;
+}
+
+#material-container h4 {
+  font-size: 17px;
+  color: #111c !important;
+  margin-top: 40px;
+}
+
+#material-container img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#material-container p {
+  font-size: 17px;
+}
+
+.sticky-top {
+  top: 20px;
+}
+
+.hex-material img {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+}
+
+.hex-material hr {
+  margin: none;
+}
+
 /*** CSS DO ARTIGO ***/
 
 #article-container {
-  margin-bottom: 50px;
+  background-color: #fff;
+  max-width: none;
 }
 
 #article-title {
@@ -115,44 +204,53 @@ blockquote {
   font-family: "Source Sans Pro";
 }
 
-#article {
+@media (min-width: 700px) {
+  #article {
   background-color: white;
-  padding-left: 30px;
-  padding-right: 30px;
   padding-top: 15px;
   font-family: "Source Sans Pro";
+  width: 650px;
+  margin: auto;
+ }
+}
+
+@media (max-width: 699px) {
+  #article {
+  background-color: white;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  font-family: "Source Sans Pro";
+  margin: auto;
+ }
+}
+
+#article {
+  font-size: 17px;
 }
 
 #article h1 {
-  font-size: 28px;
-}
-
-#article h1::before {
-  content: "> ";
+  font-size: 26px;
+  color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h2 {
   font-size: 23px;
-}
-
-#article h2::before {
-  content: "> ";
+  color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h3 {
-  font-size: 18px;
-}
-
-#article h3::before {
-  content: "> ";
+  font-size: 20px;
+  color: #111c !important;
+  margin-top: 40px;
 }
 
 #article h4 {
-  font-size: 15px;
-}
-
-#article h4::before {
-  content: "> ";
+  font-size: 17px;
+  color: #111c !important;
+  margin-top: 40px;
 }
 
 #article pre {
@@ -168,7 +266,7 @@ blockquote {
 }
 
 #author-date {
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
 }
 
@@ -190,7 +288,8 @@ nav[data-toggle='toc'] {
 }
 
 nav[data-toggle=toc] .nav>li>a {
- color: #777777; 
+ color: #777777;
+ font-size: 16px;
 }
 
 nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:focus, nav[data-toggle=toc] .nav-link.active:hover {

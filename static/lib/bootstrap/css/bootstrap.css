@@ -557,14 +557,6 @@ pre code {
   overflow-y: scroll;
 }
 
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -1892,19 +1884,6 @@ pre code {
 
 .table-dark.table-hover tbody tr:hover {
   background-color: rgba(255, 255, 255, 0.075);
-}
-
-@media (max-width: 575.98px) {
-  .table-responsive-sm {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-  }
-  .table-responsive-sm > .table-bordered {
-    border: 0;
-  }
 }
 
 @media (max-width: 767.98px) {

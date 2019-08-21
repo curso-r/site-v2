@@ -1,6 +1,6 @@
 ---
 title: "Quebrando Captchas - Parte VII: Oráculos"
-date: "2019-10-12T00:00:00+00:00"
+date: "2019-10-12"
 categories: ["r", "tutoriais"]
 tags: ["r", "captcha"]
 banner: "img/banners/captcha_07.png"
