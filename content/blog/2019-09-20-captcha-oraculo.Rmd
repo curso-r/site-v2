@@ -25,7 +25,9 @@ image_read('../../static/img/banners/captcha_01.png') %>%
 ```
 
 
+Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. A diferença entre um oráculo e a sua base de teste é que o oráculo pode gerar infinitas novas observações da base, de forma que você pode criar uma base de dados de treino virtualmente infinita.
 
+O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou
 
 
 
