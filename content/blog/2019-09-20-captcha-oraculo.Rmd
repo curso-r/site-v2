@@ -1,6 +1,6 @@
 ---
 title: "Quebrando Captchas - Parte VII: Oráculos"
-date: "2019-10-12"
+date: "2019-10-11"
 categories: ["r", "tutoriais"]
 tags: ["r", "captcha"]
 banner: "img/banners/captcha_07.png"
@@ -24,12 +24,16 @@ image_read('../../static/img/banners/captcha_01.png') %>%
   image_write("../../static/img/banners/captcha_07.png")
 ```
 
-
 Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. A diferença entre um oráculo e a sua base de teste é que o oráculo pode gerar infinitas novas observações da base, de forma que você pode criar uma base de dados de treino virtualmente infinita.
 
-O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou
+O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou. Ou seja, é uma informação incompleta. E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! 
 
+Essa é uma possível ideia para resolver captchas automaticamente, pois nós temos um oráculo. Mas tem muitos problemas ainda a serem resolvidos. Nesse post vou me ater ao funcionamento de um oráculo.
 
+## Construindo um oráculo
 
+Um oráculo precisa ter três partes implementadas
 
-
+1. obtenção de uma imagem nova
+2. teste do modelo
+3. retorno

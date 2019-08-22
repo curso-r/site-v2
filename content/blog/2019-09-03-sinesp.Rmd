@@ -1,11 +1,11 @@
 ---
 title: "Verificando afirmações com dados abertos"
-date: "2019-09-27"
+date: "2019-09-25"
 tags: ["evento"]
 categories: ["análises", "r"]
 banner: "img/banners/dadosgovbr.png"
 author: ["Julio"]
-summary: "Nesse post, analisamos dados do SINESP para verificar as informações de um tweet do Ministri Sérgio Moro sobre a queda nas ocorrências de crimes no primeiro bimestre de 2018."
+summary: "Nesse post, analisamos dados do SINESP para verificar as informações de um tweet do Ministro Sérgio Moro sobre a queda nas ocorrências de crimes no primeiro bimestre de 2018."
 draft: false
 ---
 
