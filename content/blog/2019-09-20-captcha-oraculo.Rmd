@@ -24,11 +24,19 @@ image_read('../../static/img/banners/captcha_01.png') %>%
   image_write("../../static/img/banners/captcha_07.png")
 ```
 
-Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. A diferença entre um oráculo e a sua base de teste é que o oráculo pode gerar infinitas novas observações da base, de forma que você pode criar uma base de dados de treino virtualmente infinita.
+Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. Ou seja, ela te dá a Verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.
 
-O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou. Ou seja, é uma informação incompleta. E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! 
+O oráculo nem sempre existe em problemas reais, pois a Verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos com certeza nossa taxa de acerto no próximo mês. Antes disso, só podemos fazer estimativas.
 
-Essa é uma possível ideia para resolver captchas automaticamente, pois nós temos um oráculo. Mas tem muitos problemas ainda a serem resolvidos. Nesse post vou me ater ao funcionamento de um oráculo.
+Então o oráculo é como se fosse minha base de testes? Bom, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.
+
+![](/img/blog/captcha-oraculo/captcha.gif)
+
+O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou. Ou seja, é uma informação incompleta, censurada.
+
+E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! Essa é uma possível ideia para atingir nosso objetivo final: criar modelos que aprendem a resolver captchas automaticamente. 
+
+Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um _toy model_ de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística da coisa.
 
 ## Construindo um oráculo
 
@@ -84,7 +92,7 @@ modelo <- keras_model(input, output)
 
 ## Pacote mimir
 
-Estou montando um pacote `{mimir}` para construir e trabalhar com oráculos. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes!
+Estou montando um pacote `{mimir}` para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes!
 
 No próximo post do tema, vou apresentar algumas formas de aproveitar a informação do oráculo na verossimilhança e alguns testes que venho desenvolvendo.
 
