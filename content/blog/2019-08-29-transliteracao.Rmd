@@ -1,6 +1,6 @@
 ---
 title: "Remoção de Acentos e o Ano Novo Muçulmano"
-date: "2019-10-11"
+date: "2019-08-29"
 categories: ["r", "tutoriais"]
 tags: ["r", "strings"]
 banner: "img/banners/corao.jpg"
