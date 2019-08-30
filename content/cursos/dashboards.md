@@ -1,8 +1,8 @@
 ---
 title: "Dashboards com R"
-data: "a definir"
-hora: "18 horas de curso"
-local: "a definir"
+data: "25/11 a 11/12 - Segundas e Quartas"
+hora: "das 19h às 22h - Total de 18h"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 img: "img/cursos/dashboards.png"
 preco: "R$750,00"
 checkout: true
@@ -10,6 +10,9 @@ banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
 ordem: 2
+aberto: "true"
+id: 2
+unit_price: 75000
 ---
 
 <header class="section-header">
