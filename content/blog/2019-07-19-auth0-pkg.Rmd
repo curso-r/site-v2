@@ -1,0 +1,73 @@
+---
+title: "Autenticação em Shiny Apps com o pacote auth0"
+date: "2019-08-12"
+tags: ["auth0"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/auth0-pkg.png"
+author: ["Julio"]
+summary: "Atualização do post anterior no tema, mostrando como fazer autenticação em shiny apps usando o serviço Auth0."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Alguns meses atrás o [Daniel](https://github.com/dfalbel) fez um post demonstrando como colocar autenticação em shiny apps, baseado numa implementação do [José Jesus Filho](https://jjesusfilho.github.io/curso_jurimetria/bio.html). Depois disso, trabalhamos bastante e conseguimos desenvolver o pacote [`auth0`](https://github.com/curso-r/auth0), que foi apresentado na [useR!2019](http://user2019.r-project.org).
+
+Nesse post, darei uma ideia básica de como o pacote funciona, seus desafios atuais e próximos passos. Novamente, a melhor forma de utilizar o pacote é lendo a [documentação completa](https://curso-r.github.io/auth0), então aqui vou me ater a alguns detalhes.
+
+## Vídeo
+
+Fiz um vídeo demonstrando a utilização do auth0 aqui:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_qoHMePxFhY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+O vídeo está bem simples e mostra os aspectos iniciais para configurar o Auth0 e fazer funcionar na plataforma shinyapps.io, da RStudio.
+
+## Dicas
+
+### Configuração com `_auth0.yml`
+
+O arquivo `yml` pode ser criado com `auth0::use_auth0()` e começa assim:
+
+```yaml
+name: myApp
+shiny_config:
+  local_url: http://localhost:8100
+  remote_url: ''
+auth0_config:
+  api_url: !expr paste0('https://', Sys.getenv('AUTH0_USER'), '.auth0.com')
+  credentials:
+    key: !expr Sys.getenv("AUTH0_KEY")
+    secret: !expr Sys.getenv("AUTH0_SECRET")
+```
+
+O ideal é que você use `usethis::edit_r_environ()` para adicionar as variáveis de configuração `AUTH0_USER`, `AUTH0_KEY` e `AUTH0_SECRET`, por questões de segurança.
+
+### Arrumando as informações no Auth0
+
+Pelo que notei dos feedbacks da comunidade, a parte mais difícil de configurar o `auth0` é colocar as URLs no aplicativo. Primeiro, lembre-se sempre de que você precisa colocar essas informações em três lugares:
+
+- Allowed Callback URLs
+- Allowed Web Origins
+    - Aqui, se a URL do seu app tiver algo depois do domínio e da porta, você deve tirar essas informações. Por exemplo, `https://rseis.shinyapps.io/auth0Example` vira `https://rseis.shinyapps.io somente`.
+- Logout URLs
+
+É importante notar também que você precisa da URL completa, incluindo os `https://`, tando no arquivo `.yml` quanto na configuração do Auth0. Esse é o erro mais comum que notei nos aplicativos dos meus alunos.
+
+## Desafios
+
+- Por enquanto o `auth0` não funciona no paradigma `ui.R`/`server.R`. Preciso de ajuda para fazer funcionar! O problema principal aqui é que talvez seja necessário alterar algumas coisas no ambiente ao carregar o pacote, e eu gostaria de fazer isso da maneira menos intrusiva possível.
+- Seria interessante implementar toda a extensa API do auth0 no R, para ficar mais fácil de setar as web origins e configurar usuários. Mas isso dá bastante trabalho e eu também aceito ajuda.
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+

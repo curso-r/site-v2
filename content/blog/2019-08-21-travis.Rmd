@@ -1,0 +1,68 @@
+---
+title: "Fazendo seu pacote passar no Travis"
+date: "2019-09-04"
+tags: ["travis", "ci"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/travis.png"
+author: ["Julio"]
+summary: "O Travis é um serviço de Integração Contínua utilizado para garantir que o código está funcionando bem. Nesse tutorial, mostramos como usar o Travis de maneira simples, usando o pacote usethis."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Quando você acessa um pacote no GitHub, muitas vezes você se depara com essas coisas verdinhas:
+
+```{r}
+knitr::include_graphics("/img/blog/travis/badges.png")
+```
+
+Essas coisas são chamadas distintivos ("badges"). Indo da esquerda para a direita: a primeira delas serve para garantir ao leitor que o pacote é instalável no Linux, a segunda serve para garantir que o pacote é instalável no Windows, e a terceira serve para garantir que o pacote está no CRAN. Esses distintivos dão maior confiabilidade ao pacote e é considerado como boa prática de programação.
+
+Nesse post, vou discutir sobre o primeiro distintivo, e mostrar um exemplo de como você pode conseguir criá-la usando o pacote `{usethis}` e o serviço Travis.
+
+## O que é o Travis?
+
+[Travis](https://travis-ci.org) é um serviço de integração contínua (Continuous Integration, CI), que automatiza a aplicação de um conjunto de testes do seu código. De forma muito simplificada, o Travis funciona assim:
+
+1. Você dá um `push` do seu código no GitHub
+2. O Travis pega seu novo código e testa ele numa nova máquina Linux, criada na hora.
+3. Se o teste der certo, o Travis permite que seu distintivo fique verde. Se não der certo, ele fica vermelho.
+
+> Se você não conhece muito de GitHub, dê uma olhada 
+> [nesse post]() do [Athos]() ou veja 
+> [esse maravilhoso livro](https://happygitwithr.com/)
+> da [Jenny Bryan]()
+
+Mas algumas coisas precisam ser configuradas para que esses passos sejam de fato aplicados. 
+
+Para (1), é necessário que você i) tenha uma conta no serviço [travis-ci](https://travis-ci.org), ii) dê permissão para que o Travis monitore seus repositórios do GitHub e iii) adicione o seu pacote no Travis para monitoramento. Você só precisa fazer (i) e (ii) uma vez.
+
+Para (2), é necessário definir que testes você quer fazer. Por padrão, o R já tem uma rotina na [documentação do Travis](https://docs.travis-ci.com/user/languages/r/). O que essa rotina faz é passar o `R CMD CHECK` no seu pacote, que é basicamente o que seu pacote precisa passar para que seja aceito no CRAN.
+
+Para (3), você precisa adicionar o distintivo do seu pacote corretamente no seu arquivo `README.md`. A melhor forma de fazer isso é utilizando a função `usethis::use_travis()`
+
+## Vídeo
+
+Nesse vídeo, usei minha conta do GitHub e criei um pacote do zero usando o pacote `usethis`, vinculei ao Travis, e fiz ele dar build.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AFZOiHR7USw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Detalhes
+
+- Se o seu pacote depende da instalação de bibliotecas em `C++`, como `libpoppler`, `libgsl`, entre outras, você precisará adicioná-las manualmente no seu arquivo `.travis.yml`. Acredito que a melhor forma de fazer isso é copiando de outros pacotes que já fizeram isso antes, [como esse aqui](https://github.com/curso-r/bltm/blob/master/.travis.yml) que eu fiz algumas semanas atrás.
+- Você também pode fazer o mesmo trabalho para testar seu código no Windows. Para isso, uma alternativa legal é o [AppVeyor](https://ci.appveyor.com).
+- Para testar seu pacote em múltiplas plataformas, principalmente quando for submeter seu pacote no CRAN, use o [R-Hub](https://builder.r-hub.io/).
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+

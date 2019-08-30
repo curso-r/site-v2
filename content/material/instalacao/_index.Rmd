@@ -20,8 +20,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-A seguir, apresentaremos tutoriais para a instalação do R e do RStudio nos principais sistemas operacionais e como instalar pacotes no R.
-
 # Instalação do R
 
 ## No Windows

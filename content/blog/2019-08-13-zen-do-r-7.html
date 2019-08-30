@@ -1,0 +1,134 @@
+---
+title: "Data e data-raw (Zen do R parte 7)"
+date: "2019-08-13"
+tags: ["zen-do-r"]
+categories: ["livro", "r"]
+banner: "img/banners/zen-do-r-7.jpg"
+author: ["Caio"]
+summary: "Como armazenar dados em um pacote: os diretórios data e data-raw."
+draft: false
+---
+
+
+
+<p>Nesta série de posts, apresentamos a todos a nossa primeira tentativa de
+escrever um livro: <a href="https://curso-r.github.io/zen-do-r/"><em>O Zen do R</em></a>! Durante
+as últimas semanas, todas as quartas, trouxemos para o nosso blog os capítulos
+que já escrevemos do livro e respondemos qualquer pergunta sobre o conteúdo.</p>
+<p>Este é o último capítulo (por enquanto)! Vamos falar sobre como armazenar dados
+em um pacote: os diretórios <code>data</code> e <code>data-raw</code>.</p>
+<div id="data-e-data-raw" class="section level2">
+<h2>Data e data-raw</h2>
+<p>Na seção anterior, foi discutida a importância de empacotar uma análise. Seja
+para organizar dependências, reutilizar código, manter testes automatizados, ou
+qualquer outra razão, pacotes são a melhor forma de guardar e compartilhar
+código em R. Mas, apesar de toda a conversa sobre programação, pouco foi
+abordado sobre outro elemento essencial de uma análise de dados: dados.</p>
+<p>Felizmente, pacotes em R têm lugares específicos para guardar dados brutos e
+dados tratados. São as pastas <code>data</code> e <code>data-raw</code>, cada uma com as suas
+propriedades e possibilidades. Ambas podem ser criadas com facilidades por
+funções do pacote <code>usethis</code>, então elas se encaixam perfeitamente no fluxo de
+análise descrito até agora.</p>
+<p>Como indicado anteriormente, existem dois tipos de dados: brutos e tratados.
+Normalmente dados brutos estão em formatos comumente compartilhados em ambientes
+de trabalho: planilhas Excel, arquivos CSV, etc. Os pacotes <code>readxl</code> e <code>readr</code>
+permitem que esses formatos sejam importados para dentro do R, mas normalmente
+essas funções são mais lentas e menos padronizadas do que <code>readRDS()</code>, por
+exemplo, que lê arquivos no formato nativo do R.</p>
+<p>Além disso, raramente os dados recebidos durante uma análise estarão
+perfeitamente organizados e padronizados. É comum precisar de múltiplos fluxos
+de tratamento para poder transformar os dados brutos naquilo que de fato pode
+ser utilizado durante uma análise.</p>
+<p>O programador é encorajado a separar essas planilhas brutas daquelas resultantes
+do processo de limpeza e tratamento. Junto com os dados crús, é importante
+também guardar os arquivos que fazem o processo de limpeza; caso haja uma
+mudança nas demandas ou nas bases, o analista precisa ser capaz de alterar os
+<em>scripts</em> de tratamento e gerar novas bases consolidadas.</p>
+<p>No exemplo abaixo, supõe-se um diretório com um pacote R e uma base bruta
+denominada <code>dados.xlsx</code>. Primeiramente deve-se executar a função
+<code>usethis::use_data_raw()</code> para criar a pasta <code>data-raw</code> e um arquivo de
+tratamento para a base em questão.</p>
+<pre class="r"><code>usethis::use_data_raw(&quot;dados&quot;)
+#&gt; ✔ Setting active project to &#39;~/Documents/demo&#39;
+#&gt; ✔ Creating &#39;data-raw/&#39;
+#&gt; ✔ Adding &#39;^data-raw$&#39; to &#39;.Rbuildignore&#39;
+#&gt; ✔ Writing &#39;data-raw/dados.R&#39;
+#&gt; ● Modify &#39;data-raw/dados.R&#39;
+#&gt; ● Finish the data preparation script in &#39;data-raw/dados.R&#39;
+#&gt; ● Use `usethis::use_data()` to add prepared data to package</code></pre>
+<p>Como indicado pelos três últimos pontos da saída do comando, agora basta colocar
+o código de tratamento da base <code>dados</code> em <code>data-raw/dados.R</code> e por fim utilizar
+<code>usethis::use_data()</code> para adicionar os dados preparados ao pacote. Para
+prosseguir o exemplo, o arquivo <code>dados.xlsx</code> foi copiado para o diretório
+<code>data-raw</code> e o código abaixo foi inserido em <code>data-raw/dados.R</code>.</p>
+<pre class="r"><code>library(magrittr)
+
+# Limpar a base dados.xlsx
+dados &lt;- &quot;data-raw/dados.xlsx&quot; %&gt;%
+  readxl::read_xlsx() %&gt;%
+  dplyr::filter(cyl &gt; 4) %&gt;%
+  dplyr::mutate(
+    brand = stringr::str_extract(model, &quot;^[A-z]+&quot;)
+  ) %&gt;%
+  dplyr::group_by(brand) %&gt;%
+  dplyr::summarise(
+    mean_mpg = mean(mpg),
+    prop_6_cyl = sum(cyl == 6)/dplyr::n()
+  ) %&gt;%
+  dplyr::arrange(brand)
+
+# Salvar a base para uso no pacote
+usethis::use_data(dados)
+#&gt; ✔ Creating &#39;data/&#39;
+#&gt; ✔ Saving &#39;dados&#39; to &#39;data/dados.rda&#39;</code></pre>
+<p>Neste caso o arquivo Excel foi criado de dentro do prṕrio R com o comando
+<code>writexl::write_xlsx(tibble::rownames_to_column(mtcars, "model"), "data-raw/dados.xlsx")</code>,
+mas isso é só um exemplo ilustrativo. O importante é saber o que acontece quando
+a função <code>use_data()</code> é executada para um objeto do ambiente global, ou seja,
+as duas últimas linhas do bloco de código acima.</p>
+<p>Por trás das câmeras, <code>use_data()</code> está chamando a função <code>save()</code> do R para
+gerar um arquivo RDA a partir de um objeto do ambiente global. Arquivos RDA são
+extremamente estáveis, compactos e podem ser carregados rapidamente pelo R,
+tornando este formato o principal meio de guardar dados de um pacote. Se os
+dados do pacote forem guardados assim, eles ficarão disponíveis para serem
+chamados pelo usuário (você mesmo durante a análise)! Para entender como ficam
+os dados uma vez que eles são incluídos na pasta <code>data</code>, basta dar uma olhada
+no objeto <code>dplyr::starwars</code>; neste caso, a base tratada e exportada se chama
+<code>starwars</code>.</p>
+<p>Para carregar os dados na sua sessão e poder utilizá-los na análise, basta
+executar <code>pkgload::load_all()</code> ou pressionar a combinação <code>CTRL + SHIFT + L</code> no
+RStudio. Independentemente do número de tabelas que estiverem salvas na pasta
+<code>data</code>, todas serão carregadas instantaneamente.</p>
+<p>A título de curiosidade, existem algumas situações em que as bases brutas são
+grandes demais para serem sincronizadas com o GitHub. A plataforma tem um
+(razoável) limite de 1GB por repositório que pode ser insuficiente para
+armazenar dados brutos e tratados. Para não sincronizar as bases brutas com o
+Git, basta adicioná-las ao arquivo <code>.gitignore</code> do pacote; no caso do exemplo
+acima, bastaria adicionar a esse arquivo uma linha com o texto
+<code>data-raw/dados.xlsx</code>.</p>
+<div id="documentacao" class="section level3">
+<h3>Documentação</h3>
+<p>Além de funções, também é possível documentar bases de dados com o pacote
+<code>roxygen2</code>. Para isso, crie um arquivo <code>data.R</code> na pasta <code>R/</code> do pacote e crie
+um objeto entre aspas com o nome de cada base de dados exportada. Documentar
+dados é extremamente útil quando o pacote vai ser compartilhado com múltiplas
+pessoas da mesma organização, pois assim não é necessário compartilhar uma
+planilha Excel separada descrevendo cada uma das colunas da tabela.</p>
+<p>Uma boa documentação de bases de dados não precisa de muita coisa. Abaixo é
+exemplificado como seria documentada <code>dados</code>:</p>
+<pre class="r"><code>#&#39; Dados sobre 15 marcas de carros
+#&#39;
+#&#39; A tabela, gerada a partir de `mtcars`, apresenta algumas poucas
+#&#39; informações sobre carros com mais de 4 cilindros de 15 marcas
+#&#39; americanas de carros.
+#&#39;
+#&#39; @format Uma tabela com 3 colunas e 15 linhas:
+#&#39; \describe{
+#&#39;   \item{brand}{Marca}
+#&#39;   \item{mean_mpg}{Milhas por galão médias para aquela marca}
+#&#39;   \item{prop_6_cyl}{Proporção dos carros que apresentam 6 cilindros}
+#&#39; }
+#&#39; @source Henderson and Velleman (1981)
+&quot;dados&quot;</code></pre>
+</div>
+</div>

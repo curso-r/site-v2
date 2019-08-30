@@ -1,0 +1,99 @@
+---
+title: "Quebrando Captchas - Parte VII: Oráculos"
+date: "2019-10-11"
+categories: ["r", "tutoriais"]
+tags: ["r", "captcha"]
+banner: "img/banners/captcha_07.png"
+author: ["Julio"]
+summary: "Nesse post não vou falar da companhia Oracle, muito menos de Pythia, a oráculo de Delphi. Aqui vou mostrar uma parte pouco discutida dos captchas, que é a possibilidade de usar oráculos para aprender."
+draft: false
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, echo=FALSE, eval=FALSE, include=FALSE}
+image_read('../../static/img/banners/captcha_01.png') %>%
+  image_crop("420x100+0+101") %>%
+  image_border(color = 'white', "0x108") %>%
+  image_noise() %>%
+  image_noise() %>%
+  image_annotate('#6', size = 80, font = 'ubuntu',
+                 location = '+300+10', color = 'red') %>%
+  image_annotate('Oráculos', size = 40, font = 'ubuntu',
+                 color = 'black', location = '+10+240') %>%
+  image_write("../../static/img/banners/captcha_07.png")
+```
+
+Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. Ou seja, ela te dá a Verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.
+
+O oráculo nem sempre existe em problemas reais, pois a Verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos com certeza nossa taxa de acerto no próximo mês. Antes disso, só podemos fazer estimativas.
+
+Então o oráculo é como se fosse minha base de testes? Bom, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.
+
+![](/img/blog/captcha-oraculo/captcha.gif)
+
+O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou. Ou seja, é uma informação incompleta, censurada.
+
+E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! Essa é uma possível ideia para atingir nosso objetivo final: criar modelos que aprendem a resolver captchas automaticamente. 
+
+Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um _toy model_ de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística da coisa.
+
+## Construindo um oráculo
+
+Um oráculo precisa ter três partes implementadas
+
+1. obtenção de uma imagem nova
+2. teste do modelo
+3. retorno
+
+## Modelo
+
+Meu modelo é uma rede neural convolucional simples, exatamente igual a que está no `decryptr`. Essa rede foi treinada com 10 mil observações do MNIST, o que dá uma taxa de acerto de 95% de cada captcha (ou seja, acertar 6 letras).
+
+A pergunta que eu quero responder é: será que dá para usar a informação do oráculo de alguma forma no meu modelo?
+
+```{r}
+library(keras)
+
+data <- list(
+  x = array(NA, dim = c(10000, 24, 24*6, 1)),
+  y = array(NA, dim = c(10000, 6, 10))
+)
+
+input <- layer_input(shape = dim(data$x)[-1])
+
+my_conv <- function(obj, f) {
+  obj %>% 
+    layer_conv_2d(
+      filters = 32, 
+      kernel_size = c(5, 5), 
+      padding = "same", 
+      activation = "relu"
+    ) %>% 
+    layer_max_pooling_2d()
+}
+
+n_units <- 64
+
+output <- input %>% 
+  my_conv(16) %>% 
+  my_conv(32) %>% 
+  my_conv(64) %>% 
+  layer_flatten() %>% 
+  layer_dense(units = n_units) %>% 
+  layer_dropout(.1) %>% 
+  layer_dense(units = prod(dim(data$y)[-1])) %>% 
+  layer_reshape(target_shape = dim(data$y)[-1]) %>% 
+  layer_activation("softmax")
+
+modelo <- keras_model(input, output)
+
+```
+
+## Pacote mimir
+
+Estou montando um pacote `{mimir}` para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes!
+
+No próximo post do tema, vou apresentar algumas formas de aproveitar a informação do oráculo na verossimilhança e alguns testes que venho desenvolvendo.
+
+É isso pessoal. Happy coding ;)

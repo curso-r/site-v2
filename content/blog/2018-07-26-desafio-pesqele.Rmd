@@ -2,7 +2,7 @@
 title: "Desafio de Dados - PesqEle (parte I)"
 date: "2018-07-26T00:00:00+00:00"
 tags: ["app", "pacotes"]
-categories: ["desafio-de-dados", "r"]
+categories: ["divulgação", "r"]
 banner: "img/desafio-dados/1-pesqele.png"
 author: ["Daniel", "Bruna Wundervald"]
 summary: "Nessa primeira edição do Desafio de Dados vamos analisar a base de dados do pesqEle e criar um mapa da distribuição do número de pesquisas por estado."

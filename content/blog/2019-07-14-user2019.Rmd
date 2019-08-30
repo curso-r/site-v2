@@ -1,8 +1,8 @@
 ---
 title: "Minha experiência na useR!2019"
-date: "2019-07-14"
-tags: ["evento"]
-categories: ["evento", "r"]
+date: "2019-07-14T00:00:00+00:00"
+tags: ["comunidade", "useR"]
+categories: ["divulgação"]
 banner: "img/banners/user2019.jpg"
 author: ["Julio"]
 summary: "Highlights do maior evento sobre R do mundo."

@@ -6,5 +6,5 @@ facebook: "https://www.facebook.com/julio.trecenti"
 linkedin: "https://www.linkedin.com/in/jtrecenti/"
 twitter: "https://twitter.com/jtrecenti"
 github: "https://github.com/jtrecenti"
-bio: "Doutorando em Estatística pelo IME-USP. Secretário-geral da Associação Brasileira de Jurimetria (ABJ). Presidente do CONRE-3a Região. Sócio da Platipus Consultoria. Trabalha com web scraping, consolidação de dados, construção de modelos preditivos, APIs, pacotes em R e dashboards em Shiny. Coordenador e ministrante de diversos cursos sobre R, ciência de dados e jurimetria."
+bio: "Faxineiro de dados. Doutorando em Estatística pelo IME-USP. Secretário-geral da Associação Brasileira de Jurimetria (ABJ). Conselheiro do CONFE. Sócio da Terranova Consultoria. Trabalha com web scraping, arrumação de dados, construção de modelos preditivos, APIs, pacotes em R e dashboards em Shiny. Coordenador e ministrante de diversos cursos sobre R, ciência de dados e jurimetria."
 ---

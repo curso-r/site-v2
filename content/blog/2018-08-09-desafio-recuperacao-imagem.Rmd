@@ -2,7 +2,7 @@
 title: "Desafio de Dados - Recuperação de imagens"
 date: "2018-08-09T00:00:00+00:00"
 tags: ["app", "pacotes"]
-categories: ["desafio-de-dados", "r"]
+categories: ["divulgação", "r"]
 banner: "img/blog/desafio-recuperacao-img/purple_wave.jpg"
 author: ["Athos","Daniel", "Bruna Wundervald"]
 summary: "Na segunda edição do Desafio de Dados vamos tentar recuperar a cor de uma imagem usando modelos de regressão e árvore de decisão."

@@ -1,8 +1,8 @@
 ---
 title: "Quebrando CAPTCHAs - Parte III: Segmentação de imagens"
 date: "2017-07-22T13:07:31+02:00"
-tags: ["r", "captcha"]
-categories: ["r"]
+tags: ["captcha"]
+categories: ["análises"]
 banner: "img/banners/captcha_03.png"
 author: ["Julio"]
 draft: false
