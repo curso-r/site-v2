@@ -57,7 +57,7 @@
                 encryption_key: 'ek_test_KNHbR5j1vGsAH0cstlEWjEGRjngGBy',   
                 success: function(data) {
                   console.log(data);
-                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&amount={{ .Params.unit_price }}')
+                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&amount={{ .Params.unit_price }}' + '&id={{ .Params.id }}')
                         .then(function (response) {
                           // handle success
                           console.log(response);
