@@ -1,0 +1,82 @@
+---
+title: "Shiny Apps Empacotados: rodando seu app com 1 linha"
+date: "2019-09-30"
+tags: ["golem", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/golem.png"
+author: ["Julio"]
+summary: "Um adendo ao pacote para desenvolver shiny apps dentro de pacotes."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+No meu [último post sobre shiny](https://www.curso-r.com/blog/2019-07-16-golem/), mostrei como é possível usar o pacote `{golem}` como framework para desenvolvimento de shiny apps como pacotes. O processo de desenvolvimento se torna ligeiramente mais burocrático, mas os ganhos em consistência e reprodutibilidade são enormes.
+
+Mas eu acho que faltou uma coisa no post. Eu não deixei clara qual é a grande vantagem de desenvolver um app usando o golem: __o poder de rodar seu app com uma linha de código__.
+
+Nosso objetivo será chegar num código assim:
+
+```r
+shiny::shinyApp(meuPacote:::app_ui(), meuPacote:::app_server)
+```
+
+Isso é tudo que você precisará subir em uma máquina na nuvem ou no shinyapps.io!
+
+Para conseguir isso, no entanto, você precisará fazer duas coisas:
+
+1. Certifique-se de que seu app funciona com o pacote instalado numa sessão nova.
+2. (para o shinyapps.io) coloque seu app no github e instale o pacote de lá.
+3. Criar um arquivo `app.R` com o código `shiny::shinyApp(meuPacote:::app_ui(), meuPacote:::app_server)` e subir para seu servidor ou para o shinyapps.io.
+
+## Certifique-se de que seu app funciona.
+
+Uma boa forma de garantir que seu app funciona é fazendo-o passar no `devtools::check()`. Se tudo der certo nessa etapa, a probabilidade de dar algum problema no passo (1) colocado acima é realmente baixa.
+
+Recomendo fortemente a leitura do livro [Zen do R](https://curso-r.github.io/zen-do-r/dados.html) para trilhar o caminho do desenvolvimento de pacotes sem dor nem sofrimento.
+
+## Trabalhando com bases exportadas dentro do pacote
+
+Se o seu Shiny App utiliza bases de dados, sua base deve ser adicionada na pasta `data/` de seu pacote. O problema é que, como as bases na pasta `data/` são *exportadas*, elas não são diretamente acessíveis por funções __internas__ do pacote. Para resolver esse problema, existem duas alternativas:
+
+1. Utilizar `::` sempre que for acessar sua base nas funções de seu Shiny App. Usualmente isso ocorrerá apenas algumas vezes, pois é uma boa prática criar um `reactive()` que carrega e filtra os dados, e fazer todas as outras funcionalidades do app dependerem desse `reactive()`. Por exemplo:
+
+```r
+app_ui <- function() {
+  tagList(
+    plotOutput("grafico")
+  )
+}
+
+app_server <- function(input, output, session) {
+  
+  # esse é o reactive que controla seus dados.
+  # se você tiver muitas bases no seu app, uma boa
+  # ideia é colocá-los numa lista neste reactive()
+  dados <- reactive({
+    meuPacote::cars
+  })
+  
+  # a partir daqui, você não usa mais a base do pacote,
+  # mas sim o que vem do reactive()
+  output$grafico <- renderPlot({
+    plot(dados())
+  })
+  
+}
+```
+
+2. Tratar seus dados como dados internos. Para isso, você deverá usar `usethis::use_data(dados, internal = TRUE)`. Nessa alternativa, seus dados ficarão num arquivo chamado `sysdata.rda`. A vantagem nesse caso é que você não precisará usar o `::` sempre que for acessar seus dados. A desvantagem é que todas suas bases ficarão em um arquivo só, o que pode causar confusões.
+
+É isso. Happy coding ;)
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 ---
 title: "Movimento da faxina de dados"
-date: "2019-09-20"
+date: "2019-09-18"
 tags: ["janitor", "faxina"]
 categories: ["discussões"]
 banner: "img/banners/janitor-mov.jpg"

@@ -1,7 +1,7 @@
 ---
 title: "Programando com a comunidade"
-date: "2019-08-19T00:00:00+00:00"
-tags: ["discussoes", "comunidade"]
+date: "2019-08-19"
+tags: ["discussões", "comunidade"]
 categories: ["discussões", "r"]
 banner: "img/banners/comunidade.png"
 author: ["Julio"]
@@ -10,12 +10,12 @@ draft: false
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+knitr::opts_chunk$set(echo=FALSE)
 ```
 
 Um dos posts mais legais da Curso-R, na minha opinião, é [esse aqui](https://www.curso-r.com/blog/2017-12-09-estatistica-e-programacao/), feito pelo [William Amorim](https://www.curso-r.com/author/william/). O texto não tem nada de códigos, mas cita motivos pelos quais é muito bom aprender estatística e programação.
 
-Mas eu adicionaria um __tópico adicional__ no texto, que apesar de ter sido abordado, talvez não tenha ficado com o devido destaque. Eu adicionaria a existência da **comunidade** como elemento primordial para o sucesso no aprendizado de tópicos difíceis, especialmente a ciência -- e a estatística, que é a meta ciência -- e linguagens de programação, com destaque especial para o R.
+Mas eu colocaria um __tópico adicional__ no texto, que apesar de ter sido abordado, talvez não tenha ficado com o devido destaque. Eu adicionaria a existência da **comunidade** como elemento primordial para o sucesso no aprendizado de tópicos difíceis, especialmente a ciência -- e a estatística, que é a meta ciência -- e linguagens de programação, com destaque especial para o R.
 
 Esse post é uma tentativa de desenvolver esse tópico adicional. Me baseei na palestra dada pela [Julia Stewart Lowndes](https://www.youtube.com/watch?v=Z8PqwFPqn6Y) na [useR!2019](http://user2019.r-project.org/), que foi fantástica. Recomendo o texto abaixo para todos que se sentem perdidos quando falamos de "comunidade".
 
@@ -23,7 +23,7 @@ Esse post é uma tentativa de desenvolver esse tópico adicional. Me baseei na p
 
 Todos nós fazemos parte da comunidade. Ela é o motor que faz a ciência aberta andar e os pacotes do R serem criados. Ninguém é dono da comunidade -- e nunca será. A única forma de tirar proveito dela, é contribuindo, pois ao contribuir, colocamos atraímos a atenção dos trabalhos das outras pessoas. É como se fosse o modelo da colcha de retalhos da teoria da relatividade do Einstein: cada pessoa atrai os trabalhos das outra pessoas, que seguem em diferentes direções.
 
-```{r, out.width="80%", fig.cap="Quem será que é a bolinha amarela?"}
+```{r, fig.cap="Quem será que é a bolinha amarela?"}
 knitr::include_graphics("/img/blog/comunidade/rubber-sheet.png")
 ```
 
@@ -42,7 +42,7 @@ Mas é claro que essas vantagens vêm com um custo. Para contribuir de forma efe
 
 Na comunidade do R, isso envolve, por exemplo: i) usar do GitHub, ii) os [princípios tidy](https://tidyverse.tidyverse.org/articles/manifesto.html) e iii) estilos de programação, como o [styleguide do tidyverse](https://style.tidyverse.org), dentre muitos outros. 
 
-```{r, out.width="50%"}
+```{r}
 knitr::include_graphics("/img/blog/comunidade/gentileza.png")
 ```
 
@@ -62,7 +62,7 @@ Mas tome cuidado. As redes socias tentam de todas as formas se tornar o objetivo
 
 A rede social pode ser tóxica e nos tornar improdutivos. Por isso, temos de usá-la com parcimônia e consciência.
 
-```{r, fig.cap="https://xkcd.com/2051/", fig.pos="center", out.width="80%"}
+```{r, fig.cap="https://xkcd.com/2051/"}
 knitr::include_graphics("/img/blog/comunidade/bad_opinions.png")
 ```
 
@@ -70,11 +70,11 @@ knitr::include_graphics("/img/blog/comunidade/bad_opinions.png")
 
 No passado, a comunidade de programadores era machista, grossa e antipática. Ela ainda é assim, mas hoje em dia isso não é mais legal.
 
-Agora, regra da comunidade é ser __gentil__, mesmo com quem não é gentil com a gente. Então se você acha engraçado quando um programador "raiz" tira sarro ou é grosso com algum iniciante, está na hora de mudar o *mindset*. Felizmente isso aconteceu pois a comunidade finalmente chegou à -- agora óbvia -- conclusão de que, quanto somos inclusivos, aumentamos a quantidade de pessoas que contribuem com a gente.
+Agora, regra da comunidade é ser __gentil__, mesmo com quem não é gentil com a gente. Então se você acha engraçado quando um programador "raiz" tira sarro ou é grosso com algum iniciante, está na hora de mudar. Felizmente isso aconteceu pois a comunidade finalmente chegou à -- agora óbvia -- conclusão de que, quando somos inclusivos, aumentamos a quantidade de pessoas que contribuem com a gente.
 
-Na comunidade do R, isso acontece de forma muito especial. É só ler o [meu post sobre a useR](https://www.curso-r.com/blog/2019-07-14-user2019/) sobre a useR ou o [post da Bruna sobre a rstudio::conf](https://www.curso-r.com/blog/2019-01-30-rconf/) para notar o quanto isso é importante. E é impossível não mencionar aqui o impacto que o RLadies tem nesse grande avanço. Talvez um gráfico seja melhor do que palavras para explicar esse fenômeno:
+Na comunidade do R, isso acontece de forma muito especial. É só ler o [meu post sobre a useR](https://www.curso-r.com/blog/2019-07-14-user2019/) ou o [post da Bruna sobre a rstudio::conf](https://www.curso-r.com/blog/2019-01-30-rconf/) para notar o quanto isso é importante. E é impossível não mencionar aqui o impacto que o RLadies tem nesse grande avanço. Talvez um gráfico seja melhor do que palavras para explicar esse fenômeno:
 
-```{r, out.width="100%", fig.cap="https://twitter.com/RLadiesGlobal/status/1148600179236442112/photo/1"}
+```{r, fig.cap="https://twitter.com/RLadiesGlobal/status/1148600179236442112/photo/1"}
 knitr::include_graphics("/img/blog/comunidade/rladies-growth.jpeg")
 ```
 

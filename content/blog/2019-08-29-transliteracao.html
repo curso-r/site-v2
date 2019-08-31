@@ -1,0 +1,108 @@
+---
+title: "Remoção de Acentos e o Ano Novo Muçulmano"
+date: "2019-08-29"
+categories: ["r", "tutoriais"]
+tags: ["r", "strings"]
+banner: "img/banners/corao.jpg"
+author: ["Caio"]
+summary: "Transliteração é uma das tarefas mais complicadas do tratamento de strings, mas o pacote stringi pode nos salvar."
+draft: false
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+
+<p>Qual a relação entre as duas partes do título deste post? O que a remoção de
+acentos de uma palavra em português pode ter a ver com o Ano Novo muçulmano? A
+resposta é <strong>transliteração</strong>.</p>
+<p>Transliteração é uma operação em strings pouco discutida, mas bastante
+importante quando lidamos com idiomas que não o inglês. Ela implica na conversão
+de texto de um sistema de escrita para outro, substituindo letras (ou
+caracteres) de formas previsíveis, como, por exemplo, α → a ou æ → ae.</p>
+<p>Em português é comum transliterarmos palavras sem mesmo saber o que isso
+significa. Por exemplo, a palavra חנוכה (/ˡχanuka/) é normalmente escrita como
+“chanucá” apesar de essa não ser uma correspondência da pronúncia hebraica para
+os sons do português. Se quiséssemos uma transposição de pronúncia,
+provavelmente escreveríamos “ranucá”, mas o mais correto é justamente
+transliterar a palavra de modo a preservar uma certa correspondência entre as
+letras do hebraico e as letras do português; sendo assim, a primeira letra é
+transformada em um CH e não em um R. O mesmo ocorre com a romanização do japonês
+e do mandarim, etc.</p>
+<div id="letras-estrangeiras" class="section level2">
+<h2>Letras estrangeiras</h2>
+<p>E qual a importância da transliteração no dia a dia? Em primeiro lugar, quando
+lidamos com idiomas que apresentam caracteres distintos dos nossos, muitas vezes
+as funções padrão do R não são capazes de tratar eles corretamente!</p>
+<p>Vejamos por exemplo uma palavra do alemão e uma do holandês: “groß” e “ijsvrij”.
+No alemão, a versão capitalizada do beta (ß) é SS, enquanto no holandês o
+dígrafo IJ é na verdade uma letra só. Vejamos o que acontece se usamos as
+funções padrões:</p>
+<pre class="r"><code>toupper(&quot;groß&quot;)</code></pre>
+<pre><code>## [1] &quot;GROß&quot;</code></pre>
+<pre class="r"><code>stringr::str_to_title(&quot;ijsvrij&quot;)</code></pre>
+<pre><code>## [1] &quot;Ijsvrij&quot;</code></pre>
+<p>Para corrigir esses problemas (o “ß” e o “Ij”), devemos utilizar funções do
+pacote <code>stringi</code> que são capazes de transliterar as strings antes de aplicar
+as outras transformações:</p>
+<pre class="r"><code>library(stringi)
+
+stri_trans_toupper(&quot;groß&quot;, locale = &quot;de_DE&quot;)</code></pre>
+<pre><code>## [1] &quot;GROSS&quot;</code></pre>
+<pre class="r"><code>stri_trans_totitle(&quot;ijsvrij&quot;, locale = &quot;nl_NL&quot;)</code></pre>
+<pre><code>## [1] &quot;IJsvrij&quot;</code></pre>
+</div>
+<div id="acentos-do-portugues" class="section level2">
+<h2>Acentos do português</h2>
+<p>O segundo uso da transliteração (e provavelmente mais comum no dia a dia) é a
+remoção dos acentos do português. Muitas vezes recebemos arquivos e tabelas nos
+quais a acentuação das palavras está quebrada ou incorreta, tornando necessária
+a remoção dos diacríticos (acentos ortográficos + til + cedilha + trema + etc.)
+de todas as strings.</p>
+<p>Jamais devemos criar uma regex para realizar essa tarefa porque a chance de ela
+não funcionar é muito grande! Suponha que esquecemos de um acento na regex, uma
+forma capitalizada, ou mesmo a existência de palavras em outros idiomas no meio
+de um texto em português. A solução para esse problema é, você adivinhou, a
+transliteração.</p>
+<pre class="r"><code>stri_trans_general(&quot;Stríng cõm müìtôs açëntòs&quot;, &quot;Latin-ASCII&quot;)</code></pre>
+<pre><code>## [1] &quot;String com muitos acentos&quot;</code></pre>
+<p>A função <code>stri_trans_general()</code> recebe dois argumentos: uma string e um
+identificador de transformação. Neste caso e quando estivermos lidando com
+português em geral, o que queremos é passar uma string no alfabeto latino (o
+nosso alfabeto) para <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> (o conjunto
+restrito de caracteres sem nenhum tipo de diacrítico) e, portanto, utilizamos o
+ID <code>"Latin-ASCII"</code>.</p>
+</div>
+<div id="ano-novo-muculmano" class="section level2">
+<h2>Ano Novo muçulmano</h2>
+<p>O terceiro e último uso da transliteração serve para quando lidamos com línguas
+que apresentam ligaduras (duas ou mais letras unidas em um único glifo). O árabe
+é o melhor exemplo disso porque grande parte da sua arte caligráfica envolve a
+composição de diversas palavras em uma só figura [observe o círculo central da
+imagem do Alcorão deste post e repare como ele é preenchido por diversas
+palavras entrelaçadas].</p>
+<p>Como o Ano Novo muçulmano deste ano é amanhã (ao pôr-do-sol do dia 30/08/19),
+acho que vale a pena aprender como lidar com a ligadura mais famosa do árabe:
+a frase conhecida como <em>Sallallahou Alayhe Wasallam</em> que significa “bênçãos de
+Deus estejam sobre Ele e Sua família e paz”. Esta frase é comumente conectada ao
+nome dos profetas do Islã em sinal de respeito e, pela frequência de seu uso,
+foi convertida em <strong>apenas um caractere</strong> Unicode:</p>
+<center style="margin-bottom: 40px;">
+ﷺ
+</center>
+<p>Faça um teste e copie o símbolo acima. Você pode notar que ele é de fato apenas
+um glifo como qualquer outro e que pode ser enviado por qualquer WhatsApp da
+vida!</p>
+<p>A questão é que se estivermos analisando texto em árabe, esse tipo de ligadura
+pode atrapalhar, por exemplo, a contagem de palavras. Para lidar com essas
+situações (especificamente em árabe) usamos a função <code>stri_trans_nfkc()</code>.</p>
+<pre class="r"><code>stri_trans_nfkc(&quot;\ufdfa&quot;)</code></pre>
+<pre><code>## [1] &quot;صلى الله عليه وسلم&quot;</code></pre>
+<p>E pronto! Agora nenhum feriado internacional vai pegar a sua programação de
+surpresa.</p>
+<p>Obs.: Acima utilizei o
+<a href="https://www.utf8icons.com/character/65018/arabic-ligature-sallallahou-alayhe-wasallam">código Unicode da ligadura</a>
+porque senão ela atrapalharia a formatação da caixa de código,
+mas basta executar <code>cat("\ufdfa")</code> no seu R para ver que ele realmente
+representa o S.A.W.</p>
+</div>
