@@ -227,6 +227,7 @@ blockquote {
 
 #article {
   font-size: 17px;
+  min-width: 200px;
 }
 
 #article h1 {
