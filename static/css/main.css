@@ -39,7 +39,7 @@ div.intro-header:after {
 }
 
 #intro .intro-content {
-  z-index: 12919821;
+  z-index: 3;
   bottom: 0;
   top: 0;
   left: 0;
@@ -227,6 +227,7 @@ blockquote {
 
 #article {
   font-size: 17px;
+  min-width: 200px;
 }
 
 #article h1 {
@@ -256,8 +257,6 @@ blockquote {
 #article pre {
   padding-left: 0px;
   padding-right: 0px;
-  margin-left: -30px;
-  margin-right: -30px;
 }
 
 #article pre > code {
