@@ -64,7 +64,7 @@
                           console.log(response);
                           if (response.data.payment_method === "boleto") {
                             url = response.data.boleto_url[0];
-                            window.open(url);  
+                            window.location.href = url; 
                           };
                         })
                         .catch(function (error) {
