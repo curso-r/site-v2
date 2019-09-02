@@ -62,6 +62,10 @@
                         .then(function (response) {
                           // handle success
                           console.log(response);
+                          if (response.data.payment_method === "boleto") {
+                            url = response.data.boleto_url[0];
+                            window.open(url);  
+                          };
                         })
                         .catch(function (error) {
                           // handle error
