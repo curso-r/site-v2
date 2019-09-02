@@ -55,7 +55,7 @@
         
               // inicia a instância do checkout
               var checkout = new PagarMeCheckout.Checkout({
-                encryption_key: 'ek_test_KNHbR5j1vGsAH0cstlEWjEGRjngGBy',   
+                encryption_key: 'ek_live_RALOFQpSyLk9NhCBgZa7JrHSyz3hpp',   
                 success: function(data) {
                   console.log(data);
                   axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&amount={{ .Params.unit_price }}' + '&id={{ .Params.id }}')
