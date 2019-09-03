@@ -11,6 +11,8 @@
   ======================================================= -->
   
   {{ partial "head.html" . }}
+  <script src="https://assets.pagar.me/checkout/1.1.0/checkout.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -40,36 +42,71 @@
             <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
           {{end}}
           
-          {{ if and (isset .Params "paypal") (ne .Params.paypal "" ) }} 
+          {{ if and (isset .Params "aberto") (ne .Params.aberto "" ) }} 
           
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick">
-            <input type="hidden" name="hosted_button_id" value="{{.Params.paypal}}">
-            <button type="submit" value="Submit" class="cta-btn" style="background: none;">Inscreva-se</button>
-            <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-          </form>
+
+          <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
           
-          {{ else if and (isset .Params "checkout") (ne .Params.checkout "" ) }}
-          
-          <form method="POST" action="/comprar">
-            <script type="text/javascript"
-              src="https://assets.pagar.me/checkout/checkout.js"
-              data-encryption-key="ek_test_Ec8KhxISQ1tug1b8bCGxC2nXfxqRmk"
-              data-customer-data="true"
-              data-create-token="true"
-              data-amount="1000">
-            </script>
-          </form>
-          
-          {{ else if and (isset .Params "link_inscricao") (ne .Params.link_inscricao "" ) }}
-          
-          <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>
+          <script>
+            var button = document.querySelector('#pagamento');
+
+            // Abrir o modal ao clicar no botão
+            button.addEventListener('click', function() {
+        
+              // inicia a instância do checkout
+              var checkout = new PagarMeCheckout.Checkout({
+                encryption_key: 'ek_live_RALOFQpSyLk9NhCBgZa7JrHSyz3hpp',   
+                success: function(data) {
+                  console.log(data);
+                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&amount={{ .Params.unit_price }}' + '&id={{ .Params.id }}')
+                        .then(function (response) {
+                          // handle success
+                          console.log(response);
+                          if (response.data.payment_method == "boleto") {
+                            url = response.data.boleto_url[0];
+                            window.location.href = url; 
+                          };
+                        })
+                        .catch(function (error) {
+                          // handle error
+                          console.log(error);
+                        })
+                },
+                error: function(err) {
+                	console.log(err);
+                },
+                close: function() {
+                	console.log('The modal has been closed.');
+                }
+              });
+              
+              checkout.open({
+                amount: {{ .Params.unit_price }},
+                buttonText: 'Pagar',
+                buttonClass: 'botao-pagamento',
+                customerData: 'true',
+                createToken: 'true',
+                paymentMethods: 'credit_card, boleto',
+                items: [
+                  {
+                    id: '{{ .Params.id }}',
+                    title: '{{ .Params.title }}',
+                    unit_price: {{ .Params.unit_price }},
+                    quantity: 1,
+                    tangible: true
+                  }
+                ],
+                postbackUrl: 'https://pagarme-checkout.curso-r.com/postback'
+              });
+              
+            })
+              
+          </script>
           
           {{ else }}
           
           {{ partial "form-curso.html" . }}
-          
-  
+        
           {{ end }}
           
         </div>

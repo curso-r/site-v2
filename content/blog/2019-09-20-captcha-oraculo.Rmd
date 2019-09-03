@@ -17,11 +17,16 @@ image_read('../../static/img/banners/captcha_01.png') %>%
   image_border(color = 'white', "0x108") %>%
   image_noise() %>%
   image_noise() %>%
-  image_annotate('#6', size = 80, font = 'ubuntu',
+  image_annotate('#7', size = 80, font = 'ubuntu',
                  location = '+300+10', color = 'red') %>%
   image_annotate('Oráculos', size = 40, font = 'ubuntu',
                  color = 'black', location = '+10+240') %>%
   image_write("../../static/img/banners/captcha_07.png")
+```
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
 ```
 
 Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. Ou seja, ela te dá a Verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.
@@ -30,7 +35,7 @@ O oráculo nem sempre existe em problemas reais, pois a Verdade não costuma est
 
 Então o oráculo é como se fosse minha base de testes? Bom, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.
 
-![](/img/blog/captcha-oraculo/captcha.gif)
+![](/img/blog/captcha-oraculo-1/oraculo.gif)
 
 O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz __o quê__ você errou, mas somente __se__ você errou. Ou seja, é uma informação incompleta, censurada.
 
@@ -40,59 +45,319 @@ Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em 
 
 ## Construindo um oráculo
 
-Um oráculo precisa ter três partes implementadas
+Um oráculo precisa ter três partes implementadas: i) obtenção de uma imagem nova, ii) teste do modelo e iii) retorno, que deve envolver a matriz de entrada, o valor predito e a resposta (completa ou incompleta).
 
-1. obtenção de uma imagem nova
-2. teste do modelo
-3. retorno
+```{r}
+#' Oráculo do MNIST
+#'
+#' @param model modelo que resolve o captcha do MNIST. Por padrão
+#'   é "ask", significando que ele vai perguntar para o usuário.
+#' @param type se for 0, fala só se acertou. Se for 1, 
+#'   informa quais letras acertou e quais errou. Se for 2,
+#'   informa o gabarito.
+#'
+oracle_mnist <- function(model = "ask", type = 0) {
+  
+  mnist <- keras::dataset_mnist()
 
-## Modelo
+  # gerando um captcha
+  N <- nrow(mnist$train$x)
+  sample_nums <- sample(N, 5)
+  sample_list <- purrr::map(sample_nums, ~mnist$train$x[.x,,])
+  X <- abind::abind(sample_list, along = 2)
+  Y <- as.numeric(mnist$train$y[sample_nums])
 
-Meu modelo é uma rede neural convolucional simples, exatamente igual a que está no `decryptr`. Essa rede foi treinada com 10 mil observações do MNIST, o que dá uma taxa de acerto de 95% de cada captcha (ou seja, acertar 6 letras).
+  # teste do modelo
+  if (is.character(model)[1] && model == "ask") {
+    par(mar=rep(0,4))
+    plot(as.raster(X/256))
+    ans <- readline("Answer: ")
+    ans <- as.numeric(unlist(strsplit(ans, "")))
+  } else {
+    pred <- predict(model, tensorflow::array_reshape(X, c(1, dim(X), 1)))
+    ans <- apply(pred[1,,], 1, which.max) - 1
+  }
 
-A pergunta que eu quero responder é: será que dá para usar a informação do oráculo de alguma forma no meu modelo?
+  # retorno
+  res <- list(
+    predito = ans,
+    acertou = all(ans == Y),
+    quais = if (type > 0) (ans == Y),
+    gabarito = if (type > 1) Y
+  )
+
+  list(x = X, res = res)
+}
+
+```
+
+Vamos testar! Esse é um caso que acertei
+
+```{r}
+result <- oracle_mnist(type = 0)
+```
+
+
+![](/img/blog/captcha-oraculo-1/captcha1.png)
+
+    Answer: 87685
+
+```{r}
+result$res
+```
+
+    $predito
+    [1] 8 7 6 8 5
+    
+    $acertou
+    [1] TRUE
+    
+    $quais
+    NULL
+    
+    $gabarito
+    NULL
+
+E esse é um caso que errei, e mandei mostrar tudo
+
+```{r}
+result <- oracle_mnist(type = 2)
+```
+
+![](/img/blog/captcha-oraculo-1/captcha2.png)
+
+    Answer: 56198
+
+```{r}
+result$res
+```
+
+    $predito
+    [1] 5 6 1 9 8
+    
+    $acertou
+    [1] FALSE
+    
+    $quais
+    [1]  TRUE  TRUE  TRUE  TRUE FALSE
+    
+    $gabarito
+    [1] 5 6 1 9 0
+
+
+Em seguida, mostro como podemos ajustar um modelo preditivo e como utilizar o oráculo com esse modelo. Essa é a operação que utilizaremos para aprimorar nosso modelo no futuro. 
+
+## Dados
+
+Os dados que vou utilizar para esse exemplo vêm da base MNIST, colando horizontalmente os caracteres de cinco em cinco para formar os captchas.
 
 ```{r}
 library(keras)
 
-data <- list(
-  x = array(NA, dim = c(10000, 24, 24*6, 1)),
-  y = array(NA, dim = c(10000, 6, 10))
-)
+mnist <- dataset_mnist()
 
-input <- layer_input(shape = dim(data$x)[-1])
-
-my_conv <- function(obj, f) {
-  obj %>% 
-    layer_conv_2d(
-      filters = 32, 
-      kernel_size = c(5, 5), 
-      padding = "same", 
-      activation = "relu"
-    ) %>% 
-    layer_max_pooling_2d()
+# cola as imagens lado a lado
+montar_x <- function(x) {
+  pos_x <- (seq_len(nrow(x))-1) %% 5 + 1
+  xizes <- purrr::map(1:5, ~x[pos_x == .x,,]/256)
+  X <- abind::abind(xizes, along = 3)
+  tensorflow::array_reshape(X, c(dim(X), 1))
 }
 
-n_units <- 64
+# monta a variável resposta usando
+# decryptr:::resize_answer()
+# a variável resposta de um captcha
+# é uma matriz nesse formato 
+# (lab = label, pos = posição)
+# 
+# lab|0 1 2 3 4 5 6 7 8 9
+# pos|-------------------
+#  1 |0 0 0 0 0 1 0 0 0 0
+#  2 |1 0 0 0 0 0 0 0 0 0
+#  3 |0 0 0 0 1 0 0 0 0 0
+#  4 |0 1 0 0 0 0 0 0 0 0
+#  5 |0 0 0 0 0 0 0 0 0 1
 
-output <- input %>% 
-  my_conv(16) %>% 
-  my_conv(32) %>% 
-  my_conv(64) %>% 
-  layer_flatten() %>% 
-  layer_dense(units = n_units) %>% 
-  layer_dropout(.1) %>% 
-  layer_dense(units = prod(dim(data$y)[-1])) %>% 
-  layer_reshape(target_shape = dim(data$y)[-1]) %>% 
-  layer_activation("softmax")
+montar_y <- function(y) {
+  pos_y <- seq(0, ceiling(length(y)/5) - 1)
+  y <- as.numeric(y)
+  yizes <- purrr::map(
+    .x = pos_y, 
+    .f = ~decryptr:::resize_answer(y[.x * 5 + 1:5], 0:9)
+  )
+  abind::abind(yizes, along = 0)
+}
 
-modelo <- keras_model(input, output)
+# montando os dados numa lista
+data <- list(
+  train = list(
+    x = montar_x(mnist$train$x),
+    y = montar_y(mnist$train$y)
+  ),
+  test  = list(
+    x = montar_x(mnist$test$x),
+    y = montar_y(mnist$test$y)
+  )
+)
 
 ```
 
+## Modelo
+
+Meu modelo é uma rede neural convolucional simples, igual ao que está implementado no `decryptr`. Essa rede foi treinada com as 12 mil observações de treino montadas anteriormente. O modelo possui uma taxa de acerto de 92% para o captcha completo (ou seja, acertar todas as 5 letras).
+
+```{r}
+# meu input, começando com as dimensões de X
+input <- layer_input(shape = dim(data$train$x)[-1])
+
+# uma camada convolucional customizada, 
+# já com o max pooling
+my_conv <- function(obj, f, k) {
+  obj %>%
+    layer_conv_2d(
+      filters = f,
+      kernel_size = c(k,k),
+      padding = "same",
+      activation = "relu"
+    ) %>%
+    layer_max_pooling_2d()
+}
+
+# dimensões das bases
+dims <- list(
+  x = dim(data$train$x)[-1],
+  y = dim(data$train$y)[-1]
+)
+
+# rede completa
+output <- input %>%
+  my_conv(16, 5) %>%
+  my_conv(32, 3) %>%
+  my_conv(64, 3) %>%
+  layer_flatten() %>%
+  layer_dense(units = 64) %>%
+  layer_dropout(.1) %>%
+  # fixar o número de parâmetros
+  # para o output do modelo
+  layer_dense(units = prod(dims$y)) %>%
+  layer_reshape(target_shape = dims$y) %>%
+  layer_activation("softmax")
+
+# definição do modelo
+model <- keras_model(input, output)
+
+# métrica customizada para o captcha
+metric_captcha <- custom_metric(
+  name = "captcha", 
+  metric_fn = function(y_true, y_pred) {
+    k_equal(k_argmax(y_true), k_argmax(y_pred)) %>% 
+      k_all(axis = -1) %>% 
+      k_cast(k_floatx())
+  })
+
+# adicionando regras de otimização, 
+# função de perda e métrica a acompanhar
+model %>%
+  compile(
+    optimizer = optimizer_adam(),
+    loss = loss_categorical_crossentropy,
+    metrics = metric_captcha
+  )
+
+# ajustando modelo
+model %>%
+  fit(
+    x = data$train$x, y = data$train$y,
+    validation_data = list(data$test$x, data$test$y),
+    batch_size = 64,
+    epochs = 10
+  )
+```
+
+A estrutura do modelo ajustado é dada abaixo:
+
+    __________________________________________________________
+    Layer (type)              Output Shape           Param #  
+    ==========================================================
+    input_1 (InputLayer)      (None, 28, 140, 1)     0        
+    __________________________________________________________
+    conv2d (Conv2D)           (None, 28, 140, 16)    416      
+    __________________________________________________________
+    max_pooling2d (MaxPooling (None, 14, 70, 16)     0        
+    __________________________________________________________
+    conv2d_1 (Conv2D)         (None, 14, 70, 32)     4640     
+    __________________________________________________________
+    max_pooling2d_1 (MaxPooli (None, 7, 35, 32)      0        
+    __________________________________________________________
+    conv2d_2 (Conv2D)         (None, 7, 35, 64)      18496    
+    __________________________________________________________
+    max_pooling2d_2 (MaxPooli (None, 3, 17, 64)      0        
+    __________________________________________________________
+    flatten (Flatten)         (None, 3264)           0        
+    __________________________________________________________
+    dense (Dense)             (None, 64)             208960   
+    __________________________________________________________
+    dropout (Dropout)         (None, 64)             0        
+    __________________________________________________________
+    dense_1 (Dense)           (None, 50)             3250     
+    __________________________________________________________
+    reshape (Reshape)         (None, 5, 10)          0        
+    __________________________________________________________
+    activation (Activation)   (None, 5, 10)          0        
+    ==========================================================
+    Total params: 235,762
+    Trainable params: 235,762
+    Non-trainable params: 0
+    __________________________________________________________
+
+
+Agora, podemos utilizar o oráculo com o modelo:
+
+```{r}
+result <- oracle_mnist(model, 0)
+result$res
+```
+
+    $predito
+    [1] 8 6 6 0 1
+    
+    $acertou
+    [1] TRUE
+    
+    $quais
+    NULL
+    
+    $gabarito
+    NULL
+
+
+```{r}
+set.seed(13)
+result <- oracle_mnist(model, 2)
+result$res
+```
+
+    $predito
+    [1] 7 2 2 7 7
+    
+    $acertou
+    [1] FALSE
+    
+    $quais
+    [1] FALSE  TRUE  TRUE  TRUE  TRUE
+    
+    $gabarito
+    [1] 1 2 2 7 7
+
+Veja qual foi o caso que o modelo errou:
+
+![](/img/blog/captcha-oraculo-1/captcha3.png)
+
+Não parece tão fácil de ver que é um 7, né?
+
 ## Pacote mimir
 
-Estou montando um pacote `{mimir}` para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes!
+Estou montando um pacote `{mimir}` para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes! O pacote ainda não está disponível, mas assim que estiver eu aviso nas redes.
 
 No próximo post do tema, vou apresentar algumas formas de aproveitar a informação do oráculo na verossimilhança e alguns testes que venho desenvolvendo.
 
