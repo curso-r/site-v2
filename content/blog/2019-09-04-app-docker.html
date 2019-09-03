@@ -1,0 +1,114 @@
+---
+title: "Shiny Apps Dockerizados: deploy de app com 1 linha"
+date: "2019-09-04"
+tags: ["docker", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/app-docker.jpg"
+author: ["Caio"]
+summary: "Depois de transformar seu shiny app em pacote, agora só resta transformá-lo em docker."
+draft: false
+---
+
+
+
+<p>Recentemente, o Julio discutiu aqui no blog
+<a href="https://www.curso-r.com/blog/2019-07-16-golem/">como usar</a> o pacote <code>golem</code>
+para facilitar o desenvolvimento de shiny apps em forma de pacotes e
+<a href="https://www.curso-r.com/blog/2019-08-27-app-pacote/">como transformar</a> esses
+pacotes em “executáveis” de apenas uma linha. Nesse post eu vou continuar essa
+série e falar sobre como pegar esse app de uma linha e embrulhá-lo em um
+contêiner docker para que o seu deploy seja instantâneo.</p>
+<div id="inst" class="section level2">
+<h2>Inst</h2>
+<p>Essencialmente toda a magia da transformação de um app em um docker ocorre na
+pasta <code>/inst</code>. Esse diretório, pouco utilizado no dia-a-dia, é útil quando
+precisamos adicionar dados, templates ou qualquer conteúdo que pode ser
+necessário em algum momento para o pacote e, portanto, devem ser facilmente
+acessíveis.</p>
+<p>Quando você transformar seu shiny app em pacote utilizando o tutorial do Julio,
+você terá uma estrutura de diretórios padrão na raiz do seu app: pastas <code>/R</code>,
+<code>/man</code> e assim por diante. Crie a pasta <code>/inst</code> e dentro dela <code>/app</code>; aqui é
+onde seu app irá morar.</p>
+<p>Em princípio, você só precisa de um arquivo <code>app.R</code> dentro de <code>/inst/app</code>
+contendo aquela linha mágica que executa seu app todo:</p>
+<pre class="r"><code>shiny::shinyApp(meuPacote:::app_ui(), meuPacote:::app_server)</code></pre>
+<p>Se você estiver desenvolvendo um app mais complexo, talvez você precise
+criar também uma pasta <code>/www</code> ou um
+<a href="https://www.curso-r.com/blog/2019-07-19-auth0-pkg/">arquivo <code>_auth0.yml</code></a>, mas
+o resumo da ópera é que você deve ser capaz de rodar <code>shiny::runApp()</code> nesta
+pasta e ver o seu app funcionando perfeitamente. Durante o desenvolvimento, não
+se esqueça de <strong>sempre reinstalar</strong> o seu pacote para que <code>meuPacote:::app_ui()</code>
+e <code>meuPacote:::app_server</code> mantenham-se atualizados!</p>
+<p>O último arquivo que você pode querer adicionar a <code>/inst/app</code> é a configuração
+do seu servidor shiny. No meu caso, eu desenvolvo apps dockerizados para
+subí-los em máquinas virtuais na núvem que podem ser acessadas por qualquer um,
+então preciso deixar clara qual porta deve ser utilizada pelo meu shiny. Como
+minhas máquinas suportam o protocolo HTTP, meu <code>shiny-server.conf</code> é o seguinte:</p>
+<pre><code>run_as shiny;
+
+# Log all Shiny output to files in this directory
+log_dir /var/log/shiny-server;
+
+# Define a server that listens on port 80
+server {
+  listen 80;
+
+  # Define a location at the base URL
+  location / {
+    # Host the directory of Shiny Apps stored in this directory
+    site_dir /srv/shiny-server;
+
+    # When a user visits the base URL rather than a particular application,
+    # an index of the applications available in this directory will be shown.
+    directory_index off;
+  }
+}</code></pre>
+<p>Fazer com que o app seja ouvido na porta 80 permite que outra pessoas o acessem
+sem precisar especificar uma porta no URL! Sendo assim, você pode disponibilizar
+seu shiny app em <code>meuApp.dominio.com.br</code>.</p>
+</div>
+<div id="dockerfile" class="section level2">
+<h2>Dockerfile</h2>
+<p>Agora que a sua pasta <code>/inst</code> está devidamente configurada, você precisa criar
+um <code>Dockerfile</code> na raiz do seu app. Isso irá incomodar o <code>devtools::check()</code>,
+mas basta adicionar o nome desse arquivo ao seu <code>.Rbuildignore</code> para que ele
+seja ignorado durante a verificação.</p>
+<p>Se todas as dependências do seu aplicativo estiverem devidamente organizadas no
+<code>DESCRIPTION</code> e todas as suas bases internas estiverem propriamente exportadas
+como documentado pelo Julio, então o seu <code>Dockerfile</code> deve ser parecido com o
+seguinte:</p>
+<pre><code>FROM rocker/shiny-verse
+
+# Instalar bibliotecas para o tidyverse
+RUN apt-get update -qq &amp;&amp; apt-get -y --no-install-recommends install \
+  build-essential \
+  libcurl4-gnutls-dev \
+  libxml2-dev \
+  libssl-dev \
+  r-cran-curl \
+  r-cran-openssl \
+  curl \
+  gnupg1 \
+  r-cran-xml2
+
+# Instalar seu próprio app (e suas dependências)
+COPY ./ /tmp/app/
+RUN R -e &quot;remotes::install_local(&#39;/tmp/app/&#39;)&quot;
+
+# Copiar arquivos para o lugar certo
+EXPOSE 80/tcp
+RUN rm /srv/shiny-server/index.html
+COPY ./inst/app /srv/shiny-server/
+COPY ./inst/app/shiny-server.conf /etc/shiny-server/shiny-server.conf
+
+# Run
+CMD [&quot;/usr/bin/shiny-server.sh&quot;]</code></pre>
+</div>
+<div id="deploy" class="section level2">
+<h2>Deploy</h2>
+<p>Agora você já pode construir sua imagem docker e executá-la ou subí-la para
+alguma máquina virtual. Para testar localmente o app, execute os comandos a
+seguir no terminal e acesse <code>localhost:8080</code> no navegador:</p>
+<pre class="sh"><code>docker build -t meuApp pasta/para/meuApp
+docker run -p 8080:80 meuApp</code></pre>
+</div>

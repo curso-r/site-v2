@@ -1,0 +1,134 @@
+---
+title: "Shiny Apps Dockerizados: deploy de app com 1 linha"
+date: "2019-09-04"
+tags: ["docker", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/app-docker.jpg"
+author: ["Caio"]
+summary: "Depois de transformar seu shiny app em pacote, agora só resta transformá-lo em docker."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Recentemente, o Julio discutiu aqui no blog
+[como usar](https://www.curso-r.com/blog/2019-07-16-golem/) o pacote `golem`
+para facilitar o desenvolvimento de shiny apps em forma de pacotes e
+[como transformar](https://www.curso-r.com/blog/2019-08-27-app-pacote/) esses
+pacotes em "executáveis" de apenas uma linha. Nesse post eu vou continuar essa
+série e falar sobre como pegar esse app de uma linha e embrulhá-lo em um
+contêiner docker para que o seu deploy seja instantâneo.
+
+## Inst
+
+Essencialmente toda a magia da transformação de um app em um docker ocorre na
+pasta `/inst`. Esse diretório, pouco utilizado no dia-a-dia, é útil quando
+precisamos adicionar dados, templates ou qualquer conteúdo que pode ser
+necessário em algum momento para o pacote e, portanto, devem ser facilmente
+acessíveis.
+
+Quando você transformar seu shiny app em pacote utilizando o tutorial do Julio,
+você terá uma estrutura de diretórios padrão na raiz do seu app: pastas `/R`,
+`/man` e assim por diante. Crie a pasta `/inst` e dentro dela `/app`; aqui é
+onde seu app irá morar.
+
+Em princípio, você só precisa de um arquivo `app.R` dentro de `/inst/app`
+contendo aquela linha mágica que executa seu app todo:
+
+```r
+shiny::shinyApp(meuPacote:::app_ui(), meuPacote:::app_server)
+```
+
+Se você estiver desenvolvendo um app mais complexo, talvez você precise
+criar também uma pasta `/www` ou um
+[arquivo `_auth0.yml`](https://www.curso-r.com/blog/2019-07-19-auth0-pkg/), mas
+o resumo da ópera é que você deve ser capaz de rodar `shiny::runApp()` nesta
+pasta e ver o seu app funcionando perfeitamente. Durante o desenvolvimento, não
+se esqueça de **sempre reinstalar** o seu pacote para que `meuPacote:::app_ui()`
+e `meuPacote:::app_server` mantenham-se atualizados!
+
+O último arquivo que você pode querer adicionar a `/inst/app` é a configuração
+do seu servidor shiny. No meu caso, eu desenvolvo apps dockerizados para
+subí-los em máquinas virtuais na núvem que podem ser acessadas por qualquer um,
+então preciso deixar clara qual porta deve ser utilizada pelo meu shiny. Como
+minhas máquinas suportam o protocolo HTTP, meu `shiny-server.conf` é o seguinte:
+
+```
+run_as shiny;
+
+# Log all Shiny output to files in this directory
+log_dir /var/log/shiny-server;
+
+# Define a server that listens on port 80
+server {
+  listen 80;
+
+  # Define a location at the base URL
+  location / {
+    # Host the directory of Shiny Apps stored in this directory
+    site_dir /srv/shiny-server;
+
+    # When a user visits the base URL rather than a particular application,
+    # an index of the applications available in this directory will be shown.
+    directory_index off;
+  }
+}
+```
+
+Fazer com que o app seja ouvido na porta 80 permite que outra pessoas o acessem
+sem precisar especificar uma porta no URL! Sendo assim, você pode disponibilizar
+seu shiny app em `meuApp.dominio.com.br`.
+
+## Dockerfile
+
+Agora que a sua pasta `/inst` está devidamente configurada, você precisa criar
+um `Dockerfile` na raiz do seu app. Isso irá incomodar o `devtools::check()`,
+mas basta adicionar o nome desse arquivo ao seu `.Rbuildignore` para que ele
+seja ignorado durante a verificação.
+
+Se todas as dependências do seu aplicativo estiverem devidamente organizadas no
+`DESCRIPTION` e todas as suas bases internas estiverem propriamente exportadas
+como documentado pelo Julio, então o seu `Dockerfile` deve ser parecido com o
+seguinte:
+
+```
+FROM rocker/shiny-verse
+
+# Instalar bibliotecas para o tidyverse
+RUN apt-get update -qq && apt-get -y --no-install-recommends install \
+  build-essential \
+  libcurl4-gnutls-dev \
+  libxml2-dev \
+  libssl-dev \
+  r-cran-curl \
+  r-cran-openssl \
+  curl \
+  gnupg1 \
+  r-cran-xml2
+
+# Instalar seu próprio app (e suas dependências)
+COPY ./ /tmp/app/
+RUN R -e "remotes::install_local('/tmp/app/')"
+
+# Copiar arquivos para o lugar certo
+EXPOSE 80/tcp
+RUN rm /srv/shiny-server/index.html
+COPY ./inst/app /srv/shiny-server/
+COPY ./inst/app/shiny-server.conf /etc/shiny-server/shiny-server.conf
+
+# Run
+CMD ["/usr/bin/shiny-server.sh"]
+```
+
+## Deploy
+
+Agora você já pode construir sua imagem docker e executá-la ou subí-la para
+alguma máquina virtual. Para testar localmente o app, execute os comandos a
+seguir no terminal e acesse `localhost:8080` no navegador:
+
+```sh
+docker build -t meuApp pasta/para/meuApp
+docker run -p 8080:80 meuApp
+```
