@@ -1,6 +1,6 @@
 ---
-title: "Shiny Apps Dockerizados: deploy de app com 1 linha"
-date: "2019-09-04"
+title: "Shiny em Produção: dockerize seu app com 1 linha"
+date: "2019-09-13"
 tags: ["docker", "shiny"]
 categories: ["tutoriais", "r"]
 banner: "img/banners/app-docker.jpg"

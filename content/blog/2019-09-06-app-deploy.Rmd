@@ -1,0 +1,74 @@
+---
+title: "Shiny em Produção: Deploy seu App em 20min"
+date: "2019-09-20"
+tags: ["gcp", "shiny"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/deploy.jpg"
+author: ["Caio"]
+summary: "Quando você for capaz de tranformar um shiny app em pacote e em imagem
+de docker, só 20 minutos são necessários para fazer um deploy na nuvem."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, out.width = "50%")
+```
+
+Este é o último post na sequência que estou chamando de "shiny em produção". Já
+falamos sobre [como usar](https://www.curso-r.com/blog/2019-07-16-golem/) o
+pacote `golem` para facilitar o desenvolvimento de shiny apps, sobre
+[como transformar](https://www.curso-r.com/blog/2019-08-27-app-pacote/) eles em
+pacotes e sobre
+[como dockerizá-los](https://www.curso-r.com/blog/2019-09-04-app-docker/) para
+obter compatibilidade máxima.
+
+E é justamente essa compatibilidade que nos permite fazer o deploy desses apps
+na nuvem (mais especificamente no Google Cloud Platform) em menos de 20 minutos!
+Como esse tutorial é muito visual, resolvemos fazer um vídeo para que tudo
+ficasse mais claro:
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/wLNQCQz5LEs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Se você quiser acessar o repositório com o conteúdo, deixamos
+[ele aberto](https://github.com/curso-r/shinygcp) a todos. Por fim, segue abaixo
+o código em Node utilizado para criar as Cloud Functions:
+
+```js
+var http = require('http');
+var Compute = require('@google-cloud/compute');
+var compute = Compute();
+exports.startInstance = function startInstance(req, res) {
+  var zone = compute.zone('{SUA ZONA}');
+  var vm = zone.vm('{SUA VM}');
+  vm.start(function(err, operation, apiResponse) {
+    console.log('instance start successfully');
+  });
+  res.status(200).send('Success start instance');
+};
+
+{
+  "name": "sample-http",
+  "dependencies": {
+    "@google-cloud/compute": "0.7.1"},
+  "version": "0.0.1"
+}
+
+var http = require('http');
+var Compute = require('@google-cloud/compute');
+var compute = Compute();
+exports.stopInstance = function stopInstance(req, res) {
+  var zone = compute.zone('{SUA ZONA}');
+  var vm = zone.vm('{SUA VM}');
+  vm.stop(function(err, operation, apiResponse) {
+    console.log('instance stop successfully');
+  });
+  res.status(200).send('Success stop instance');
+};
+
+{
+  "name": "sample-http",
+  "dependencies": {
+    "@google-cloud/compute": "0.7.1"},
+  "version": "0.0.1"
+}
+```
