@@ -29,11 +29,11 @@ image_read('../../static/img/banners/captcha_01.png') %>%
 knitr::opts_chunk$set(eval=FALSE)
 ```
 
-Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. Ou seja, ela te dá a Verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.
+Um oráculo é uma função que diz para se uma predição está correta ou incorreta. Ou seja, ela diz a verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.
 
-O oráculo nem sempre existe em problemas reais, pois a Verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos com certeza nossa taxa de acerto no próximo mês. Antes disso, só podemos fazer estimativas.
+O oráculo nem sempre existe em problemas reais, pois a verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos a taxa de acerto com certeza no próximo mês. Antes disso, só podemos fazer estimativas.
 
-Então o oráculo é como se fosse minha base de testes? Bom, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.
+Então o oráculo é como se fosse minha base de testes? Bem, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.
 
 ![](/img/blog/captcha-oraculo-1/oraculo.gif)
 
@@ -41,11 +41,13 @@ O problema é que a resposta do oráculo não é sempre clara: usualmente, o or�
 
 E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! Essa é uma possível ideia para atingir nosso objetivo final: criar modelos que aprendem a resolver captchas automaticamente. 
 
-Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um _toy model_ de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística da coisa.
+Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um _toy model_ de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística.
 
 ## Construindo um oráculo
 
 Um oráculo precisa ter três partes implementadas: i) obtenção de uma imagem nova, ii) teste do modelo e iii) retorno, que deve envolver a matriz de entrada, o valor predito e a resposta (completa ou incompleta).
+
+Vamos então ao código:
 
 ```{r}
 #' Oráculo do MNIST
@@ -118,7 +120,7 @@ result$res
     $gabarito
     NULL
 
-E esse é um caso que errei, e mandei mostrar tudo
+E esse é um caso que errei, e mandei mostrar todos os outputs possíveis:
 
 ```{r}
 result <- oracle_mnist(type = 2)
@@ -204,7 +206,7 @@ data <- list(
 
 ## Modelo
 
-Meu modelo é uma rede neural convolucional simples, igual ao que está implementado no `decryptr`. Essa rede foi treinada com as 12 mil observações de treino montadas anteriormente. O modelo possui uma taxa de acerto de 92% para o captcha completo (ou seja, acertar todas as 5 letras).
+Meu modelo é uma rede neural convolucional simples, igual ao que está implementado no `decryptr`. Essa rede foi treinada com as 12 mil observações de treino montadas anteriormente. O modelo possui uma taxa de acerto de 92% para o captcha completo, ou seja, para todas as 5 letras.
 
 ```{r}
 # meu input, começando com as dimensões de X
@@ -310,7 +312,6 @@ A estrutura do modelo ajustado é dada abaixo:
     Non-trainable params: 0
     __________________________________________________________
 
-
 Agora, podemos utilizar o oráculo com o modelo:
 
 ```{r}
@@ -357,7 +358,7 @@ Não parece tão fácil de ver que é um 7, né?
 
 ## Pacote mimir
 
-Estou montando um pacote `{mimir}` para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes! O pacote ainda não está disponível, mas assim que estiver eu aviso nas redes.
+Estou montando um pacote chamado `{mimir}` para construir oráculos e trabalhar com eles. O nome [Mimir](https://en.wikipedia.org/wiki/M%C3%ADmir) vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras `purrr` e `forcats` e ii) por ter um R no final, que é sempre legal em pacotes! O pacote ainda não está disponível, mas assim que estiver eu aviso nas redes.
 
 No próximo post do tema, vou apresentar algumas formas de aproveitar a informação do oráculo na verossimilhança e alguns testes que venho desenvolvendo.
 
