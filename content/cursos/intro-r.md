@@ -1,10 +1,10 @@
 ---
 title: "Introdução à programação em R"
-data: "28/10 a 13/11 - Segundas e Quartas"
-hora: "das 19h às 22h - Total de 18h"
+data: "28/10 a 13/11 - Segundas e Quartas, das 19h às 22h"
+hora: "18 horas de curso"
 local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 img: "img/cursos/intro-r.png"
-preco: "R$750,00"
+preco: "R$525,00"
 banner: "img/cursos/intro-r-banner.jpg"
 desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
@@ -12,7 +12,7 @@ professores: ["Athos Damiani", "William Amorim"]
 ordem: 1
 aberto: "true"
 id: 1
-unit_price: 75000
+unit_price: 52500
 ---
 
 <header class="section-header">

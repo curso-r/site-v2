@@ -1,7 +1,7 @@
 ---
 title: "Web scraping em R"
-data: "23/11 - Sábado"
-hora: "das 9h às 18h"
+data: "23/11 - Sábado, das 9h às 18h"
+hora: "8 horas de workshop"
 local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
 img: "img/cursos/web-scraping.png"
 preco: "R$500,00"
@@ -11,7 +11,7 @@ requisitos: ""
 ordem: 3
 aberto: "true"
 id: 3
-unit_price: 50000
+unit_price: 35000
 ---
 
 
