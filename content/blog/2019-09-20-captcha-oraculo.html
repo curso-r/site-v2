@@ -13,16 +13,17 @@ editor_options:
 
 
 
-<p>Um oráculo é uma função que diz para você se uma predição está correta ou incorreta. Ou seja, ela te dá a Verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.</p>
-<p>O oráculo nem sempre existe em problemas reais, pois a Verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos com certeza nossa taxa de acerto no próximo mês. Antes disso, só podemos fazer estimativas.</p>
-<p>Então o oráculo é como se fosse minha base de testes? Bom, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.</p>
+<p>Um oráculo é uma função que diz para se uma predição está correta ou incorreta. Ou seja, ela diz a verdade sobre a variável resposta de um novo caso da sua base no qual você só observa as explicativas.</p>
+<p>O oráculo nem sempre existe em problemas reais, pois a verdade não costuma estar disponível no momento em que fazemos a predição. Por exemplo, se estamos predizendo as vendas do próximo mês, só saberemos a taxa de acerto com certeza no próximo mês. Antes disso, só podemos fazer estimativas.</p>
+<p>Então o oráculo é como se fosse minha base de testes? Bem, sim, mas é um tipo muito especial de base de teste. No contexto de captchas, nós podemos gerar infinitas observações novas da base, criando uma base de dados de treino virtualmente infinita.</p>
 <p><img src="/img/blog/captcha-oraculo-1/oraculo.gif" /></p>
 <p>O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz <strong>o quê</strong> você errou, mas somente <strong>se</strong> você errou. Ou seja, é uma informação incompleta, censurada.</p>
 <p>E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! Essa é uma possível ideia para atingir nosso objetivo final: criar modelos que aprendem a resolver captchas automaticamente.</p>
-<p>Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um <em>toy model</em> de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística da coisa.</p>
+<p>Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um <em>toy model</em> de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística.</p>
 <div id="construindo-um-oraculo" class="section level2">
 <h2>Construindo um oráculo</h2>
 <p>Um oráculo precisa ter três partes implementadas: i) obtenção de uma imagem nova, ii) teste do modelo e iii) retorno, que deve envolver a matriz de entrada, o valor predito e a resposta (completa ou incompleta).</p>
+<p>Vamos então ao código:</p>
 <pre class="r"><code>#&#39; Oráculo do MNIST
 #&#39;
 #&#39; @param model modelo que resolve o captcha do MNIST. Por padrão
@@ -79,7 +80,7 @@ NULL
 
 $gabarito
 NULL</code></pre>
-<p>E esse é um caso que errei, e mandei mostrar tudo</p>
+<p>E esse é um caso que errei, e mandei mostrar todos os outputs possíveis:</p>
 <pre class="r"><code>result &lt;- oracle_mnist(type = 2)</code></pre>
 <p><img src="/img/blog/captcha-oraculo-1/captcha2.png" /></p>
 <pre><code>Answer: 56198</code></pre>
@@ -150,7 +151,7 @@ data &lt;- list(
 </div>
 <div id="modelo" class="section level2">
 <h2>Modelo</h2>
-<p>Meu modelo é uma rede neural convolucional simples, igual ao que está implementado no <code>decryptr</code>. Essa rede foi treinada com as 12 mil observações de treino montadas anteriormente. O modelo possui uma taxa de acerto de 92% para o captcha completo (ou seja, acertar todas as 5 letras).</p>
+<p>Meu modelo é uma rede neural convolucional simples, igual ao que está implementado no <code>decryptr</code>. Essa rede foi treinada com as 12 mil observações de treino montadas anteriormente. O modelo possui uma taxa de acerto de 92% para o captcha completo, ou seja, para todas as 5 letras.</p>
 <pre class="r"><code># meu input, começando com as dimensões de X
 input &lt;- layer_input(shape = dim(data$train$x)[-1])
 
@@ -284,7 +285,7 @@ $gabarito
 </div>
 <div id="pacote-mimir" class="section level2">
 <h2>Pacote mimir</h2>
-<p>Estou montando um pacote <code>{mimir}</code> para construir oráculos e trabalhar com eles. O nome Mimir vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras <code>purrr</code> e <code>forcats</code> e ii) por ter um R no final, que é sempre legal em pacotes! O pacote ainda não está disponível, mas assim que estiver eu aviso nas redes.</p>
+<p>Estou montando um pacote chamado <code>{mimir}</code> para construir oráculos e trabalhar com eles. O nome <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mimir</a> vem da figura da mitologia nórdica, conhecida por ser muito sábia. Eu achei o nome legal pois i) mimi lembra gatos, o que interage bem com as brincadeiras <code>purrr</code> e <code>forcats</code> e ii) por ter um R no final, que é sempre legal em pacotes! O pacote ainda não está disponível, mas assim que estiver eu aviso nas redes.</p>
 <p>No próximo post do tema, vou apresentar algumas formas de aproveitar a informação do oráculo na verossimilhança e alguns testes que venho desenvolvendo.</p>
 <p>É isso pessoal. Happy coding ;)</p>
 </div>

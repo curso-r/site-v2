@@ -1,9 +1,9 @@
 ---
-title: "Shiny Apps Empacotados: rodando seu app com 1 linha"
-date: "2019-09-30"
+title: "Shiny em Produção: Rodando seu App com 1 Linha"
+date: "2019-09-06"
 tags: ["golem", "shiny"]
 categories: ["tutoriais", "r"]
-banner: "img/banners/golem.png"
+banner: "img/banners/golem.jpg"
 author: ["Julio"]
 summary: "Um adendo ao pacote para desenvolver shiny apps dentro de pacotes."
 draft: false
