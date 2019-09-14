@@ -1,0 +1,401 @@
+---
+title: "Explorando a base de dados de CNPJ da Receita Federal"
+date: "2019-10-11"
+categories: ["r", "banco de dados", "analises"]
+tags: ["r", "rfb"]
+banner: "img/banners/qsacnpj.jpg"
+author: ["Julio"]
+summary: "A base de dados de CNPJ da Receita Federal do Brasil (RFB) é, na minha opinião, uma das maiores conquistas de dados abertos do Brasil. Nesse post vou passar alguns links para ler a base e alguns gráficos simples."
+draft: false
+---
+
+
+
+<p>A base de dados de CNPJ da Receita Federal do Brasil (RFB) é, na minha opinião, uma das maiores conquistas de dados abertos do Brasil. Trata-se de uma base com quase 42 milhões de linhas repleta de informações de todas as empresas do Brasil. Essa base pode ser útil para desenvolver diversos tipos de produtos e serviços, bem como abre espaço para realizaçãod e estudos para políticas públicas.</p>
+<p>A base de dados da RFB pode ser obtida de duas fontes distintas:</p>
+<ol style="list-style-type: decimal">
+<li>O fantástico canal <a href="https://brasil.io">Brasil.io</a>, do Álvaro Justen, ou <a href="https://twitter.com/turicas">turicas</a>.</li>
+<li>Diretamente do <a href="https://receita.economia.gov.br/orientacao/tributaria/cadastros/cadastro-nacional-de-pessoas-juridicas-cnpj/dados-publicos-cnpj">site da RFB</a>.</li>
+</ol>
+<div id="lendo-os-dados-em-csv" class="section level2">
+<h2>Lendo os dados em csv</h2>
+<p>Para carregar a partir de (1), também é bem tranquilo. O Turicas gentilmente <a href="https://drive.google.com/drive/folders/1brsEPvQoeQ82WwAsrdCr-rbC4jv5aEfq">disponibilizou as bases em CSV</a>, facilitando a leitura em qualquer software de análise de dados.</p>
+<p>Por exemplo, podemos fazer a leitura usando o <code>{vroom}</code>:</p>
+<pre class="r"><code>socio &lt;- vroom::vroom(&quot;~/Downloads/rfb/socio.csv.gz&quot;)
+socio</code></pre>
+<pre><code>Observations: 26,188,771                                                                                                                   
+Variables: 10
+chr  [7]: cnpj, nome_socio, cnpj_cpf_do_socio, codigo_qualificacao_socio, cpf_representante_legal, nome_representante_legal, codigo_qualificacao_r...
+dbl  [2]: identificador_de_socio, percentual_capital_social
+date [1]: data_entrada_sociedade
+
+Call `spec()` for a copy-pastable column specification
+Specify the column types with `col_types` to quiet this message</code></pre>
+<p>Se você não conhece o vroom, trata-se de um pacote para leitura de dados de texto que carrega as bases de forma <strong>extremamente rápida</strong>, pois ele não carrega a base na memória, apenas indexa. Mais detalhes <a href="https://vroom.r-lib.org/">na documentação do pacote</a>.</p>
+</div>
+<div id="usando-o-pacote-qsacnpj" class="section level2">
+<h2>Usando o pacote <code>{qsacnpj}</code></h2>
+<p>Para carregar a partir de (2), você precisará ler arquivos do tipo Fixed Width, que geralmente dá um pouco de trabalho, pois é necessário criar um arquivo de configuração. Felizmente, o <a href="https://github.com/georgevbsantiago">George Santiago</a> já resolveu esse problema para nós, criando o pacote <a href="https://github.com/georgevbsantiago/qsacnpj">{qsacnpj}</a>.</p>
+<p>Para ler os arquivos da RFB usando o pacote <code>{qsacnpj}</code>, não tem segredo. Basta seguir as instruções dadas pelo George no <code>README</code> do pacote, que copiei aqui:</p>
+<ol style="list-style-type: decimal">
+<li>Baixe os arquivos (.zip) da base de dados do CNPJ no site da Receita Federal.</li>
+<li>Salve o arquivo <code>.zip</code> no diretório que será utilizado para o processamento dos dados.</li>
+<li>Descompacte os arquivos no diretório. Talvez os arquivos tenhom nomes semelhantes a <code>K3241.K03200DV.D90607.L00001</code>.
+<ul>
+<li>OBS: Os arquivos descompactados têm mais de 85Gb. Verifique se há espaço suficiente no seu HD</li>
+</ul></li>
+<li>Adicione a extensão <code>.txt</code> no final do nome do arquivo. Ex: <code>K3241.K03200DV.D90607.L00001.txt</code></li>
+<li>Crie uma pasta específica para armazenar somente os arquivos <code>.txt</code>.</li>
+<li>Instale e execute o pacote.</li>
+</ol>
+<p>Por exemplo:</p>
+<pre class="r"><code>meu_arquivo &lt;- &quot;~/Downloads/rfb/originais/K3241.K03200DV.D90805.L00001.txt&quot;
+
+qsacnpj::gerar_bd_cnpj(meu_arquivo)</code></pre>
+<pre><code>[1] &quot;Pasta &#39;bd_cnpj_tratados&#39; criada com sucesso!&quot;
+[1] &quot;Iniciando o tratamento e consolidação dos dados do CNPJ. Esse processo pode levar entre 2h a 4h, dependenndo da configuração do computador!&quot;
+[1] &quot;Base de Dados do CNPJ gerada com Sucesso! Tabelas geradas: `dados_cadastrais_pj`, `dados_socios_pj` e `dados_cnae_secundario_pj`&quot;
+[1] &quot;Adicionando na base a tabela com dados dos Entes Públicos Federais, Estaduais e Municipais!&quot;
+[1] &quot;Tabela `tab_cnpj_entes_publicos_br` gerada com Sucesso!&quot;
+[1] &quot;Adicionando na base a tabela com Código e Nome da Qualificação dos Responsáveis!&quot;
+[1] &quot;Tabela `tab_qualificacao_responsavel_socio` gerada com Sucesso!&quot;
+[1] &quot;Adicionando na base a tabela com Código e Nome da Situação Cadastral!&quot;
+[1] &quot;Tabela `tab_situacao_cadastral` gerada com Sucesso!&quot;
+[1] &quot;Adicionando na base a tabela com Código e Nome da Natureza Jurídica!&quot;
+[1] &quot;Tabela `tab_natureza_juridica` gerada com Sucesso!&quot;
+[1] &quot;Adicionando na base a tabela com os CNAEs!&quot;
+[1] &quot;Tabela `tab_cnae` gerada com Sucesso!&quot;
+Fim do Processamento: Base de Dados do CNPJ gerada com Sucesso!</code></pre>
+<p>Em seguida, é possível ler os arquivos em <code>.csv</code> gerados. Um detalhe importante é que os arquivos foram gerados com o separador <code>#</code>.</p>
+<p>Uma coisa que eu gostei do <code>{qsacnpj}</code> é que ele já tem algumas bases auxiliares carregadas no pacote. Essas bases podem ser usadas para fazer o match com a base principal, com o objetivo de obter informações complementares.</p>
+<ul>
+<li><code>qsacnpj::tab_cnae</code>: nomes e códigos de atividades das empresas</li>
+<li><code>qsacnpj::tab_cnpj_entes_publicos_br</code>: nome e código dos Entes Públicos Federais, Estaduais e Municipais</li>
+<li><code>qsacnpj::tab_natureza_juridica</code>: nome e código de Classificação da Natureza Jurídica de 2018.</li>
+<li><code>qsacnpj::tab_qualificacao_responsavel_socio</code>: nome e código de Qualificação do Responsável e/ou Sócio no Quadro Societário da Pessoa Jurídica.</li>
+<li><code>qsacnpj::tab_situacao_cadastral</code>: nome e código da Situação Cadastral da Pessoa Jurídica.</li>
+</ul>
+</div>
+<div id="analises" class="section level2">
+<h2>Análises</h2>
+<p>Para dar um cheirinho de como essa base é rica, fiz alguns gráficos descritivos considerando apenas as informações do estado de SP. Usei como base o CSV do Turicas e usei as bases carregadas do <code>{qsacnpj}</code>.</p>
+<p>A Figura <a href="#fig:abertura">1</a> mostra o volume de empresas na base por ano de abertura. É interessante notar a evolução a partir do ano de 2004.</p>
+<div class="figure"><span id="fig:abertura"></span>
+<img src="/img/blog/qsacnpj/abertura.png" alt="Quantidade de empresas abertas por ano."  />
+<p class="caption">
+Figure 1: Quantidade de empresas abertas por ano.
+</p>
+</div>
+<p>A Figura <a href="#fig:atividade">2</a> mostra as atividades principais das empresas. Eu fiquei surpreso com o fato de mais um quarto das empresas serem relacionadas a comércio, reparação de veículos automotores e motocicletas. Seria interessante aprofundar essa análise criando um Treemap, por exemplo, para entender o que acontece nos subníveis dessa categoria.</p>
+<div class="figure"><span id="fig:atividade"></span>
+<img src="/img/blog/qsacnpj/atividade.png" alt="Distribuição da atividade principal (CNAE), considerando apenas o nível mais genérico."  />
+<p class="caption">
+Figure 2: Distribuição da atividade principal (CNAE), considerando apenas o nível mais genérico.
+</p>
+</div>
+<p>A Figura <a href="#fig:capital">3</a> mostra a distribuição do capital social das empresas. Quase metade das empresas tem capital social de até mil reais! Essa análise, no entanto, pode estar distorcida, pois existem várias empresas na base que não têm capital social por conta do tipo societário.</p>
+<div class="figure"><span id="fig:capital"></span>
+<img src="/img/blog/qsacnpj/capital.png" alt="Distribuição do capital social das empresas."  />
+<p class="caption">
+Figure 3: Distribuição do capital social das empresas.
+</p>
+</div>
+<p>A Figura <a href="#fig:mapa">4</a> mostra os municípios de registro das empresas. Aqui não tem nada de impressionante, apenas o esperado: cidades mais populosas têm mais empresas. Seria interessante aprofundar a análise para taxa de empresas por 100 mil habitantes, por exemplo.</p>
+<div class="figure"><span id="fig:mapa"></span>
+<img src="/img/blog/qsacnpj/mapa.png" alt="Mapa dos municípios de origem."  />
+<p class="caption">
+Figure 4: Mapa dos municípios de origem.
+</p>
+</div>
+<p>A Figura <a href="#fig:natureza">5</a> mostra a distribuição da natureza jurídica das empresas. Eu fiquei surpreso com o fato de que 60% das empresas são empresários individuais!</p>
+<div class="figure"><span id="fig:natureza"></span>
+<img src="/img/blog/qsacnpj/natureza.png" alt="Distribuição da natureza jurídica das empresas."  />
+<p class="caption">
+Figure 5: Distribuição da natureza jurídica das empresas.
+</p>
+</div>
+<p>A Figura <a href="#fig:qtd-socios1">6</a> mostra a distribuição da quantidade de sócios. É esperado que a maioria das empresas tenham dois sócios, já que as LTDAs devem ter pelo menos dois sócios.</p>
+<div class="figure"><span id="fig:qtd-socios1"></span>
+<img src="/img/blog/qsacnpj/qtd_socios1.png" alt="Distribuição da quantidade de sócios."  />
+<p class="caption">
+Figure 6: Distribuição da quantidade de sócios.
+</p>
+</div>
+<p>A Figura <a href="#fig:qtd-socios2">7</a> mostra a distribuição da quantidade de sócios, considerando apenas Limitada e SA. É possível notar que as Sociedades Anônimas possuem mais sócios.</p>
+<div class="figure"><span id="fig:qtd-socios2"></span>
+<img src="/img/blog/qsacnpj/qtd_socios2.png" alt="Distribuição da quantidade de sócios, comparando Limitada e SA."  />
+<p class="caption">
+Figure 7: Distribuição da quantidade de sócios, comparando Limitada e SA.
+</p>
+</div>
+<p>É isso pessoal. Happy coding ;)</p>
+<p>O código para gerar os gráficos segue abaixo:</p>
+<pre class="r"><code>library(formattable)
+library(tidyverse)
+library(lubridate)
+library(sf)
+
+# # precisei selecionar as colunas para não estourar a memória do 
+# # meu computador
+# empresa &lt;- vroom::vroom(
+#   &quot;empresa.csv.gz&quot;, 
+#   col_select = c(
+#     cnpj, identificador_matriz_filial, 
+#     razao_social, nome_fantasia, 
+#     situacao_cadastral, 
+#     codigo_natureza_juridica, data_inicio_atividade, 
+#     cnae_fiscal, descricao_tipo_logradouro, logradouro, 
+#     numero, complemento, 
+#     bairro, cep, uf, codigo_municipio, municipio, 
+#     qualificacao_do_responsavel, capital_social, 
+#     porte, opcao_pelo_simples
+#   ))
+
+# socios &lt;- vroom::vroom(&quot;socio.csv.gz&quot;, col_types = &quot;cccccccccc&quot;)
+
+empresa_sp &lt;- read_rds(&quot;empresa_sp.rds&quot;) %&gt;% 
+  filter(
+    # apenas ativos
+    situacao_cadastral == &quot;2&quot;, 
+    # apenas filiais
+    identificador_matriz_filial == 1
+  )
+
+socios_sp &lt;- read_rds(&quot;socios_sp.rds&quot;)
+
+# 1. Natureza jurídica: Ltda, SA, outros. ------------------------
+
+# # Apenas uma curiosidade que acabei não usando
+# empresa_sp %&gt;%
+#   count(porte, sort = TRUE) %&gt;% 
+#   mutate(porte = case_when(
+#     porte == &quot;00&quot; ~ &quot;Não informado&quot;,
+#     porte == &quot;01&quot; ~ &quot;Micro empresa&quot;,
+#     porte == &quot;03&quot; ~ &quot;Empresa de Pequeno Porte&quot;,
+#     porte == &quot;05&quot; ~ &quot;Demais&quot;
+#   )) %&gt;% 
+#   mutate(prop = percent(n/sum(n)))
+
+natureza &lt;- qsacnpj::tab_natureza_juridica %&gt;% 
+  mutate(codigo_natureza_juridica = 
+           as.numeric(cod_subclass_natureza_juridica))
+
+natureza_sp &lt;- empresa_sp %&gt;% 
+  left_join(natureza, &quot;codigo_natureza_juridica&quot;) %&gt;% 
+  replace_na(list(nm_natureza_juridica = &quot;Vazio&quot;,
+                  nm_subclass_natureza_juridica = &quot;Vazio&quot;)) %&gt;% 
+  mutate(
+    tipo = if_else(
+      nm_natureza_juridica == &quot;Administração Pública&quot;,
+      &quot;Administração Pública&quot;, nm_subclass_natureza_juridica
+    ),
+    tipo = fct_lump(tipo, 10, other_level = &quot;Outros&quot;)
+  ) %&gt;% 
+  count(tipo, sort = TRUE) %&gt;% 
+  mutate(prop = percent(n/sum(n)))
+
+p_natureza &lt;- natureza_sp %&gt;%
+  mutate(tipo = fct_reorder(str_wrap(tipo, 40), n)) %&gt;% 
+  ggplot(aes(x = tipo, y = n / 1e3)) +
+  geom_col(fill = vistrnv::trnv_colors()[1], alpha = .9) +
+  coord_flip() +
+  geom_text(aes(label = prop), nudge_y = 150) +
+  theme_minimal(14) +
+  labs(x = &quot;Natureza Jurídica&quot;, 
+       y = &quot;Quantidade de empresas (milhares)&quot;)
+
+# 2. Data da abertura. -------------------------------------------
+
+# li a base novamente sem o filtro de ativos
+# é ineficiente, mas eu estava com preguiça
+d_abertura &lt;- read_rds(&quot;empresa_sp.rds&quot;) %&gt;% 
+  filter(identificador_matriz_filial == 1) %&gt;% 
+  mutate(
+    mes_atividade = floor_date(data_inicio_atividade, &quot;quarter&quot;),
+    ano_atividade = floor_date(data_inicio_atividade, &quot;year&quot;)
+  ) %&gt;% 
+  filter(mes_atividade &gt; &quot;1950-01-01&quot;,
+         mes_atividade &lt; &quot;2019-06-01&quot;) %&gt;% 
+  count(ano_atividade)
+
+p_abertura &lt;-  d_abertura %&gt;% 
+  mutate(mes_atividade = ano_atividade) %&gt;% 
+  filter(year(mes_atividade) &gt; 1950,
+         year(mes_atividade) &lt; 2019) %&gt;% 
+  ggplot(aes(x = mes_atividade, y = n/1000)) +
+  geom_line(size = 1) +
+  theme_minimal(14) +
+  scale_x_date(breaks = scales::date_breaks(&quot;3 year&quot;),
+               labels = scales::date_format(&quot;%Y&quot;)) +
+  scale_y_continuous(limits = c(0, 800)) +
+  labs(x = &quot;Ano de início das atividades&quot;,
+       y = &quot;Quantidade de empresas (milhares)&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor.x = element_blank())
+
+# 3. Atividade econômica principal. ------------------------------
+
+tab_cnae &lt;- empresa_sp %&gt;% 
+  mutate(cod_cnae = str_pad(cnae_fiscal, 7, &quot;left&quot;, &quot;0&quot;)) %&gt;% 
+  left_join(qsacnpj::tab_cnae, &quot;cod_cnae&quot;) %&gt;% 
+  replace_na(list(nm_secao = &quot;Vazio&quot;, nm_divisao = &quot;Vazio&quot;,
+                  nm_grupo = &quot;Vazio&quot;, nm_classe = &quot;Vazio&quot;,
+                  nm_cnae = &quot;Vazio&quot;)) %&gt;% 
+  count(nm_secao, nm_divisao, nm_grupo, nm_classe, nm_cnae)
+
+d_cnae &lt;- empresa_sp %&gt;% 
+  mutate(cod_cnae = str_pad(cnae_fiscal, 7, &quot;left&quot;, &quot;0&quot;)) %&gt;% 
+  left_join(qsacnpj::tab_cnae, &quot;cod_cnae&quot;) %&gt;% 
+  replace_na(list(nm_secao = &quot;Vazio&quot;, nm_divisao = &quot;Vazio&quot;,
+                  nm_grupo = &quot;Vazio&quot;, nm_classe = &quot;Vazio&quot;,
+                  nm_cnae = &quot;Vazio&quot;))
+
+# montei uma função pois estava copiando muito código
+p_cnae &lt;- function(d_cnae, quebra, lump = 14) {
+  d_cnae %&gt;% 
+    mutate(tipo = fct_lump({{quebra}}, lump)) %&gt;% 
+    count(tipo) %&gt;% 
+    mutate(tipo = fct_reorder(str_wrap(tipo, 40), n)) %&gt;% 
+    mutate(prop = percent(n/sum(n))) %&gt;% 
+    ggplot(aes(x = tipo, y = n / 1e3)) +
+    geom_col(fill = vistrnv::trnv_colors()[1], alpha = .9) +
+    coord_flip() +
+    geom_text(aes(label = prop), nudge_y = 100) +
+    theme_minimal(12) +
+    labs(x = &quot;Atividade principal&quot;, 
+         y = &quot;Quantidade de empresas (milhares)&quot;)
+}
+
+graficos_cnae &lt;- list(
+  secao = d_cnae %&gt;% p_cnae(nm_secao),
+  divisao = d_cnae %&gt;% p_cnae(nm_divisao),
+  grupo = d_cnae %&gt;% p_cnae(nm_grupo),
+  classe = d_cnae %&gt;% p_cnae(nm_classe),
+  cnae = d_cnae %&gt;% p_cnae(nm_cnae)
+)
+
+# acabei usando só esse
+p_cnae &lt;- graficos_cnae$secao
+
+# 4. Município da sede. -------------------------------------------
+
+d_muni &lt;- brazilmaps::get_brmap(
+  &quot;City&quot;, 
+  geo.filter = list(State = 35)
+) %&gt;% 
+  mutate(nome = abjutils::rm_accent(nome))
+
+p_muni &lt;- empresa_sp %&gt;% 
+  count(municipio) %&gt;%
+  mutate(nome = case_when(
+    # precisei arrumar alguns nomes na mão, pois não consegui
+    # dar match pelo código do município
+    municipio == &quot;BIRITIBA-MIRIM&quot; ~ &quot;BIRITIBA MIRIM&quot;,
+    municipio == &quot;MOGI-GUACU&quot; ~ &quot;MOGI GUACU&quot;,
+    TRUE ~ municipio
+  )) %&gt;% 
+  inner_join(d_muni, &quot;nome&quot;) %&gt;% 
+  mutate(ncat = cut(n/1000, ceiling(c(0, 1e3, 2e3, 1e4, 1e5, 
+                                      max(n))/1000),
+                    dig.lab = 10)) %&gt;% 
+  st_as_sf() %&gt;% 
+  ggplot(aes(fill = ncat)) +
+  geom_sf(colour = &quot;black&quot;, size = .3) +
+  scale_fill_viridis_d(option = &quot;A&quot;, begin = 0.1, alpha = .9) +
+  theme_void(14) +
+  theme(legend.position = c(.85,.8)) +
+  labs(fill = &quot;Quantidade de\nempresas (milhares)&quot;)
+
+# 5. Quantidade de sócios. ----------------------------------------
+
+qtd_socios &lt;- socios_sp %&gt;% 
+  count(cnpj)
+
+empresa_natureza &lt;- empresa_sp %&gt;% 
+  left_join(natureza, &quot;codigo_natureza_juridica&quot;) %&gt;% 
+  replace_na(list(nm_natureza_juridica = &quot;Vazio&quot;,
+                  nm_subclass_natureza_juridica = &quot;Vazio&quot;)) %&gt;% 
+  mutate(
+    tipo = if_else(
+      nm_natureza_juridica == &quot;Administração Pública&quot;,
+      &quot;Administração Pública&quot;, nm_subclass_natureza_juridica
+    ),
+    tipo = fct_lump(tipo, 10, other_level = &quot;Outros&quot;)
+  )
+
+p_qtd_socios1 &lt;- qtd_socios %&gt;% 
+  mutate(n = fct_lump(str_pad(n, 2, &quot;left&quot;, 0), 10, 
+                      other_level = &quot;11 ou mais&quot;)) %&gt;% 
+  count(n) %&gt;% 
+  mutate(prop = percent(nn/sum(nn)), n = fct_rev(n)) %&gt;% 
+  ggplot(aes(x = n, y = nn / 1e3)) +
+  geom_col(fill = vistrnv::trnv_colors()[1], alpha = .9) +
+  coord_flip() +
+  geom_text(aes(label = prop), nudge_y = 30) +
+  theme_minimal(14) +
+  labs(x = &quot;Quantidade de sócios&quot;, 
+       y = &quot;Quantidade de empresas (milhares)&quot;)
+
+
+d_plot_qtd_socios &lt;- qtd_socios %&gt;% 
+  inner_join(select(empresa_natureza, cnpj, tipo), &quot;cnpj&quot;) %&gt;% 
+  filter(str_detect(tipo, &quot;Limitada|Anôn&quot;)) %&gt;% 
+  mutate(tipo = if_else(str_detect(tipo, &quot;Limitada&quot;), 
+                        &quot;Limitada&quot;, &quot;SA&quot;)) %&gt;% 
+  mutate(n = fct_lump(str_pad(n, 2, &quot;left&quot;, 0), 10, 
+                      other_level = &quot;11 ou mais&quot;)) %&gt;% 
+  count(tipo, n) %&gt;% 
+  group_by(tipo) %&gt;% 
+  mutate(prop = nn/sum(nn), n = fct_rev(n)) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(prop = percent(prop, 1))
+
+p_qtd_socios2 &lt;- d_plot_qtd_socios %&gt;% 
+  ggplot(aes(x = n, y = prop, fill = tipo)) +
+  geom_col(position = &quot;dodge&quot;) +
+  coord_flip() +
+  scale_fill_viridis_d(begin = 0.3, end = 0.8) +
+  theme_minimal(14) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = &quot;Quantidade de sócios&quot;, 
+       y = &quot;Proporção das empresas&quot;,
+       fill = &quot;Tipo&quot;) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme(legend.position = c(.8, .2))
+
+
+# 6. Capital social. -----------------------------------------------
+
+p_capital &lt;- empresa_sp %&gt;% 
+  mutate(capital_social_cat = cut(
+    capital_social/1e3, 
+    breaks = c(0, 1e3, 1e4, 1e5, 1e6, Inf)/1e3,
+    include.lowest = TRUE, dig.lab = 10)
+  ) %&gt;% 
+  count(tipo = capital_social_cat) %&gt;% 
+  mutate(prop = percent(n/sum(n)),
+         tipo = fct_rev(tipo)) %&gt;% 
+  ggplot(aes(x = tipo, y = n / 1e3)) +
+  geom_col(fill = vistrnv::trnv_colors()[1], alpha = .9) +
+  coord_flip() +
+  geom_text(aes(label = prop), nudge_y = 100) +
+  theme_minimal(14) +
+  labs(x = &quot;Capital social (milhares de reais)&quot;, 
+       y = &quot;Quantidade de empresas (milhares)&quot;)
+
+# FIM -------------------------------------------------------------
+
+todos_graficos &lt;- list(
+  natureza = p_natureza,
+  abertura = p_abertura,
+  atividade = p_cnae,
+  mapa = p_muni,
+  qtd_socios1 = p_qtd_socios1,
+  qtd_socios2 = p_qtd_socios2,
+  capital = p_capital
+)
+
+fs::dir_create(&quot;graficos&quot;)
+iwalk(todos_graficos, ~ggsave(paste0(.y, &quot;.png&quot;), .x, 
+                              path = &quot;graficos&quot;))</code></pre>
+</div>
