@@ -11,7 +11,7 @@ requisitos: ""
 ordem: 3
 aberto: "true"
 id: 3
-unit_price: 35000
+unit_price: 50000
 ---
 
 
