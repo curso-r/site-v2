@@ -58,7 +58,7 @@
                 encryption_key: 'ek_live_RALOFQpSyLk9NhCBgZa7JrHSyz3hpp',   
                 success: function(data) {
                   console.log(data);
-                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&amount={{ .Params.unit_price }}' + '&id={{ .Params.id }}')
+                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token)
                         .then(function (response) {
                           // handle success
                           console.log(response);
@@ -87,6 +87,8 @@
                 customerData: 'true',
                 createToken: 'true',
                 paymentMethods: 'credit_card, boleto',
+                maxInstallments: 12,
+                interestRate: 0.70,
                 items: [
                   {
                     id: '{{ .Params.id }}',
