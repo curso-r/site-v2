@@ -36,7 +36,7 @@
           <p class="mutavel"><i class="fa fa-calendar" aria-hidden="true"></i>  {{.Params.data}}</p>
           <p><i class="fa fa-clock" aria-hidden="true"></i>  {{.Params.hora}}</p>
           <p><i class="fa fa-map" aria-hidden="true"></i>  {{.Params.local}}</p>
-          <p><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
+          <p id="valor"><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
           
           {{ if isset .Params "obs"}}
             <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
@@ -44,10 +44,41 @@
           
           {{ if and (isset .Params "aberto") (ne .Params.aberto "" ) }} 
           
+          
+          <div>
+            <input id="desconto" class="cta-btn" placeholder="cupom" style="width: 250px">
+            <button id="enviar-cupom" class="cta-btn">Enviar</button>
+          </div>
+          
+          <br>
 
           <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
           
+          
           <script>
+          
+            var dados = {
+                amount: {{ .Params.unit_price }},
+                buttonText: 'Pagar',
+                buttonClass: 'botao-pagamento',
+                customerData: 'true',
+                createToken: 'true',
+                paymentMethods: 'credit_card, boleto',
+                maxInstallments: 12,
+                interestRate: 0.70,
+                items: [
+                  {
+                    id: '{{ .Params.id }}',
+                    title: '{{ .Params.title }}',
+                    unit_price: {{ .Params.unit_price }},
+                    quantity: 1,
+                    tangible: true
+                  }
+                ],
+                postbackUrl: 'https://pagarme-checkout.curso-r.com/postback'
+              }
+          
+          
             var button = document.querySelector('#pagamento');
 
             // Abrir o modal ao clicar no botão
@@ -80,36 +111,37 @@
                 }
               });
               
-              checkout.open({
-                amount: {{ .Params.unit_price }},
-                buttonText: 'Pagar',
-                buttonClass: 'botao-pagamento',
-                customerData: 'true',
-                createToken: 'true',
-                paymentMethods: 'credit_card, boleto',
-                maxInstallments: 12,
-                interestRate: 0.70,
-                items: [
-                  {
-                    id: '{{ .Params.id }}',
-                    title: '{{ .Params.title }}',
-                    unit_price: {{ .Params.unit_price }},
-                    quantity: 1,
-                    tangible: true
-                  }
-                ],
-                postbackUrl: 'https://pagarme-checkout.curso-r.com/postback'
-              });
+              checkout.open(dados);
+              
+            })
+            
+            var desconto = document.querySelector('#enviar-cupom');
+            
+            desconto.addEventListener('click', function() {
+              
+              var cupom  = document.querySelector('#desconto').value
+              
+              axios.get('https://pagarme-checkout.curso-r.com/cupom?cupom=' + cupom)
+                        .then(function (response) {
+                          dados.amount = response.data.amount
+                          document.querySelector('#pagamento').innerText = "Inscreva-se com desconto"
+                        })
+                        .catch(function (error) {
+                          // handle error
+                          alert("cumpom invalido")
+                        })
               
             })
               
           </script>
+          
           
           {{ else }}
           
           {{ partial "form-curso.html" . }}
         
           {{ end }}
+          
           
         </div>
       </div>
@@ -125,6 +157,7 @@
       <div class="container">
 
           {{.Content}}
+          
           
       </div>
         
@@ -146,6 +179,7 @@
           
           <a href="{{.Params.link_inscricao}}"><button class="cta-btn" style="background: none;">Inscreva-se</button></a>
           
+        
           {{ else }}
           
           {{ partial "form-curso.html" . }}
@@ -154,6 +188,8 @@
           {{ end }}
        
       </div>
+      
+      
     </section><!-- #call-to-action -->
     
     
