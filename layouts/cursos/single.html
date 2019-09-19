@@ -127,6 +127,10 @@
               
               axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + '&cupom=' + cupom)
                         .then(function (response) {
+                          
+                          // manter essa linha p/ mduar o preço do pagarme
+                          dados.amount = response.data.amount
+                        
                           $('#pagamento').text("Inscreva-se com desconto");
                           
                           /* botao de enviar cupom */
