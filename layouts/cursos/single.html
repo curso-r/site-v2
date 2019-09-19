@@ -121,7 +121,7 @@
               
               var cupom  = document.querySelector('#desconto').value
               
-              axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + 'cupom=' + cupom)
+              axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + '&cupom=' + cupom)
                         .then(function (response) {
                           dados.amount = response.data.amount
                           document.querySelector('#pagamento').innerText = "Inscreva-se com desconto"
