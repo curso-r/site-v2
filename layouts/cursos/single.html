@@ -36,7 +36,11 @@
           <p class="mutavel"><i class="fa fa-calendar" aria-hidden="true"></i>  {{.Params.data}}</p>
           <p><i class="fa fa-clock" aria-hidden="true"></i>  {{.Params.hora}}</p>
           <p><i class="fa fa-map" aria-hidden="true"></i>  {{.Params.local}}</p>
-          <p id="valor"><i class="fa fa-money" aria-hidden="true"></i>  {{.Params.preco}}</p>
+          <p id="valor">
+            <i class="fa fa-money" aria-hidden="true"></i>
+            <span>{{.Params.preco}}</span>
+            <span></span>
+          </p>
           
           {{ if isset .Params "obs"}}
             <p><i class="fa fa-info-circle" aria-hidden="true"></i>  {{.Params.obs}}</p>
@@ -47,7 +51,7 @@
           
           <div>
             <input id="desconto" class="cta-btn" placeholder="cupom" style="width: 250px">
-            <button id="enviar-cupom" class="cta-btn">Enviar</button>
+            <button id="enviar-cupom" class="cta-btn">Aplicar</button>
           </div>
           
           <br>
@@ -123,12 +127,30 @@
               
               axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + '&cupom=' + cupom)
                         .then(function (response) {
-                          dados.amount = response.data.amount
-                          document.querySelector('#pagamento').innerText = "Inscreva-se com desconto"
+                          $('#pagamento').text("Inscreva-se com desconto");
+                          
+                          /* botao de enviar cupom */
+                          let botaoEnviarCupom = $('#enviar-cupom');
+                          botaoEnviarCupom.text("Aplicado!");
+                          botaoEnviarCupom.addClass('cupom-success');
+                          botaoEnviarCupom.removeClass('cupom-failure');
+                          
+                          /* texto do preco */
+                          let amount = (response.data.amount/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+                          $("#valor span:first").addClass("preco-antigo");
+                          $("#valor span:last").text(amount);
                         })
                         .catch(function (error) {
-                          // handle error
-                          alert("cumpom invalido")
+                          
+                          /* botao de enviar cupom */
+                          let botaoEnviarCupom = $('#enviar-cupom');
+                          botaoEnviarCupom.text("Cupom Inválido");
+                          botaoEnviarCupom.removeClass('cupom-success');
+                          botaoEnviarCupom.addClass('cupom-failure');
+                          
+                          /* texto do preco */
+                          $("#valor span:first").removeClass("preco-antigo");
+                          $("#valor span:last").text("");
                         })
               
             })

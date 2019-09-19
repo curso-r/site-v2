@@ -315,3 +315,36 @@ nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:foc
   }
   */
 }
+
+
+
+/********  CSS do cupom preco e etc  ********/
+#intro .cupom-success {
+  background-color: green;
+}
+
+#intro .cupom-failure {
+  background-color: #da4d4d;
+}
+
+@keyframes strike{
+  0%   { width : 0; }
+  100% { width: 100%; }
+}
+#valor .preco-antigo {
+  position: relative;
+}
+#valor .preco-antigo::after {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: white;
+  animation-name: strike;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards; 
+}
