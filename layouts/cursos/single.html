@@ -89,7 +89,7 @@
                 encryption_key: 'ek_live_RALOFQpSyLk9NhCBgZa7JrHSyz3hpp',   
                 success: function(data) {
                   console.log(data);
-                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token)
+                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&cupom=' + document.querySelector('#desconto').value)
                         .then(function (response) {
                           // handle success
                           console.log(response);
@@ -121,7 +121,7 @@
               
               var cupom  = document.querySelector('#desconto').value
               
-              axios.get('https://pagarme-checkout.curso-r.com/cupom?cupom=' + cupom)
+              axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + 'cupom=' + cupom)
                         .then(function (response) {
                           dados.amount = response.data.amount
                           document.querySelector('#pagamento').innerText = "Inscreva-se com desconto"
