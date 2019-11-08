@@ -1,6 +1,6 @@
 ---
 title: "O pacote arrow"
-date: "2019-10-02"
+date: "2019-11-27"
 tags: ["arrow", "dados"]
 categories: ["tutoriais", "r"]
 banner: "img/banners/arrow.jpeg"

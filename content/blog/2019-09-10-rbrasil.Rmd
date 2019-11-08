@@ -1,6 +1,6 @@
 ---
 title: "Comunidade R Brasil no Telegram"
-date: "2019-10-09"
+date: "2019-11-13"
 tags: ["comunidade"]
 categories: ["análises", "r"]
 banner: "img/banners/telegram-rbrasil.png"

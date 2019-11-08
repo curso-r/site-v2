@@ -1,6 +1,6 @@
 ---
 title: "Quebrando Captchas - Parte VII: Oráculos"
-date: "2019-10-11"
+date: "2019-11-20"
 categories: ["r", "tutoriais"]
 tags: ["r", "captcha"]
 banner: "img/banners/captcha_07.png"
@@ -20,7 +20,7 @@ editor_options:
 <p>O problema é que a resposta do oráculo não é sempre clara: usualmente, o oráculo não diz <strong>o quê</strong> você errou, mas somente <strong>se</strong> você errou. Ou seja, é uma informação incompleta, censurada.</p>
 <p>E como nós fazemos para tratar informação incompleta nos nossos estudos? Botamos na verossimilhança! Essa é uma possível ideia para atingir nosso objetivo final: criar modelos que aprendem a resolver captchas automaticamente.</p>
 <p>Na prática, no entanto, isso é uma tarefa difícil! Nesse post vou me ater em mostrar um <em>toy model</em> de oráculo e, nos próximos posts sobre o tema, vou desenvolver mais a parte estatística.</p>
-<div id="construindo-um-oraculo" class="section level2">
+<div id="construindo-um-oráculo" class="section level2">
 <h2>Construindo um oráculo</h2>
 <p>Um oráculo precisa ter três partes implementadas: i) obtenção de uma imagem nova, ii) teste do modelo e iii) retorno, que deve envolver a matriz de entrada, o valor predito e a resposta (completa ou incompleta).</p>
 <p>Vamos então ao código:</p>

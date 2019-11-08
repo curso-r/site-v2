@@ -1,6 +1,6 @@
 ---
 title: "Explorando a base de dados de CNPJ da Receita Federal"
-date: "2019-10-11"
+date: "2019-12-04"
 categories: ["r", "banco de dados", "analises"]
 tags: ["r", "rfb"]
 banner: "img/banners/qsacnpj.jpg"
