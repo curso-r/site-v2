@@ -5,7 +5,7 @@ hora: "Treinamentos dentro ou fora do horário comercial"
 local: "Faça o treinamento na sua empresa ou utilize o nosso espaço"
 img: "img/cursos/in-company.jpg"
 preco: "Escolha o conteúdo e solicite um orçamento"
-banner: "img/cursos/in-company.jpg"
+banner: "img/cursos/in-company-banner.jpg"
 desc: "Monte o curso que melhor atenda às demandas da sua equipe."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
@@ -58,6 +58,7 @@ Que tal uma ferramenta de BI gratuita e com possibilidades ilimitadas? Com este 
 <img src = "/img/cursos/hex/rmarkdown.png" width = "9%">
 <img src = "/img/cursos/hex/shiny.png" width = "9%">
 <img src = "/img/cursos/hex/golem.png" width = "9%">
+<img src = "/img/cursos/hex/auth0.png" width = "9%">
 
 <br>
 
@@ -80,13 +81,13 @@ Não encontrou o tema que a sua equipe precisa? Entre em contato e nos conte a s
 </header>
 
 <center>
-Já tivemos a satisfação de ministrar treinamentos nas seguitnes empreseas:
+Já tivemos a satisfação de ministrar treinamentos nas seguintes empresas:
 
-<img src = "/img/cursos/logos-empresas/logo-mateus.png" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-spc.jpg" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-kantar.png" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-ias.png" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-banco-honda.png" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-john-deere.png" width = "20%" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-edp.jpg" width = "20%" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-mateus.png" width = "190px" height = "130px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-spc.jpg" width = "200px" height = "140px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-kantar.png" width = "190px" height = "130px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-ias.png" width = "220px" height = "130px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-banco-honda.png" width = "190px" height = "100px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-john-deere.png" width = "210px" height = "160px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-edp.jpg" width = "190px" height = "150px" style = "padding: 25px;">
 </center>
