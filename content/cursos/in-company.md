@@ -22,13 +22,13 @@ ordem: 7
 
 Sua equipe ainda não trabalha com R? Neste módulo, vamos introduzir os principais conceitos de programação em R utilizando problemas reais de análise de dados. Apresentamos os principais pacotes para importação, manipulação e visualização de dados e, para motivar ainda mais, ensinamos como criar um dashboard em R para a comunicação dos resultados **a partir de um case com dados do dia-a-dia da sua empresa**.
 
-<img src = "/img/cursos/hex/tidyverse.png" width = "9%">
-<img src = "/img/cursos/hex/pipe.png" width = "9%">
-<img src = "/img/cursos/hex/readr.png" width = "9%">
-<img src = "/img/cursos/hex/readxl.png" width = "9%">
-<img src = "/img/cursos/hex/dplyr.png" width = "9%">
-<img src = "/img/cursos/hex/stringr.png" width = "9%">
-<img src = "/img/cursos/hex/ggplot2.png" width = "9%">
+<img src = "/img/cursos/hex/tidyverse.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/pipe.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/readr.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/readxl.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/dplyr.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/stringr.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/ggplot2.png" width = "72px" height = "82px">
 
 <br>
 
@@ -36,9 +36,9 @@ Sua equipe ainda não trabalha com R? Neste módulo, vamos introduzir os princip
 
 Sua equipe trabalha com modelagem preditiva? Este módulo é perfeito para equipes que já programam em R e querem entrar no mundo do Machine Learning. O objetivo aqui é apresentar as ideias essenciais para escolher, ajustar, avaliar e interpretar modelos preditivos.
 
-<img src = "/img/cursos/hex/rsample.png" width = "9%">
-<img src = "/img/cursos/hex/recipes.png" width = "9%">
-<img src = "/img/cursos/hex/tidymodels.png" width = "9%">
+<img src = "/img/cursos/hex/rsample.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/recipes.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/tidymodels.png" width = "72px" height = "82px">
 
 <br>
 
@@ -46,8 +46,8 @@ Sua equipe trabalha com modelagem preditiva? Este módulo é perfeito para equip
 
 A sua equipe precisa desvendar o universo das redes neurais? Neste módulo, apresentaremos as principais técnicas utilizadas no Deep Learning para resolver problema de classificação de textos e imagens, assim como outras fontes de dados não estruturados.
 
-<img src = "/img/cursos/logos-empresas/tensorflow.png" width = "20%">
-<img src = "/img/cursos/logos-empresas/keras.png" width = "20%">
+<img src = "/img/cursos/logos-empresas/tensorflow.png" width = "186" height = "104px">
+<img src = "/img/cursos/logos-empresas/keras.png" width = "186" height = "63px">
 
 <br>
 
@@ -55,10 +55,10 @@ A sua equipe precisa desvendar o universo das redes neurais? Neste módulo, apre
 
 Que tal uma ferramenta de BI gratuita e com possibilidades ilimitadas? Com este módulo, a sua equipe vai aprender a construir dashboards bonitos e informativos combinando a força do R com a praticidade do [R Markdown](https://rmarkdown.rstudio.com/gallery.html) e do [Shiny](https://shiny.rstudio.com/gallery/).
 
-<img src = "/img/cursos/hex/rmarkdown.png" width = "9%">
-<img src = "/img/cursos/hex/shiny.png" width = "9%">
-<img src = "/img/cursos/hex/golem.png" width = "9%">
-<img src = "/img/cursos/hex/auth0.png" width = "9%">
+<img src = "/img/cursos/hex/rmarkdown.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/shiny.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/golem.png" width = "72px" height = "82px">
+<img src = "/img/cursos/hex/auth0.png" width = "72px" height = "82px">
 
 <br>
 
@@ -83,11 +83,11 @@ Não encontrou o tema que a sua equipe precisa? Entre em contato e nos conte a s
 <center>
 Já tivemos a satisfação de ministrar treinamentos nas seguintes empresas:
 
-<img src = "/img/cursos/logos-empresas/logo-mateus.png" width = "190px" height = "130px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-spc.jpg" width = "200px" height = "140px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-kantar.png" width = "190px" height = "130px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-ias.png" width = "220px" height = "130px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-banco-honda.png" width = "190px" height = "100px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-john-deere.png" width = "210px" height = "160px" style = "padding: 25px;">
-<img src = "/img/cursos/logos-empresas/logo-edp.jpg" width = "190px" height = "150px" style = "padding: 25px;">
+<img src = "/img/cursos/logos-empresas/logo-mateus.png" width = "190px" height = "130px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-spc.jpg" width = "210px" height = "140px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-kantar.png" width = "190px" height = "130px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-ias.png" width = "220px" height = "130px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-banco-honda.png" width = "190px" height = "100px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-john-deere.png" width = "250px" height = "200px" style = "padding: 20px;">
+<img src = "/img/cursos/logos-empresas/logo-edp.jpg" width = "190px" height = "150px" style = "padding: 20px;">
 </center>
