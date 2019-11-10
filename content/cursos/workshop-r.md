@@ -1,16 +1,15 @@
 ---
 title: "Workshop: Conheça o R"
-data: "Sábado, 27 de Abril de 2019 (vagas esgotadas)"
-hora: "Das 14h às 17h"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - 406 - Bela Vista, São Paulo - SP, 01310-200"
+data: "A definir"
+hora: "A definir"
+local: "A definir"
 img: "img/cursos/workshop-r.png"
 preco: "R$ 60,00"
 banner: "img/cursos/workshop-r-banner.png"
 desc: "Familiarize-se com os principais conceitos de programação e ciência de dados utilizando o R como ferramenta."
 requisitos: ""
-professores: ["Daniel Falbel", "William Amorim"]
+professores: ["Athos Damiani", "William Amorim"]
 ordem: 0.5
-aberto: "false"
 ---
 
 <header class="section-header">

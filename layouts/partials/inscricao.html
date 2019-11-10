@@ -1,0 +1,111 @@
+<div>
+            <input id="desconto" class="cta-btn" placeholder="cupom" style="width: 250p; background: none;">
+            <button id="enviar-cupom" class="cta-btn" style="background: none;">Aplicar</button>
+          </div>
+          
+          <br>
+
+          <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
+          
+          
+          <script>
+          
+            var dados = {
+                amount: {{ .Params.unit_price }},
+                buttonText: 'Pagar',
+                buttonClass: 'botao-pagamento',
+                customerData: 'true',
+                createToken: 'true',
+                paymentMethods: 'credit_card, boleto',
+                maxInstallments: 12,
+                interestRate: 0.70,
+                items: [
+                  {
+                    id: '{{ .Params.id }}',
+                    title: '{{ .Params.title }}',
+                    unit_price: {{ .Params.unit_price }},
+                    quantity: 1,
+                    tangible: true
+                  }
+                ],
+                postbackUrl: 'https://pagarme-checkout.curso-r.com/postback'
+              }
+          
+          
+            var button = document.querySelector('#pagamento');
+
+            // Abrir o modal ao clicar no botão
+            button.addEventListener('click', function() {
+        
+              // inicia a instância do checkout
+              var checkout = new PagarMeCheckout.Checkout({
+                encryption_key: 'ek_live_RALOFQpSyLk9NhCBgZa7JrHSyz3hpp',   
+                success: function(data) {
+                  console.log(data);
+                  axios.get('https://pagarme-checkout.curso-r.com/captura?token=' + data.token + '&cupom=' + document.querySelector('#desconto').value)
+                        .then(function (response) {
+                          // handle success
+                          console.log(response);
+                          if (response.data.payment_method == "boleto") {
+                            url = response.data.boleto_url[0];
+                            window.location.href = url; 
+                          };
+                        })
+                        .catch(function (error) {
+                          // handle error
+                          console.log(error);
+                        })
+                },
+                error: function(err) {
+                	console.log(err);
+                },
+                close: function() {
+                	console.log('The modal has been closed.');
+                }
+              });
+              
+              checkout.open(dados);
+              
+            })
+            
+            var desconto = document.querySelector('#enviar-cupom');
+            
+            desconto.addEventListener('click', function() {
+              
+              var cupom  = document.querySelector('#desconto').value
+              
+              axios.get('https://pagarme-checkout.curso-r.com/cupom?id=' + dados.items[0].id + '&cupom=' + cupom)
+                        .then(function (response) {
+                          
+                          // manter essa linha p/ mduar o preço do pagarme
+                          dados.amount = response.data.amount
+                        
+                          $('#pagamento').text("Inscreva-se com desconto");
+                          
+                          /* botao de enviar cupom */
+                          let botaoEnviarCupom = $('#enviar-cupom');
+                          botaoEnviarCupom.text("Aplicado!");
+                          botaoEnviarCupom.addClass('cupom-success');
+                          botaoEnviarCupom.removeClass('cupom-failure');
+                          
+                          /* texto do preco */
+                          let amount = (response.data.amount/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+                          $("#valor span:first").addClass("preco-antigo");
+                          $("#valor span:last").text(amount);
+                        })
+                        .catch(function (error) {
+                          
+                          /* botao de enviar cupom */
+                          let botaoEnviarCupom = $('#enviar-cupom');
+                          botaoEnviarCupom.text("Cupom Inválido");
+                          botaoEnviarCupom.removeClass('cupom-success');
+                          botaoEnviarCupom.addClass('cupom-failure');
+                          
+                          /* texto do preco */
+                          $("#valor span:first").removeClass("preco-antigo");
+                          $("#valor span:last").text("");
+                        })
+              
+            })
+              
+          </script>
