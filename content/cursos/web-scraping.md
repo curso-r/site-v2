@@ -1,16 +1,15 @@
 ---
 title: "Web scraping em R"
-data: "23/11 - Sábado, das 9h às 18h"
+data: "Novas turmas em 2020!"
 hora: "8 horas de workshop"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
+local: "A definir!"
 img: "img/cursos/web-scraping.png"
 preco: "R$500,00"
 banner: "img/cursos/web-scraping-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 requisitos: ""
 ordem: 3
-aberto: "true"
-id: 3
+id: "definir_novo_id"
 unit_price: 50000
 ---
 
