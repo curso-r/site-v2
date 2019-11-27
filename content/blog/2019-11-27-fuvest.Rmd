@@ -5,7 +5,7 @@ categories: ["r", "banco de dados", "analises"]
 tags: ["r", "pdf"]
 banner: "img/banners/Fuvest-2020.jpg"
 author: ["Daniel"]
-summary: "Em x% das catrreiras no vestibular da USP as notas de corte para candidatos da escola pública são maiores do que as notas de corte para candidatos da ampla concorrência."
+summary: "Em mais de 30% das catrreiras no vestibular da USP as notas de corte para candidatos da escola pública são maiores do que as notas de corte para candidatos da ampla concorrência."
 draft: false
 ---
 
@@ -223,5 +223,5 @@ ou não é uma decisão difícil para o candidato - que no momento da inscriçã
 possui dados tal como a relação candidato vaga para cada uma das modalidades.
 
 Todo o código para replicar os gráficos e análises deste artigo estão diosponíveis
-[aqui]().
+[aqui](https://github.com/curso-r/site-v2/blob/master/content/blog/2019-11-27-fuvest.Rmd).
 
