@@ -1,0 +1,227 @@
+---
+title: "As (não) eficácia do sistema de cotas na FUVEST"
+date: "2019-11-27"
+categories: ["r", "banco de dados", "analises"]
+tags: ["r", "pdf"]
+banner: "img/banners/Fuvest-2020.jpg"
+author: ["Daniel"]
+summary: "Em x% das catrreiras no vestibular da USP as notas de corte para candidatos da escola pública são maiores do que as notas de corte para candidatos da ampla concorrência."
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval=TRUE)
+```
+
+A partir do vestibular de 2019 a FUVEST alterou o seu sistema cotas. Antes de 2019,
+o sistema beneficiava com uma bonificação os candidatos que cursaram o ensino médio 
+na rede pública de ensino e passou a contar com reserva de vagas para os estudantes
+cotistas.
+
+Para cada curso as vagas são divididas da seguinte forma: 
+
+- 60% reservadas para ampla concorrência
+- 40% reservadas para candidatos cotistas
+- das 40% reservadas p/ cotistas, 37,5% são reservadas para os candidatos de escolas 
+públicas autodeclarados pretos, pardos e indígenas.
+
+Segundo a resolução do Conselho Universitário (CoG) ainda:
+
+> O candidato concorrerá apenas com os candidatos que tenham optado pela mesma modalidade 
+de concorrência no Concurso Vestibular FUVEST 2019.
+
+É aí que aparece o problema. Algumas carreiras da FUVEST já possuiam historicamente
+proporção maior de 40% de alunos oriundos de escola pública. Esse ponto foi 
+[levantado em janeiro de 2019 pela ADUSP](https://www.adusp.org.br/index.php/defesauniv/3206-opiniao-armadilhas-comprometem-o-sistema-de-cotas-adotado-pela-usp) e mesmo em [2018 pela imprensa](https://diaonline.com.br/2018/11/25/cotista-tera-tarefa-mais-complicada-na-fuvest/?utm_source=Estad%C3%A3o+Conte%C3%BAdo&utm_campaign=diaonline-author).
+
+Vejamos os dados. 
+
+```{r include=FALSE}
+library(magrittr)
+library(ggplot2)
+
+url <- "https://www.fuvest.br/wp-content/uploads/fuvest_2019_notas_de_corte-1.pdf"
+
+text <- url %>% 
+  pdftools::pdf_text() %>% 
+  paste(collapse = "\n") %>% 
+  stringr::str_split("\n") %>% 
+  purrr::pluck(1)
+
+# pegar apenas as linhas que começam com número, tracinho (-) ou Total
+text <- text[
+  stringr::str_detect(text, "^ [0-9].*") | 
+    stringr::str_detect(text, "^         −.*") |
+    stringr::str_detect(text, "^ Total")
+  ]
+
+# tirar espaços excedentes no começo e fim e trocar espaços duplicado por tab
+text <- text %>% 
+  stringr::str_trim() %>% 
+  stringr::str_replace_all(" {2,}", "\t")
+
+# ler no formato de df
+df <- readr::read_delim(
+  file = text, 
+  delim = "\t", 
+  col_names = c("cd_e_nm_curso", "vagas", "inscritos", 
+                "ausentes", "convocados_2_fase", "candidato_vaga_2_fase",
+                "minimo_pontos",
+                "maximo_pontos")
+)
+
+df <- df %>% 
+  dplyr::mutate(
+    nome_curso = ifelse(
+      stringr::str_detect(cd_e_nm_curso, "^−"),
+      NA,
+      cd_e_nm_curso
+    )
+  ) %>% 
+  tidyr::fill(nome_curso) %>% 
+  dplyr::filter(!is.na(vagas)) %>% 
+  dplyr::rename(categoria = cd_e_nm_curso) %>% 
+  dplyr::mutate_at(
+    dplyr::vars(candidato_vaga_2_fase, minimo_pontos, maximo_pontos),
+    readr::parse_double
+  ) %>% 
+  dplyr::mutate(
+    categoria = dplyr::case_when(
+      categoria == "− Ampla Concorrência" ~ "AC",
+      categoria == "− Candidatos de Escola Pública" ~ "EP",
+      categoria == "− Candidatos de Escola Pública − Grupo PPI" ~ "PPI"
+    )
+  ) %>% 
+  dplyr::filter(nome_curso != "Total") %>% 
+  tidyr::separate(
+    nome_curso, 
+    into = c("cd_curso", "nm_curso"), 
+    sep = "−", 
+    extra = "merge"
+  )
+```
+
+
+```{r include=FALSE}
+df_dif <- df %>% 
+  dplyr::filter(candidato_vaga_2_fase >= 1) %>% 
+  dplyr::select(categoria, nm_curso, minimo_pontos) %>% 
+  tidyr::pivot_wider(names_from = c(categoria), values_from = minimo_pontos) %>% 
+  dplyr::mutate(
+    dif_ep = (EP - AC), 
+    dif_ppi = PPI - AC,
+    dff_ppi_ep = PPI - EP,
+    cot_maior = dif_ep > 0 | dif_ppi > 0
+    )
+
+perc <- scales::percent_format(decimal.mark = ",", big.mark = ".")(mean(df_dif$cot_maior, na.rm = TRUE))
+```
+
+Para `r perc` das carreiras na primeira fase da FUVEST a nota de corte para 
+ser convocado para a segunda fase para candidatos cotistas foi maior do que a nota
+para candidatos que se candidataram em ampla concorrência. Consideramos nas análises
+apenas as modalidades que tiveram todas as vagas preenchidas - isto é, foram convocados
+para a segunda fase mais candidatos do que o número de vagas disponíveis.
+
+O gráfico a seguir mostra a diferença entre a nota de corte para candidatos
+cotistas de escola pública (EP) e candidatos da ampla concorrência (AC).
+
+```{r echo=FALSE, fig.height=18, fig.width=8}
+df %>% 
+  dplyr::filter(candidato_vaga_2_fase > 1) %>% 
+  dplyr::select(categoria, nm_curso, minimo_pontos) %>% 
+  tidyr::pivot_wider(names_from = c(categoria), values_from = minimo_pontos) %>% 
+  dplyr::mutate(dif = (EP - AC)) %>% 
+  dplyr::filter(!is.nan(dif) & !is.na(dif)) %>% 
+  ggplot(aes(x=dif, y = forcats::fct_reorder(nm_curso, dif))) +
+  geom_point() +
+  geom_vline(xintercept = 0) +
+  scale_x_continuous() +
+  labs(
+    y = NULL, 
+    x = stringr::str_wrap("Diferença entre a nota de corte de alunos que se candidataram como EP e que se candidataram em AC.", 50)) +
+  theme_minimal()
+```
+
+Veja que para o curso de Filosofia, a nota de corte para alunos cotistas de escolas
+públicas foi **11** pontos maior do que a nota para alunos da ampla concorrência.
+
+Quando comparamos candidatos da modalidade PPI (estudaram na rede pública e se autodeclaram
+pretos, pardos ou indígenas) com candidatos da modalidade EP, a situação se repete.
+
+```{r echo=FALSE, fig.height=18, fig.width=8}
+df %>% 
+  dplyr::filter(candidato_vaga_2_fase > 1) %>% 
+  dplyr::select(categoria, nm_curso, minimo_pontos) %>% 
+  tidyr::pivot_wider(names_from = c(categoria), values_from = minimo_pontos) %>% 
+  dplyr::mutate(dif = (PPI - EP)) %>% 
+  dplyr::filter(!is.nan(dif) & !is.na(dif)) %>% 
+  ggplot(aes(x=dif, y = forcats::fct_reorder(nm_curso, dif))) +
+  geom_point() +
+  geom_vline(xintercept = 0) +
+  scale_x_continuous() +
+  labs(
+    y = NULL, 
+    x = stringr::str_wrap("Diferença entre a nota de corte de alunos que se candidataram como PPI e que se candidataram em EP.", 50)) +
+  theme_minimal()
+```
+
+As notas de corte para candidatos PPI dos cursos de Saúde Pública e de Ciências dos alimentos
+foram 4 pontos superiores às notas dos cotistas do ensino público.
+
+As tabelas a seguir mostram os cursos que apresentaram maiores diferenças:
+
+```{r echo=FALSE}
+df %>% 
+  dplyr::filter(candidato_vaga_2_fase > 1) %>% 
+  dplyr::select(categoria, nm_curso, minimo_pontos) %>% 
+  tidyr::pivot_wider(names_from = c(categoria), values_from = minimo_pontos) %>% 
+  dplyr::mutate(dif_ep = (EP - AC), dif_ppi = PPI - AC, 
+                max_dif = ifelse(dif_ep > dif_ppi, dif_ep, dif_ppi)) %>% 
+  dplyr::arrange(desc(max_dif)) %>% 
+  head(10) %>% 
+  dplyr::select(nm_curso) %>% 
+  dplyr::left_join(df, by = "nm_curso") %>% 
+  gt::gt(groupname_col = "nm_curso", rowname_col = "categoria") %>% 
+  gt::cols_label(
+    vagas = "# vagas",
+    inscritos = "# inscritos",
+    convocados_2_fase = "# convocados 2ª fase",
+    minimo_pontos = "Mínima",
+    maximo_pontos = "Máxima"
+  ) %>% 
+  gt::cols_hide(c("candidato_vaga_2_fase", "cd_curso", "ausentes")) %>% 
+  gt::tab_spanner(label = "Pontuação", columns = c("minimo_pontos", "maximo_pontos"))
+```
+
+A relação candidato vaga também aumenta quando comparamos candidatos de cada
+modalidade do vestibular. Por exemplo, o gráfico abaixo mostra a diferença 
+percentual entre a relação candidato/vaga para da ampla concorrência e cotistas
+de escola pública. Note que em alguns casos a relação aumentou mais de 400%.
+
+```{r echo=FALSE, fig.height=18, fig.width=8}
+df %>% 
+  dplyr::filter(candidato_vaga_2_fase > 1) %>% 
+  dplyr::mutate(candidato_vaga = inscritos/vagas) %>% 
+  dplyr::select(categoria, nm_curso, candidato_vaga) %>% 
+  tidyr::pivot_wider(names_from = c(categoria), values_from = candidato_vaga) %>% 
+  dplyr::mutate(dif = (EP - AC)/AC) %>% 
+  dplyr::filter(!is.nan(dif) & !is.na(dif)) %>% 
+  ggplot(aes(x=dif, y = forcats::fct_reorder(nm_curso, dif))) +
+  geom_point() +
+  geom_vline(xintercept = 0) +
+  scale_x_continuous(labels = scales::percent) +
+  labs(y = NULL, x = stringr::str_wrap("Diferença percentual entre a relação candidato vaga para alunos EP e AC", 50)) +
+  theme_minimal()  
+```
+
+Em suma, este artigo tem por objetivo apresentar dados que contestam a eficácia 
+do sistema de cotas da fuvest. É notável que para a maior parte dos cursos o sistema
+de cotas teve efeito benéfico, no entanto, não faz sentido melhorar de um lado
+e piorar de outro. Além disso, a decisão de se candidatar pelo sistema de cotas
+ou não é uma decisão difícil para o candidato - que no momento da inscrição não
+possui dados tal como a relação candidato vaga para cada uma das modalidades.
+
+Todo o código para replicar os gráficos e análises deste artigo estão diosponíveis
+[aqui]().
+
