@@ -1,5 +1,5 @@
 ---
-title: "As (não) eficácia do sistema de cotas na FUVEST"
+title: "A (não) eficácia do sistema de cotas na FUVEST"
 date: "2019-11-27"
 categories: ["r", "banco de dados", "analises"]
 tags: ["r", "pdf"]
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(eval=TRUE)
 ```
 
 A partir do vestibular de 2019 a FUVEST alterou o seu sistema cotas. Antes de 2019,
-o sistema beneficiava com uma bonificação os candidatos que cursaram o ensino médio 
+o sistema beneficiava  com uma bonificação os candidatos que cursaram o ensino médio 
 na rede pública de ensino e passou a contar com reserva de vagas para os estudantes
 cotistas.
 
@@ -176,9 +176,8 @@ df %>%
   dplyr::filter(candidato_vaga_2_fase > 1) %>% 
   dplyr::select(categoria, nm_curso, minimo_pontos) %>% 
   tidyr::pivot_wider(names_from = c(categoria), values_from = minimo_pontos) %>% 
-  dplyr::mutate(dif_ep = (EP - AC), dif_ppi = PPI - AC, 
-                max_dif = ifelse(dif_ep > dif_ppi, dif_ep, dif_ppi)) %>% 
-  dplyr::arrange(desc(max_dif)) %>% 
+  dplyr::mutate(dif_ep = (EP - AC)) %>% 
+  dplyr::arrange(desc(dif_ep)) %>% 
   head(10) %>% 
   dplyr::select(nm_curso) %>% 
   dplyr::left_join(df, by = "nm_curso") %>% 
