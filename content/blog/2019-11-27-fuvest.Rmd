@@ -5,7 +5,7 @@ categories: ["r", "banco de dados", "analises"]
 tags: ["r", "pdf"]
 banner: "img/banners/Fuvest-2020.jpg"
 author: ["Daniel"]
-summary: "Em mais de 30% das catrreiras no vestibular da USP as notas de corte para candidatos da escola pública são maiores do que as notas de corte para candidatos da ampla concorrência."
+summary: "Em mais de 30% das carreiras no vestibular da USP as notas de corte para candidatos da escola pública são maiores do que as notas de corte para candidatos da ampla concorrência."
 draft: false
 ---
 
