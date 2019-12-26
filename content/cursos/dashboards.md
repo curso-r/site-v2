@@ -19,6 +19,7 @@ unit_price: 200
   <h3>Conheça o curso</h3>
 </header>
 
+
 Dashboards são excelentes ferramentas para comunicar os resultados de uma análise de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
 
 O objetivo deste curso é apresentar os principais pacotes do R para a criação de dashboards. 
