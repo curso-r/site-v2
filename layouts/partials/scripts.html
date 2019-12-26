@@ -33,5 +33,12 @@
 <script src="contactform/contactform.js"></script>
 
 
+{{ if not .Site.Params.disable_codefolding }}
+<script src="{{ "js/collapse.js" | relURL }}"></script>
+<script src="{{ "js/dropdown.js" | relURL }}"></script>
+<script src="{{ "js/transition.js" | relURL }}"></script>
+{{ end }}
+
+
 <!-- Template Main Javascript File -->
 <script src="/js/main.js"></script>

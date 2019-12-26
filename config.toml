@@ -17,6 +17,11 @@ publishdir = "public"
     facebook = "https://www.facebook.com/cursodeR/"
     twitter = "https://twitter.com/curso_r"
     logo = "assets/logocursor.png"
+    disable_codefolding = false
+    codefolding_nobutton = true
+    codefolding_show = "Codigo"
+    custom_css = ["codefolding.css"]
+
     
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 

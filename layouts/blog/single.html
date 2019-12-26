@@ -31,8 +31,7 @@
         </a>
         {{ end }}
       </div>
-      
-      
+       
       <div class="row">
         <div id="article">
           <p class="text-right" id="author-date">
@@ -44,6 +43,11 @@
               {{ end }}
               em {{ dateFormat "02/01/2006" .Params.date }}
           </p>
+          
+          
+          {{ partial "header_maincodefolding" . }}
+          
+          
           {{.Content}}
           {{ if .Site.DisqusShortname }}
             <div class="disqus-comments">
@@ -64,5 +68,7 @@
   
   {{ partial "scripts.html" .}}
   {{ partial "toc.html" . }}
+  <!-- code folding -->
+  {{ partial "article_footer_js.html" . }}
   
 </html>
