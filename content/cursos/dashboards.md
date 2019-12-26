@@ -11,8 +11,8 @@ desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
 ordem: 2
 aberto: "true"
-id: 2
-unit_price: 75000
+id: 12
+unit_price: 200
 ---
 
 <header class="section-header">
