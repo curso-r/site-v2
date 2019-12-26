@@ -1,0 +1,295 @@
+---
+title: "Quem segura a barra do Porta dos Fundos?"
+date: "2019-12-04"
+categories: ["r", "banco de dados", "analises"]
+tags: ["r", "rfb"]
+banner: "img/banners/qsacnpj.jpg"
+author: ["Julio"]
+summary: "A base de dados de CNPJ da Receita Federal do Brasil (RFB) é, na minha opinião, uma das maiores conquistas de dados abertos do Brasil. Nesse post vou passar alguns links para ler a base e alguns gráficos simples."
+disable_codefolding: false
+codefolding_nobutton: false
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+O Porta dos Fundos (PDF) é um dos meus canais preferidos do youtube. Com mais de 5 bilhões de visualizações e diversos vídeos que já fazem parte da nossa cultura (drébito?), o PDF é um canal que divide opiniões. Muitos consideram que é um dos maiores grupos de humor do século. Outros acreditam que eles começaram muito bem, mas que agora já perderam a graça.
+
+Outros dizem que é um grupo de esquerdistas planejando a revolução comunista:
+
+<div align='center'>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bE8RWk0YY3I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<br/>
+
+Fato é que, com mais de sete anos de história e mais de mil vídeos, o PDF é um prato cheio para quem quer fazer análise de dados com o R. E é isso que faremos agora!
+
+Nesse post, pretendo revisitar as análises realizadas pelo William e pelo Fernando, dessa vez abrindo os resultados por artista. A pergunta que eu gostaria de responder é: quem segura a barra do PDF? Ou seja, quais artistas estão associados a vídeos com mais visualizações, e quem acumulou mais vídeos ao longo dos anos?
+
+Minha hipótese era de que o Rafael Portugal é a pessoa que segura o PDF nas costas. Vamos verificar!
+
+## Obtendo e arrumando dados
+
+Acessando o [site do PDF](https://portadosfundos.com.br), eu descobri que seria fácil obter uma lista de todos os vídeos do canal. O site é alimentado por uma API construída em Firebase, uma solução do Google. Para acessar essa API, bastou entrar no site e encontrar a chave de acesso nos headers. A chave se parece com isso:
+
+```
+Public XN@dm5L$i8trI+*qy}p&|lcF...
+```
+
+Montei uma função `pegar_pag()` para fazer o loop das páginas da API. O final é o código abaixo:
+
+```{r, }
+pegar_pag <- function(u, key) {
+  h <- httr::add_headers(Authorization = key)
+  r <- httr::GET(u, h)
+  httr::content(r, "parsed")
+}
+
+# pegando os json de todas as paginas
+json_list <- list()
+u <- "https://porta.pixelwolf.co/api/v1/videos/?sort=-publish_date"
+while(!is.null(u)) {
+  message(u)
+  json <- list(pegar_pag(u))
+  json_list <- append(json_list, json)
+  u <- json[[1]][["next"]]
+}
+
+```
+
+Depois, montei um script para arrumar e guardar esses dados. Para quem não sabe, o pacote `{magrittr}` permite a criação de funções anônimas utilizando o atalho `funcao <- . %>% ...`. Isso é equivalente a fazer `funcao <- function(.) {...}`
+
+```{r}
+# arrumando os json
+arrumar_um_item <- . %>% 
+  purrr::discard(is.null) %>% 
+  magrittr::extract(!names(.) %in% c("making_of", "serie")) %>% 
+  tibble::as_tibble() %>% 
+  dplyr::distinct(id, .keep_all = TRUE)
+
+arrumar_um_json <- . %>% 
+  purrr::pluck("results") %>% 
+  purrr::map_dfr(arrumar_um_item)
+
+dados_site_pdf <- json_list %>% 
+  purrr::map_dfr(arrumar_um_json) %>% 
+  dplyr::distinct(id, .keep_all = TRUE)
+```
+
+Essa base de dados contém algumas informações sobre os vídeos, como nome, link do youtube e descrição. No entanto, ela não possui duas informações que queremos muito: o número de likes e o elenco.
+
+### Obtendo informações do elenco
+
+Para conseguir essas informações, acessamos as páginas individuais de cada link listado no passo anterior.
+
+```{r}
+get_elenco <- function(slug) {
+  message(slug)
+  u_pag <- paste0("https://www.portadosfundos.com.br/video/", slug)
+  get <- purrr::insistently(httr::GET, purrr::rate_delay(0.1, 100))
+  r <- get(u_pag, httr::timeout(1))
+  r %>% 
+    xml2::read_html() %>% 
+    xml2::xml_find_all("//a[@class='cast-item']") %>% 
+    xml2::xml_attr("href")
+}
+
+dados_elenco <- dados_site_pdf %>% 
+  dplyr::transmute(video_id = id, elenco = purrr::map(slug, get_elenco))
+```
+
+O resultado é uma com uma list-column, assim:
+
+|   id|elenco                                                   |
+|----:|:--------------------------------------------------------|
+| 1123|c("/elenco/fabio-porchat", "/elenco/gregorio-duviver")   |
+|  529|c("/elenco/antonio-tabet--2", "/elenco/rafael-portugal") |
+|  826|c("/elenco/rafael-infant", "/elenco/thati-lopes")        |
+| 1151|c("/elenco/fabio-porchat", "/elenco/gregorio-duviver")   |
+|  814|c("/elenco/clarice-falcao", "/elenco/julia-rabello")     |
+
+### Obtendo informações dos likes
+
+Para acessar as informações dos likes, é necessário acessar a API do youtube. Acessar a API é fácil, mas é um pouco chato criar a chave de acesso. Para isso, sugiro seguir o tutorial abaixo:
+
+<div align='center'>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3jZ5vnv-LZc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<br/>
+
+```{r}
+api_key <- Sys.getenv("YOUTUBE_API")
+
+baixar_dados <- function(video_id, api_key, dir) {
+  u_base <- "https://www.googleapis.com/youtube/v3/videos"
+  query <- list(id = video_id, key = api_key, part = "statistics")
+  r <- httr::GET(u_base, query = query)
+  httr::content(r, simplifyDataFrame = TRUE) %>% 
+    purrr::pluck("items", "statistics") %>% 
+    tibble::as_tibble()
+}
+
+# baixando os dados da API
+da_stats <- dados_site_pdf$video_id %>% 
+  purrr::set_names() %>% 
+  purrr::map_dfr(baixar_dados, api_key, path, .id = "video_id")
+
+dados_completos <- da_stats %>% 
+  dplyr::inner_join(dados_site_pdf, "video_id") %>% 
+  dplyr::inner_join(dados_elenco, "id") %>% 
+  janitor::clean_names() %>% 
+  dplyr::mutate_at(
+    dplyr::vars(dplyr::ends_with("count")), 
+    as.numeric
+  )
+```
+
+No final, teremos uma base de dados com essa estrutura:
+
+```
+Observations: 1,106
+Variables: 22
+$ video_id       <chr> "-12_0ZP2p4g", "-8xOdiMGeHM", "-IB_V…
+$ view_count     <dbl> 4099867, 7757738, 4209147, 3025659, …
+$ like_count     <dbl> 113134, 227427, 90090, 214594, 13955…
+$ dislike_count  <dbl> 1624, 4345, 3827, 3967, 10780, 7029,…
+$ favorite_count <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ comment_count  <dbl> 5176, 1652, 2367, 5434, 1983, 5695, …
+$ id             <int> 987, 807, 956, 128, 702, 1049, 66, 4…
+$ title          <chr> "EPISÓDIO 4  (FINAL)", "CONVERSA", "…
+$ slug           <chr> "viral-episodio-4-final", "conversa"…
+$ publish_date   <chr> "2014-04-26T19:00:08-03:00", "2015-0…
+$ duration       <chr> "00:16:48", "00:03:41", "00:04:04", …
+$ description    <chr> "A saga chegou ao fim! Será que Beto…
+$ subtitles      <chr> "", "", "", "Dispositiva\nJosniel Ro…
+$ thumbnail      <chr> "https://img.youtube.com/vi/-12_0ZP2…
+$ url            <chr> "https://www.youtube.com/watch?v=-12…
+$ embed_url      <chr> "https://www.youtube.com/embed/-12_0…
+$ viewed         <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, …
+$ bookmark       <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, F…
+$ watch_later    <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, F…
+$ total_views    <int> 14, 3, 5, 53, 5, 6, 22, 5, 4, 3, 3, …
+$ allow_comments <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, …
+$ elenco         <list> [<"/elenco/antonio-tabet--2", "/ele…
+```
+
+Para este post, vamos usar só algumas dessas colunas, como quantidade de visualizações, elenco e data de publicação. A análise das descrições dos vídeos, likes e dislikes ficará para a próxima!
+
+## Arrumando a base final
+
+Para analisar a quantidade de visualizações por elenco, precisamos empilhar a base a partir da list-column criada. No final teremos uma base com várias repetições de `id`s, cuja unidade amostral é vídeo-ator. Também jogamos fora as colunas que não vamos utilizar e arrumamos os nomes dos atores com as funções `arrumar_elenco()` e `arrumar_elenco_col()`  
+
+```{r}
+arrumar_elenco <- . %>% 
+  basename() %>% 
+  fs::path_ext_remove() %>% 
+  stringr::str_replace_all("[0-9-]", " ") %>% 
+  stringr::str_squish() %>% 
+  stringr::str_to_title()
+
+arrumar_elenco_col <- . %>% 
+  basename() %>% 
+  fs::path_ext_remove() %>% 
+  stringr::str_replace_all("[0-9-]", "_") %>% 
+  stringr::str_replace_all("_+", "_") %>% 
+  stringr::str_remove_all("_$") %>% 
+  stringr::str_squish()
+
+pdf_long <- dados_site_pdf_elenco %>% 
+  dplyr::select(id, elenco) %>% 
+  dplyr::inner_join(dados_completos, "id") %>% 
+  tidyr::unnest(elenco) %>% 
+  dplyr::transmute(
+    id, 
+    nome = arrumar_elenco(elenco),
+    col = arrumar_elenco_nm(elenco),
+    date = as.Date(lubridate::ymd_hms(publish_date)), 
+    view_count
+  )
+
+```
+
+## Visualizações
+
+A primeira visualização que pensamos em fazer foi um gráfico da quantidade de visualizações ao longo do tempo, separando por artista. Vídeos que têm mais de um artista no elenco aparecem mais de uma vez no gráfico.
+
+Montamos uma função `grafico_smooth()` que mostra esse gráfico para artistas que possuem pelo menos `n_corte=` vídeos. Também adicionamos um parâmetro `zoom=` para não mostrar vídeos que têm muitas visualizações, que esmagam o gráfico.
+
+```{r}
+grafico_smooth <- function(n_corte, zoom = NULL) {
+  
+  d_plot <- pdf_long %>% 
+    dplyr::group_by(nome) %>% 
+    dplyr::mutate(
+      n = dplyr::n(), 
+      mean_views = mean(view_count/1e6)
+    ) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::filter(n >= n_corte) %>% 
+    dplyr::mutate(
+      nome = forcats::fct_reorder(nome, mean_views, .desc = TRUE),
+      lab = paste0("m: ", round(mean_views, 1))
+    )
+  
+  d_plot_agg <- d_plot %>% 
+    dplyr::distinct(nome, .keep_all = TRUE)
+  
+  p <- d_plot %>% 
+    ggplot(aes(x = date, y = view_count/1e6)) +
+    geom_point(size = .2) +
+    geom_smooth(se = FALSE, colour = "red", method = "loess") +
+    geom_hline(
+      mapping = aes(yintercept = mean_views), 
+      colour = "gray70", data = d_plot_agg
+    ) +
+    geom_text(
+      mapping = aes(label = lab, y = mean_views), 
+      x = as.Date("2019-05-01"), 
+      nudge_y = 2, size = 3, 
+      data = d_plot_agg
+    ) +
+    facet_wrap(~nome) +
+    theme_bw(12) +
+    labs(x = "Data", y = "Visualizações (milhões)") +
+    theme(
+      panel.border = element_blank(), 
+      strip.background = element_rect(fill = "gray90", size = 0)
+    )
+  
+  if (!is.null(zoom)) {
+    p + coord_cartesian(ylim = c(0, zoom))
+  } else {
+    p
+  }
+  
+}
+```
+
+O resultado sem aplicação de zoom está na Figura \@ref(fig:smooth1). Os facets estão ordenados pela média de visualizações dos vídeos do artista. Letícia Lima é a artista com maior média de visualizações, e Pedro Benevides o com menor média. No entanto, a Letícia fez parte do PDF somente na época das "vacas gordas": note que todos os gráficos têm uma tendência de queda no número de visualizações. Por isso, é difícil comparar o desempenho dos artistas somente por esse gráfico.
+
+```{r}
+grafico_smooth(80)
+```
+
+```{r smooth1, eval = TRUE, fig.cap="Visualizações no tempo para artistas com 70 ou mais vídeos."}
+# knitr::include_graphics("/img")
+```
+
+A Figura \@ref(fig:smooth2) possui as mesmas informações, mas mostra apenas vídeos que tiveram até 12 milhões de visualizações. É possível notar que a tendência de queda nas visualizações é aproximadamente linear para todos os artistas. No entanto, a quantidade de vídeos que cada artista participou é bem 
+
+
+## Modelos
+
+A Figura \@ref(fig:qtd-socios2) mostra a distribuição da quantidade de sócios, considerando apenas Limitada e SA. É possível notar que as Sociedades Anônimas possuem mais sócios.
+  
+```{r qtd-socios2, fig.cap='Distribuição da quantidade de sócios, comparando Limitada e SA.', eval=TRUE, echo=FALSE}
+knitr::include_graphics('/img/blog/qsacnpj/qtd_socios2.png')
+```
+
+É isso pessoal. Happy coding ;)
+
+O código para gerar os gráficos segue abaixo:
+
