@@ -1,23 +1,25 @@
 ---
 title: "Dashboards com R"
-data: "25/11 a 11/12 - Segundas e Quartas, das 19h às 22h"
+data: "Novas turmas em 2020!"
 hora: "18 horas de curso"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
+local: "A definir"
 img: "img/cursos/dashboards.png"
-preco: "R$ 750,00"
-checkout: true
+preco: "A Definir"
 banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
+professores: ["Athos Damiani", "William Amorim"]
 ordem: 2
-aberto: "true"
-id: 2
+id: "definir_novo_id"
 unit_price: 75000
 ---
+
+
 
 <header class="section-header">
   <h3>Conheça o curso</h3>
 </header>
+
 
 Dashboards são excelentes ferramentas para comunicar os resultados de uma análise de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
 
