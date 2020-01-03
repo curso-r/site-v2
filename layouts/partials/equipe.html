@@ -28,6 +28,12 @@
                 <a href="{{$member.Params.facebook}}"><i class="fa fa-facebook"></i></a>
                 <a href="{{$member.Params.github}}"><i class="fa fa-github"></i></a>
                 <a href="{{$member.Params.linkedin}}"><i class="fa fa-linkedin"></i></a>
+                {{ if isset $member.Params "blog"}}
+                <a href="{{$member.Params.blog}}"><i class="fas fa-globe-americas"></i></a>
+                {{ end }}
+                {{ if isset $member.Params "pen"}}
+                <a href="{{$member.Params.pen}}"><i class="fas fa-pen"></i></a>
+                {{ end }}
               </div>
               <span>{{$member.Params.bio}}</span>
             </div>

@@ -22,27 +22,26 @@
     {{ partial "header.html" . }}
   </header><!-- #header -->
   
-  
+  <br>
   <!--==========================
       Nossos Cursos
     ============================-->
-    <section id="cursos">
+    <section id="sobre">
       <div class="container" style="background: none;">
         
         <header class="section-header">
-          <h3>Quem somos</h3>
+          <h3>Sobre a Curso-R</h3>
         </header>
         
         {{.Content}}
-        
         
       </div>
 
     </section><!-- #about -->
     
-    {{ partial "equipe.html" . }}
-    
     {{ partial "newsletter.html" . }}
+    
+    {{ partial "equipe.html" . }}
     
     {{partial "footer.html" .}}
     

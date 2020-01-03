@@ -658,6 +658,116 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 0 20px 20px 20px;
 }
 
+/* Sobre
+-------------------------------- */
+#sobre {
+  background-color: white;
+  background-size: cover;
+  padding: 60px 0 40px 0;
+  position: relative;
+}
+
+#sobre span.turma-aberta {
+  color: white;
+  background-color: green;
+  padding: 2px;
+  margin-left: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+#sobre::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: 0;
+}
+
+#sobre .container {
+  position: relative;
+  z-index: 10;
+}
+
+#sobre .about-col {
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+#sobre .about-col .img {
+  position: relative;
+}
+
+#sobre .about-col .img img {
+  border-radius: 4px 4px 0 0;
+}
+
+#sobre .about-col .icon {
+  width: 64px;
+  height: 64px;
+  padding-top: 8px;
+  text-align: center;
+  position: absolute;
+  background-color: #da4d4d;
+  border-radius: 50%;
+  text-align: center;
+  border: 4px solid #fff;
+  left: calc( 50% - 32px);
+  bottom: -30px;
+  transition: 0.3s;
+}
+
+#sobre .about-col i {
+  font-size: 36px;
+  line-height: 1;
+  color: #fff;
+  transition: 0.3s;
+}
+
+#sobre .about-col:hover .icon {
+  background-color: #fff;
+}
+
+#sobre .about-col:hover i {
+  color: #da4d4d;
+}
+
+#sobre .about-col h2 {
+  color: #000;
+  text-align: left;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 0;
+  margin: 40px 20px 12px 20px;
+}
+
+#sobre .about-col h2 a {
+  color: #000;
+}
+
+#sobre .about-col h2 a:hover {
+  color: #da4d4d;
+}
+
+#sobre .about-col p {
+  font-size: 14px;
+  line-height: 24px;
+  color: #333;
+  margin-bottom: 0;
+  padding: 0 20px 20px 20px;
+}
+
+#sobre p.author {
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 0 20px 10px 20px;
+}
+
 /* Nossos Cursos 
 -------------------------------- */
 #cursos {

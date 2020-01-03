@@ -12,6 +12,10 @@ body {
   padding: 30px 15px 15px 15px !important;
 }
 
+#sobre .container {
+  padding: 30px 90px 15px 90px !important;
+}
+
 #intro .intro-header {
   background-repeat: no-repeat;
   background-position: center;
