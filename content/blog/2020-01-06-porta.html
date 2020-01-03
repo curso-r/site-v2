@@ -1,0 +1,314 @@
+---
+title: "Quem segura a barra do Porta dos Fundos?"
+date: "2020-01-06"
+categories: ["r", "porta dos fundos", "youtube"]
+tags: ["r", "api"]
+banner: "img/banners/porta-elenco.jpg"
+author: ["Julio"]
+summary: "A base de dados de CNPJ da Receita Federal do Brasil (RFB) é, na minha opinião, uma das maiores conquistas de dados abertos do Brasil. Nesse post vou passar alguns links para ler a base e alguns gráficos simples."
+disable_codefolding: false
+codefolding_nobutton: false
+draft: false
+---
+
+
+
+<p>O Porta dos Fundos (PDF) é um dos meus canais preferidos do youtube. Com mais de 5 bilhões de visualizações e diversos vídeos que já fazem parte da nossa cultura (drébito?), o PDF é um canal que divide opiniões. Muitos consideram que é um dos maiores grupos de humor do século. Outros acreditam que eles começaram muito bem, mas que agora já perderam a graça.</p>
+<p>Outros dizem que é um grupo de esquerdistas planejando a revolução comunista:</p>
+<div align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bE8RWk0YY3I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<p><br/></p>
+<p>Polêmicas a parte, fato é que, com mais de sete anos de história e mais de mil vídeos, o PDF é um prato cheio para quem quer fazer análise de dados com o R. E é isso que faremos agora!</p>
+<p>Nesse post, pretendo revisitar as análises realizadas pelo William e pelo Fernando, dessa vez abrindo os resultados por artista. A pergunta que eu gostaria de responder é: quem segura a barra do PDF? Ou seja, quais artistas estão associados a vídeos com mais visualizações, e quem acumulou mais vídeos ao longo dos anos?</p>
+<p>Minha hipótese era de que o Rafael Portugal é a pessoa que segura o PDF nas costas. Vamos verificar?</p>
+<p>Se quiser reproduzir as análises do artigo, carregue esses pacotes aqui:</p>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(httr)
+library(xml2)
+library(jsonlite)
+library(janitor)
+library(fs)</code></pre>
+<div id="obtendo-e-arrumando-dados" class="section level2">
+<h2>Obtendo e arrumando dados</h2>
+<p>Acessando o <a href="https://portadosfundos.com.br">site do PDF</a>, descobri que seria fácil obter uma lista de todos os vídeos do canal. O site é alimentado por uma API construída em Firebase, uma solução do Google. Para acessar essa API, bastou entrar no site e encontrar a chave de acesso nos headers. A chave se parece com isso:</p>
+<pre><code>Public XN@dm5L$i8trI+*qy}p&amp;|lcF...</code></pre>
+<p>Montei uma função <code>pegar_pag()</code> para fazer o loop das páginas da API. O final é o código abaixo:</p>
+<pre class="r"><code>pegar_pag &lt;- function(u, key) {
+  h &lt;- add_headers(Authorization = key)
+  r &lt;- GET(u, h)
+  content(r, &quot;parsed&quot;)
+}
+
+# pegando os json de todas as paginas
+json_list &lt;- list()
+u &lt;- &quot;https://porta.pixelwolf.co/api/v1/videos/?sort=-publish_date&quot;
+while(!is.null(u)) {
+  message(u)
+  json &lt;- list(pegar_pag(u))
+  json_list &lt;- append(json_list, json)
+  u &lt;- json[[1]][[&quot;next&quot;]]
+}</code></pre>
+<p>Depois, montei um script para arrumar e guardar esses dados. Para quem não sabe, o pacote <code>{magrittr}</code> permite a criação de funções anônimas utilizando o atalho <code>funcao &lt;- . %&gt;% ...</code>. Isso é equivalente a fazer <code>funcao &lt;- function(.) {...}</code></p>
+<pre class="r"><code># arrumando os json
+arrumar_um_item &lt;- . %&gt;% 
+  discard(is.null) %&gt;% 
+  magrittr::extract(!names(.) %in% c(&quot;making_of&quot;, &quot;serie&quot;)) %&gt;% 
+  as_tibble() %&gt;% 
+  distinct(id, .keep_all = TRUE)
+
+arrumar_um_json &lt;- . %&gt;% 
+  pluck(&quot;results&quot;) %&gt;% 
+  map_dfr(arrumar_um_item)
+
+da_site_pdf &lt;- json_list %&gt;% 
+  map_dfr(arrumar_um_json) %&gt;% 
+  distinct(id, .keep_all = TRUE)</code></pre>
+<p>Essa base de dados contém algumas informações sobre os vídeos, como nome, link do youtube e descrição. No entanto, ela não possui duas informações que queremos muito: o número de likes e o elenco.</p>
+<div id="obtendo-informações-do-elenco" class="section level3">
+<h3>Obtendo informações do elenco</h3>
+<p>Para conseguir essas informações, acessamos as páginas individuais de cada link listado no passo anterior.</p>
+<pre class="r"><code>get_elenco &lt;- function(slug) {
+  message(slug)
+  u_pag &lt;- paste0(&quot;https://www.portadosfundos.com.br/video/&quot;, slug)
+  get &lt;- insistently(GET, rate_delay(0.1, 100))
+  r &lt;- get(u_pag, timeout(1))
+  r %&gt;% 
+    read_html() %&gt;% 
+    xml_find_all(&quot;//a[@class=&#39;cast-item&#39;]&quot;) %&gt;% 
+    xml_attr(&quot;href&quot;)
+}
+
+da_elenco_pdf &lt;- da_site_pdf %&gt;% 
+  transmute(id, elenco = map(slug, get_elenco))</code></pre>
+<p>O resultado é uma com uma list-column, assim:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">elenco</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1123</td>
+<td align="left">c(“/elenco/fabio-porchat”, “/elenco/gregorio-duviver”)</td>
+</tr>
+<tr class="even">
+<td align="right">529</td>
+<td align="left">c(“/elenco/antonio-tabet–2”, “/elenco/rafael-portugal”)</td>
+</tr>
+<tr class="odd">
+<td align="right">826</td>
+<td align="left">c(“/elenco/rafael-infant”, “/elenco/thati-lopes”)</td>
+</tr>
+<tr class="even">
+<td align="right">1151</td>
+<td align="left">c(“/elenco/fabio-porchat”, “/elenco/gregorio-duviver”)</td>
+</tr>
+<tr class="odd">
+<td align="right">814</td>
+<td align="left">c(“/elenco/clarice-falcao”, “/elenco/julia-rabello”)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="obtendo-informações-dos-likes" class="section level3">
+<h3>Obtendo informações dos likes</h3>
+<p>Para acessar as informações dos likes, é necessário acessar a API do youtube. Acessar a API é fácil, mas é um pouco chato criar a chave de acesso. Para isso, sugiro seguir o tutorial abaixo:</p>
+<div align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3jZ5vnv-LZc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<p><br/></p>
+<pre class="r"><code>api_key &lt;- Sys.getenv(&quot;YOUTUBE_API&quot;)
+
+baixar_dados &lt;- function(video_id, api_key, dir) {
+  u_base &lt;- &quot;https://www.googleapis.com/youtube/v3/videos&quot;
+  query &lt;- list(id = video_id, key = api_key, part = &quot;statistics&quot;)
+  r &lt;- GET(u_base, query = query)
+  content(r, simplifyDataFrame = TRUE) %&gt;% 
+    pluck(&quot;items&quot;, &quot;statistics&quot;) %&gt;% 
+    as_tibble()
+}
+
+# baixando os dados da API
+da_api_pdf &lt;- dados_site_pdf$video_id %&gt;% 
+  set_names() %&gt;% 
+  map_dfr(baixar_dados, api_key, path, .id = &quot;video_id&quot;) %&gt;% 
+  mutate(video_id = path_ext_remove(basename(video_id))) %&gt;% 
+  clean_names() %&gt;% 
+  mutate_at(vars(ends_with(&quot;count&quot;)), as.numeric)</code></pre>
+<p>Para este post, vamos usar só uma parte das informações obtidas, como quantidade de visualizações, elenco, título e data de publicação. A análise das descrições dos vídeos, likes e dislikes ficará para a próxima!</p>
+</div>
+</div>
+<div id="arrumando-a-base-final" class="section level2">
+<h2>Arrumando a base final</h2>
+<p>Para analisar a quantidade de visualizações por elenco, precisamos juntar todas as bases e empilhar a partir da list-column criada. Nossa unidade amostral é vídeo-ator, então teremos várias repetições de <code>id</code>s. Também jogamos fora as colunas que não vamos utilizar e arrumamos os nomes dos atores com as funções <code>arrumar_elenco()</code> e <code>arrumar_elenco_col()</code></p>
+<pre class="r"><code>arrumar_elenco &lt;- . %&gt;% 
+  path_file() %&gt;% 
+  path_ext_remove() %&gt;% 
+  str_replace_all(&quot;[0-9-]&quot;, &quot; &quot;) %&gt;% 
+  str_squish() %&gt;% 
+  str_to_title()
+
+arrumar_elenco_col &lt;- . %&gt;% 
+  path_file() %&gt;% 
+  path_ext_remove() %&gt;% 
+  str_replace_all(&quot;[0-9-]&quot;, &quot;_&quot;) %&gt;% 
+  str_replace_all(&quot;_+&quot;, &quot;_&quot;) %&gt;% 
+  str_remove_all(&quot;_$&quot;) %&gt;% 
+  str_squish()
+
+pdf_long &lt;- da_elenco_pdf %&gt;% 
+  inner_join(da_site_pdf, &quot;id&quot;) %&gt;% 
+  inner_join(da_api_pdf, &quot;video_id&quot;) %&gt;% 
+  filter(!stringr::str_detect(slug, banned)) %&gt;%
+  unnest(elenco) %&gt;% 
+  transmute(
+    id, title,
+    nome = arrumar_elenco_nm(elenco),
+    col = arrumar_elenco_col(elenco),
+    date = as.Date(ymd_hms(publish_date)), 
+    view_count, like_count, dislike_count
+  )</code></pre>
+</div>
+<div id="visualizações" class="section level2">
+<h2>Visualizações</h2>
+<p>A primeira visualização que pensamos em fazer foi um gráfico da quantidade de visualizações acumulada ao longo do tempo, separando por artista. Vídeos que têm mais de um artista no elenco aparecem mais de uma vez no gráfico. É importante destacar que meu interesse não é analisar a quantidade <strong>média</strong> de visualizações dos artistas, e sim a quantidade <strong>total</strong>.</p>
+<p>Montamos uma função <code>grafico_acumulado()</code> que mostra essa informação para artistas que possuem pelo menos <code>n_corte=</code> vídeos.</p>
+<pre class="r"><code>grafico_acumulado &lt;- function(n_corte) {
+  
+  da_plot &lt;- pdf_long %&gt;% 
+    arrange(date) %&gt;% 
+    group_by(nome) %&gt;% 
+    mutate(n = n(), views = cumsum(view_count) / 1e6) %&gt;% 
+    ungroup() %&gt;% 
+    mutate(nome = fct_reorder(path_file(nome), views, .desc = TRUE)) %&gt;% 
+    filter(n &gt;= n_corte)
+  
+  # pega a ultima data de cada artista (para plot)
+  da_plot_last &lt;- da_plot %&gt;% 
+    arrange(desc(date)) %&gt;% 
+    group_by(nome) %&gt;% 
+    slice(1) %&gt;% 
+    ungroup() %&gt;% 
+    mutate(last_date = max(date))
+  
+  da_plot %&gt;% 
+    ggplot(aes(x = date, y = views, group = nome)) +
+    geom_step(colour = &quot;darkred&quot;) +
+    ggrepel::geom_text_repel(
+      mapping = aes(label = nome, x = last_date), 
+      data = da_plot_last, 
+      hjust = 0, nudge_x = 20, 
+      segment.size = .3,
+      direction = &quot;y&quot;
+    ) +
+    geom_segment(
+      mapping = aes(x = date, xend = last_date, yend = views), 
+      data = da_plot_last, 
+      linetype = 2,
+      colour = &quot;gray70&quot;
+    ) +
+    geom_point(aes(x = last_date), data = da_plot_last, size = 1) +
+    scale_x_date(
+      limits = c(min(d_plot$date), as.Date(&quot;2021-03-01&quot;)),
+      date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;
+    ) +
+    theme_minimal(14) +
+    labs(
+      x = &quot;Data&quot;, y = &quot;Número total de visualizações (milhões)&quot;,
+      title = &quot;Número acumulado de visualizações&quot;,
+      subtitle = stringr::str_glue(&quot;A partir do dia {format(min(d_plot$date), &#39;%d/%m/%Y&#39;)}&quot;)
+    )
+}</code></pre>
+<p>O resultado de <code>n_corte=70</code> é o que observamos na Figura <a href="#fig:acu">1</a>. Podemos notar que os três sócios principais do PDF, Fabio Porchat, Gregorio Duvidier e Antonio Tabet dividem a liderança de visualizações em seus vídeos, seguidos pelo Rafael Portugal e Thati Lopes, que começaram a fazer vídeos mais recentemente.</p>
+<div class="figure"><span id="fig:acu"></span>
+<img src="/img/blog/porta/acu.png" alt="Gráfico do volume acumulado de visualizações por artista ao longo do tempo." width="150%" />
+<p class="caption">
+Figure 1: Gráfico do volume acumulado de visualizações por artista ao longo do tempo.
+</p>
+</div>
+<p>No entanto, sabemos que o <a href="https://www.curso-r.com/blog/2017-03-20-porta-dos-fundos-decadencia/">porta dos fundos está em decadência</a>. A Figura <a href="#fig:historico">2</a> mostra o mesmo gráfico do post feito lá em 2017 pelo <a href="https://www.curso-r.com/author/william/">William Amorim</a>, mas com os dados atualizados. Aproveitei para adicionar os vídeos mais visualizados em cada ano.</p>
+<pre class="r"><code>pdf_long %&gt;% 
+  distinct(id, .keep_all = TRUE) %&gt;% 
+  mutate(view_count = view_count/1e6) %&gt;% 
+  ggplot(aes(x = date, y = view_count)) +
+  geom_line(alpha = .8) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;) +
+  scale_y_continuous(limits = c(0, 40)) +
+  geom_text(aes(label = lab), data = max_ano, size = 3,
+            alpha = .8, vjust = -.2) +
+  geom_point(data = max_ano) +
+  theme_minimal(14) +
+  geom_smooth(se = FALSE, colour = &quot;red&quot;) +
+  labs(x = &quot;Data&quot;, y = &quot;Visualizações (milhões)&quot;)</code></pre>
+<div class="figure"><span id="fig:historico"></span>
+<img src="/img/blog/porta/historico.png" alt="Volume de visualizações por vídeo por data de publicação." width="100%" />
+<p class="caption">
+Figure 2: Volume de visualizações por vídeo por data de publicação.
+</p>
+</div>
+<p>É interessante notar também que a taxa de visualizações por quantidade de dias desde a publicação permanece constante, corroborando com a hipótese de que <a href="https://www.curso-r.com/blog/2017-04-28-porta-dos-fundos-decadencia-revisited/">existe um efeito da idade do vídeo na quantidade de visualizações</a>, formulada pelo <a href="https://www.curso-r.com/author/fernando/">Fernando</a> mais de dois anos atrás. Aqui, consideramos apenas vídeos publicados até o final de 2018.</p>
+<pre class="r"><code>pdf_long %&gt;% 
+  distinct(id, .keep_all = TRUE) %&gt;% 
+  mutate(
+    idade = as.numeric(Sys.Date() - date),
+    tx = view_count / idade
+  ) %&gt;% 
+  filter(date &lt; &quot;2019-01-01&quot;) %&gt;% 
+  ggplot(aes(x = date, y = tx)) +
+  geom_line() +
+  geom_smooth(se = FALSE, colour = &quot;red&quot;) +
+  theme_minimal(14) +
+  labs(x = &quot;Data&quot;, y = &quot;Visualizações / # Dias desde publicação&quot;)</code></pre>
+<div class="figure"><span id="fig:historico-taxa"></span>
+<img src="/img/blog/porta/historico_taxa.png" alt="Taxa do volume de visualizações por quantidade de dias desde a publicação do vídeo." width="100%" />
+<p class="caption">
+Figure 3: Taxa do volume de visualizações por quantidade de dias desde a publicação do vídeo.
+</p>
+</div>
+<p>Sendo assim, consideramos um novo gráfico com a quantidade de visualizações por artista considerando uma <em>rolling window</em>. Dessa forma, o passado prolífico do canal não afetará as conclusões sobre quem está carregando o PDF na atualidade. O resultado é a função <code>grafico_roll()</code>, que calcula a soma acumulada de acordo com uma janela especificada.</p>
+<pre class="r"><code>calcular_janela &lt;- function(p_nm, p_dt, da_long) {
+  j &lt;- p_dt - janela
+  da_long %&gt;% 
+    filter(nome == p_nm, between(date, j, p_dt)) %&gt;% 
+    summarise(view_count = sum(view_count)/1e6, n = n(), janela = j)
+}
+
+grafico_roll &lt;- function(janela = lubridate::years(1), n_corte = 150) {
+  
+  d_corte &lt;- pdf_long %&gt;% 
+    group_by(nome) %&gt;% 
+    mutate(ntot = n()) %&gt;% 
+    ungroup() %&gt;% 
+    filter(ntot &gt;= n_corte)
+  
+  d_plot &lt;- d_corte %&gt;% 
+    select(nome, date) %&gt;% 
+    mutate(roll = map2(nome, date, calcular_janela, d = d_corte)) %&gt;% 
+    unnest_legacy(roll) %&gt;% 
+    filter(!is.na(janela))
+  
+  d_plot %&gt;% 
+    ggplot(aes(x = date, y = view_count, colour = nome)) +
+    geom_line() +
+    theme_minimal(14) +
+    facet_wrap(~nome)
+}
+
+grafico_roll(years(2), n_corte = 180)</code></pre>
+<p>A Figura <a href="#fig:roll"><strong>??</strong></a> mostra os resultados da análise considerando uma janela de 2 anos. Considerei no gráfico somente os 5 artistas com mais visualizações. Nesse gráfico é possível visualizar que Rafael Portugal está dominando as visualizações desde que entrou. No entanto, recentemente a diferença entre os cinco artistas está diminuindo. Uma possível explicação é que, como a quantidade de visualizações dos vídeos estacionou na média da Figura <a href="#fig:historico">2</a></p>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="/img/blog/porta/roll.png" alt="Gráfico do volume acumulado de visualizações por artista ao longo do tempo, considerando uma janela de 2 anos."  />
+<p class="caption">
+Figure 4: Gráfico do volume acumulado de visualizações por artista ao longo do tempo, considerando uma janela de 2 anos.
+</p>
+</div>
+<p>Ou seja, verifiquei minha hipótese, mas com um 🤷 no final.</p>
+<p>É isso pessoal. Happy coding ;)</p>
+<p>O código para gerar os gráficos segue abaixo:</p>
+</div>
