@@ -273,7 +273,7 @@ blockquote {
   text-transform: uppercase;
 }
 
-/******** CSS da pagina doc urso *******/
+/******** CSS da pagina dos cursos *******/
 
 #infos-praticas p {
   font-size: 16px
@@ -282,6 +282,28 @@ blockquote {
 #infos-praticas i {
   color: #da4d4d; 
   margin-right: 6px;
+}
+
+@media (min-width: 700px) {
+  #cursos-single {
+  width: 730px;
+  background-color: white;
+  font-family: "Source Sans Pro";
+  margin: auto;
+  flex: none;
+ }
+}
+
+@media (max-width: 699px) {
+  #cursos-single {
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: white;
+  font-family: "Source Sans Pro";
+  margin: auto;
+  flex: none;
+ }
 }
 
 /********  CSS DO NAVBAR  ********/

@@ -32,13 +32,13 @@ O objetivo deste curso é apresentar os conceitos essenciais de programação em
 
 &#128204; Ambientação ao R e ao RStudio
 
-&#128204; Importanto bases de dados para dentro do R
+&#128204; Importação de bases para dentro do R
 
-&#128204; Manipulação de dados: selecionando e criando colunas, ordenando, filtrando e sumarizando a base, empilhando e jutando tabelas
+&#128204; Manipulação de bases de dados
 
-&#128204; Construção de gráficos estatísticos: gráficos de pontos (dispersão), linhas (séries temporais), barras, boxplots e histogramas
+&#128204; Construção de gráficos estatísticos
 
-&#128204; Relatórios e dashboards com R Markdown
+&#128204; Comunicação de resultados com relatórios e dashboards
 
 <br>
 
@@ -52,53 +52,70 @@ APRESENTANDO OS SEGUINTES PACOTES
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/tidyverse.png" width = "72px" height = "82px">
   <div class="tooltip-content">
+    <a href = "https://www.tidyverse.org/packages/">tidyverse</a>
     <p>A filosofia tidy.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/pipe.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O operador pipe! Que revolucionou a programação em R.</p>
+    <a href = "https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html/">magrittr</a>
+    <p>O pipe e a revolução do R.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/readr.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O pacote readr, para importar arquivos de texto.</p>
+    <a href = "https://readr.tidyverse.org/">readr</a>
+    <p>Seus dados dentro do R!</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/readxl.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O pacote readxl, para importar arquivos do Excel.</p>
+    <a href = "https://reaxl.tidyverse.org/">readxl</a>
+    <p>Seus dados (do Excel) dentro do R!</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/dplyr.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O pacote dplyr, porque a maior parte das análises é manipulação de dados.</p>
-  </div> 
-</div>
-<div class="tooltip-wrap">
-  <img src = "/img/cursos/hex/stringr.png" width = "72px" height = "82px">
-  <div class="tooltip-content">
-    <p>O pacote stringr, para trabalhar com textos.</p>
+    <a href = "https://dplyr.tidyverse.org/">dplyr</a>
+    <p>Porque a maior parte do trabalho é manipulação de dados.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/ggplot2.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O pacote ggplot2, porque fazer gráficos é uma arte.</p>
+    <a href = "https://ggplot2.tidyverse.org/">ggplot2</a>
+    <p>Fazer gráficos é uma arte.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/rmarkdown.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <p>O pacote Rmarkdown, porque ninguém melhor para comunicar seus resultados do que você.</p>
+    <a href = "https://rmarkdown.rstudio.com/">rmarkdown</a>
+    <p>Ninguém melhor para comunicar seus resultados do que você.</p>
   </div> 
 </div>
 </div>
 </div>
+
+<br>
+<br>
+
+Você sairá do curso sabendo como usar o R e o RStudio para:
+
+&#9989; importar e empilhar centenas de bases em poucos segundos;
+
+&#9989; fazer diversas operações de manipulação de base de dados, como selecionar e criar novas colunas, ordenar colunas, criar filtros e agregações e juntar duas bases;
+
+&#9989; construir gráficos de pontos (dispersão), linhas (séries temporais), barras, boxplots e histogramas;
+
+&#9989; produzir relatórios estatísticos automáticos e reprodutíveis;
+
+&#9989; construir dashboards estáticos para comunicar seus resultados.
+
 
 <hr>
 

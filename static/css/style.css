@@ -931,6 +931,11 @@ header {
 }
 
 /* Página de cada curso*/
+
+#container-crusos-single {
+  background-color: #fff;
+}
+
 #cursos-single .center-row {
   margin: auto;
   max-width: 600px;
@@ -952,6 +957,13 @@ header {
   background-color: #fff;
   width: 200px;
   z-index: 999;
+  padding: .5em;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #da4d4d;
+  font-size: 15px !important;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 .tooltip-wrap:hover .tooltip-content {
@@ -988,11 +1000,19 @@ header {
 #cursos-single .container {
   position: relative;
   z-index: 10;
-  padding: 30px 200px 15px 200px !important;
 }
 
 #cursos-single .container p {
   font-size: 18px;
+}
+
+#cursos-single .tooltip-content p {
+  font-size: 15px !important;
+  margin-bottom: 0 !important;
+}
+
+#cursos-single .tooltip-content a {
+  font-size: 17px !important;
 }
 
 #cursos-single .about-col {
@@ -1089,53 +1109,6 @@ header {
 
 #material p {
   color: white;
-}
-
-
-
-/* Services Section
---------------------------------*/
-#services {
-  background: #fff;
-  background-size: cover;
-  padding: 60px 0 40px 0;
-}
-
-#services .box {
-  margin-bottom: 30px;
-}
-
-#services .icon {
-  float: left;
-}
-
-#services .icon i {
-  color: #da4d4d;
-  font-size: 36px;
-  line-height: 1;
-  transition: 0.5s;
-}
-
-#services .title {
-  margin-left: 60px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  font-size: 18px;
-}
-
-#services .title a {
-  color: #111;
-}
-
-#services .box:hover .title a {
-  color: #da4d4d;
-}
-
-#services .description {
-  font-size: 14px;
-  margin-left: 60px;
-  line-height: 24px;
-  margin-bottom: 0;
 }
 
 /* Call To Action Section
