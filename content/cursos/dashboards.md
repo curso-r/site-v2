@@ -9,7 +9,7 @@ banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 2
+ordem: 25
 id: "definir_novo_id"
 unit_price: 75000
 ---

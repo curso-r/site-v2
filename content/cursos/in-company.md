@@ -9,7 +9,7 @@ banner: "img/cursos/in-company-banner.jpg"
 desc: "Monte o curso que melhor atenda às demandas da sua equipe."
 requisitos: ""
 professores: ["Daniel Falbel", "William Amorim"]
-ordem: 7
+ordem: 40
 ---
 
 <header class="section-header">

@@ -1,15 +1,15 @@
 ---
-title: "R para Ciência de Dados I"
+title: "R para Ciência de Dados II"
 data: "Novas turmas em 2020!"
 hora: "18 horas de curso"
 local: "a definir"
-img: "img/cursos/intro-r.png"
+img: "img/cursos/r4ds-2.jpeg"
 preco: "R$ 750,00"
-banner: "img/cursos/intro-r-banner.jpg"
-desc: "Aprenda a manipular e visualizar dados com R."
+banner: "img/cursos/r4ds-2.png"
+desc: "É hora de aprofundar os seus conhecimentos de R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 1
+ordem: 10
 id: "definir_novo_id"
 unit_price: 75000
 ---
@@ -20,41 +20,36 @@ unit_price: 75000
 
 O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
-O objetivo deste curso é apresentar os conceitos essenciais de programação em R. A partir de um problema real de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Para motivar ainda mais, ensinaremos também como criar um dashboard em R para a comunicação dos seus resultados. 
+O objetivo deste curso é aprofundar os conceitos essenciais de programação em R para Ciência de Dados. A partir de um problema real de análise de dados, apresentaremos conceitos de programação funcional, visualização de dados e modelagem. Para motivar ainda mais, ensinaremos também como criar um dashboard em R para a comunicação dos seus resultados. 
 
-Você sairá deste curso apto a começar a utilizar o R em todas as suas análises.
+Você sairá deste curso apto a começar a utilizar o R em rotinas complicadas de modelagem.
 
 Ao decorrer do curso, abordaremos os seguintes tópicos:
 
-#### Introdução
+#### Programação funcional
 
-- Apresentação do problema de análise de dados.
-- Ambientação ao R e ao RStudio.
+- O pacote `purrr`
+- Funções puras
+- Iterando funções de listas de variáveis (`map`, `pmap`)
+- Iterando em listas de funções (`invoke`)
+- Paralelização
 
-#### Manipulação de dados
+#### Modelagem
 
-- O pacote `dplyr`.
-- Filtrando linhas.
-- Ordenando linhas.
-- Selecionando colunas.
-- Criando e modificando colunas.
-- Agregando a base.
-- Juntando bases de dados (*joins*).
+- Conceitos de machine learning
+    - Treino e teste, overfiting, erro de generalização 
+- Modelos lineares (`glm`, `bigglm`, `glmnet`)
+- Modelos de ensemble (`xgboost`, `randomForest`)
+- Redes neurais (`keras`)
 
-#### Visualização de dados
+#### Visualização avançada de dados
 
-- O pacote `ggplot2`.
-- Gráficos de dispersão.
-- Gráficos de barras.
-- Boxplots e histogramas.
-- Gráfico de séries.
-- Customizando os gráficos.
-
-#### Relatórios com R Markdown
-
-- O que é uma linguagem de marcação?
-- Criação de relatórios com R Markdown.
-- Criação de dashboards estáticos com o pacote `flexdashboard`.
+- O pacote `bookdown`
+- O pacote `shiny`
+- Interface do usuário e servidor
+- Reatividade
+- O pacote `shinydashboard`
+- `ggplot2` avançado
 
 <br>
 <header class="section-header">
@@ -64,10 +59,8 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 Este curso é destinado a estudantes e profissionais que:
 
 - desejam entrar no mundo da ciência de dados, utilizando o R como principal ferramenta;
-- já trabalham com análise de dados e gostariam de incluir o R no seu repertório de ferramentas.
-
-
-
+- já trabalham com análise de dados e gostariam de incluir o R no seu repertório de ferramentas;
+- tem conhecimentos básicos de R e querem melhorar suas habilidades em modelagem, programação e visualização.
 
 <header class="section-header">
   <h3>O que eu preciso saber?</h3>
@@ -80,14 +73,13 @@ Estatística:
 
 - medidas de posição, como média e mediana;
 - medidas de dispersão, como variância e desvio padrão;
-- interpretação de proporções, como taxas de acerto e erro.
+- interpretação de proporções, como taxas de acerto e erro;
+- inferência estatística básica.
 
 Programação:
 
 - noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
-
-
-
+- noções básicas de R, no nível do nosso curso inicial de "R para ciência de dados".
 
 <br>
 <header class="section-header">

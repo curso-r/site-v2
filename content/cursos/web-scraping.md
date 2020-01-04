@@ -8,7 +8,7 @@ preco: "R$500,00"
 banner: "img/cursos/web-scraping-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 requisitos: ""
-ordem: 3
+ordem: 30
 id: "definir_novo_id"
 unit_price: 50000
 ---

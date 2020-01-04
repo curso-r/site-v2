@@ -9,7 +9,7 @@ banner: "img/cursos/intro-r-banner.jpg"
 desc: "Aprenda a manipular e visualizar dados com R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 1
+ordem: 36
 id: "definir_novo_id"
 unit_price: 75000
 ---

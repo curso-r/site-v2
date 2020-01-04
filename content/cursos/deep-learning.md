@@ -9,7 +9,7 @@ preco: "R$ 490,00"
 banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
-ordem: 5
+ordem: 35
 aberto: "false"
 ---
 

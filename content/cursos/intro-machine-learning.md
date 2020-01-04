@@ -8,7 +8,7 @@ preco: "R$ 800,00"
 banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
-ordem: 4
+ordem: 20
 ---
 
 <header class="section-header">

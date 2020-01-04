@@ -1,5 +1,5 @@
 ---
-  title: "Workshop: Conheça o R"
+title: "Workshop: Regressão linear"
 data: "A definir"
 hora: "A definir"
 local: "A definir"
@@ -9,7 +9,7 @@ banner: "img/cursos/workshop-r-banner.png"
 desc: "Familiarize-se com os principais conceitos de programação e ciência de dados utilizando o R como ferramenta."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 0.5
+ordem: 15
 ---
   
   <header class="section-header">
