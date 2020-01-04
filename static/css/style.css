@@ -465,10 +465,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   left: calc(50% - 60px);
 }
 
-header {
-  padding-bottom: 30px;
-}
-
 .section-header h3::after {
   content: '';
   position: absolute;
