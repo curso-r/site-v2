@@ -5,7 +5,7 @@ hora: "Curso de 6 horas"
 local: "A definir"
 paypal: ""
 img: "img/cursos/deep-learning.png"
-preco: "R$ 490,00"
+preco: "R$ 800,00"
 banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
@@ -23,7 +23,7 @@ Neste curso vamos discutir:
 * quais são os softwares utilizados para _treinar_ esses modelos e como eles se relacionam;
 * como treinar modelos de deep learning para alguns problemas de predição.
 
-O objetivo deste curso  é se familiarizar com as principais técnicas utilizadas em Deep Learning e conhecer o suficiente para poder se aprofundar no assunto posteriormente. 
+O objetivo deste curso é se familiarizar com as principais técnicas utilizadas em Deep Learning e conhecer o suficiente para poder se aprofundar no assunto posteriormente. 
 
 No final do curso, o aluno poderá aplicar seus conhecimentos em problemas simples de classificação de textos, imagens e outros problemas de objetivo preditivo..
 
@@ -31,62 +31,45 @@ Ao decorrer do curso, abordaremos os seguintes tópicos:
 
 #### O que é Deep Learning?
 
-* Como os modelos de Deep Learnig funcionam;
-* Quais são os softwares utilizados.
+- Como os modelos de Deep Learnig funcionam;
+- Quais são os softwares utilizados.
+- Arquiteturas comuns
+    - RNN
+    - CNN
+    - LSTM
+- Uso de droupout
+    
+#### Modelos de Deep Learning na prática
 
-####  Redes Neurais Convolucionais (CNN)
-
-* Exemplo de aplicação em imagens
-
-#### Embeddings
-  
-* Exemplo de aplicação em textos
-
-#### Redes Neurais Recorrentes (RNN)
-
-* Exemplo de aplicação em textos
-
+- Exemplos em prevenção à fraude
+- Exemplos em texto
+    - CNN
+    - RNN
+    - Uso de embeddings
+- Exemplos em séries temporais
+    - LSTM
+- Autoencoders
 
 <br>
 <header class="section-header">
   <h3>Para quem é este curso?</h3>
 </header>
 
-Este curso é destinado a estudantes e profissionais que já trabalham com estatística e desejam colocar o Deep Learning em sua caixa de ferramentas de trabalho.
+Este curso é destinado a estudantes e profissionais que:
+
+- tem conhecimentos básicos de R e querem melhorar suas habilidades em modelagem, programação e visualização.
+- tem conhecimentos básicos de Deep Learning e querem aprender como utilizar esses conhecimentos em Deep Learning.
 
 <header class="section-header">
   <h3>O que eu preciso saber?</h3>
 </header>
 
-Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
-
-#### Necessário
-
-Estatística:
-
-- medidas de posição, como média e mediana;
-- medidas de dispersão, como variância e desvio padrão;
-- interpretação de proporções, como taxas de acerto e erro;
-- intuição de modelos de regressão: o que são e como interpretá-los.
-        
-Programação:
-
-- saber ajustar um modelo de regressão no R
-- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else);
-- conhecimento básico de programação em R:
-   - sintaxe e vocabulário básico;
-   - criação de objetos e funções;
-   - criação e manipulação de vetores;
-   - criação e manipulação de data frames.
-
-#### Recomendado
+Alguns pré-requisitos são necessários para o completo entendimento das aulas. 
 
 Programação:
 
-- utilização do operador pipe (%>%);
-- manipulação de dados com os pacotes `dplyr` e `tidyr`;
-- visualização de dados com o pacote `ggplot2`.
-
+- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
+- noções básicas de R, no nível do nosso curso inicial de "R para ciência de dados".
 
 <br>
 <header class="section-header">

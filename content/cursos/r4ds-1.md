@@ -1,6 +1,6 @@
 ---
 title: "R para Ciência de Dados I"
-data: "Novas turmas em 2020!"
+data: "de 2 a 18 de março, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
 local: "São Paulo - SP"
 img: "img/cursos/r4ds-1.jpg"
@@ -10,7 +10,7 @@ desc: "O nosso curso introdutório de programação em R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 5
-id: "definir_novo_id"
+id: 12
 unit_price: 75000
 ---
 
@@ -22,7 +22,7 @@ O R é uma linguagem de programação criada para a Ciência de Dados. Ela é um
 
 O objetivo deste curso é apresentar os conceitos essenciais de programação em R. A partir de exemplos reais de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Para motivar ainda mais, ensinaremos também como criar um dashboard estático utilizando o R para a comunicação dos seus resultados. 
 
-<h6 style = "color: #da4d4d">Você sairá deste curso apto a começar a utilizar o R em todas as suas análises.</h6>
+<h6 style = "color: #da4d4d">Você sairá deste curso apta(o) a começar a utilizar o R em todas as suas análises.</h6>
 
 <hr>
 
@@ -52,49 +52,49 @@ APRESENTANDO OS SEGUINTES PACOTES
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/tidyverse.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://www.tidyverse.org/packages/">tidyverse</a>
+    <a href = "https://www.tidyverse.org/packages/" target = "_blank">tidyverse</a>
     <p>A filosofia tidy.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/pipe.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html/">magrittr</a>
+    <a href = "https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html/" target = "_blank">magrittr</a>
     <p>O pipe e a revolução do R.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/readr.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://readr.tidyverse.org/">readr</a>
+    <a href = "https://readr.tidyverse.org/" target = "_blank">readr</a>
     <p>Seus dados dentro do R!</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/readxl.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://reaxl.tidyverse.org/">readxl</a>
+    <a href = "https://reaxl.tidyverse.org/" target = "_blank">readxl</a>
     <p>Seus dados (do Excel) dentro do R!</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/dplyr.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://dplyr.tidyverse.org/">dplyr</a>
+    <a href = "https://dplyr.tidyverse.org/" target = "_blank">dplyr</a>
     <p>Porque a maior parte do trabalho é manipulação de dados.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/ggplot2.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://ggplot2.tidyverse.org/">ggplot2</a>
+    <a href = "https://ggplot2.tidyverse.org/" target = "_blank">ggplot2</a>
     <p>Fazer gráficos é uma arte.</p>
   </div> 
 </div>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/rmarkdown.png" width = "72px" height = "82px">
   <div class="tooltip-content">
-    <a href = "https://rmarkdown.rstudio.com/">rmarkdown</a>
+    <a href = "https://rmarkdown.rstudio.com/" target = "_blank">rmarkdown</a>
     <p>Ninguém melhor para comunicar seus resultados do que você.</p>
   </div> 
 </div>
