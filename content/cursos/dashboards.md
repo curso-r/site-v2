@@ -1,112 +1,113 @@
 ---
 title: "Dashboards com R"
-data: "Novas turmas em 2020!"
+data: "15 de junho a 1º de julho, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "A definir"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP"
 img: "img/cursos/dashboards.png"
-preco: "A Definir"
+preco: "R$750,00"
 banner: "img/cursos/dashboards-banner.jpg"
-desc: "Aprenda a criar dashboards estáticos e dinâmicos utilizando o R."
+desc: "Aprenda a criar dashboards incríveis a partir do R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 25
-id: "definir_novo_id"
+id: 16
 unit_price: 75000
+aberto: "true"
 ---
 
-
-
 <header class="section-header">
-  <h3>Conheça o curso</h3>
+  <h4>Conheça o curso</h4>
 </header>
 
-
-Dashboards são excelentes ferramentas para comunicar os resultados de uma análise de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
+Dashboards são excelentes ferramentas para comunicar os resultados de análises de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
 
 O objetivo deste curso é apresentar os principais pacotes do R para a criação de dashboards. 
 
-Você sairá deste curso apto a construir dashboards estáticos ou dinâmicos para comunicar utilizando apenas a linguagem R.
+<h6 style = "color: #da4d4d">Você sairá deste curso apto a construir dashboards para comunicar utilizando apenas a linguagem R.</h6>
 
-Ao decorrer do curso, abordaremos os seguintes tópicos:
+<hr>
 
-### Dashboards estáticos
+<header class="section-header">
+  <h4>O que vamos ver?</h4>
+</header>
 
-- O pacote `flexdashboard`
-- Sintaxe básica
-- Layouts
-- Customização
+<p>&#128204; Qual a diferença entre dashboards estáticos e dinâmicos</p>
+<p>&#128204; Contrução de dashboards estáticos utilizando o pacote flexdashboard</p>
+<p>&#128204; Costrução de dashboards dinâmicos utilizando os pacotes shiny e shinydashboards</p>
+<p>&#128204; Como colocar seu dashboard na web</p>
 
-### Dashboards dinânimos
+<center>
+APRESENTANDO OS SEGUINTES PACOTES
+</center>
 
-- O pacote `shiny`
-- Interface do usuário e servidor
-- Reatividade
-- O pacote `shinydashboard`
-- HTML widgets
-- Gráficos dinâmicos
-- Mapas e tabelas dinâmicas
-
-
+<div class="row justify-content-center">
+<br>
+<div class="tooltip-wrap">
+   <a href = "https://rmarkdown.rstudio.com/" target = "_blank">
+      <img src = "/img/cursos/hex/rmarkdown.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://rmarkdown.rstudio.com/" target = "_blank">rmarkdown</a>
+    <p>Ninguém melhor para comunicar seus resultados do que você.</p>
+  </div> 
+</div>
+<div class="tooltip-wrap">
+   <a href = "https://rmarkdown.rstudio.com/flexdashboard/" target = "_blank">
+      <img src = "/img/cursos/hex/flexdashboard.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://rmarkdown.rstudio.com/flexdashboard/" target = "_blank">flexdashboard</a>
+    <p>Dashboards incríveis em alguns minutos.</p>
+  </div> 
+</div>
+<div class="tooltip-wrap">
+   <a href = "https://shiny.rstudio.com/" target = "_blank">
+      <img src = "/img/cursos/hex/shiny.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://shiny.rstudio.com/" target = "_blank">shiny</a>
+    <p>Suas análises fazendo olhos brilharem.</p>
+  </div> 
+</div>
+<div class="tooltip-wrap">
+   <a href = "https://github.com/curso-r/auth0" target = "_blank">
+      <img src = "/img/cursos/hex/auth0.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://github.com/curso-r/auth0" target = "_blank">auth0</a>
+    <p>Controlando quem acessa seus resultados. (um pacote da Curso-R!)</p>
+  </div> 
+</div>
+</div>
 
 <br>
+
+Você sairá do curso sabendo como usar o R e o RStudio para:
+
+&#9989; Comunicar os seus resultados utilizando dashboards bonitos e amigáveis
+
+&#9989; Disponibilizar seus dashboards na internet (com acesso público ou controlado)
+
+
+<hr>
+
 <header class="section-header">
-  <h3>Para quem é este curso?</h3>
+  <h4>Quais são os pré-requisitos?</h4>
 </header>
 
-Este curso é destinado a estudantes e profissionais que precisam construir dashboards estáticos ou dinâmicos para comunicar suas análises.
+&#10071; Interesse por programação e ciência de dados
 
+&#10071; O conteúdo do nosso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/)
 
+&#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção
 
+<hr>
 
 <header class="section-header">
-  <h3>O que eu preciso saber?</h3>
+  <h4>O que eu preciso levar?</h4>
 </header>
 
-Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
+&#128187; Um notebook com acesso a internet e permissão para instalar novos programas
 
-#### Necessário
-        
-Estatística:
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
 
-- medidas de posição, como média e mediana;
-- medidas de dispersão, como variância e desvio padrão;
-- interpretação de proporções, como taxas de acerto e erro.
-
-Programação:
-
-- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else);
-- conhecimento básico de programação em R:
-   - sintaxe e vocabulário básico;
-   - criação de objetos e funções;
-   - criação e manipulação de vetores;
-   - criação e manipulação de data frames.
-
-
-#### Recomendado
-
-Estatística:
-
-- intuição de modelos de regressão: o que são e como interpretá-los.
-
-Programação:
-
-- utilização do operador pipe (%>%);
-- importação de bases em formato de texto (.csv) ou Excel (.xlsx, .xls);
-- manipulação de dados com os pacotes `dplyr` e `tidyr`;
-- visualização de dados com o pacote `ggplot2`.
-
-
-
-
-<br>
-<header class="section-header">
-  <h3>O que eu preciso levar?</h3>
-</header>
-
-Durante as aulas, você vai precisar de:
-
-- um notebook com acesso a internet;
-- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
-- permissão para instalar novos programas.
-
-Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).

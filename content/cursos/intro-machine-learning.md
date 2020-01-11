@@ -2,125 +2,113 @@
 title: "Introdução ao Machine Learning com R"
 data: "30 de março a 13 de abril, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP, 01310-200"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP"
 img: "img/cursos/intro-ml-banner.png"
 preco: "R$ 800,00"
 banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 20
+aberto: "true"
+id: 14
 unit_price: 80000
 ---
 
 <header class="section-header">
-  <h3>Conheça o curso</h3>
+  <h4>Conheça o curso</h4>
 </header>
 
-Machine Learning consiste em um framework de análise preditiva, muito utilizado hoje em dia em problemas de classificação. Sua fama recente se deve ao sucesso em aplicações de transcrição de áudio e classificação de imagens, mas uma grande parte de suas técnicas são muito úteis em qualquer problema de modelagem estatística.
+Machine Learning é um framework de análise preditiva, muito utilizado hoje em dia em problemas de classificação. Sua fama recente se deve ao sucesso em aplicações de transcrição de áudio e classificação de imagens, mas uma grande parte de suas técnicas são muito úteis em qualquer problema de modelagem estatística.
 
-O objetivo deste curso é apresentar as ideias essenciais por trás do Machine Learning, desenvolvendo a análise crítica necessária para escolher, ajustar, avaliar e interpretar modelos preditivos. 
+O objetivo deste curso é apresentar as ideias essenciais por trás do Machine Learning, desenvolvendo a análise crítica necessária para escolher, ajustar, avaliar e interpretar modelos preditivos, utilizando o R como ferramanta. 
 
-Utilizando o R como ferramenta, você sairá deste curso apto a empregar modelagem preditiva em suas atividades profissionais.
+<h6 style = "color: #da4d4d">Você sairá deste curso apto a empregar o Machine Learning para resolver problemas de predição.</h6>
 
-Ao decorrer do curso, abordaremos os seguintes tópicos:
+<hr>
 
-##### Introdução
+<header class="section-header">
+  <h4>O que vamos ver?</h4>
+</header>
 
-- O que é Machine Learning?
-- O hype do Machine Learning
-- A importância de entender bem o problema
+&#128204; O que é e quando usar Machine Learning
 
-##### Conceitos básicos
+&#128204; Métricas de performance
 
-- Métricas de performance do modelo
-- Overfitting
-- Validação cruzada
-- *Tuning* de modelos
+&#128204; Overfitting e validação cruzada
 
-##### Modelos preditivos
+&#128204; Tunning de modelos
 
-- Regressão linear
-- Regressão logística
-- LASSO
-- Árvores de decisão
-- Random forest
-- Boosting
+&#128204; Modelos preditivos: modelos lineares, LASSO, random forest e XGBoost
 
-##### O pacote recipes
+&#128204; Como ajustar modelos preditivos no R
 
-- Pré-processamento dos dados
-   - Transformações
-   - Imputação
-   - Construção de variáveis dummies
+<br>
 
-##### O pacote caret
+<center>
+APRESENTANDO OS SEGUINTES PACOTES
+</center>
 
-- Ajuste de modelos
-- Integração com o pacote recipes
-- Interpretação dos resultados
+<div class="row justify-content-center">
+<br>
+<div class="tooltip-wrap">
+   <a href = "https://tidymodels.github.io/tidymodels/" target = "_blank">
+      <img src = "/img/cursos/hex/tidymodels.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://tidymodels.github.io/tidymodels/" target = "_blank">tidymodels</a>
+    <p>A filosofia tidy também para modelar.</p>
+  </div> 
+</div>
+<div class="tooltip-wrap">
+   <a href = "https://tidymodels.github.io/rsample/" target = "_blank">
+   <img src = "/img/cursos/hex/rsample.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://tidymodels.github.io/rsample/" target = "_blank">rsample</a>
+    <p>Reciclando a sua base de dados.</p>
+  </div> 
+</div>
+<div class="tooltip-wrap">
+   <a href = "https://tidymodels.github.io/recipes/" target = "_blank">
+      <img src = "/img/cursos/hex/recipes.png" width = "72px" height = "82px">
+   </a>
+  <div class="tooltip-content">
+    <a href = "https://tidymodels.github.io/recipes/" target = "_blank">recipes</a>
+    <p>Construindo receitas para um modelo perfeito.</p>
+  </div> 
+</div>
+</div>
 
 
 <br>
-<header class="section-header">
-  <h3>Para quem é este curso?</h3>
-</header>
-
-Este curso é destinado a estudantes e profissionais que:
-
-- gostariam de entender o hype do Machine Learning e descobrir como utilizá-lo em suas atividades acadêmicas ou profissionais;
-- desejam começar a utilizar modelagem preditiva para resolver problemas específicos em suas atividades;
-- já trabalham com modelagem preditiva e gostariam de incluir o R no seu repertório de ferramentas.
-
-
 <br>
+
+Você sairá do curso sabendo como usar o R e o RStudio para:
+
+&#9989; Aplicar todo o framework de Machine Learning: preparação da base, criação de bases treino e teste, ajuste do modelo, validação cruzada e avaliação das métricas de performance
+
+&#9989; Ajustar os modelos preditivos mais consagrados da atualidade
+
+
+<hr>
+
 <header class="section-header">
-  <h3>O que eu preciso saber?</h3>
+  <h4>Quais são os pré-requisitos?</h4>
 </header>
 
-Alguns pré-requisitos são necessários para o completo entendimento das aulas. Também recomendamos alguns tópicos para uma melhor experiência do curso.
+&#10071; Interesse por programação, ciência de dados e modelagem preditiva
 
-#### Necessário
-        
-Estatística:
+&#10071; O conteúdo do nosso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/)
 
-- medidas de posição, como média e mediana;
-- medidas de dispersão, como variância e desvio padrão;
-- interpretação de proporções, como taxas de acerto e erro;
-- intuição de modelos de regressão: o que são e como interpretá-los.
+&#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção
 
-Programação:
+<hr>
 
-- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else);
-- conhecimento básico de programação em R:
-   - sintaxe e vocabulário básico;
-   - criação de objetos e funções;
-   - criação e manipulação de vetores;
-   - criação e manipulação de data frames.
-
-#### Recomendado
-
-Programação:
-
-- conhecimento introdutório de programação em R: 
-   - utilização do operador pipe (%>%);
-   - importação de bases em formato de texto (.csv) ou Excel (.xlsx, .xls);
-   - manipulação de dados com os pacotes `dplyr` e `tidyr`;
-   - visualização de dados com o pacote `ggplot2`.
-
-
-
-
-<br>
 <header class="section-header">
-  <h3>O que eu preciso levar?</h3>
+  <h4>O que eu preciso levar?</h4>
 </header>
 
-Durante as aulas, você vai precisar de:
+&#128187; Um notebook com acesso a internet e permissão para instalar novos programas
 
-- um notebook com acesso a internet;
-- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
-- permissão para instalar novos programas.
-
-Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
-
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
 

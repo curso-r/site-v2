@@ -12,6 +12,7 @@ professores: ["Athos Damiani", "William Amorim"]
 ordem: 10
 id: 13
 unit_price: 75000
+aberto: "true"
 ---
 
 <header class="section-header">
@@ -49,8 +50,7 @@ O objetivo deste curso é aprofundar os conceitos essenciais de programação em
 APRESENTANDO OS SEGUINTES PACOTES
 </center>
 
-<div class="center-row">
-<div class="row">
+<div class="row justify-content-center">
 <br>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/dplyr.png" width = "72px" height = "82px">
@@ -100,7 +100,6 @@ APRESENTANDO OS SEGUINTES PACOTES
     <a href = "https://shiny.rstudio.com/" target = "_blank">shiny</a>
     <p>Suas análises fazendo olhos brilharem.</p>
   </div> 
-</div>
 </div>
 </div>
 

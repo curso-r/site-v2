@@ -1,85 +1,79 @@
 ---
 title: "Deep learning com R"
-data: "A definir"
-hora: "Curso de 6 horas"
-local: "A definir"
-paypal: ""
+data: "25 de maio à 4 de junho, às segundas, quartas e quintas, das 19h00 às 22h00"
+hora: "18 horas de curso"
+local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP"
 img: "img/cursos/deep-learning.png"
 preco: "R$ 800,00"
 banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
 ordem: 35
-aberto: "false"
+aberto: "true"
+unit_price: 80000
+id: 15
 ---
 
 <header class="section-header">
-  <h3>Conheça o curso</h3>
+  <h4>Conheça o curso</h4>
 </header>
 
-Neste curso vamos discutir:
+Deep learning é uma classe de modelos que ficou famosa nos últimos anos por resolver problemas historicamnte difíceis de detecção de imagem, transcrição de áudio e classificação de textos.
 
-* o que são redes neurais profundas e como elas funcionam;
-* quais são os softwares utilizados para _treinar_ esses modelos e como eles se relacionam;
-* como treinar modelos de deep learning para alguns problemas de predição.
+O objetivo deste curso é se familiarizar com as principais técnicas utilizadas em Deep Learning, discutindo como funcionam as redes neurais, quais são os softwares utilizados para treiná-las e quais são as principais técnicas para tunar esses modelos.
 
-O objetivo deste curso é se familiarizar com as principais técnicas utilizadas em Deep Learning e conhecer o suficiente para poder se aprofundar no assunto posteriormente. 
+<h6 style = "color: #da4d4d">Você sairá deste curso pronto para começar a utilizar modelos de Deep Learning em problemas de classificação de texto e imagem.</h6>
 
-No final do curso, o aluno poderá aplicar seus conhecimentos em problemas simples de classificação de textos, imagens e outros problemas de objetivo preditivo..
+<hr>
 
-Ao decorrer do curso, abordaremos os seguintes tópicos:
+<header class="section-header">
+  <h4>O que vamos ver?</h4>
+</header>
 
-#### O que é Deep Learning?
+&#128204; O que é e quando usar Deep Learning
 
-- Como os modelos de Deep Learnig funcionam;
-- Quais são os softwares utilizados.
-- Arquiteturas comuns
-    - RNN
-    - CNN
-    - LSTM
-- Uso de droupout
-    
-#### Modelos de Deep Learning na prática
+&#128204; O que são redes neurais profundas
 
-- Exemplos em prevenção à fraude
-- Exemplos em texto
-    - CNN
-    - RNN
-    - Uso de embeddings
-- Exemplos em séries temporais
-    - LSTM
-- Autoencoders
+&#128204; Como treinar modelos de deep learning
+
+&#128204; Arquiteturas comuns: RNN, CNN e LSTM
+
+&#128204; Técnicas de regularização
+
+&#128204; Utilizar o R para treinar modelos de deep learning
 
 <br>
-<header class="section-header">
-  <h3>Para quem é este curso?</h3>
-</header>
 
-Este curso é destinado a estudantes e profissionais que:
-
-- tem conhecimentos básicos de R e querem melhorar suas habilidades em modelagem, programação e visualização.
-- tem conhecimentos básicos de Deep Learning e querem aprender como utilizar esses conhecimentos em Deep Learning.
-
-<header class="section-header">
-  <h3>O que eu preciso saber?</h3>
-</header>
-
-Alguns pré-requisitos são necessários para o completo entendimento das aulas. 
-
-Programação:
-
-- noções básicas de lógica de programação, como operações lógicas e controladores de fluxo (if, else).
-- noções básicas de R, no nível do nosso curso inicial de "R para ciência de dados".
+<center>
+<a href = "https://tensorflow.rstudio.com/" target = "_blank">
+  <img src = "/img/cursos/logos-empresas/tensorflow.png" width = "186" height = "104px">
+</a>
+<a href = "https://keras.rstudio.com/" target = "_blank">
+  <img src = "/img/cursos/logos-empresas/keras.png" width = "186" height = "63px">
+</a>
+</center>
 
 <br>
+
+<hr>
+
 <header class="section-header">
-  <h3>O que eu preciso levar?</h3>
+  <h4>Quais são os pré-requisitos?</h4>
 </header>
 
-Durante as aulas, você vai precisar de:
+&#10071; Interesse por programação, ciência de dados e modelagem preditiva
 
-- um notebook com acesso a internet;
-- últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
-- permissão para instalar novos programas.
+&#10071; O conteúdo do nosso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/)
 
-Também recomendamos levar a fonte do notebook e um adaptador de tomada (as salas podem possuir apenas padrões antigos).
+&#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso levar?</h4>
+</header>
+
+&#128187; Um notebook com acesso a internet e permissão para instalar novos programas
+
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
+

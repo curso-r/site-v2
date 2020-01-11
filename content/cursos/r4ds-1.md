@@ -2,7 +2,7 @@
 title: "R para Ciência de Dados I"
 data: "de 2 a 18 de março, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "São Paulo - SP"
+local: "FYI Learning Solutions - Av. Paulista, 2006, conj. 401, São Paulo - SP"
 img: "img/cursos/r4ds-1.jpg"
 preco: "R$ 750,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
@@ -12,10 +12,11 @@ professores: ["Athos Damiani", "William Amorim"]
 ordem: 5
 id: 12
 unit_price: 75000
+aberto: "true"
 ---
 
 <header class="section-header">
-  <h3>Conheça o curso</h3>
+  <h4>Conheça o curso</h4>
 </header>
 
 O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
@@ -46,8 +47,7 @@ O objetivo deste curso é apresentar os conceitos essenciais de programação em
 APRESENTANDO OS SEGUINTES PACOTES
 </center>
 
-<div class="center-row">
-<div class="row">
+<div class="row justify-content-center">
 <br>
 <div class="tooltip-wrap">
   <img src = "/img/cursos/hex/tidyverse.png" width = "72px" height = "82px">
@@ -99,22 +99,21 @@ APRESENTANDO OS SEGUINTES PACOTES
   </div> 
 </div>
 </div>
-</div>
 
 <br>
 <br>
 
 Você sairá do curso sabendo como usar o R e o RStudio para:
 
-&#9989; importar e empilhar centenas de bases em poucos segundos;
+&#9989; importar e empilhar centenas de bases em poucos segundos
 
-&#9989; fazer diversas operações de manipulação de base de dados, como selecionar e criar novas colunas, ordenar colunas, criar filtros e agregações e juntar duas bases;
+&#9989; fazer diversas operações de manipulação de base de dados, como selecionar e criar novas colunas, ordenar colunas, criar filtros e agregações e juntar duas bases
 
-&#9989; construir gráficos de pontos (dispersão), linhas (séries temporais), barras, boxplots e histogramas;
+&#9989; construir gráficos de pontos (dispersão), linhas (séries temporais), barras, boxplots e histogramas
 
-&#9989; produzir relatórios estatísticos automáticos e reprodutíveis;
+&#9989; produzir relatórios estatísticos automáticos e reprodutíveis
 
-&#9989; construir dashboards estáticos para comunicar seus resultados.
+&#9989; construir dashboards estáticos para comunicar seus resultados
 
 
 <hr>
@@ -123,11 +122,11 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
   <h4>Quais são os pré-requisitos?</h4>
 </header>
 
-&#10071; Interesse por Ciência de Dados;
+&#10071; Interesse por Ciência de Dados
 
-&#10071; Desejo de aprender a programar (em R);
+&#10071; Desejo de aprender a programar (em R)
 
-&#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção.
+&#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção
 
 <hr>
 
@@ -135,6 +134,6 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
   <h4>O que eu preciso levar?</h4>
 </header>
 
-&#128187; Um notebook com acesso a internet e permissão para instalar novos programas;
+&#128187; Um notebook com acesso a internet e permissão para instalar novos programas
 
-&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas

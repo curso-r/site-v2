@@ -9,11 +9,11 @@ banner: "img/cursos/workshop-r-banner.png"
 desc: "Comece a explorar o universo da ciência de dados e da programação a partir do R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 1
+ordem: 40
 ---
 
 <header class="section-header">
-  <h4>Sobre o curso</h4>
+  <h4>Sobre o workshop</h4>
 </header>
 
 Graças à enorme eficiência e flexibilidade, as linguagens de programação se tornaram protagonistas dentro da Ciência de Dados. Com comunidades ativas desenvolvendo o que há de mais novo dentro da Estatística e da Computação, aprender a programar se tornou essencial para aqueles que desejam explorar ao máximo as informações escondidas dentro das bases de dados.
