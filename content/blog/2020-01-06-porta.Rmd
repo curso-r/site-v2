@@ -332,9 +332,9 @@ grafico_roll <- function(janela = lubridate::years(1), n_corte = 150) {
 grafico_roll(years(2), n_corte = 180)
 ```
 
-A Figura \@ref(fig:roll) mostra os resultados da análise considerando uma janela de 2 anos. Considerei no gráfico somente os 5 artistas com mais visualizações. Nesse gráfico é possível visualizar que Rafael Portugal está dominando as visualizações desde que entrou. No entanto, recentemente a diferença entre os cinco artistas está diminuindo. Uma possível explicação é que, como a quantidade de visualizações dos vídeos estacionou na média da Figura \@ref(fig:historico)
+A Figura \@ref(fig:roll) mostra os resultados da análise considerando uma janela de 2 anos. Considerei no gráfico somente os 5 artistas com mais visualizações. Nesse gráfico é possível visualizar que Rafael Portugal está dominando as visualizações desde que entrou. No entanto, recentemente a diferença entre os cinco artistas está diminuindo. Uma explicação é que, como a quantidade de visualizações dos vídeos estacionou na média da Figura \@ref(fig:historico), as diferenças existentes entre os artistas passam a ser menos relevantes.
 
-```{r, fig.cap="Gráfico do volume acumulado de visualizações por artista ao longo do tempo, considerando uma janela de 2 anos.", eval=TRUE, echo=FALSE}
+```{r roll, fig.cap="Gráfico do volume acumulado de visualizações por artista ao longo do tempo, considerando uma janela de 2 anos.", eval=TRUE, echo=FALSE}
 knitr::include_graphics("/img/blog/porta/roll.png")
 ```
 
