@@ -1,6 +1,6 @@
 ---
 title: "Workshop: Regressão linear"
-data: "15 de fevereiro de 2020, sábado, das 9h às 18h"
+data: "14 de março de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
 local: "Bendito Coworking - Alameda Santos, 2335, conj. 131, São Paulo - SP"
 img: "img/cursos/workshop-regressao.jpeg"
