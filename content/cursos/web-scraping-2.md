@@ -14,8 +14,45 @@ id: 19
 aberto: "true"
 ---
 
-<center>
-<h4 style = "color: #da4d4d;">ESTAMOS CONTRUINDO A EMENTA DO WORKSHOP</h4>
+<header class="section-header">
+  <h4>Conheça o workshop</h4>
+</header>
 
-<h4 style = "color: #da4d4d;">EM BREVE MAIS NOVIDADES</h4>
-</center>
+No primeiro workshop, vimos algumas técnicas básicas de web scraping, além de alguns exemplos simples. Notamos que web scraping não é uma ciência: é uma espécie de engenharia reversa. Infelizmente, nem sempre temos informação completa para montar uma ferramenta de captura de dados, e temos de ser criativos para identificar alternativas.
+
+Neste workshop, traremos algumas ideias mais avançadas e muitos exemplos. Traremos exemplos que trabalhamos ao longo de vários projetos de web scraping, além de projetos que os próprios alunos vêm trabalhando. 
+
+<h6 style = "color: #da4d4d">Você sairá deste curso apto a identificar a forma  mais eficiente de proceder e implementar soluções eficientes para raspar sites complexos.</h6>
+
+<hr>
+
+<header class="section-header">
+  <h4>O que vamos ver?</h4>
+</header>
+
+<p>&#128204; Como iterar algoritmos no R</p>
+<p>&#128204; Tratamento de erros</p>
+<p>&#128204; Paralelização</p>
+<p>&#128204; Acessar APIs com OAuth2</p>
+<p>&#128204; Páginas dinâmicas com Selenium</p>
+
+<hr>
+
+<header class="section-header">
+  <h4>Quais são os pré-requisitos?</h4>
+</header>
+
+<p>&#10071; Workshop Web scraping I</p>
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso levar?</h4>
+</header>
+
+&#128187; Um notebook com acesso a internet e permissão para instalar novos programas
+
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
+
+
+
