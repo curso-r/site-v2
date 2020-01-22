@@ -14,7 +14,7 @@ draft: false
 Esse problema se chama *fake news*. Não importa a fonte, a inclinação
 ideológica, o estilo ou o grau da mentira; eu preciso me segurar muito
 para não passar a tarde toda desmascarando as notícias falsas
-(antigamente conhecidas simplesmente como “mentiras”) que chegam no meu
+(antigamente conhecidas simplesmente como mentiras) que chegam no meu
 WhatsApp diariamente. Eu não ligo tanto para análises mal feitas ou
 mesmo tendenciosas (já que na minha opinião isso faz parte de viver em
 sociedade), mas quando o conteúdo parece deliberadamente montado para
@@ -22,7 +22,7 @@ ludibriar o leitor eu perco o controle.
 
 Normalmente eu ignoro a mensagem/foto/montagem e sigo com o meu dia, mas
 há ocasiões raras em que o nível da mentira é grande o bastante e eu
-estou com a agenda livre o suficiente, que eu corro para o computador
+estou com a agenda livre o suficiente, que corro para o computador
 com o único objetivo de desmentir a *fake news*. Geralmente em menos de
 meia hora já tenho uma resposta pronta com dados confiáveis, uma imagem
 sem Photoshop ou simplesmente um link para um site de *fact-checking*.
@@ -37,7 +37,7 @@ alterada, por sinal.
 
 Vamos por partes. Meu espanhol não é dos melhores, mas acho que qualquer
 lusófono consegue compreender bem o que está sendo mostrado: o gráfico
-mostra a posição de dois países no ranking de PIB per capita. Além
+representa a posição de dois países no ranking de PIB per capita. Além
 disso, destacam-se o período de 1882 a 1950 (quando a Argentina nunca
 ficou abaixo do 10º maior PIB per capita), o período entre 1895 e 1896
 (quando a Argentina estava em 1º lugar) e o ranking atual dos nossos
@@ -48,7 +48,7 @@ original](https://twitter.com/rcas1/status/1068171172766994432), nesta
 versão da notícia ganhamos de brinde também uma pequena intervenção
 “artística” na forma de duas figuras da política Argentina: [Juan
 Bautista Alberdi](https://pt.wikipedia.org/wiki/Juan_Bautista_Alberdi)
-(um dos principais responsáveis pela primeira Constituição Argentina) e
+(um dos principais responsáveis pela primeira Constituição argentina) e
 [Juan Domingo
 Perón](https://pt.wikipedia.org/wiki/Juan_Domingo_Per%C3%B3n) (três
 vezes presidente da Argentina). O texto que acompanha a foto de Perón
@@ -75,27 +75,27 @@ dados foram retirados do [Maddison
 Project](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2018),
 um projeto acadêmico da Universidade de Groningen cujo objetivo é
 estimar o valor de certas estatísticas econômicas para o passado
-longínquo (já falarei mais sobre isso).
+longínquo (mais sobre isso em breve).
 
 Sendo assim, acessei o site do projeto e coletei os dados. Eles não
 passam de uma planilha Excel com um país por coluna e um ano por linha,
 com cada célula contendo o PIB per capita daquele país naquele ano em
 dólares constantes de 2011.
 
-Usando o `ggplot2` podemos reproduzir o gráfico com facilidade:
+Usando o `ggplot2` podemos reproduzir a imagem com facilidade:
 
 <img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
 Quando vi o gráfico, fiquei boquiaberto. Uma imagem em baixa resolução,
 com Photoshop mal feito, linguagem tendenciosa e veiculada via WhatsApp
-não parecia estar errada. Analisando o ranking da Argentina em 2016, o
+parecia não estar errada. Analisando o ranking da Argentina em 2016, o
 país de fato estava na 62ª posição e não na 59ª, mas isso está longe de
-desqualificar a imagem.
+desqualificar um argumento.
 
 ## …Mas Podem Enganar
 
-Mesmo estando **tecnicamente** correto, um gráfico não necessariamente
-está correto. O próximo gráfico que fiz pretendia explorar não o ranking
+Mesmo estando **tecnicamente** certo, um gráfico não necessariamente
+está correto. A próxima visualização que fiz pretendia explorar não o ranking
 dos países, mas os seus PIBs per capita diretamente; isso é relevante
 porque a suposta alegação do gráfico diz respeito à economia da
 Argentina e não sobre ela em relação às de todos os outros países.
@@ -111,9 +111,9 @@ desde 1905. Por que então o descolamento dos rankings só ocorre após
 
 Depois de mexer mais no gráfico dos valores, notei que a grande maioria
 dos países da tabela não tinham nenhum dado para antes de 1950. Isso me
-fez procurar outras fontes para dados do PIB não encontrei nada que
-contemplasse um período tão grande quanto a do projeto Maddison. Sendo
-assim, fui saber mais sobre o conceito de Produto Interno Bruto
+fez procurar outras fontes para dados do PIB, mas não encontrei nada que
+contemplasse um período tão grande quanto o do projeto Maddison. Sendo
+assim, fui saber mais sobre o conceito de Produto Interno Bruto.
 
 Em primeiro lugar, descobri que a [definição
 moderna](https://en.wikipedia.org/wiki/Gross_domestic_product) de PIB só
@@ -121,7 +121,7 @@ existe desde 1934 e que ele só começou a ser utilizado para medir a
 economia dos países a partir de 1944.
 
 E agora entra em jogo o que de fato é o projeto Maddison. Já comentei
-que ele estima alguns índices sócio-econômicos para o passado, mas não
+que ele estima alguns índices socioeconômicos para o passado, mas não
 falei sobre um detalhe vital que só descobri depois: o projeto estima
 esses dados somente para um conjunto limitado de países\! Ou seja, antes
 de meados da década de 1950, só temos acesso à informação de um grupo
@@ -132,7 +132,8 @@ com linhas vazias antes de 1950, pois apenas 28 nações possuíam
 estimativas para o PIB per capita a desde 1875. É muito diferente dizer
 que a Argentina tinha o maior PIB per capita do mundo em 1895 e dizer
 que ela tinha o maior PIB per capita (estimado) entre 28 países
-selecionados.
+selecionados. Abaixo é possível ver o ranking até 2016 se filtrarmos
+apenas os 28 países iniciais:
 
 <img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
@@ -148,7 +149,7 @@ pela base.
 
 <img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
-Note como a quantidade de países presentes na base cresce
+Note como a quantidade de países presentes na tabela cresce
 significativamente depois do início da década de 1950 dado que a métrica
 foi colocada em vigor apenas 6 anos antes. Sendo assim, é de se esperar
 que a Argentina e até a Austrália percam posições no ranking. No fundo,
@@ -183,15 +184,15 @@ relação a Vargas, mas certamente mais relevante para a política
 contemporânea).
 
 A imagem é claramente montada para manchar o legado de Perón e, para
-isso, destaca a data na qual ele reformou a constituição argentina. A
-adição das fotos e do texto posteriormente em Photoshop é, na minha
-opinião, o que mais faz soar meu alarme de notícia falsa.
+isso, destaca a data na qual ele reformou a Constituição argentina. A
+adição das fotos e do texto posteriormente em Photoshop é o que mais faz
+soar meu alarme de notícia falsa.
 
 O que aprendi sobre a história argentina, entretanto, parece colocar em
-cheque a ideia de que teria sido a constituição peronista que derrubou a
+cheque a ideia de que teria sido a Constituição peronista que derrubou a
 Argentina no ranking dos PIBs per capita: Perón foi deposto por um golpe
-militar em 1955 e no ano seguinte publicou uma nova constituição que
-anulava a sua anterior. A Constituição de 1956 declarava “vigente la
+militar em 1955 e no ano seguinte foi publicada uma nova Constituição que
+anulava a anterior. A Constituição de 1956 declarava “vigente la
 Constitución Nacional sancionada en 1853, con las reformas de 1860, 1866
 y 1898, y exclusión de la de 1949”.
 
@@ -200,5 +201,5 @@ vigência da Constituição que deu início à “justiça social”:
 
 <img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
-Sugiro que os autores da imagem “original” façam a mesma montagem com o
+Sugiro que os autores da imagem original façam a mesma montagem com o
 gráfico acima.
