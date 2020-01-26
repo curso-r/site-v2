@@ -1,8 +1,8 @@
 ---
 title: "Quem segura a barra do Porta dos Fundos?"
 date: "2020-01-06"
-categories: ["r", "porta dos fundos", "youtube"]
-tags: ["r", "api"]
+categories: ["análises"]
+tags: ["api", "youtube", "porta dos fundos"]
 banner: "img/banners/porta-elenco.jpg"
 author: ["Julio"]
 summary: "A base de dados de CNPJ da Receita Federal do Brasil (RFB) é, na minha opinião, uma das maiores conquistas de dados abertos do Brasil. Nesse post vou passar alguns links para ler a base e alguns gráficos simples."
