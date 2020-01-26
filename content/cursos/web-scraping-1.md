@@ -22,7 +22,7 @@ Web scraping é a tarefa de extrair dados da internet de forma automatizada. Dif
 
 O objetivo deste curso é apresentar as principais ferramentas e estratégias para fazer web scraping utilizando o R. Para isso, abordaremos as noções básicas de como um site é construído, como funcionam  as requisições web e como descobrir o caminho até um conteúdo específico de uma página. 
 
-<h6 style = "color: #da4d4d">Você sairá deste curso apto a construir robôs para coletar dados da internet de forma automática e eficiente, tudo dentro do R.</h6>
+<h6 style = "color: #da4d4d">Você sairá deste curso apto a construir robôs para coletar dados da internet de forma automática, tudo dentro do R.</h6>
 
 <hr>
 
@@ -33,9 +33,9 @@ O objetivo deste curso é apresentar as principais ferramentas e estratégias pa
 <p>&#128204; O que é e quando fazer web scraping</p>
 <p>&#128204; O ciclo do web scraping</p>
 <p>&#128204; Noções de protocolo HTTP</p>
+<p>&#128204; Acessando dados de APIs</p>
 <p>&#128204; Como fazer requisições HTTP e baixar páginas web a partir do R</p>
 <p>&#128204; Como estruturar dados de arquivos .xml, .html e .json</p>
-<p>&#128204; Como iterar algoritmos no R</p>
 
 <hr>
 
@@ -44,6 +44,8 @@ O objetivo deste curso é apresentar as principais ferramentas e estratégias pa
 </header>
 
 &#10071; Interesse ou necessidade de raspar dados da internet
+
+&#10071; Conhecimentos básicos do `tidyverse`, como o operador `%>%`, são desejáveis
 
 <hr>
 

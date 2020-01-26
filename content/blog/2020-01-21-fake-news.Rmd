@@ -1,0 +1,205 @@
+---
+title: "Camadas de Fake News"
+date: "2020-01-21"
+tags: ["fake-news", "pib"]
+categories: ["análises", "r"]
+banner: "img/banners/fake-news.jpg"
+author: ["Caio"]
+summary: "Uma fake news dura de roer. Como um gráfico pode estar tecnicamente certo e ao mesmo tempo não ser correto."
+draft: false
+---
+
+## Eu Tenho um Problema
+
+Esse problema se chama *fake news*. Não importa a fonte, a inclinação
+ideológica, o estilo ou o grau da mentira; eu preciso me segurar muito
+para não passar a tarde toda desmascarando as notícias falsas
+(antigamente conhecidas simplesmente como mentiras) que chegam no meu
+WhatsApp diariamente. Eu não ligo tanto para análises mal feitas ou
+mesmo tendenciosas (já que na minha opinião isso faz parte de viver em
+sociedade), mas quando o conteúdo parece deliberadamente montado para
+ludibriar o leitor eu perco o controle.
+
+Normalmente eu ignoro a mensagem/foto/montagem e sigo com o meu dia, mas
+há ocasiões raras em que o nível da mentira é grande o bastante e eu
+estou com a agenda livre o suficiente, que corro para o computador
+com o único objetivo de desmentir a *fake news*. Geralmente em menos de
+meia hora já tenho uma resposta pronta com dados confiáveis, uma imagem
+sem Photoshop ou simplesmente um link para um site de *fact-checking*.
+Mas ontem aconteceu algo inédito: a mentira lutou contra mim.
+
+## A “Notícia”
+
+A “notícia” falsa em questão é na verdade uma imagem. Uma imagem
+alterada, por sinal.
+
+<img src="/blog/2020-01-21-fake-news_files/photo_2020-01-21_12-37-31.jpg" style="display: block; margin: auto;" />
+
+Vamos por partes. Meu espanhol não é dos melhores, mas acho que qualquer
+lusófono consegue compreender bem o que está sendo mostrado: o gráfico
+representa a posição de dois países no ranking de PIB per capita. Além
+disso, destacam-se o período de 1882 a 1950 (quando a Argentina nunca
+ficou abaixo do 10º maior PIB per capita), o período entre 1895 e 1896
+(quando a Argentina estava em 1º lugar) e o ranking atual dos nossos
+vizinhos (59º lugar).
+
+De acordo com o que me parece ser a [imagem
+original](https://twitter.com/rcas1/status/1068171172766994432), nesta
+versão da notícia ganhamos de brinde também uma pequena intervenção
+“artística” na forma de duas figuras da política Argentina: [Juan
+Bautista Alberdi](https://pt.wikipedia.org/wiki/Juan_Bautista_Alberdi)
+(um dos principais responsáveis pela primeira Constituição argentina) e
+[Juan Domingo
+Perón](https://pt.wikipedia.org/wiki/Juan_Domingo_Per%C3%B3n) (três
+vezes presidente da Argentina). O texto que acompanha a foto de Perón
+nos “informa” sobre a [Constituição
+de 1949](https://pt.wikipedia.org/wiki/Constituição_Argentina#A_Constituição_de_53_e_a_história_política_argentina),
+quando o governo peronista reforma a Carta Magna e aparentemente dá
+início à “justiça social”.
+
+O que esta imagem parece estar sugerindo é que Perón é o grande culpado
+pela queda da Argentina no ranking do PIB per capita. A comparação com a
+Austrália (que evidentemente não teve nenhum governo peronista) reforça
+essa ideia porque ela permaneceu aproximadamente na camada superior do
+gráfico. Implicitamente, o leitor parece ser encorajado a equivaler PIB
+per capita com desenvolvimento econômico ou qualidade de vida.
+
+Mas, como dito anteriormente, esta imagem não é uma *fake news*
+qualquer: para desmentí-la será necessário explorar algumas camadas da
+narrativa sendo traçada.
+
+## Os Dados Não Mentem…
+
+Diferentemente da maior parte das *fake news*, esta possui uma fonte. Os
+dados foram retirados do [Maddison
+Project](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2018),
+um projeto acadêmico da Universidade de Groningen cujo objetivo é
+estimar o valor de certas estatísticas econômicas para o passado
+longínquo (mais sobre isso em breve).
+
+Sendo assim, acessei o site do projeto e coletei os dados. Eles não
+passam de uma planilha Excel com um país por coluna e um ano por linha,
+com cada célula contendo o PIB per capita daquele país naquele ano em
+dólares constantes de 2011.
+
+Usando o `ggplot2` podemos reproduzir a imagem com facilidade:
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+
+Quando vi o gráfico, fiquei boquiaberto. Uma imagem em baixa resolução,
+com Photoshop mal feito, linguagem tendenciosa e veiculada via WhatsApp
+parecia não estar errada. Analisando o ranking da Argentina em 2016, o
+país de fato estava na 62ª posição e não na 59ª, mas isso está longe de
+desqualificar um argumento.
+
+## …Mas Podem Enganar
+
+Mesmo estando **tecnicamente** certo, um gráfico não necessariamente
+está correto. A próxima visualização que fiz pretendia explorar não o ranking
+dos países, mas os seus PIBs per capita diretamente; isso é relevante
+porque a suposta alegação do gráfico diz respeito à economia da
+Argentina e não sobre ela em relação às de todos os outros países.
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+
+O que me chamou a atenção no gráfico acima foi que os PIBs per capita da
+Argentina e da Austrália parecem estar se descolando consistentemente
+desde 1905. Por que então o descolamento dos rankings só ocorre após
+1950?
+
+## Contexto Importa…
+
+Depois de mexer mais no gráfico dos valores, notei que a grande maioria
+dos países da tabela não tinham nenhum dado para antes de 1950. Isso me
+fez procurar outras fontes para dados do PIB, mas não encontrei nada que
+contemplasse um período tão grande quanto o do projeto Maddison. Sendo
+assim, fui saber mais sobre o conceito de Produto Interno Bruto.
+
+Em primeiro lugar, descobri que a [definição
+moderna](https://en.wikipedia.org/wiki/Gross_domestic_product) de PIB só
+existe desde 1934 e que ele só começou a ser utilizado para medir a
+economia dos países a partir de 1944.
+
+E agora entra em jogo o que de fato é o projeto Maddison. Já comentei
+que ele estima alguns índices socioeconômicos para o passado, mas não
+falei sobre um detalhe vital que só descobri depois: o projeto estima
+esses dados somente para um conjunto limitado de países\! Ou seja, antes
+de meados da década de 1950, só temos acesso à informação de um grupo
+seleto de nações.
+
+Voltando para a base, percebi que isso explicava a quantidade de países
+com linhas vazias antes de 1950, pois apenas 28 nações possuíam
+estimativas para o PIB per capita a desde 1875. É muito diferente dizer
+que a Argentina tinha o maior PIB per capita do mundo em 1895 e dizer
+que ela tinha o maior PIB per capita (estimado) entre 28 países
+selecionados. Abaixo é possível ver o ranking até 2016 se filtrarmos
+apenas os 28 países iniciais:
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+
+Fiz questão de manter a escala deste gráfico igual à do anterior porque
+assim fica fácil de ver o problema com a visualização da “notícia”. De
+fato a Argentina perdeu posições no ranking, isso é indiscutível, mas é
+muito diferente perder algo em torno de 10 posições em 50 anos e perder
+50 posições no mesmo período.
+
+Para entender ainda melhor o que a imagem original está escondendo,
+basta exibir no gráfico os dados de **todos** os países contemplados
+pela base.
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+
+Note como a quantidade de países presentes na tabela cresce
+significativamente depois do início da década de 1950 dado que a métrica
+foi colocada em vigor apenas 6 anos antes. Sendo assim, é de se esperar
+que a Argentina e até a Austrália percam posições no ranking. No fundo,
+estamos visualizando uma base para antes de 1950 (as estimativas do
+projeto Maddison) e uma para depois (as estatísticas reais coletadas
+pela comunidade internacional).
+
+Mais interessante ainda do que tentar visualizar todos os países em um
+mesmo gráfico, é possível utilizar a função `dplyr::percent_rank()` que,
+ao invés de atribuir números naturais como ranking, retorna o ranking
+dividido pelo total de elementos na comparação.
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+Aqui fica claro que, mesmo depois de piorar muito no ranking do PIB per
+capita, a Argentina ainda não está tão ruim quanto estava no início dos
+anos 1880 (em relação a todos os países disponíveis para cada ano).
+Conclusão muito diferente da sugerida pela imagem original.
+
+## …E História Também
+
+A última camada dessa *fake news* é um pouco mais sutil e não pode ser
+identificada olhando somente para os dados. Na verdade, só fiquei
+sabendo disso enquanto pesquisava mais sobre a história da Argentina na
+Wikipédia.
+
+Sem querer entrar na discussão “peronistas vs. antiperonistas”, mas
+nossos vizinhos possuem uma herança muito forte dos três governos de
+Perón e a sociedade é fortemente dividida entre aqueles que apoiam seu
+legado e aqueles que o rejeitam (de forma similar ao nosso sentimento em
+relação a Vargas, mas certamente mais relevante para a política
+contemporânea).
+
+A imagem é claramente montada para manchar o legado de Perón e, para
+isso, destaca a data na qual ele reformou a Constituição argentina. A
+adição das fotos e do texto posteriormente em Photoshop é o que mais faz
+soar meu alarme de notícia falsa.
+
+O que aprendi sobre a história argentina, entretanto, parece colocar em
+cheque a ideia de que teria sido a Constituição peronista que derrubou a
+Argentina no ranking dos PIBs per capita: Perón foi deposto por um golpe
+militar em 1955 e no ano seguinte foi publicada uma nova Constituição que
+anulava a anterior. A Constituição de 1956 declarava “vigente la
+Constitución Nacional sancionada en 1853, con las reformas de 1860, 1866
+y 1898, y exclusión de la de 1949”.
+
+Agora acho importante fazer uma visualização final, destacando a
+vigência da Constituição que deu início à “justiça social”:
+
+<img src="/blog/2020-01-21-fake-news_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+
+Sugiro que os autores da imagem original façam a mesma montagem com o
+gráfico acima.
