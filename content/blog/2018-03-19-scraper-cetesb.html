@@ -62,8 +62,8 @@ my_cookie &lt;- cookies(res)$value %&gt;% purrr::set_names(cookies(res)$name)</c
 <p>Agora, precisamos enviar a requisição POST para fazer o login e acessar o sistema.</p>
 <ul>
 <li><p>Os parâmetros do formulário são colocados dentro do argumento <code>body=</code> da função <code>POST()</code>. Se você estiver replicando, basta substituir os valores <code>seu_login</code> e <code>sua_senha</code> pelo login e senha que você obteve ao se cadastrar no Qualar.</p></li>
-<li><p>O argumento <code>encode = &quot;form&quot;</code> especifica que a requisição é uma submissão de formulário.</p></li>
-<li><p>O parâmetro <code>enviar = &quot;OK&quot;</code> indica que estamos submetendo o formulário.</p></li>
+<li><p>O argumento <code>encode = "form"</code> especifica que a requisição é uma submissão de formulário.</p></li>
+<li><p>O parâmetro <code>enviar = "OK"</code> indica que estamos submetendo o formulário.</p></li>
 <li><p>O cookie é passado usando a função <code>set_cookies()</code>.</p></li>
 </ul>
 <pre class="r"><code>url &lt;- &quot;http://qualar.cetesb.sp.gov.br/qualar/autenticador&quot;

@@ -1,0 +1,114 @@
+---
+title: "A Poupança de Beethoven"
+date: "2020-02-20"
+tags: ["ggplot", "pib"]
+categories: ["análises", "r"]
+banner: "img/banners/poupanca-beethoven.jpg"
+author: ["Caio"]
+summary: "Explorando um pouco sobre currying e ggplot através da maluquice que são os juros compostos."
+draft: false
+---
+
+
+
+<div id="uma-bela-herança" class="section level2">
+<h2>Uma Bela Herança</h2>
+<p>O motivador da discussão deste post é meio estranho: em 17 de dezembro de 2020
+serão comemorados 250 anos desde o nascimento do grande compositor alemão Ludwig
+van Beethoven. Não é incomum ver pessoas abrindo poupanças para seus filhos logo
+quando nascem (para que eles tenham um pé-de-meia quando crescerem) e isso me
+fez pensar como ficaria uma poupaça aberta para Beethoven 250 anos atrás…</p>
+<p>Sendo assim, em pleno 2020, uma carta chega à casa do último herdeiro vivo do
+músico, você, lhe dando acesso à recém-descoberta poupança do seu
+tatara-tataravô. Como poderia existir uma poupança em 17 de dezembro de 1770 ou
+como ela durou até hoje é um mistério, mas sabe-se que ela foi aberta com o que
+atualmente seriam R$ 1000,00.</p>
+</div>
+<div id="visualizando-a-poupança" class="section level2">
+<h2>Visualizando a Poupança</h2>
+<p>Para saber quanto dinheiro há hoje na poupança, basta utilizar a fórmula de
+juros compostos:</p>
+<p><span class="math display">\[
+V_f=V_p(1+j)^n
+\]</span></p>
+<p>Onde <span class="math inline">\(V_f\)</span> é o valor final, <span class="math inline">\(V_p\)</span> é o valor inicial, <span class="math inline">\(j\)</span> é a taxa de juros e <span class="math inline">\(n\)</span>
+é o número de períodos que o dinheiro ficou guardado (número de anos se os juros
+forem anuais, número de meses se os juros forem mensais, etc.).</p>
+<p>Mas, muito mais do que simplesmente obter o valor final, é interessante ver o
+crescimento dos fundos da poupança ao longo do tempo. Isso pode ser feito com o
+pacote <code>ggplot2</code> facilmente: basta utilizar a fórmula acima para cada um dos 250
+anos e plotar esses pontos em um <em>scatterplot</em>. Entretanto, temos uma opção
+ainda melhor.</p>
+<p>Um recurso pouco conhecido do <code>ggplot2</code> é o <code>stat_function()</code>, capaz de
+construir uma <strong>linha contínua</strong> no gráfico a partir de uma função que recebe o
+valor de uma abscissa e retorna o valor da ordenada correspondente. Ou seja, se
+tivermos uma função <code>f(x) = y</code>, podemos passá-la como argumento para o
+<code>stat_function()</code> desenhá-la (com o nível de resolução mais apropriado).</p>
+<p>Sendo assim, precisamos transformar a função
+<a href="https://pt.wikipedia.org/wiki/Aridade">ternária</a> <code>Vp*(1+j)**n</code> em uma função
+que recebe apenas um argumento. Para isso devemos usar uma técnica denominada
+<a href="https://pt.wikipedia.org/wiki/Currying">currying</a>, que essencialmente
+“pré-preenche” argumentos de uma função; nesse caso, vamos fixar o valor de <code>Vp</code>
+e <code>j</code> de modo que somente o <code>n</code> varie. A função unária final, que podemos
+construir com <code>purrr::partial()</code>, nos mostrará quanto tinha na poupança depois
+de <code>n</code> unidades de tempo (a saber, anos).</p>
+<p>O código final para a visualização é o seguinte:</p>
+<pre class="r"><code>library(magrittr)
+
+# Fórmula de juros compostos
+juro_composto &lt;- function(Vp, j, n) Vp*(1+j)**n
+
+# Gerar um gráfico de juros compostos
+grafico_juros &lt;- function(Vp, j, n, SI = TRUE) {
+  
+  # Atalho para o ggplot (currying)
+  juro_fixado &lt;- purrr::partial(juro_composto, Vp = Vp, j = j)
+  
+  # Exibir eixos de forma abreviada
+  scale_real &lt;- if (SI) { scales::label_number_si(prefix = &quot;R$ &quot;) } else { I }
+  
+  # Mostrar no gráfico
+  c(0, n) %&gt;%
+    dplyr::tibble(x = .) %&gt;%
+    ggplot2::ggplot(ggplot2::aes(x)) +
+    ggplot2::stat_function(fun = juro_fixado) +
+    ggplot2::scale_y_continuous(labels = scale_real) +
+    ggplot2::xlab(&quot;Anos&quot;) +
+    ggplot2::ylab(&quot;Valor Final&quot;) +
+    ggplot2::theme_minimal()
+}</code></pre>
+<p>Agora vamos para os detalhes da poupança. Para desconsiderarmos a inflação,
+digamos que a poupança começou com o que nos valores de hoje seriam R$ 1000,00;
+uma poupança rende, em média, módicos 6% ao ano, então vamos usar isso como
+referência; por fim, o dinheiro ficou parado lá por 250 anos. Quanto você acha
+que terá na conta agora em 2020?</p>
+<pre class="r"><code>grafico_juros(500, 0.06, 250)</code></pre>
+<p><img src="/blog/2020-02-20-poupanca-beethoven_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Como é de se esperar, juros compostos são uma função exponencial. Depois desses
+250 anos, os R$ 1000,00 se tornaram mais de
+R$ 1B. Nada mal para uma mera poupança.</p>
+</div>
+<div id="bônus" class="section level2">
+<h2>Bônus</h2>
+<p>Aproveitando que já temos todo o código pronto, podemos visualizar outras séries
+exponenciais. Se colocássemos 1 centavo na poupança no ano 1 D.C., hoje em dia
+teríamos aproximadamente R$ 1.3117402^{49}, ou mais ou menos
+R$ 0,10 para cada átomo da Terra. Essa é a mágica dos juros compostos.</p>
+<pre class="r"><code>grafico_juros(0.01, 0.06, 2020, FALSE)</code></pre>
+<p><img src="/blog/2020-02-20-poupanca-beethoven_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Uma propriedade interessante de frases como “crescimento de 3%” é que raramente
+notamos que essa porcentagem se acumuma ano-a-ano. Um país cujo PIB cresce 3% ao
+ano tem que <strong>dobrar</strong> a sua economia a cada 25 anos. Atualmente o PIB do Brasil
+é de R$ 7T, vejamos o gráfico de nossa economia crescendo a 3% todo ano:</p>
+<pre class="r"><code>grafico_juros(7e12, 0.03, 25)</code></pre>
+<p><img src="/blog/2020-02-20-poupanca-beethoven_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Isso pode não impressionar muito, mas, se começármos a falar em escalas globais,
+a coisa muda de figura. Os EUA têm um PIB de US$ 17T, enquanto a soma de todos
+os PIBs do mundo dá aproximadamente US$ 80T; se a economia estadunidense
+crescesse a 3% pelos próximos 100 anos, precisaríamos de mais de 4 PIBs mundiais
+para chegar perto desse novo PIB dos EUA.</p>
+<pre class="r"><code>grafico_juros(17e12, 0.03, 100)</code></pre>
+<p><img src="/blog/2020-02-20-poupanca-beethoven_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Uma coisa que não cresce exponencialmente, entretanto, é a quantidade de
+recursos disponíveis na natureza…</p>
+</div>

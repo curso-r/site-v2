@@ -2,7 +2,7 @@
 title: "Git e GitHub (Zen do R parte 4)"
 date: "2019-07-23"
 tags: ["zen do R", "github"]
-categories: ["tutoriais"]
+categories: ["livro", "r"]
 banner: "img/banners/zen-do-r-4.jpg"
 author: ["Caio"]
 summary: "Como usar o Git e o GitHub para fazer controle
@@ -67,7 +67,6 @@ números). Se você estiver sem nenhuma paciência, execute o comando abaixo:</p
 #&gt; ● Store your PAT with a line like:
 #&gt;   GITHUB_PAT=xxxyyyzzz
 #&gt; ● Make sure &#39;.Renviron&#39; ends with a newline!</code></pre>
-<p><img src="/img/blog/zen-do-r/03_pat.png" style="display: block; margin: auto;" /></p>
 <p>Independentemente de como um PAT foi gerado, o importante é seguir as instruções
 descritas no comando. Execute a função <code>usethis::edit_r_environ()</code> e crie uma
 nova linha na forma <code>GITHUB_PAT={SEU_TOKEN}</code>. Assim que isso estiver feito, você
@@ -138,7 +137,6 @@ usethis::use_github()
 aba no RStudio denominada Git. Através dela é possível controlar todas as
 versões do código e enviá-las ao GitHub para que sejam armazenadas com segurança
 na nuvem.</p>
-<p><img src="/img/blog/zen-do-r/03_git.png" style="display: block; margin: auto;" /></p>
 <p>Para testar se está tudo funcionando, crie um arquivo na pasta <code>R/</code> e abra a aba
 Git. Clique na caixa em branco que lá se encontra, aperte o botão <strong>Commit</strong>
 (escreva uma mensagem que descreva aquilo que você fez) e então aperte o botão

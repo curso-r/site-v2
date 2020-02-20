@@ -2,12 +2,18 @@
 title: "Funções e Dependências (Zen do R parte 5)"
 date: "2019-07-30"
 tags: ["zen do R"]
-categories: ["tutoriais"]
+categories: ["livro", "r"]
 banner: "img/banners/zen-do-r-5.jpg"
 author: ["Caio"]
 summary: "Como tornar o seu código reprodutível com funções e dependências."
 draft: false
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, 
+                      cache = TRUE, 
+                      eval = FALSE)
+```
 
 Nesta série de posts, estamos apresentamos a todos a nossa primeira tentativa de
 escrever um livro: [*O Zen do R*](https://curso-r.github.io/zen-do-r/)! Durante
