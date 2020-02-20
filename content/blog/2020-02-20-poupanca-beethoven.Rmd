@@ -26,7 +26,7 @@ Sendo assim, em pleno 2020, uma carta chega à casa do último herdeiro vivo do
 músico, você, lhe dando acesso à recém-descoberta poupança do seu
 tatara-tataravô. Como poderia existir uma poupança em 17 de dezembro de 1770 ou
 como ela durou até hoje é um mistério, mas sabe-se que ela foi aberta com o que
-atualmente seriam R$ 1000,00.
+atualmente seriam R$ 500,00.
 
 ## Visualizando a Poupança
 
@@ -92,7 +92,7 @@ grafico_juros <- function(Vp, j, n, SI = TRUE) {
 ```
 
 Agora vamos para os detalhes da poupança. Para desconsiderarmos a inflação,
-digamos que a poupança começou com o que nos valores de hoje seriam R$ 1000,00;
+digamos que a poupança começou com o que nos valores de hoje seriam R$ 500,00;
 uma poupança rende, em média, módicos 6% ao ano, então vamos usar isso como
 referência; por fim, o dinheiro ficou parado lá por 250 anos. Quanto você acha
 que terá na conta agora em 2020?
@@ -102,7 +102,7 @@ grafico_juros(500, 0.06, 250)
 ```
 
 Como é de se esperar, juros compostos são uma função exponencial. Depois desses
-250 anos, os R$ 1000,00 se tornaram mais de
+250 anos, os R$ 500,00 se tornaram mais de
 `r reais(juro_composto(500, 0.06, 250))`. Nada mal para uma mera poupança.
 
 ## Bônus
