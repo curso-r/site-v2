@@ -1,0 +1,73 @@
+---
+title: "gghighlight"
+date: "2020-02-21"
+tags: ["ggplot"]
+categories: ["pacotes", "r"]
+banner: "img/banners/gghighlight.png"
+author: ["Daniel"]
+summary: "O gghighlight é uma das extensões do ggplot2. Este post serve como uma pequena introdução é apresentação do que é possível fazer com ele."
+draft: false
+---
+
+```{r setup, include=FALSE}
+reais <- scales::label_number_si(prefix = "R$ ")
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = "https://cran.rstudio.org")
+```
+
+O [`gghighlight`](https://yutannihilation.github.io/gghighlight/) é uma das extensões do [ggplot2](https://ggplot2.tidyverse.org/) que eu mais gosto. Este post serve como uma pequena introdução é apresentação do que é possível fazer com ele.
+
+Como próprio nome indica, o `gghighlight` serve para realçar partes de um gráfico feito com o `ggplot`. 
+
+## Realçando pontos
+
+Muitas vezes temos um gráfico de dispersão em que queremos realçar alguns pontos
+de acordo com alguma característica. Por exemplo, abaixo estamos realçando os pontos que possuem `carat > 4`, além disso colocamos uma label em cada um.
+
+```{r}
+library(tidyverse)
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) +
+  geom_point() +
+  gghighlight::gghighlight(carat > 4, label_key = carat)
+```
+
+Também é possível configurar a cor dos pontos que serão realçados e dos que não serão, bem como o estilo dos labels.
+
+```{r}
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(color = "red") +
+  gghighlight::gghighlight(
+    carat > 4, 
+    label_key = carat, 
+    unhighlighted_colour = "black",
+    label_params = list(size = 10, fill = "grey")
+  )
+```
+
+## Realçando linhas
+
+Com o `gghighlight` também é possível realçar linhas em um gráfico que possui varias linhas. Isso é interessante quando você quer ver como uma série temporal se compara com relação à um conjunto de outras séries.
+
+```{r}
+d <- cranlogs::cran_downloads(
+  packages = tidyverse::tidyverse_deps()$package,
+  from = "2019-01-01", to = "2019-12-31"
+)
+```
+
+No gráfico a seguir mostramos o número de downloads de cada um dos pacotes do
+tidyverse no ano de 2019. Uma das séries se destaca por mudar de padrão no meio
+do ano. Usamos o `gghighlight` para destacá-la no gráfico.
+
+```{r}
+d %>% 
+  ggplot(aes(x = date, y = count, group = package)) +
+  geom_line() +
+  gghighlight::gghighlight(max(count) > 100000)
+```
+É isso aí! Esse pacote existe e é muito útil! A [documentação é bem boa também](https://yutannihilation.github.io/gghighlight/index.html).
+
+
+
