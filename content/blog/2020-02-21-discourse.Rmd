@@ -1,0 +1,31 @@
+---
+title: "Anunciando a comunidade Curso-R"
+date: "2020-02-21"
+tags: ["r"]
+categories: ["divulgação", "r"]
+banner: "img/banners/welcome_to_rstats.png"
+author: ["Daniel"]
+summary: "A Curso-R lançou criou um lugar para vocÊ discutir R e outros assuntos relacionados."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Lançamos a [Comunidade Curso-R](https://discourse.curso-r.com)!
+
+Este fórum foi criado para qualquer um tenha interesse em aprender, compartilhar conhecimento e discutir assuntos relacionados à linguagem R e assuntos correlacionados.
+
+Aqui você pode tirar suas dúvidas, responder dúvidas de outras pessoas, compartilhar links interessantes, iniciar discussões relevantes para a comunidade, divulgar eventos e até mesmo divulgar vagas de emprego - desde que sempre respeite o nosso código de conduta.
+
+Aqui também é o lugar que alunos e ex-alunos da Curso-R usam para tirar dúvidas com os nossos professores, fazendo com que nossos cursos permaneçam o mais abertos possível.
+
+Cadastrem-se [aqui](https://discourse.curso-r.com) e sejam bem vindos!
+
+Nota: o banner deste post também é uma arte da [Allison Horst](https://github.com/allisonhorst)
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/r_first_then.png)
+
+Arte da [Allison Horst](https://github.com/allisonhorst/stats-illustrations).
+
