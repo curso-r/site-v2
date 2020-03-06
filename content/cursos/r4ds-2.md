@@ -110,7 +110,7 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
 
 &#9989; usar o [Github](https://github.com/) para compartilhar o desenvolvimento dos seus projetos;
 
-&#9989; fazer operações avançadas de manipulação dados, em especial involvendo texto e datas;
+&#9989; fazer operações avançadas de manipulação dados, em especial envolvendo texto e datas;
 
 &#9989; construir scripts eficientes para resolver problemas complexos utilizando programação funcional;
 
