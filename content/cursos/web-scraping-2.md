@@ -1,5 +1,5 @@
 ---
-title: "Web scraping em R II"
+title: "Web scraping em R - Parte II"
 data: "25 de abril de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
 local: "Bendito Coworking - Alameda Santos, 2335, conj. 131, São Paulo - SP"
