@@ -4,14 +4,13 @@ data: "28 de março de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
 local: "Workshop online"
 img: "img/cursos/web-scraping-1.jpg"
-preco: "R$200,00"
+preco: "VAGAS ESGOTADAS"
 banner: "img/cursos/web-scraping-1-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 requisitos: ""
 ordem: 30
-unit_price: 20000
+unit_price: 30000
 id: 18
-aberto: "true"
 ---
 
 <header class="section-header">
