@@ -2,9 +2,9 @@
 title: "Dashboards com R"
 data: "15 de junho a 1º de julho, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "FYI Learning Solutions - Av. Paulista, 2006 - Conjunto 401 - Bela Vista, São Paulo - SP"
+local: "Online"
 img: "img/cursos/dashboards.png"
-preco: "R$750,00"
+preco: "R$ 500,00"
 banner: "img/cursos/dashboards-banner.jpg"
 desc: "Aprenda a criar dashboards incríveis a partir do R."
 requisitos: ""
@@ -18,6 +18,8 @@ aberto: "true"
 <header class="section-header">
   <h4>Conheça o curso</h4>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 Dashboards são excelentes ferramentas para comunicar os resultados de análises de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou do conhecimento de outras linguagens de programação. O R é uma ótima alternativa para quem precisa desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, de maneira simples e rápida.
 
@@ -109,5 +111,6 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas
 
-&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
+&#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas

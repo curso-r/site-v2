@@ -2,7 +2,7 @@
 title: "Workshop: Regressão linear"
 data: "14 de março de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
-local: "Bendito Coworking - Alameda Santos, 2335, conj. 131, São Paulo - SP"
+local: "Online"
 img: "img/cursos/workshop-regressao.jpeg"
 preco: "R$ 300,00"
 banner: "img/cursos/workshop-regressao-banner.png"
@@ -18,6 +18,8 @@ aberto: "true"
 <header class="section-header">
   <h4>Sobre o workshop</h4>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 A regressão linear é historicamente a técnica mais discutida e utilizada na Estatística. Graças à sua facilidade de implementação e interpretação e por se ajustar bem a diversos problemas reais, ela é aplicada para modelagem de dados e testes de hipóteses nas mais diversas áreas do conhecimento.
 
@@ -61,9 +63,11 @@ O objetivo deste workshop é apresentar os principais conceitos por trás da reg
 <hr>
 
 <header class="section-header">
-  <h4>O que eu preciso levar?</h4>
+  <h4>O que eu preciso ter?</h4>
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas
+
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
 &#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas

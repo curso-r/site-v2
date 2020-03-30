@@ -2,9 +2,9 @@
 title: "R para Ciência de Dados II"
 data: "de 27 de abril a 13 de maio, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "FYI Learning Solutions - Av. Paulista, 2006, conj. 401, São Paulo - SP"
+local: "Online"
 img: "img/cursos/r4ds-2.jpeg"
-preco: "R$ 750,00"
+preco: "R$ 500,00"
 banner: "img/cursos/r4ds-2.png"
 desc: "É hora de aprofundar os seus conhecimentos de R."
 requisitos: ""
@@ -18,6 +18,8 @@ aberto: "true"
 <header class="section-header">
   <h3>Conheça o curso</h3>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
@@ -138,5 +140,7 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas;
+
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
 &#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;

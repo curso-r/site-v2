@@ -2,9 +2,9 @@
 title: "Workshop: XGBoost"
 data: "16 de maio de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
-local: "Bendito Coworking - Alameda Santos, 2335, conj. 131, São Paulo - SP"
+local: "Online"
 img: "img/cursos/xgboost.jpeg"
-preco: "R$ 500,00"
+preco: "R$ 300,00"
 banner: "img/cursos/xgboost.png"
 desc: "Aprenda a implementar um dos algoritmos de Machine Learning mais utilizados da atualidade."
 requisitos: ""
@@ -18,6 +18,8 @@ aberto: "true"
 <header class="section-header">
   <h4>Sobre o workshop</h4>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 O XGBoost é um dos algoritmos mais utilizados atualmente para resolver problemas de modelagem preditiva, sendo um dos modelos mais vezes campeão de competições do [Kaggle](https://www.kaggle.com/).
 
@@ -56,5 +58,7 @@ O objetivo deste workshop é apresentar os principais conceitos por trás desse 
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas;
+
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
 &#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas;

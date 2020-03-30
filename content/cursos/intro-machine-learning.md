@@ -2,7 +2,7 @@
 title: "Introdução ao Machine Learning com R"
 data: "30 de março a 13 de abril, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "Curso Online"
+local: "Online"
 img: "img/cursos/intro-ml-banner.png"
 preco: "R$ 800,00"
 banner: "img/cursos/intro-ml.jpg"
@@ -17,6 +17,8 @@ unit_price: 80000
 <header class="section-header">
   <h4>Conheça o curso</h4>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 Machine Learning é um framework de análise preditiva, muito utilizado hoje em dia em problemas de classificação. Sua fama recente se deve ao sucesso em aplicações de transcrição de áudio e classificação de imagens, mas uma grande parte de suas técnicas são muito úteis em qualquer problema de modelagem estatística.
 
@@ -109,6 +111,8 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas
+
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
 &#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas
 
