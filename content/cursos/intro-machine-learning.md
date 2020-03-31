@@ -4,13 +4,14 @@ data: "30 de março a 13 de abril, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/intro-ml-banner.png"
-preco: "R$ 500,00"
+preco: "R$ 800,00"
 banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 20
 id: 14
-unit_price: 50000
+unit_price: 80000
+aberto: "true"
 ---
 
 <header class="section-header">
