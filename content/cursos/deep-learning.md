@@ -2,7 +2,7 @@
 title: "Deep learning com R"
 data: "25 de maio à 4 de junho, às segundas, quartas e quintas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "Online"
+local: "Aulas online"
 img: "img/cursos/deep-learning.png"
 preco: "R$ 500,00"
 banner: "img/cursos/deep-learning-banner.jpg"
@@ -72,7 +72,19 @@ O objetivo deste curso é se familiarizar com as principais técnicas utilizadas
 <hr>
 
 <header class="section-header">
-  <h4>O que eu preciso levar?</h4>
+  <h4>Como será o curso?</h4>
+</header>
+
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do curso
+<p>&#128313; Aula expositiva por vídeo
+<p>&#128313; Intervalos para dúvidas e exercícios durante todo o curso
+<p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
+<p>&#128313; Acesso gratuito aos vídeos da aula pós curso
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso ter?</h4>
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas

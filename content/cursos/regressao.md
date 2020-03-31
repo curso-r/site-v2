@@ -2,7 +2,7 @@
 title: "Workshop: Regressão linear"
 data: "14 de março de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
-local: "Online"
+local: "Aulas online"
 img: "img/cursos/workshop-regressao.jpeg"
 preco: "R$ 300,00"
 banner: "img/cursos/workshop-regressao-banner.png"
@@ -59,6 +59,18 @@ O objetivo deste workshop é apresentar os principais conceitos por trás da reg
 &#10071; Interesse por Estatística e programação
 
 &#10071; Conhecimentos básicos de Estatística: média, mediana, variância, proporção
+
+<hr>
+
+<header class="section-header">
+  <h4>Como será o workshop?</h4>
+</header>
+
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do workshop
+<p>&#128313; Aula expositiva por vídeo
+<p>&#128313; Intervalos para dúvidas e exercícios durante todo o workshop
+<p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
+<p>&#128313; Acesso gratuito aos vídeos da aula pós workshop
 
 <hr>
 

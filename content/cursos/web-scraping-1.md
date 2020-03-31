@@ -52,12 +52,10 @@ O objetivo deste workshop é apresentar as principais ferramentas e estratégias
   <h4>Como será o workshop?</h4>
 </header>
 
-<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas um dia antes do workshop
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do workshop
 <p>&#128313; Aula expositiva por vídeo
-<p>&#128313; Uma hora de almoço, ao meio-dia
 <p>&#128313; Intervalos para dúvidas e exercícios durante todo o workshop
 <p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
-<p>&#128313; Atendimentos individuais com hora marcada para esclarecimentos de dúvidas pós workshop
 <p>&#128313; Acesso gratuito aos vídeos da aula pós workshop
 
 <hr>

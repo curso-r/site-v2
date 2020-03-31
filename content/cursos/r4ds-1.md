@@ -2,9 +2,9 @@
 title: "R para Ciência de Dados I"
 data: "de 2 a 18 de março, às segundas e quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
-local: "FYI Learning Solutions - Av. Paulista, 2006, conj. 401, São Paulo - SP"
+local: "Aulas online"
 img: "img/cursos/r4ds-1.jpg"
-preco: "R$ 750,00"
+preco: "R$ 500,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
 desc: "O nosso curso introdutório de programação em R."
 requisitos: ""
@@ -17,6 +17,8 @@ unit_price: 75000
 <header class="section-header">
   <h4>Conheça o curso</h4>
 </header>
+
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
 
@@ -130,9 +132,23 @@ Você sairá do curso sabendo como usar o R e o RStudio para:
 <hr>
 
 <header class="section-header">
-  <h4>O que eu preciso levar?</h4>
+  <h4>Como será o curso?</h4>
+</header>
+
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do curso
+<p>&#128313; Aula expositiva por vídeo
+<p>&#128313; Intervalos para dúvidas e exercícios durante todo o curso
+<p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
+<p>&#128313; Acesso gratuito aos vídeos da aula pós curso
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso ter?</h4>
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas
+
+&#128187; Uma conta de email Google para poder acessar a nossa plataforma de cursos
 
 &#128571; Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas

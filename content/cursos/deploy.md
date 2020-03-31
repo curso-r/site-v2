@@ -2,7 +2,7 @@
 title: "Workshop: Deploy"
 data: "20 de junho de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
-local: "Online"
+local: "Aulas online"
 img: "img/cursos/deploy.jpeg"
 preco: "R$ 300,00"
 banner: "img/cursos/deploy-banner.png"
@@ -65,7 +65,19 @@ O objetivo deste workshop é ensinar os fundamentais para que você seja capaz d
 <hr>
 
 <header class="section-header">
-  <h4>O que eu preciso levar?</h4>
+  <h4>Como será o workshop?</h4>
+</header>
+
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do workshop
+<p>&#128313; Aula expositiva por vídeo
+<p>&#128313; Intervalos para dúvidas e exercícios durante todo o workshop
+<p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
+<p>&#128313; Acesso gratuito aos vídeos da aula pós workshop
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso ter?</h4>
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas

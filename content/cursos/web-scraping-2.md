@@ -44,12 +44,24 @@ Neste workshop, traremos algumas ideias mais avançadas e muitos exemplos. Trare
   <h4>Quais são os pré-requisitos?</h4>
 </header>
 
-<p>&#10071; Workshop Web scraping I</p>
+<p>&#10071; Os tópicos do Workshop Web scraping - Parte I</p>
 
 <hr>
 
 <header class="section-header">
-  <h4>O que eu preciso levar?</h4>
+  <h4>Como será o workshop?</h4>
+</header>
+
+<p>&#128313; Informações sobre o acesso à plataforma de streaming serão fornecidas até um dia antes do workshop
+<p>&#128313; Aula expositiva por vídeo
+<p>&#128313; Intervalos para dúvidas e exercícios durante todo o workshop
+<p>&#128313; Monitores para auxiliar na organização e esclarecimento de dúvidas 
+<p>&#128313; Acesso gratuito aos vídeos da aula pós workshop
+
+<hr>
+
+<header class="section-header">
+  <h4>O que eu preciso ter?</h4>
 </header>
 
 &#128187; Um notebook com acesso a internet e permissão para instalar novos programas
