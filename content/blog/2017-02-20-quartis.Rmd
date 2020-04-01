@@ -55,7 +55,7 @@ mtcars %>%
   group_by(am, vs) %>% 
   nest() %>% 
   mutate(s = map(data, ~enframe(summary(.x$mpg)))) %>% 
-  unnest(s) %>% 
+  unnest_legacy(s) %>% 
   spread(name, value) %>% 
   knitr::kable()
 ```
