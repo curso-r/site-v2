@@ -10,7 +10,7 @@ desc: "O nosso curso introdutório de programação em R voltado para ciência d
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 5
-id: 12
+id: 22
 unit_price: 50000
 aberto: "true"
 ---
