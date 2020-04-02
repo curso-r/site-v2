@@ -31,7 +31,7 @@ tab <- mtcars %>%
   group_by(am, vs) %>% 
   nest() %>% 
   mutate(quartis = map(data, ~enframe(quantile(.x$mpg, 1:3 / 4)))) %>% 
-  unnest(quartis) %>% 
+  unnest_legacy(quartis) %>% 
   spread(name, value)
 tab
 ```
@@ -39,7 +39,7 @@ tab
 - A função `dplyr::group_by()` faz um grupo para cada combinação de `am` e `vs`.
 - A função `tidyr::nest()` guarda os dados de cada grupo numa *list-column* chamada `data`.
 - A função `purrr::map()` aplica elegantemente a função `quantile()` para cada grupo de datas, sendo ajudada pela função `tibble::enframe()`, que coloca o resultado de `quantile()` em uma `tibble`.
-- A função `tidyr::unnest()` coloca os resultados de volta em colunas-vetores.
+- A função `tidyr::unnest_legacy()` coloca os resultados de volta em colunas-vetores.
 - Terminamos com `tidyr::spread()` para espalhar os quartis nas colunas.
 
 O resultado pode ser jogado diretamente numa tabela:

@@ -22,22 +22,22 @@ library(purrr)</code></pre>
   group_by(am, vs) %&gt;% 
   nest() %&gt;% 
   mutate(quartis = map(data, ~enframe(quantile(.x$mpg, 1:3 / 4)))) %&gt;% 
-  unnest(quartis) %&gt;% 
+  unnest_legacy(quartis) %&gt;% 
   spread(name, value)
-## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4
 tab
 ## # A tibble: 4 x 5
-##      am    vs `25%` `50%` `75%`
+## # Groups:   vs, am [4]
+##      vs    am `25%` `50%` `75%`
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1     0     0  14.0  15.2  16.6
-## 2     0     1  18.6  21.4  22.2
-## 3     1     0  16.8  20.4  21  
+## 2     0     1  16.8  20.4  21  
+## 3     1     0  18.6  21.4  22.2
 ## 4     1     1  25.0  30.4  31.4</code></pre>
 <ul>
 <li>A função <code>dplyr::group_by()</code> faz um grupo para cada combinação de <code>am</code> e <code>vs</code>.</li>
 <li>A função <code>tidyr::nest()</code> guarda os dados de cada grupo numa <em>list-column</em> chamada <code>data</code>.</li>
 <li>A função <code>purrr::map()</code> aplica elegantemente a função <code>quantile()</code> para cada grupo de datas, sendo ajudada pela função <code>tibble::enframe()</code>, que coloca o resultado de <code>quantile()</code> em uma <code>tibble</code>.</li>
-<li>A função <code>tidyr::unnest()</code> coloca os resultados de volta em colunas-vetores.</li>
+<li>A função <code>tidyr::unnest_legacy()</code> coloca os resultados de volta em colunas-vetores.</li>
 <li>Terminamos com <code>tidyr::spread()</code> para espalhar os quartis nas colunas.</li>
 </ul>
 <p>O resultado pode ser jogado diretamente numa tabela:</p>
@@ -45,8 +45,8 @@ tab
 <table>
 <thead>
 <tr class="header">
-<th align="right">am</th>
 <th align="right">vs</th>
+<th align="right">am</th>
 <th align="right">25%</th>
 <th align="right">50%</th>
 <th align="right">75%</th>
@@ -63,16 +63,16 @@ tab
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">18.650</td>
-<td align="right">21.40</td>
-<td align="right">22.150</td>
+<td align="right">16.775</td>
+<td align="right">20.35</td>
+<td align="right">21.000</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">16.775</td>
-<td align="right">20.35</td>
-<td align="right">21.000</td>
+<td align="right">18.650</td>
+<td align="right">21.40</td>
+<td align="right">22.150</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -88,14 +88,14 @@ tab
   group_by(am, vs) %&gt;% 
   nest() %&gt;% 
   mutate(s = map(data, ~enframe(summary(.x$mpg)))) %&gt;% 
-  unnest(s) %&gt;% 
+  unnest_legacy(s) %&gt;% 
   spread(name, value) %&gt;% 
   knitr::kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="right">am</th>
 <th align="right">vs</th>
+<th align="right">am</th>
 <th align="right">1st Qu.</th>
 <th align="right">3rd Qu.</th>
 <th align="right">Max.</th>
@@ -118,22 +118,22 @@ tab
 <tr class="even">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">18.650</td>
-<td align="right">22.150</td>
-<td align="right">24.4</td>
-<td align="right">20.74286</td>
-<td align="right">21.40</td>
-<td align="right">17.8</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">0</td>
 <td align="right">16.775</td>
 <td align="right">21.000</td>
 <td align="right">26.0</td>
 <td align="right">19.75000</td>
 <td align="right">20.35</td>
 <td align="right">15.0</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">18.650</td>
+<td align="right">22.150</td>
+<td align="right">24.4</td>
+<td align="right">20.74286</td>
+<td align="right">21.40</td>
+<td align="right">17.8</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -211,7 +211,4 @@ tab
 </tbody>
 </table>
 <p>Mas: tome cuidado! Se o Hadley diz…</p>
-<div class="figure">
-<img src="http://lsru.github.io/r_workshop/img/purrr_do.png" />
-
-</div>
+<p><img src="http://lsru.github.io/r_workshop/img/purrr_do.png" /></p>

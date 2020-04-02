@@ -10,7 +10,6 @@ desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
 ordem: 35
 aberto: "true"
-unit_price: 80000
 id: 15
 ---
 

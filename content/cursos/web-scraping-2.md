@@ -9,7 +9,6 @@ banner: "img/cursos/web-scraping-2-banner.png"
 desc: "Se aprofunde na construção de scrapers utilizando o R."
 requisitos: ""
 ordem: 32
-unit_price: 40000
 id: 19
 aberto: "true"
 ---

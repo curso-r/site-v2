@@ -11,7 +11,6 @@ requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 10
 id: 13
-unit_price: 75000
 aberto: "true"
 ---
 

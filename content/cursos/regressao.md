@@ -10,7 +10,6 @@ desc: "Familiarize-se com os principais conceitos por trás da regressão linear
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 15
-unit_price: 30000
 id: 17
 aberto: "true"
 ---
