@@ -12,6 +12,7 @@ professores: ["Athos Damiani", "William Amorim"]
 ordem: 22
 id: 21
 aberto: "true"
+unit_price: 30000
 ---
 
 <header class="section-header">

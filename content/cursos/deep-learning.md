@@ -11,6 +11,7 @@ requisitos: ""
 ordem: 35
 aberto: "true"
 id: 15
+unit_price: 50000
 ---
 
 <header class="section-header">

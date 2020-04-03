@@ -10,6 +10,7 @@ desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como f
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 20
 id: 14
+unit_price: 50000
 ---
 
 <header class="section-header">
