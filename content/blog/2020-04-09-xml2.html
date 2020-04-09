@@ -1,0 +1,218 @@
+---
+title: "Abaixo ao rvest!"
+date: "2020-04-09"
+tags: ["xml2", "rvest"]
+categories: ["pacotes", "r"]
+banner: "img/banners/xml2.jpg"
+author: ["Caio"]
+summary: "O rvest já não é mais o melhor pacote para web scraping. Está na hora de voltar para o xml2!"
+draft: false
+---
+
+
+
+<p><strong>Se você estiver interessado em web scraping, considere participar do nosso
+<a href="https://www.curso-r.com/cursos/web-scraping-2/">workshop</a> no dia 25/04/2020!
+Lá vou ensinar tudo sobre <code>httr</code>, <code>xml2</code> e muito mais.</strong></p>
+<p>Se você já trabalhou com
+<a href="https://www.curso-r.com/material/webscraping/">web scraping</a>, então
+provavelmente você já ouviu falar de três pacotes: <code>httr</code>, <code>xml2</code> e <code>rvest</code>.
+Talvez você não conheça ainda o <code>xml2</code>, mas o <code>rvest</code> foi por muito tempo o
+divulgado como o principal pacote do R para raspagem de dados. A realidade,
+entretanto, é que seu reinado acabou.</p>
+<p>Como este post é voltado para pessoas que já têm um pouco de experiência com web
+scraping em R, não vou me alongar em explicar o que cada função do <code>rvest</code> faz.
+Meu objetivo aqui é apresentar para o leitor as principais alternativas do
+<code>xml2</code> (e do <code>httr</code>) para o <code>rvest</code>.</p>
+<div id="o-fim-de-uma-era" class="section level2">
+<h2>O fim de uma era</h2>
+<p>Acredite, eu digo isso com muito pesar, mas o <code>rvest</code> está morto. Ele pode ter
+sido muito útil em um passado distante, mas hoje em dia a nossa melhor opção
+para a raspagem de dados é o bom e velho <code>xml2</code>.</p>
+<p>A realidade é que o <code>rvest</code> nunca passou de um wrapper em torno do <code>xml2</code> e do
+<code>httr</code>; esta é inclusive a sua descrição oficial: <em>Wrappers em torno dos pacotes
+‘xml2’ e ‘httr’ para facilitar o download e a manipulação de HTML e XML</em>. Mas se
+o <code>rvest</code> está uma camada acima do <code>xml2</code>, então por que abandoná-lo por essa
+alternativa mais “rústica”?</p>
+<p>O grande problema do <code>rvest</code> é que ele foi majoritariamente abandonado. É verdade
+que ele teve três novas atualizações em 2019, mas estas não passaram de pequenos
+ajustes. O último lançamento relevante do <code>rvest</code> (a versão 0.3.0) foi em 2015,
+praticamente dois séculos atrás em anos da Internet.</p>
+<p>Nestes últimos 4 anos e pouco, o <code>xml2</code> continuou sendo atualizado e acabou se
+tornando tão simples de usar quanto o seu aparente sucessor. Por isso, na minha
+opinião, hoje em dia é mais fácil aprender web scraping direto com o original.</p>
+</div>
+<div id="pequenas-diferenças" class="section level2">
+<h2>Pequenas diferenças</h2>
+<p>A principal diferença entre os dois é que o <code>xml2</code> trabalha com XPath e não
+seletores CSS. Na minha opinião, o XPath é muito mais poderoso que os seletores,
+mas a verdade é que trabalhar com ambos é praticamente igual! Quando você
+estiver no seu navegador explorando a estrutura HTML de uma página a ser
+raspada, basta clicar com o botão direito e copiar um ao invés do outro.
+Inclusive existem até alguns
+<a href="https://ghostinspector.com/docs/css-xpath-conversion/">guias</a> de conversão de
+um para o outro; o XPath é naturalmente mais verborrágico, mas ele compensa com
+algumas capacidades a mais.</p>
+<p>Depois que você tiver se acostumado com o XPath, basta entender qual é o nome
+da nova função a utilizar.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><code>rvest</code></th>
+<th align="left"><code>xml2</code>/<code>httr</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>rvest::html_session()</code></td>
+<td align="left">Desnecessário com o <code>httr</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>rvest::follow_link()</code></td>
+<td align="left"><code>httr::GET()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>rvest::read_html()</code></td>
+<td align="left"><code>xml2::read_html()</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>rvest::html_nodes()</code></td>
+<td align="left"><code>xml2::xml_find_all()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>rvest::html_node()</code></td>
+<td align="left"><code>xml2::xml_find_first()</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>rvest::html_text()</code></td>
+<td align="left"><code>xml2::xml_text()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>rvest::html_table()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>rvest::html_attr()</code></td>
+<td align="left"><code>xml2::xml_attr()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>rvest::html_children()</code></td>
+<td align="left"><code>xml2::xml_children()</code></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"><code>xml2::xml_parents()</code></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"><code>xml2::xml_contents()</code></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"><code>xml2::xml_siblings()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Como fica claro acima, o <code>xml2</code> possui praticamente todas as funções que o
+<code>rvest</code> possui e mais algumas. A grande vantagem de usar o primeiro é precisar
+de uma dependência a menos: o <code>rvest</code> já importa o <code>xml2</code>, então porque não
+fazer tudo direto em <code>xml2</code>?</p>
+<p>A única grande ausência do <code>xml2</code> é o <code>html_table()</code>, mas isso pode ser
+facilmente corrigido com o código abaixo:</p>
+<pre class="r"><code>#&#39; Parse an html table into a data frame
+#&#39;
+#&#39; @param x A node, node set or document.
+#&#39; @param header Use first row as header? If NA, will use first row if it consists of th tags.
+#&#39; @param trim Remove leading and trailing whitespace within each cell?
+#&#39; @param fill If TRUE, automatically fill rows with fewer than the maximum number of columns with NAs.
+#&#39; @param dec The character used as decimal mark.
+#&#39;
+#&#39; @export
+xml_table &lt;- function(x, header = NA, trim = TRUE, fill = FALSE, dec = &quot;.&quot;) {
+  if (&quot;xml_nodeset&quot; %in% class(x)) {
+    return(lapply(x, xml_table, header = header, trim = trim, fill = fill, dec = dec))
+  }
+
+  stopifnot(xml2::xml_name(x) == &quot;table&quot;)
+  rows &lt;- xml2::xml_find_all(x, &quot;.//tr&quot;)
+  n &lt;- length(rows)
+  cells &lt;- lapply(rows, xml2::xml_find_all, xpath = &quot;.//td|.//th&quot;)
+  ncols &lt;- lapply(cells, xml2::xml_attr, &quot;colspan&quot;, default = &quot;1&quot;)
+  ncols &lt;- lapply(ncols, as.integer)
+  nrows &lt;- lapply(cells, xml2::xml_attr, &quot;rowspan&quot;, default = &quot;1&quot;)
+  nrows &lt;- lapply(nrows, as.integer)
+  p &lt;- unique(vapply(ncols, sum, integer(1)))
+  maxp &lt;- max(p)
+  if (length(p) &gt; 1 &amp; maxp * n != sum(unlist(nrows)) &amp; maxp * n != sum(unlist(ncols))) {
+    if (!fill) {
+      stop(&quot;Table has inconsistent number of columns. &quot;, &quot;Do you want fill = TRUE?&quot;, call. = FALSE)
+    }
+  }
+  values &lt;- lapply(cells, xml2::xml_text, trim = trim)
+  out &lt;- matrix(NA_character_, nrow = n, ncol = maxp)
+  for (i in seq_len(n)) {
+    row &lt;- values[[i]]
+    ncol &lt;- ncols[[i]]
+    col &lt;- 1
+    for (j in seq_len(length(ncol))) {
+      out[i, col:(col + ncol[j] - 1)] &lt;- row[[j]]
+      col &lt;- col + ncol[j]
+    }
+  }
+  for (i in seq_len(maxp)) {
+    for (j in seq_len(n)) {
+      rowspan &lt;- nrows[[j]][i]
+      colspan &lt;- ncols[[j]][i]
+      if (!is.na(rowspan) &amp; (rowspan &gt; 1)) {
+        if (!is.na(colspan) &amp; (colspan &gt; 1)) {
+          nrows[[j]] &lt;- c(
+            utils::head(nrows[[j]], i),
+            rep(rowspan, colspan - 1),
+            utils::tail(nrows[[j]], length(rowspan) - (i + 1))
+          )
+          rowspan &lt;- nrows[[j]][i]
+        }
+        for (k in seq_len(rowspan - 1)) {
+          l &lt;- utils::head(out[j + k, ], i - 1)
+          r &lt;- utils::tail(out[j + k, ], maxp - i + 1)
+          out[j + k, ] &lt;- utils::head(c(l, out[j, i], r), maxp)
+        }
+      }
+    }
+  }
+  if (is.na(header)) {
+    header &lt;- all(xml2::xml_name(cells[[1]]) == &quot;th&quot;)
+  }
+  if (header) {
+    col_names &lt;- out[1, , drop = FALSE]
+    out &lt;- out[-1, , drop = FALSE]
+  } else {
+    col_names &lt;- paste0(&quot;X&quot;, seq_len(ncol(out)))
+  }
+  df &lt;- lapply(seq_len(maxp), function(i) {
+    utils::type.convert(out[, i], as.is = TRUE, dec = dec)
+  })
+  names(df) &lt;- col_names
+  class(df) &lt;- &quot;data.frame&quot;
+  attr(df, &quot;row.names&quot;) &lt;- .set_row_names(length(df[[1]]))
+  if (length(unique(col_names)) &lt; length(col_names)) {
+    warning(&quot;At least two columns have the same name&quot;)
+  }
+  df
+}</code></pre>
+<p>Apesar de ser uma função bastante complicada, ela não passa de uma cópia do
+código de <code>rvest::html_table()</code> utilizando apesar funções do <code>xml2</code>; com isso
+você terá a sua própria implementação de <code>xml_table()</code>. E depois de uma ou duas
+semanas, você já estará pronto para abandonar o <code>rvest</code> e voltar a usar o bom e
+velho <code>xml2</code>!</p>
+</div>
+<div id="quer-saber-mais" class="section level2">
+<h2>Quer saber mais?</h2>
+<p>Para mais informações sobre este e outros assuntos do mundo R, siga a Curso-R
+no <a href="https://github.com/curso-r">GitHub</a>, no
+<a href="https://www.facebook.com/cursodeR/">Facebook</a> e no
+<a href="https://twitter.com/curso_r">Twitter</a>. Além disso, participe da nossa
+comunidade no <a href="https://discourse.curso-r.com/">Discord</a> e do nosso canal no
+<a href="https://t.me/r6cursor">Telegram</a> onde compartilhamos as novidades mais quentes
+do R e respondemos as suas perguntas pessoalmente.</p>
+</div>
