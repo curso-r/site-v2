@@ -1,6 +1,6 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: de 22 de junho a 08 de julho, às segundas e quartas, das 19h00 às 22h00
+data: de 23 de junho a 14 de julho, às terças e quaintas, das 19h00 às 22h00
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/intro-ml-banner.png"
