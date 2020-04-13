@@ -1,6 +1,6 @@
 ---
 title: "Workshop: Regressão linear"
-data: "14 de março de 2020, sábado, das 9h às 18h"
+data: "Sem turmas abertas no momento :("
 hora: "8 horas de workshop"
 local: "Aulas online"
 img: "img/cursos/workshop-regressao.jpeg"
@@ -11,7 +11,6 @@ requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 15
 id: 17
-aberto: "true"
 unit_price: 30000
 ---
 
