@@ -1,6 +1,6 @@
 ---
 title: "Introdução ao Machine Learning com R"
-data: Sem turmas abertas no momento :(
+data: de 22 de junho a 08 de julho, às segundas e quartas, das 19h00 às 22h00
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/intro-ml-banner.png"
@@ -9,7 +9,9 @@ banner: "img/cursos/intro-ml.jpg"
 desc: "Aprenda os principais conceitos de Machine Learning utilizando o R como ferramenta."
 requisitos: "Conhecimento básico de Estatística, lógica de programação e programação em R."
 ordem: 20
-id: 14
+id: 23
+aberto: "true"
+professores: ["Athos Damiani", "Fernando Correa"]
 unit_price: 50000
 ---
 
@@ -17,7 +19,7 @@ unit_price: 50000
   <h4>Conheça o curso</h4>
 </header>
 
-<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossas aulas, entretanto, não são gravadas e os alunos terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
+<b>AVISO: Em virtude da pandemia de Covid-19, todos os nossos cursos e workshops deste semestre serão ministrados online. Nossos alunos, entretanto, terão acesso à mesma qualidade já reconhecida da Curso-R: contato direto com o professor, exercícios ao vivo e um monitor dedicado para tirar dúvidas ao longo da aula.</b>
 
 Machine Learning é um framework de análise preditiva, muito utilizado hoje em dia em problemas de classificação. Sua fama recente se deve ao sucesso em aplicações de transcrição de áudio e classificação de imagens, mas uma grande parte de suas técnicas são muito úteis em qualquer problema de modelagem estatística.
 
