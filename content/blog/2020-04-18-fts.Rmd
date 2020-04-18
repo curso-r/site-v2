@@ -1,0 +1,354 @@
+---
+title: "Busca textual com R, Shiny e PostgreSQL"
+date: "2020-04-18"
+tags: ["sql", "postgresql", "text mining", "tokenization"]
+categories: ["pacotes", "r"]
+banner: "img/banners/fts.jpg"
+author: ["José de Jesus Filho"]
+summary: "Este tutorial mostrará como estruturar uma base de dados de textos no PostgreSQL, tokenizá-los e montar um índice invertido a fim de realizar buscas textuais em grande volumes de documentos em poucos segundos."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+
+## Introdução
+
+Há alguns anos, eu tenho me dedicado a aperfeiçoar ferramentas de coleta, limpeza, organização e análise de dados processuais. Posso afirmar, com segurança, que tenho bem elaborado um processo que dá conta eficientemente de todo o ciclo da ciência de dados utilizando apenas dois softwares livres: R e PostgreSQL.
+
+Este tutorial  mostrará como estruturar uma base de dados de textos no PostgreSQL, tokenizá-los e montar um índice invertido a fim de realizar buscas textuais em grande volumes de documentos em poucos segundos. Os textos serão organizados a partir do R, enviados para o PostgreSQL, indexados e, de lá,́ chamados a partir de um aplicativo shiny.
+
+
+## Busca textual
+
+A busca textual  confere a capacidade de identificar documentos em linguagem natural que atendam a uma consulta e, opcionalmente, classificá-los por relevância para a busca. O tipo mais comum de pesquisa é encontrar todos os documentos que contenham os termos da consulta e retorná-los em ordem de semelhança com a consulta. As noções de consulta e semelhança são muito flexíveis e dependem da aplicação específica. 
+
+Os operadores de pesquisa textual existem nos bancos de dados há anos. O PostgreSQL possui operadores ~, ~ *, LIKE e ILIKE para tipos de dados textuais, mas eles não possuem muitas propriedades essenciais exigidas pelos modernos sistemas de informação:
+
+- Não há suporte linguístico, mesmo para o inglês. Expressões regulares não são suficientes porque não conseguem lidar facilmente com palavras derivadas, por exemplo, satisfazer e satisfeito. 
+
+- Eles não ordenam (classificação) os resultados da pesquisa conforme a relevância, o que os torna ineficazes quando milhares de documentos correspondentes são encontrados.
+
+- Eles tendem a ser lentos porque não há suporte de índice; portanto, eles devem processar todos os documentos para cada pesquisa.
+
+Em outras palavras, para uma busca textual eficiente, é importante tomar em consideração ferramentas de NLP e um pré-processamente dos textos.
+
+A indexação de texto permite que os documentos sejam pré-processados e um índice salvo para posterior busca rápida. O pré-processamento inclui:
+
+- Tokenização dos documentos;
+
+- Conversão dos tokens em lexemas;
+
+- Salvar documentos pré-processados e otimizados para pesquisa;
+
+
+
+### Porque usar o R
+
+- Software live;
+- Acolhedor da diversidade;
+- Composto por uma comunidade acadêmica exigente e cientificamente rigorosa;
+- Possui um grande número de pacotes para coleta, limpeza e estruturação de dados. É importante lembrar que esse trabalho chega a tomar 80% do ciclo de ciência de dados;
+- Dá conta tanto de estatística quanto de machine learning;
+- Facilita a publicação de resultados tanto com relatórios (Rmarkdown) quanto com aplicativos (shiny);
+
+### Porque usar o PostgreSQL
+
+- Software livre;
+- Fácil de instalar;
+- Bem documentado;
+- Ampla comunidade;
+- Funciona como motor de busca textual, dispensando o uso do
+Solr ou do Elasticsearch;
+
+Assumindo que você já tem o R, o RStudio, e o shiny-server instalados, irei mostar apenas como instalar o PostgreSQL. Caso queira instalar os três primeiros, você pode seguir este [script](https://gist.github.com/jjesusfilho/7b7001745cbb8f7b1ad36e7bfe5d43e8) para instalá-los no Ubuntu.
+
+## Instalação do PostgreSQL
+
+Supondo um ambiente de desenvolvimento, irei considerar a instalação do PostgreSQL, do RStudio e do Shiny numa única máquina. Em produção, eu criaria uma rede privada de máquinas virtuais e distribuiria as funcionalidades em diferentes máquinas numa mesma central de dados (data-center).
+
+```{r, eval = FALSE}
+- PostgreSQL instalado (irei mostrar como instalar no Ubuntu);
+- R, RStudio e Shiny instalados;
+- Pacotes RPostgres, dbx, pool, glue, abjutils e DT instalados;
+- Tidyverse 
+
+```
+## Instalar o PostgreSQL
+
+O procedimento abaixo mostra como instalar o PostgreSQL
+
+### Adicionar a chave GPG
+
+A instalação da chave GPG preserva uma comunicação segura entre o cliente eo servidor. Ela é importante para assegurar a integridade dos dados e a autencidade da fonte. Ou seja, os dados são criptografados antes de serem baixados por seu computador e decriptografados pela chave previamente instalada. Isso reduz significativamente as chances de que um terceiro  intervenha no processo de transmissão e instale algo nocivo na sua máquina.
+
+```{sh}
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+```
+
+Em seguida, adicione o repositório com o comando abaixo:
+
+```{sh}
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+```
+
+Feito isso, o passo seguinte é instalar o PostgreSQL:
+
+```{sh}
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+### Configuração do locale
+
+O PostgreSQL adota o locale da sua máquina, então é importante assegurar que o locale está configurado para `pt_BR.UTF-8`. Crie um arquivo e adicione o script abaixo para configuração do locale:
+
+```{sh}
+sudo touch set_locale.sh ## criação do arquivo
+```
+
+Script:
+
+```{sh}
+#!/bin/bash
+# Set locales in /etc/default/locale file
+echo "Setting locale..."
+echo "# Locale settings
+export LANGUAGE=pt_BR.UTF-8
+export LANG=pt_BR.UTF-8
+export LC_ALL=pt_BR.UTF-8" >> ~/.bash_profile
+locale-gen pt_BR.UTF-8
+sudo dpkg-reconfigure locales
+source ~/.bash_profile
+```
+
+```{sh}
+sudo chmod +x set_locale.sh
+sudo ./set_locale.sh
+```
+
+
+### Trabalhando com o PostgreSQL
+
+Para fins de completude, estou admitindo que você não tem familiaridade com o PostgreSQL. Isso não significa que darei explicação de cada passo, mas apenas que não os deixarei implícitos. 
+
+Há muitos clientes que permitem acesso ao PostgreSQL para envio de queries e statements. Nós usaremos dois, o psql e o próprio R. Com o psql você acessa e trabalha com o Posgres via linha de comando. Quando você instalou o PostgreSQL, o psql também foi instadado. Dito isso, vamos realizar nosso primeiro acesso.
+
+```{sh}
+sudo -u postgres psql
+```
+
+### TO_TSVECTOR, TO_TSQUERY e @@
+
+As funções to_tsvector, to_tsquery e o operador @@ (match) fazem a mágica da busca textual. 
+
+```{sql}
+SELECT to_tsvector('portuguese',
+'Alma minha gentil, que te partiste
+Tão cedo desta vida descontente,
+Repousa lá no Céu eternamente,
+E viva eu cá na terra sempre triste.(Camões)') @@ to_tsquery('céu');
+
+?column?
+----------
+ t
+(1 row)
+```
+
+```{sql}
+SELECT to_tsvector('portuguese',
+'Minha mãe me deu ao mundo
+e, sem ter mais o que me dar,
+
+me ensinou a jogar palavra
+no vento pra ela voar.
+
+Dizia: “Filho, palavra
+Tem que saber como usar.
+
+Aquilo é que nem remédio:
+
+Cura, mas pode matar.(Aleixo)') 
+@@ to_tsquery('filho & remédio');
+?column?
+----------
+ t
+(1 row)
+```
+
+```{sql}
+SELECT to_tsvector('portuguese',
+'No fundo, no fundo,
+bem lá no fundo,
+a gente gostaria
+de ver nossos problemas
+resolvidos por decreto
+
+a partir desta data,
+aquela mágoa sem remédio
+é considerada nula
+e sobre ela — silêncio perpétuo
+
+extinto por lei todo o remorso,
+maldito seja quem olhar pra trás,
+lá pra trás não há nada,
+e nada mais
+
+mas problemas não se resolvem,
+problemas têm família grande,
+e aos domingos
+saem todos a passear
+o problema, sua senhora
+e outros pequenos probleminhas.(Leminski)') 
+@@ to_tsquery('remorso | probleminhas');
+?column?
+----------
+ t
+(1 row)
+```
+
+### Trabalhando com tabelas
+
+No seguinte [repositório](https://github.com/jjesusfilho/FullTextSearch) consta uma base de 48 mil notícias do G1, a qual utilizaremos para fins de demonstração.
+
+Inicialmente, vamos criar um usuário (role) e uma base de dados para receber essas notícias:
+
+```{sql}
+CREATE ROLE saturday WITH PASSWORD 'RshinesWithPostgres'; 
+CREATE DATABASE noticias OWNER = saturday;
+```
+
+Agora nos conectamos à base, adicionamos a extensão `unaccent` retirar acentos das palavras.
+
+```{sql}
+\c noticias
+CREATE EXTENSION unaccent;
+```
+
+### Configurações necessárias
+
+Vamos agora configurar a busca para que ela lide adequadamente com palavras acentuadas, maiúsculas e minúsculas, bem como, de suas variações.
+
+```{sql}
+CREATE TEXT SEARCH CONFIGURATION pt (COPY = pg_catalog.portuguese);
+ALTER TEXT SEARCH CONFIGURATION pt
+ALTER MAPPING
+FOR hword, hword_part, word with unaccent, portuguese_stem;
+```
+
+
+### Indexação dos documentos
+
+De agora em diante, passaremos a executar os queries e statemants a partir do próprio R, colocando-os dentro de funções.
+
+A primeira coisa a fazer é conectar-se à base e adicionar a tabela. Veja que eu apenas crio a tabela, mas não insiro os documentos. Quando você tem muitos documentos, isso pode travar.
+
+```{r, eval = FALSE}
+conn <- DBI::dbConnect(RPostgres::Postgres(),
+dbname = "noticias",
+host = "localhost",
+user="saturday",
+password = "RshinesWithPostgres")
+
+DBI::dbCreateTable(conn,"g1",g1)
+```
+
+### Inserindo os documentos
+
+Para inserir os documentos, eu prefiro usar o pacote `dbx` porque ele permite a inserção em batches. Inserir centenas de milhares de documentos pode sobrecarregar sua máquina. Coloquei mil, mas 50 mil tem suportado bem.
+
+```{r, eval = FALSE}
+dbx::dbxInsert(con = conn, table = "g1", records = g1, batch_size = 1000)
+```
+
+### Indexando os documentos
+
+Hora de indexar os documentos. Há dois indexadores, o GIN e o GIST, usaremos o GIN pq é mais rápido, porém mais intenso. A função a seguir cria o index estabelecendo pesos diferentes para duas colunas.
+
+```{r, eval = FALSE}
+psql_tokenize <- function(con, tbl, config = "pt") {
+  source <- list(a = c("intro", "A"), j = c("corpo", "B"))
+  target <- "document_tokens"
+  idx <- paste0(tbl,"_idx")
+  query <- glue::glue_sql("ALTER TABLE {`tbl`} ADD COLUMN {`target`} TSVECTOR", .con = con)
+
+  res <- DBI::dbSendQuery(con, query)
+  DBI::dbClearResult(res)
+
+  query <- glue::glue_sql("UPDATE {`tbl`} SET
+                         {`target`} = setweight(to_tsvector({config},coalesce({`source$a[1]`},'')), {source$a[2]}) ||
+                         setweight(to_tsvector({config},coalesce({`source$j[1]`}, '')), {source$j[2]})", .con = con)
+
+  res <- DBI::dbSendQuery(con, query)
+  DBI::dbClearResult(res)
+
+  query <- glue::glue_sql("CREATE INDEX {`idx`} ON {`tbl`} USING GIN ({`target`})", .con = con)
+
+  res <- DBI::dbSendQuery(con, query)
+  DBI::dbClearResult(res)
+}
+```
+
+### Criando gatilho (trigger)
+A função a seguir cria um gatilho para indexar novos documentos inseridos:
+
+```{r, eval = FALSE}
+psql_trigger <- function(con,tbl,config="pt"){
+
+  a<-"A"
+  b<-"B"
+  intro<-"new.intro"
+  corpo="new.corpo"
+  f_name<-paste0(tbl,"_trigger()")
+
+  q<-glue::glue_sql("CREATE FUNCTION {DBI::SQL(f_name)} RETURNS trigger AS $$
+begin
+  new.document_tokens :=
+     setweight(to_tsvector({config},coalesce({intro},'')), {a}) ||
+     setweight(to_tsvector({config},coalesce({corpo},'')), {b});
+  return new;
+end
+$$ LANGUAGE plpgsql;",.con=con)
+
+  RPostgres::dbExecute(con,q)
+
+  q <- glue::glue_sql("
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+    ON {`tbl`} FOR EACH ROW EXECUTE FUNCTION {DBI::SQL(f_name)}",.con=con)
+
+  RPostgres::dbExecute(con,q)
+}
+```
+
+### Realizando buscas
+
+Por fim, montamos a função para realizar as buscas
+
+```{r, eval = FALSE}
+psql_query <-
+  function (con,
+            tbl,
+            query = "")
+  {
+    
+    target <- "document_tokens"
+    q <-
+      glue::glue_sql(
+        "SELECT * FROM {`tbl`}  WHERE {`tbl`}.{`target`} @@ websearch_to_tsquery('pt',{query})",
+        .con = con
+      )
+    DBI::dbGetQuery(con, q)
+  }
+```
+
+## Inclusão no aplicativo Shiny
+
+O repositório [FullTextSearch](https://github.com/jjesusfilho/FullTextSearch) contém template de aplicativo para realizar as buscas.
+
+Incluí uma função `psql_g1_dt.R` para criar um datatable htmlwidget com ajustes na aparência.
+
+
+
+
