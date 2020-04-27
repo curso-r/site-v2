@@ -1,6 +1,6 @@
 ---
 title: "Web scraping em R - Parte II"
-data: "25 de abril de 2020, sábado, das 9h às 18h"
+data: "Sem turma aberta no momento :("
 hora: "8 horas de workshop"
 local: "Online"
 img: "img/cursos/web-scraping-2.jpeg"
@@ -10,7 +10,6 @@ desc: "Se aprofunde na construção de scrapers utilizando o R."
 requisitos: ""
 ordem: 32
 id: 19
-aberto: "true"
 unit_price: 30000
 ---
 

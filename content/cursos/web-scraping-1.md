@@ -1,6 +1,6 @@
 ---
 title: "Web scraping em R - Parte I"
-data: "28 de março de 2020, sábado, das 9h às 18h"
+data: "Sem turma aberta no momento :("
 hora: "8 horas de workshop"
 local: "Workshop online"
 img: "img/cursos/web-scraping-1.jpg"
