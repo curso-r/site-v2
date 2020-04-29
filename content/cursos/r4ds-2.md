@@ -1,6 +1,6 @@
 ---
 title: "R para Ciência de Dados II"
-data: "de 27 de abril a 13 de maio, às segundas e quartas, das 19h00 às 22h00"
+data: "Sem turmas abertas no momento :("
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/r4ds-2.jpeg"
@@ -11,7 +11,6 @@ requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 10
 id: 13
-aberto: "true"
 unit_price: 50000
 ---
 
