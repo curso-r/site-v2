@@ -52,7 +52,7 @@ cmp_mean_r
 ##     m = m + x[i] / n
 ##   m
 ## }
-## &lt;bytecode: 0x7fb55564beb0&gt;</code></pre>
+## &lt;bytecode: 0x55b6999e8818&gt;</code></pre>
 <p>Para mostrar a mudança, vamos comparar o desempenho das funções usando <code>microbenchmark()</code>. Essa função calcula o tempo de execução de uma expressão cem vezes e calcula estatísticas básicas dos tempos obtidos.</p>
 <p>No meu servidor, que ainda está com o R 3.3.2, o resultado foi esse. Observe que o tempo da função compilada é quase dez vezes o tempo da função sem compilar.</p>
 <pre class="r"><code>set.seed(1)
@@ -101,7 +101,7 @@ mean_sapply &lt;- function(x) {
 #     mean_for(x) 15.16583 15.45924 16.71064 16.14545 17.51002 25.61860   100
 #  mean_sapply(x) 14.43704 14.90485 16.20864 15.53319 16.56801 27.36536   100 </code></pre>
 <p>Mas cuidado! o <code>for</code> continua sendo uma ideia ruim no R, não só por desempenho, mas por questões de <em>design</em>. Utilizar funcionais ajuda na performance do computador e torna a vida do cientista de dados mais fácil (veja <a href="http://curso-r.com/blog/2017/04/10/2017-04-08-progress/">esse</a> e <a href="http://curso-r.com/blog/2017/03/19/2017-03-14-parallel/">esse</a> posts que discutem um pouco sobre isso.)</p>
-<div id="instalacao" class="section level2">
+<div id="instalação" class="section level2">
 <h2>Instalação</h2>
 <p>Se você usa Windows, uma dica é usar o pacote <code>installr</code>. Basta rodar isso aqui e ser feliz:</p>
 <pre class="r"><code>install.packages(&quot;installr&quot;)

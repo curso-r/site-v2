@@ -19,7 +19,7 @@ banner: "img/banners/lolla-spotify_s.png"
 <p>Lollapalooza deste ano em São Paulo contou com 47 bandas distribuídas em quatro palcos. A graça é associar a programação do Lolla com as informações de popularidade das bandas fornecidas pelo Spotify. Abaixo eu vou descrever como peguei os dados, listar as três hipóteses que criei e gerar alguns gráficos pra discutí-las.</p>
 <div id="base-de-dados" class="section level2">
 <h2>Base de dados</h2>
-<div id="pre-requisitos" class="section level3">
+<div id="pré-requisitos" class="section level3">
 <h3>Pré-requisitos</h3>
 <p><strong>Pacotes</strong></p>
 <pre class="r"><code># instala o Rspotify
@@ -40,7 +40,7 @@ library(tidyverse)</code></pre>
 <p>Para você receber um código de acesso para usar a API deles é preciso criar um <em>App</em> dentro da sua conta do Spotify, esse é o pré-requisito mais burocrático de todos. Eu aprendi a fazer isso seguindo os passos do README do próprio pacote <code>Rspotify</code> no Github <a href="https://github.com/tiagomendesdantas/Rspotify">(veja aqui)</a>.</p>
 <p>No fim, você terá um <code>app_id</code>, um <code>client_id</code> e um <code>client_secret</code> em mãos.</p>
 </div>
-<div id="extraindo-programacao-do-lollapalooza-sp-2017" class="section level3">
+<div id="extraindo-programação-do-lollapalooza-sp-2017" class="section level3">
 <h3>Extraindo programação do Lollapalooza SP 2017</h3>
 <p>O objetivo aqui é termos uma versão em <code>data.frame</code> das tabelas contidas no site <a href="https://www.lollapaloozabr.com/lineup-horarios/">lollapaloozabr.com/lineup-horarios/</a>. Lá tem a agenda completa dos dois dias do evento.</p>
 <p>Vamos ao código! Dica: a melhor maneira de aprender o que cada passo do código faz é ir rodando linha a linha e observando o resultado.</p>
@@ -323,7 +323,7 @@ artistas_fora_da_playlist &lt;- lolla2017_programacao %&gt;%
 </div>
 <div id="resultados" class="section level2">
 <h2>Resultados</h2>
-<div id="hipotese-i" class="section level3">
+<div id="hipótese-i" class="section level3">
 <h3>Hipótese I</h3>
 <blockquote>
 <p><strong>Hipótese I:</strong> a organização usou a estratégia de distribuir a popularidade das bandas uniformemente no dia.</p>
@@ -336,9 +336,9 @@ artistas_fora_da_playlist &lt;- lolla2017_programacao %&gt;%
   group_by(dia, hora, palco) %&gt;%
   summarise(artist = first(artist),
             n = n(),
-            mean_popularity = mean(popularity))</code></pre>
-<pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
-<pre class="r"><code>lolla2017_grafico %&gt;%
+            mean_popularity = mean(popularity))
+
+lolla2017_grafico %&gt;%
   ggplot(aes(x = ymd_hm(format(hora, &quot;2017-03-26 %H%M&quot;)), y = mean_popularity, colour = palco)) +
   geom_line() +
   geom_point() +
@@ -350,7 +350,7 @@ artistas_fora_da_playlist &lt;- lolla2017_programacao %&gt;%
 <p><img src="/blog/2017-03-27-lollapalooza-sp-2017-segundo-spotify_files/figure-html/unnamed-chunk-12-1.png" width="864" /></p>
 <p>O gráfico acima vai de acordo com o senso comum de que os populares ficam para o final, não ajudando a confirmar a hipótese de que o <em>Cage The Elefant</em> estava mal posicionado.</p>
 </div>
-<div id="hipotese-ii" class="section level3">
+<div id="hipótese-ii" class="section level3">
 <h3>Hipótese II</h3>
 <blockquote>
 <p><strong>Hipótese II:</strong> em termos de popularidade das bandas, o dia de domingo estava melhor do que o dia de sábado.</p>
@@ -369,7 +369,7 @@ artistas_fora_da_playlist &lt;- lolla2017_programacao %&gt;%
 <p><img src="/blog/2017-03-27-lollapalooza-sp-2017-segundo-spotify_files/figure-html/unnamed-chunk-14-1.png" width="864" /></p>
 <p>Conclusão: nada indica que houve desbalanceamento. Acho que meu círculo de amigos tem algum viés estranho.</p>
 </div>
-<div id="hipotese-iii" class="section level3">
+<div id="hipótese-iii" class="section level3">
 <h3>Hipótese III</h3>
 <blockquote>
 <p><strong>Hipótese III:</strong> a popularidade das bandas nos diferentes palcos estava equilibrada.</p>
@@ -385,7 +385,7 @@ artistas_fora_da_playlist &lt;- lolla2017_programacao %&gt;%
 <p>O palco Skol teve menor variação de popularidade, costumou contar sempre com artistas de média a alta popularidade, mas os palcos AXE e Onix foram visitados por artista de peso. O palco Perry’s foi o mais visitado por artistas de menor expressão.</p>
 </div>
 </div>
-<div id="consideracoes-finais" class="section level2">
+<div id="considerações-finais" class="section level2">
 <h2>Considerações finais</h2>
 <p>O tema tratado aqui não foi útil, concordo, mas passamos por quase todas as etapas existentes em um processo típico de análise de dados. Fizemos web scraping, usamos APIs, arrumamos os dados, estruturamos as informações, criamos variáveis e geramos gráficos. Só ficou de fora a parte de modelagem. E não à toa todos os pacotes do tidyverse foram úteis nesse trabalho.</p>
 <p>A lição pra casa é encontrar uns dados interessantes na internet e aplicar as etapas que aprendemos aqui!</p>
