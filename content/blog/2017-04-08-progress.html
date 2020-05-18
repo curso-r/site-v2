@@ -69,7 +69,7 @@ TRUE [==================================================================] 100%</
 <div id="usando-purrmap-no-lugar-de-plyrllply" class="section level2">
 <h2>Usando <code>purr::map</code> no lugar de <code>plyr::llply</code></h2>
 <p>Recentemente, boa parte das funções do <code>plyr</code> foram substituídas por alternativas nos pacotes <code>dplyr</code> (operações envolvendo <code>data.frame</code>s) e <code>purrr</code> (operações envolvendo vetores e listas). Esses pacotes apresentam uma sintaxe mais próxima da <a href="http://curso-r.com/blog/2017/02/15/2017-02-16-manifesto-tidy/">filosofia <code>tidy</code></a> e portanto faz sentido estudá-los!</p>
-<p>Infelizmente, as funções do <code>purrr</code> ainda<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> não têm um parâmetro para barras de progresso. Enquanto isso, podemos utilizar o <code>progress::progress_bar</code> mesmo.</p>
+<p>Infelizmente, as funções do <code>purrr</code> ainda<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> não têm um parâmetro para barras de progresso. Enquanto isso, podemos utilizar o <code>progress::progress_bar</code> mesmo.</p>
 <pre class="r"><code>barra &lt;- progress::progress_bar$new(total = length(nums))
 resultados &lt;- purrr::map(nums, ~{
   barra$tick()
@@ -81,7 +81,7 @@ TRUE [====================================================&gt;-------------] 80%
 TRUE [==================================================================] 100%</code></pre>
 <p>O código fica parecido com solução usando <code>for()</code>, mas pelo menos estamos usando os pacotes mais recentes ;)</p>
 </div>
-<div id="eficiencia" class="section level2">
+<div id="eficiência" class="section level2">
 <h2>Eficiência</h2>
 <p>As soluções que mostrei acima apresentam diferenças importantes de eficiência. Abaixo, encapsulei os códigos em funções e mudei levemente a operação que queremos fazer:</p>
 <pre class="r"><code>nums &lt;- 1:100
@@ -219,6 +219,6 @@ Figure 1: Tempo do for em função do número de inputs
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>É provável que o <code>purrr</code> ganhe essa funcionalidade num futuro próximo. <a href="https://github.com/tidyverse/purrr/issues/149">Veja essa discussão</a>.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>É provável que o <code>purrr</code> ganhe essa funcionalidade num futuro próximo. <a href="https://github.com/tidyverse/purrr/issues/149">Veja essa discussão</a>.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

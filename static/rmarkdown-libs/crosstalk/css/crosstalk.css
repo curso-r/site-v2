@@ -8,7 +8,10 @@
 
 /* But don't adjust the margins outwards if we're directly under the body,
    i.e. we were the top-level of something at the console. */
-
+body > .container-fluid.crosstalk-bscols {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .crosstalk-input-checkboxgroup .crosstalk-options-group .crosstalk-options-column {
   display: inline-block;

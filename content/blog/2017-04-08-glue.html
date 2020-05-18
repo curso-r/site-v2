@@ -28,7 +28,7 @@ summary: "Uma tarefa muito comum no R é colar textos. As funções mais importa
 ## [1] &quot;1 4@2 5@3 6&quot;</code></pre>
 <div id="cuidado" class="section level3">
 <h3>Cuidado</h3>
-<p>Tenha muito cuidado ao passar vetores com <strong>comprimentos diferentes</strong> no <code>paste()</code>! Assim como muitas funções do R, o <code>paste()</code> faz reciclagem, ou seja, ele copia os elementos do menor vetor até ele ficar com o comprimento do maior vetor<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. O problema é que o <code>paste()</code> faz isso silenciosamente e não avisa se você inserir um vetor com comprimento que não é múltiplo dos demais. Veja que resultado bizarro:</p>
+<p>Tenha muito cuidado ao passar vetores com <strong>comprimentos diferentes</strong> no <code>paste()</code>! Assim como muitas funções do R, o <code>paste()</code> faz reciclagem, ou seja, ele copia os elementos do menor vetor até ele ficar com o comprimento do maior vetor<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. O problema é que o <code>paste()</code> faz isso silenciosamente e não avisa se você inserir um vetor com comprimento que não é múltiplo dos demais. Veja que resultado bizarro:</p>
 <pre class="r"><code>paste(5:9, 1:3, 4:5)
 ## [1] &quot;5 1 4&quot; &quot;6 2 5&quot; &quot;7 3 4&quot; &quot;8 1 5&quot; &quot;9 2 4&quot;</code></pre>
 <p>Por essas e outras que dizemos que às vezes o R funciona bem demais…</p>
@@ -48,7 +48,7 @@ summary: "Uma tarefa muito comum no R é colar textos. As funções mais importa
 ## [1] &quot;Abacaxi&quot; &quot;Abacate&quot;</code></pre>
 <p>Isso não funciona:</p>
 <pre class="r"><code>sprintf(&#39;Aba%s%s&#39;, c(&#39;ca&#39;, &#39;ixaste&#39;), c(&#39;xi&#39;, &#39;te&#39;, &#39;.&#39;))
-## Error in sprintf(&quot;Aba%s%s&quot;, c(&quot;ca&quot;, &quot;ixaste&quot;), c(&quot;xi&quot;, &quot;te&quot;, &quot;.&quot;)): arguments cannot be recycled to the same length</code></pre>
+## Error in sprintf(&quot;Aba%s%s&quot;, c(&quot;ca&quot;, &quot;ixaste&quot;), c(&quot;xi&quot;, &quot;te&quot;, &quot;.&quot;)): argumentos não podem ser reciclados para o mesmo tamanho</code></pre>
 <p>Nem sempre queremos substituir pedaços do nosso texto por outros textos. No lugar do <code>%s</code>, é possível colocar padrões para números, por exemplo. Eu uso bastante o <code>%d</code>, que recebe inteiros. Uma funcionalidade legal do <code>%d</code> é a possibilidade de adicionar zeros à esquerda quando um número não atinge certa quantidade de dígitos. Assim, quando ordenamos um vetor de textos que começa com números, a ordenação é a mesma da versão numérica do vetor.</p>
 <p>Exemplo:</p>
 <pre class="r"><code>nums &lt;- 1:11
@@ -73,9 +73,9 @@ glue(&#39;{p * 100}% das pessoas adoram R.&#39;)
 ## 112% das pessoas adoram R.</code></pre>
 <p>A função <code>collapse()</code> é parecida com o <code>paste()</code> quando <code>collapse = ''</code>, mas só aceita um objeto como entrada:</p>
 <pre class="r"><code>x &lt;- collapse(1:10)
-## Warning: &#39;collapse&#39; is deprecated.
-## Use &#39;glue_collapse&#39; instead.
-## See help(&quot;Deprecated&quot;) and help(&quot;glue-deprecated&quot;).
+## Warning: &#39;collapse&#39; é obsoleto.
+## Use &#39;glue_collapse&#39; em seu lugar
+## Veja help(&quot;Deprecated&quot;) e help(&quot;glue-deprecated&quot;).
 x
 ## 12345678910
 all.equal(x, paste(1:10, collapse = &#39;&#39;))
@@ -87,9 +87,9 @@ all.equal(x, paste(1:10, collapse = &#39;&#39;))
 <p>Se quiser colar os objetos elemento a elemento e depois colapsar, faça isso explicitamente em duas operações:</p>
 <pre class="r"><code>glue(&#39;{letters}/{LETTERS}&#39;) %&gt;% 
   collapse(&#39;, &#39;)
-## Warning: &#39;collapse&#39; is deprecated.
-## Use &#39;glue_collapse&#39; instead.
-## See help(&quot;Deprecated&quot;) and help(&quot;glue-deprecated&quot;).
+## Warning: &#39;collapse&#39; é obsoleto.
+## Use &#39;glue_collapse&#39; em seu lugar
+## Veja help(&quot;Deprecated&quot;) e help(&quot;glue-deprecated&quot;).
 ## a/A, b/B, c/C, d/D, e/E, f/F, g/G, h/H, i/I, j/J, k/K, l/L, m/M, n/N, o/O, p/P, q/Q, r/R, s/S, t/T, u/U, v/V, w/W, x/X, y/Y, z/Z</code></pre>
 <p>O <code>glue</code> também tem uma função extra para trabalhar melhor com o <code>%&gt;%</code>, o <code>glue_data()</code>. O primeiro argumento dessa função é uma lista ou <code>data.frame</code>, e seus nomes são utilizados como variáveis para alimentar as chaves das strings. Use o <code>.</code> para fazer operações com toda a base de dados:</p>
 <pre class="r"><code>mtcars %&gt;% 
@@ -116,7 +116,6 @@ all.equal(x, paste(1:10, collapse = &#39;&#39;))
 <h2>Extra:</h2>
 <p>O <a href="https://github.com/duarteguilherme">Guilherme Jardim Duarte</a> fez uma ótima sugestão logo após a publicação deste artigo. No pacote <code>stringi</code> existe um operador <code>%s+%</code> que cola textos iterativamente, com uma sintaxe similar à linguagem <code>python</code>, que permite a colagem de textos usando um simples <code>+</code>. Exemplo:</p>
 <pre class="r"><code>library(stringi)
-## Warning: package &#39;stringi&#39; was built under R version 3.4.4
 &#39;a&#39; %s+%
   &#39;ba&#39; %s+%
   &#39;ca&#39; %s+%
@@ -127,6 +126,6 @@ all.equal(x, paste(1:10, collapse = &#39;&#39;))
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Mais sobre isso no livro <a href="http://www.burns-stat.com/pages/Tutor/R_inferno.pdf">R inferno</a><a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Mais sobre isso no livro <a href="http://www.burns-stat.com/pages/Tutor/R_inferno.pdf">R inferno</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
