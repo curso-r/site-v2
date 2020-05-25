@@ -1,5 +1,5 @@
 ---
-title: "Deep learning com R"
+title: "Deep Learning com R"
 data: "25 de maio à 4 de junho, às segundas, quartas e quintas, das 19h00 às 22h00"
 hora: "18 horas de curso"
 local: "Aulas online"
