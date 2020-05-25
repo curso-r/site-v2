@@ -8,7 +8,7 @@ preco: "R$ 300,00"
 banner: "img/cursos/xgboost.png"
 desc: "Aprenda a implementar um dos algoritmos de Machine Learning mais utilizados da atualidade."
 requisitos: ""
-professores: ["Athos Damiani", "William Amorim"]
+professores: ["Athos Damiani", "Daniel Falbel"]
 ordem: 22
 unit_price: 30000
 ---
