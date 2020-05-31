@@ -504,7 +504,7 @@ O pacote `ggplot2` tem incontáveis funcionalidades, principalmente na hora de p
 
 - O [capítulo de gráficos do livro R Cookbook](http://www.cookbook-r.com/Graphs/) é um bom material de consulta para relembrar velhos truques e descobrir novas formas de personalizar seu gráfico.
 
-- O site [ggplot2 extensions](http://www.ggplot2-exts.org/gallery/) tem uma galeria com diversos pacotes que deixam o ggplot2 bem mais poderoso, indo de novos geoms até animações.
+- O site [ggplot2 extensions](https://exts.ggplot2.tidyverse.org/) tem uma galeria com diversos pacotes que deixam o ggplot2 bem mais poderoso, indo de novos geoms até animações.
 
 ```{r}
 library(ggridges)

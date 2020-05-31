@@ -14,7 +14,7 @@ ordem: 6
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <p>Agora que já temos em mãos as ferramentas para importar, arrumar e transformar os nossos dados, é hora de começarmos a extrair informações deles. Seguindo o nosso bom e velho ciclo da ciência de dados, o próximo passo é a construção de <em>visualizações</em>.</p>
 <p><img src="figures/ciclo-ciencia-de-dados.png" width="75%" style="display: block; margin: auto;" /></p>
@@ -22,7 +22,7 @@ ordem: 6
 <p>Visualizações podem ser uma simples medida resumo (frequência, média, variância, mínimo, máximo, …), um conjunto dessas medidas organizadas em uma tabela ou a representação (de uma parte) dos dados em um gráfico. Nesse tópico, focaremos na construção de gráficos, uma tarefa que, apesar de nem sempre ser conceitualmente ou tecnicamente trivial, é muito facilitada pelas ferramentas disponíveis no R.</p>
 <p>Mas, antes de mais nada, o que é um gráfico estatístico?</p>
 </div>
-<div id="o-que-e-um-grafico" class="section level1">
+<div id="o-que-é-um-gráfico" class="section level1">
 <h1>O que é um gráfico?</h1>
 <p>A construção de gráficos no R foi revolucionada com a criação do pacote <code>ggplot2</code>, fruto da tese de doutorado de <a href="https://github.com/hadley">Hadley Wickham</a>. Essa revolução teve base na filosofia adotada por Hadley ao definir o que deveria ser um gráfico estatístico.</p>
 <p>Mas será que podemos definir formalmente o que é um gráfico estatístico? Graças ao estatístico norte-americano Leland Wilkinson, a resposta é sim.</p>
@@ -40,7 +40,7 @@ ordem: 6
 <pre class="r"><code>install.packages(&quot;ggplot2&quot;)
 library(ggplot2)</code></pre>
 </div>
-<div id="as-camadas-de-um-grafico" class="section level1">
+<div id="as-camadas-de-um-gráfico" class="section level1">
 <h1>As camadas de um gráfico</h1>
 <p>No <code>ggplot2</code>, os gráficos são construídos camada por camada, sendo a primeira delas dada pela função <code>ggplot()</code> (repare que não tem o “2”). Essa função recebe um data frame e cria a camada base do gráfico. Se rodarmos apenas a função <code>ggplot()</code>, obteremos um painel em branco.</p>
 <pre class="r"><code>imdb &lt;- readr::read_rds(&quot;data/imdb.rds&quot;)
@@ -107,7 +107,7 @@ imdb %&gt;%
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-7-1.png" width="75%" /></p>
 <p>No ggplot, nós modificamos um gráfico alterando e acrescentando camadas. Agora que você já sabe como essa estrutura funciona, vamos estudar com mais atenção para que serve a função <code>aes()</code>.</p>
 </div>
-<div id="atributos-esteticos" class="section level1">
+<div id="atributos-estéticos" class="section level1">
 <h1>Atributos estéticos</h1>
 <p>O papel da função <code>aes()</code> (de <em>aesthetics</em>, estética em inglês) é indicar a relação entre os dados e cada aspecto visual do gráfico, como qual variável será representada no eixo x, qual será representada no eixo y, a cor e o tamanho dos componentes geométricos etc. Os aspectos que podem ou devem ser mapeados depende do tipo de gráfico que você está construindo.</p>
 <p>Segue abaixo uma lista dos aspectos visuais mais utilizados:</p>
@@ -131,7 +131,7 @@ imdb %&gt;%
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-9-1.png" width="75%" /></p>
 <p>Vamos agora explorar novos gráficos a partir da família de funções <code>geom_()</code>.</p>
 </div>
-<div id="formas-geometricas" class="section level1">
+<div id="formas-geométricas" class="section level1">
 <h1>Formas geométricas</h1>
 <p>Os <em>geoms</em> definem qual forma geométrica será utilizada para a visualização das observações. Como já vimos, a função <code>geom_point()</code> gera gráficos de dispersão
 transformando pares <span class="math inline">\((x,y)\)</span> em pontos. Veja a seguir outros <em>geoms</em> bastante utilizados:</p>
@@ -153,7 +153,8 @@ transformando pares <span class="math inline">\((x,y)\)</span> em pontos. Veja a
   group_by(ano) %&gt;% 
   summarise(nota_media = mean(nota_imdb, na.rm = TRUE)) %&gt;% 
   ggplot() +
-  geom_line(aes(x = ano, y = nota_media))</code></pre>
+  geom_line(aes(x = ano, y = nota_media))
+## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-10-1.png" width="75%" /></p>
 </div>
 <div id="histograma" class="section level3">
@@ -175,7 +176,7 @@ ggplot() +
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-12-1.png" width="75%" /></p>
 <p>Repare que o boxplot pede uma variável categórica no eixo x.</p>
 </div>
-<div id="grafico-de-barras" class="section level3">
+<div id="gráfico-de-barras" class="section level3">
 <h3>Gráfico de barras</h3>
 <p>Há duas formas de fazer um gráfico de barras. A primeira é utilizando a função <code>geom_bar()</code>, quando queremos que a função conte a frequência de cada categoria.</p>
 <pre class="r"><code>imdb %&gt;% 
@@ -198,15 +199,16 @@ ggplot() +
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-14-1.png" width="75%" /></p>
 </div>
 </div>
-<div id="juntando-graficos" class="section level1">
+<div id="juntando-gráficos" class="section level1">
 <h1>Juntando gráficos</h1>
 <p>No ggplot, temos várias formas de juntar gráficos. Vamos apresentar a seguir as principais.</p>
-<div id="varios-geoms-no-mesmo-grafico" class="section level3">
+<div id="vários-geoms-no-mesmo-gráfico" class="section level3">
 <h3>Vários geoms no mesmo gráfico</h3>
 <p>Podemos acrescentar vários geoms em um mesmo gráfico, apenas adicionando novas camadas. No código abaixo, construímos o gráfico de dispersão da receita pelo orçamento dos filmes, acrescentando também uma reta de tendência aos pontos.</p>
 <pre class="r"><code>ggplot(imdb) +
   geom_point(aes(x = orcamento, y = receita)) +
   geom_smooth(aes(x = orcamento, y = receita), se = FALSE, method = &quot;lm&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## Warning: Removed 733 rows containing non-finite values (stat_smooth).
 ## Warning: Removed 733 rows containing missing values (geom_point).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-15-1.png" width="75%" /></p>
@@ -214,6 +216,7 @@ ggplot() +
 <pre class="r"><code>ggplot(imdb, aes(x = orcamento, y = receita)) +
   geom_point() +
   geom_smooth(se = FALSE, method = &quot;lm&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## Warning: Removed 733 rows containing non-finite values (stat_smooth).
 ## Warning: Removed 733 rows containing missing values (geom_point).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-16-1.png" width="75%" /></p>
@@ -221,11 +224,12 @@ ggplot() +
 <pre class="r"><code>ggplot(imdb, aes(x = orcamento, y = receita)) +
   geom_point(aes(color = ano)) +
   geom_smooth(color = &quot;black&quot;, se = FALSE, method = &quot;lm&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## Warning: Removed 733 rows containing non-finite values (stat_smooth).
 ## Warning: Removed 733 rows containing missing values (geom_point).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-17-1.png" width="75%" /></p>
 </div>
-<div id="replicando-um-grafico-para-cada-categoria-de-uma-variavel" class="section level3">
+<div id="replicando-um-gráfico-para-cada-categoria-de-uma-variável" class="section level3">
 <h3>Replicando um gráfico para cada categoria de uma variável</h3>
 <p>Uma funcionalidade muito útil do <code>ggplot2</code> é a possibilidade de usar <code>facets</code> para replicar um gráfico para cada categoria de uma variável.</p>
 <pre class="r"><code>imdb %&gt;%
@@ -245,7 +249,7 @@ ggplot() +
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-19-1.png" width="75%" /></p>
 <p><strong>Exercício relâmpago!</strong> Pesquise o que faz a função <code>facet_grid()</code>.</p>
 </div>
-<div id="juntando-graficos-diferentes" class="section level3">
+<div id="juntando-gráficos-diferentes" class="section level3">
 <h3>Juntando gráficos diferentes</h3>
 <p>Diversos outros pacotes trazem ferramentas super úteis para trabalharmos com o <code>ggplot2</code>. Um deles é o pacote <code>patchwork</code>. Após carregá-lo, podemos juntar dois gráficos com um simples <code>+</code>.</p>
 <pre class="r"><code># Instale antes de carregar
@@ -259,6 +263,7 @@ p1 &lt;- imdb %&gt;%
   summarise(nota_media = mean(nota_imdb, na.rm = TRUE)) %&gt;% 
   ggplot() +
   geom_line(aes(x = ano, y = nota_media))
+## `summarise()` ungrouping output (override with `.groups` argument)
 
 p2 &lt;- imdb %&gt;% 
   mutate(lucro = receita - orcamento) %&gt;% 
@@ -338,7 +343,7 @@ p1 + p2
 ## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-25-1.png" width="75%" /></p>
 </div>
-<div id="modificando-o-visual-do-grafico" class="section level3">
+<div id="modificando-o-visual-do-gráfico" class="section level3">
 <h3>Modificando o visual do gráfico</h3>
 <p>Podemos mudar aspectos visuais do gráfico, como fontes, cores e estilos dos textos, grids, marcações, cor do fundo etc, a partir da função <code>theme()</code>. No exemplo abaixo, eliminamos o texto e as marcações do eixo <span class="math inline">\(x\)</span>.</p>
 <pre class="r"><code>imdb %&gt;% 
@@ -354,7 +359,7 @@ p1 + p2
 ## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-26-1.png" width="75%" /></p>
 </div>
-<div id="modificando-a-posicao-da-legenda" class="section level3">
+<div id="modificando-a-posição-da-legenda" class="section level3">
 <h3>Modificando a posição da legenda</h3>
 <p>É possível controlar a posição da legenda facilmente escolhendo uma das posições: <code>left</code>, <code>right</code>, <code>top</code> e <code>bottom</code>.</p>
 <pre class="r"><code>imdb %&gt;% 
@@ -413,7 +418,7 @@ imdb %&gt;%
 ## Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-28-3.png" width="75%" /></p>
 </div>
-<div id="acrescentando-titulo" class="section level3">
+<div id="acrescentando-título" class="section level3">
 <h3>Acrescentando título</h3>
 <p>Para acrescentar um título ao seu gráfico, utilize a função <code>ggtitle()</code>.</p>
 <pre class="r"><code>imdb %&gt;% 
@@ -437,14 +442,9 @@ imdb %&gt;%
 <ul>
 <li><p>O <a href="https://r4ds.had.co.nz/data-visualisation.html">capítulo de visualizações do R4DS</a> é um ótimo material para fixar os conceitos básicos.</p></li>
 <li><p>O <a href="http://www.cookbook-r.com/Graphs/">capítulo de gráficos do livro R Cookbook</a> é um bom material de consulta para relembrar velhos truques e descobrir novas formas de personalizar seu gráfico.</p></li>
-<li><p>O site <a href="http://www.ggplot2-exts.org/gallery/">ggplot2 extensions</a> tem uma galeria com diversos pacotes que deixam o ggplot2 bem mais poderoso, indo de novos geoms até animações.</p></li>
+<li><p>O site <a href="https://exts.ggplot2.tidyverse.org/">ggplot2 extensions</a> tem uma galeria com diversos pacotes que deixam o ggplot2 bem mais poderoso, indo de novos geoms até animações.</p></li>
 </ul>
 <pre class="r"><code>library(ggridges)
-## 
-## Attaching package: &#39;ggridges&#39;
-## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     scale_discrete_manual
 
 imdb %&gt;%
   filter(ano &gt; 2005) %&gt;% 
@@ -454,7 +454,7 @@ imdb %&gt;%
 ## Picking joint bandwidth of 17300000</code></pre>
 <p><img src="/material/ggplot/_index_files/figure-html/unnamed-chunk-30-1.png" width="75%" /></p>
 </div>
-<div id="exercicios" class="section level1">
+<div id="exercícios" class="section level1">
 <h1>Exercícios</h1>
 <hr />
 <p><strong>1.</strong></p>
