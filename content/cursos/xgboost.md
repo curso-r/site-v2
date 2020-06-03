@@ -1,6 +1,6 @@
 ---
 title: "Workshop: XGBoost"
-data: "16 de maio de 2020, sábado, das 9h às 18h"
+data: "A definir"
 hora: "8 horas de workshop"
 local: "Online"
 img: "img/cursos/xgboost.jpeg"
@@ -10,8 +10,6 @@ desc: "Aprenda a implementar um dos algoritmos de Machine Learning mais utilizad
 requisitos: ""
 professores: ["Athos Damiani", "Daniel Falbel"]
 ordem: 22
-id: 21
-aberto: "false"
 unit_price: 30000
 ---
 
