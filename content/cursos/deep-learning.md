@@ -1,6 +1,6 @@
 ---
 title: "Deep learning com R"
-data: "25 de maio à 4 de junho, às segundas, quartas e quintas, das 19h00 às 22h00"
+data: "Sem turma aberta no momento :("
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/deep-learning.png"
@@ -9,7 +9,7 @@ banner: "img/cursos/deep-learning-banner.jpg"
 desc: "Aprenda a ajustar modelos de deep learning utilizando o R."
 requisitos: ""
 ordem: 35
-aberto: "true"
+aberto: "false"
 id: 15
 unit_price: 50000
 ---

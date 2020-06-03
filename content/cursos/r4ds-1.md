@@ -1,6 +1,6 @@
 ---
 title: "R para Ciência de Dados I"
-data: "de 19 de maio a 04 de junho, às terças e quintas, das 19h00 às 22h00"
+data: "de 27 de julho a 12 de agosto, Segundas e Quartas, das 19h00 às 22h00"
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/r4ds-1.jpg"
@@ -10,7 +10,7 @@ desc: "O nosso curso introdutório de programação em R voltado para ciência d
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 5
-id: 22
+id: 24
 aberto: "true"
 unit_price: 50000
 ---

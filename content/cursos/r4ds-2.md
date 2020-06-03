@@ -1,6 +1,6 @@
 ---
 title: "R para Ciência de Dados II"
-data: "Sem turmas abertas no momento :("
+data: "de 17 de agosto a 02 de setembro de 2020. Segundas e Quartas, das 19h às 22h"
 hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/r4ds-2.jpeg"
@@ -8,9 +8,10 @@ preco: "R$ 500,00"
 banner: "img/cursos/r4ds-2.png"
 desc: "É hora de aprofundar os seus conhecimentos de R."
 requisitos: ""
-professores: ["Athos Damiani", "William Amorim"]
+professores: ["Caio Lente", "William Amorim"]
 ordem: 10
-id: 13
+id: 25
+aberto: "true"
 unit_price: 50000
 ---
 
