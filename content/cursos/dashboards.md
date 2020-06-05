@@ -34,8 +34,8 @@ O objetivo deste curso é apresentar os principais pacotes do R para a criação
 </header>
 
 <p>&#128204; Qual a diferença entre dashboards estáticos e dinâmicos</p>
-<p>&#128204; Contrução de dashboards estáticos utilizando o pacote flexdashboard</p>
-<p>&#128204; Costrução de dashboards dinâmicos utilizando os pacotes shiny e shinydashboards</p>
+<p>&#128204; Construção de dashboards estáticos utilizando o pacote flexdashboard</p>
+<p>&#128204; Construção de dashboards dinâmicos utilizando os pacotes shiny e shinydashboards</p>
 <p>&#128204; Como colocar seu dashboard na web</p>
 
 <center>
