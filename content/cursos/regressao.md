@@ -1,6 +1,6 @@
 ---
 title: "Workshop: Regressão linear"
-data: "Sem turmas abertas no momento :("
+data: "Dois sábados, dias 22 e 29 de agosto de 2020, das 9h às 13h."
 hora: "8 horas de workshop"
 local: "Aulas online"
 img: "img/cursos/workshop-regressao.jpeg"
@@ -10,7 +10,8 @@ desc: "Familiarize-se com os principais conceitos por trás da regressão linear
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 15
-id: 17
+id: 26
+aberto: "true"
 unit_price: 30000
 ---
 
