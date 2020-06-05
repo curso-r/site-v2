@@ -1,10 +1,10 @@
 ---
 title: "R para Ciência de Dados I"
-data: "de 27 de julho a 12 de agosto, Segundas e Quartas, das 19h00 às 22h00"
-hora: "18 horas de curso"
+data: "27 de julho a 17 de agosto, às segundas e quartas, das 19h00 às 22h00"
+hora: "7 aulas, 21 horas de curso"
 local: "Aulas online"
 img: "img/cursos/r4ds-1.jpg"
-preco: "R$ 500,00"
+preco: "R$ 550,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
 desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
 requisitos: ""
@@ -12,7 +12,7 @@ professores: ["Athos Damiani", "William Amorim"]
 ordem: 5
 id: 24
 aberto: "true"
-unit_price: 50000
+unit_price: 55000
 ---
 
 <header class="section-header">
