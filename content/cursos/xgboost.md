@@ -1,5 +1,5 @@
 ---
-title: "Workshop: XGBoost"
+title: "XGBoost"
 data: "A definir"
 hora: "8 horas de workshop"
 local: "Online"

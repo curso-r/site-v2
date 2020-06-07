@@ -1,5 +1,5 @@
 ---
-title: "Workshop: Deploy"
+title: "Deploy"
 data: "20 de junho de 2020, sábado, das 9h às 18h"
 hora: "8 horas de workshop"
 local: "Aulas online"

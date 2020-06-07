@@ -1,5 +1,5 @@
 ---
-title: "Workshop: Conheça o R"
+title: "Conheça o R"
 data: "Sem turmas abertas"
 hora: "4 horas de workshop"
 local: "Aulas online"

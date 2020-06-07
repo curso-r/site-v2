@@ -1,5 +1,5 @@
 ---
-title: "Workshop: Regressão linear"
+title: "Regressão linear"
 data: "Dois sábados, dias 22 e 29 de agosto de 2020, das 9h às 13h."
 hora: "8 horas de workshop"
 local: "Aulas online"
