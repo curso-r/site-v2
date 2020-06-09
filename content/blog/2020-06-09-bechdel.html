@@ -1,0 +1,510 @@
+---
+title: "Bechdel: Filme e Machismo"
+date: "2020-06-10"
+tags: ["ggplot2", "tidyverse", "api", "imdb"]
+categories: ["análises"]
+banner: "img/banners/bechdel.png"
+author: ["Athos"]
+summary: "O teste de Bechdel avalia se um filme atende a uma condição simples: duas mulheres (com nomes) conversam entre si sobre algo que não seja homem. Existe um banco de dados de filmes avaliados por pelo índice Bechdel e nós analisamos."
+draft: false
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p>Fui apresentado por uma amiga aO <a href="https://pt.wikipedia.org/wiki/Teste_de_Bechdel">Teste de Bechdel</a>, que avalia se um filme possui três regras básicas:</p>
+<ol style="list-style-type: decimal">
+<li>Ao menos duas mulheres (com nome)</li>
+<li>… que conversam entre si</li>
+<li>… sobre algo que não seja homem</li>
+</ol>
+<p>Esse teste foi nomeado em homenagem à cartunista <a href="https://pt.wikipedia.org/wiki/Alison_Bechdel">Alison Bechdel</a> que, em um de seus quadrinhos, apresentou essa ideia e hoje é utilizado para medir o grau de discriminação de gênero no cinema.</p>
+<p>O site <a href="https://bechdeltest.com/">bechdeltest.com</a> oferece espaço para qualquer um contribuir com filmes avaliados no teste de Bechdel e disponibiliza fácil acesso a um banco de dados de 8.440 filmes de 1888 até os dias de hoje.</p>
+<p>Um pitaco pessoal (Athos): Imagine as mesmas regras, mas invertendo homem por mulher. Quantos filmes você acha que não passariam no teste? Na minha opinião? Menos de 1%!</p>
+<div id="achados" class="section level2">
+<h2>Achados</h2>
+<ul>
+<li>Países como Canadá e Japão parecem estarem melhorando;</li>
+<li>Brasil tem poucos dados, mas não se destaca positivamente;</li>
+<li>Prêmios e Notas IMDB não são diferentes entre filmes que passaram no teste e filmes que não passaram no teste. Pode-se argumentar que a discriminação de gênero, mesmo que sempre injustificável, não sustenta nem a retórica de que vale a pena financeiramente;</li>
+</ul>
+</div>
+<div id="dados" class="section level2">
+<h2>Dados</h2>
+<p>O site disponibiliza uma API para acessar os dados. Então para trazer para o R é simples como a linha abaixo.</p>
+<pre class="r"><code>bechdel &lt;- fromJSON(&quot;http://bechdeltest.com/api/v1/getAllMovies&quot;)</code></pre>
+<pre class="r"><code>glimpse(bechdel)</code></pre>
+<pre><code>## Rows: 8,440
+## Columns: 5
+## $ year   &lt;int&gt; 1888, 1892, 1895, 1895, 1896, 1896, 1896, 1896, 1898, 1898, 18…
+## $ title  &lt;chr&gt; &quot;Roundhay Garden Scene&quot;, &quot;Pauvre Pierrot&quot;, &quot;Tables Turned on t…
+## $ imdbid &lt;chr&gt; &quot;0392728&quot;, &quot;0000003&quot;, &quot;0000014&quot;, &quot;0132134&quot;, &quot;0000091&quot;, &quot;000013…
+## $ rating &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ id     &lt;int&gt; 8040, 5433, 5444, 6200, 4982, 5406, 5445, 6199, 5411, 5410, 49…</code></pre>
+<p>OBS: reparem na coluna <code>imdbid</code>. Ela permite coletar informações do IMDB para maiores análises!</p>
+</div>
+<div id="rating" class="section level2">
+<h2>Rating</h2>
+<p>O rating vai de 0 a 3, que representa quantas regras são atendidas no filme. Vamos rotular para melhor leitura.</p>
+<pre class="r"><code>bechdel &lt;- bechdel %&gt;%
+  mutate(
+    indice_bechdel = case_when(
+      rating == 0 ~ &quot;Menos de duas mulheres&quot;,
+      rating == 1 ~ &quot;Pelo menos duas mulheres&quot;,
+      rating == 2 ~ &quot;... que conversam entre si&quot;,
+      rating == 3 ~ &quot;... sobre algo que não seja homem&quot;
+    ),
+    indice_bechdel = fct_reorder(indice_bechdel, rating),
+    decada = (year %/% 10)*10
+  )</code></pre>
+<pre class="r"><code>bechdel %&gt;% 
+  count(indice_bechdel, rating) %&gt;%
+  mutate(
+    rating_p = scales::percent(n/sum(n), accuracy = 1)
+  ) %&gt;%
+  ggplot(aes(y = indice_bechdel, x = n)) +
+  geom_segment(aes(xend = 0, yend = indice_bechdel)) +
+  geom_point(size = 13) +
+  geom_text(aes(label = rating_p), color = &quot;white&quot;, fontface = &quot;bold&quot;) +
+  labs(x = &quot;contagem&quot;, y = NULL, title = &quot;Filmes por Rating Bechdel&quot;) +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_blank()
+  )</code></pre>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="evolução-nas-décadas" class="section level2">
+<h2>Evolução nas Décadas</h2>
+<pre class="r"><code>bechdel_por_decada &lt;- bechdel %&gt;%
+  count(decada, indice_bechdel, .drop = FALSE)
+
+bechdel_por_decada %&gt;%
+  ggplot(aes(x = decada, fill = indice_bechdel, y = n)) +
+  geom_col(position = &quot;fill&quot;, colour = &quot;black&quot;, width = 10) +
+  geom_text(aes(label = indice_bechdel), position = &quot;fill&quot;, data = filter(bechdel_por_decada, decada == 1950), vjust = 2.5, colour = &quot;white&quot;, fontface = &quot;bold&quot;) +
+  scale_fill_brewer(palette = &quot;RdBu&quot;, guide = &quot;none&quot;) +
+  labs(x = &quot;Década&quot;, y = &quot;Proporção&quot;, title = &quot;Evolução dos Ratings Bechdel pelas Décadas&quot;) +
+  scale_y_continuous(labels = scales::percent) +
+  theme(
+    panel.grid = element_blank()
+  ) </code></pre>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>O Teste de Bechdel vem melhorando com o tempo, então as perspectivas são positivas. Em um mundo cada vez mais conectado, espera-se que a informação chegue a cada vez mais pessoas e a discriminação encrustrada na nossa cultura se dissolva.</p>
+</div>
+<div id="informações-do-imdb" class="section level2">
+<h2>Informações do IMDB</h2>
+<p>A API do <a href="https://www.imdb.com/">IMDB</a> é muito burocrática de usar. Eu encontrei o site <a href="http://www.omdbapi.com/">OMDB</a> que foi bem mais fácil de usar, mas talvez tenha menos informação legal. Vou mostrar como usar:</p>
+<div id="api-key" class="section level3">
+<h3>API Key</h3>
+<p>Primeiro eu peguei uma API KEY no site deles e coloquei no meu .Renviron porque daí eu posso usar o <code>Sys.get()</code> pra usá-la sem precisar mostrar pra ninguém.</p>
+<pre class="r"><code>Sys.getenv(&#39;OMDB_APIKEY&#39;)
+# [1] as48732f1d</code></pre>
+</div>
+<div id="chamando-a-api" class="section level3">
+<h3>Chamando a API</h3>
+<p>Depois eu chamei a API do OMDB usando tanto minha API KEY quanto o IMDB ID. A chamada tem que ser assim: <code>http://www.omdbapi.com/?apikey={Sys.getenv('OMDB_APIKEY')}&amp;i=tt{imdbid}</code>. Ela vai devolver um json que pode ser facilmente formatado pelo <code>jsonlite::fromJSON()</code>.</p>
+<pre class="r"><code>library(glue)
+pega_info_imdb &lt;- function(imdbid) {
+  glue(&quot;http://www.omdbapi.com/?apikey={Sys.getenv(&#39;OMDB_APIKEY&#39;)}&amp;i=tt{imdbid}&quot;) %&gt;%
+    fromJSON() %&gt;%
+    as_tibble()
+}
+# safely porque a API pode dar erro 522 (no servidor do OMDB)
+pega_info_imdb_safe &lt;- safely(pega_info_imdb)
+
+# demora ~40 min
+bechdel_com_imdb &lt;- bechdel %&gt;%
+  as_tibble() %&gt;%
+  mutate(
+    infos_imdb = map(imdbid, pega_info_imdb_safe)
+  )</code></pre>
+</div>
+<div id="arrumando-os-dados" class="section level3">
+<h3>Arrumando os dados</h3>
+<p>Os dados precisam de uma massagem antes porque vem em uma lista aninhada e tudo texto.</p>
+<pre class="r"><code># Arruma as tabelas aninhadas
+arruma_infos_imdb &lt;- function(infos_imdb) {
+  if(!is.null(infos_imdb$Ratings)) {
+    infos_imdb %&gt;% 
+      nest(Ratings = c(Ratings)) %&gt;%
+      mutate(Ratings = map(Ratings, ~.x$Ratings %&gt;% filter(Source %in% &quot;Internet Movie Database&quot;))) %&gt;%
+      unnest(Ratings)
+  } else {
+    infos_imdb
+  }
+}
+
+# cria bechdel com as infos do imdb e arruma o tipo das variáveis
+bechdel_com_imdb &lt;- bechdel_com_imdb %&gt;%
+  mutate(
+    deu_errado = map_lgl(infos_imdb, ~ !is.null(.x$error)),
+    infos_imdb = infos_imdb %&gt;% map(&quot;result&quot;) %&gt;% map(arruma_infos_imdb)
+  ) %&gt;%
+  unnest(infos_imdb) %&gt;%
+  mutate(
+    imdbRating_num = imdbRating %&gt;% parse_number()
+  )</code></pre>
+</div>
+<div id="tabela-final" class="section level3">
+<h3>Tabela final</h3>
+<pre class="r"><code>glimpse(bechdel_com_imdb)</code></pre>
+<pre><code>## Rows: 8,414
+## Columns: 41
+## $ year           &lt;int&gt; 1888, 1892, 1895, 1895, 1896, 1896, 1896, 1896, 1898, …
+## $ title          &lt;chr&gt; &quot;Roundhay Garden Scene&quot;, &quot;Pauvre Pierrot&quot;, &quot;Tables Tur…
+## $ imdbid         &lt;chr&gt; &quot;0392728&quot;, &quot;0000003&quot;, &quot;0000014&quot;, &quot;0132134&quot;, &quot;0000091&quot;,…
+## $ rating         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, …
+## $ id             &lt;int&gt; 8040, 5433, 5444, 6200, 4982, 5406, 5445, 6199, 5411, …
+## $ indice_bechdel &lt;fct&gt; Menos de duas mulheres, Menos de duas mulheres, Menos …
+## $ decada         &lt;dbl&gt; 1880, 1890, 1890, 1890, 1890, 1890, 1890, 1890, 1890, …
+## $ Title          &lt;chr&gt; &quot;Roundhay Garden Scene&quot;, &quot;Poor Pierrot&quot;, &quot;The Sprinkle…
+## $ Year           &lt;chr&gt; &quot;1888&quot;, &quot;1892&quot;, &quot;1895&quot;, &quot;1895&quot;, &quot;1896&quot;, &quot;1896&quot;, &quot;1896&quot;…
+## $ Rated          &lt;chr&gt; &quot;NOT RATED&quot;, &quot;N/A&quot;, &quot;Not Rated&quot;, &quot;Not Rated&quot;, &quot;N/A&quot;, &quot;…
+## $ Released       &lt;chr&gt; &quot;14 Oct 1888&quot;, &quot;28 Oct 1892&quot;, &quot;N/A&quot;, &quot;28 Aug 1895&quot;, &quot;N…
+## $ Runtime        &lt;chr&gt; &quot;1 min&quot;, &quot;4 min&quot;, &quot;1 min&quot;, &quot;1 min&quot;, &quot;3 min&quot;, &quot;1 min&quot;, …
+## $ Genre          &lt;chr&gt; &quot;Documentary, Short&quot;, &quot;Animation, Comedy, Short, Roman…
+## $ Director       &lt;chr&gt; &quot;Louis Aimé Augustin Le Prince&quot;, &quot;Émile Reynaud&quot;, &quot;Lou…
+## $ Writer         &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;Georges Méliès&quot;, &quot;N/A&quot;, &quot;…
+## $ Actors         &lt;chr&gt; &quot;Annie Hartley, Adolphe Le Prince, Joseph Whitley, Sar…
+## $ Plot           &lt;chr&gt; &quot;In the garden, a man asks his friends to do something…
+## $ Language       &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;None&quot;, &quot;N/A&quot;, &quot;N/A…
+## $ Country        &lt;chr&gt; &quot;UK, France&quot;, &quot;France&quot;, &quot;France&quot;, &quot;USA&quot;, &quot;France&quot;, &quot;Fr…
+## $ Awards         &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ Poster         &lt;chr&gt; &quot;https://m.media-amazon.com/images/M/MV5BOGE3YjczMTQtZ…
+## $ Metascore      &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ imdbRating     &lt;chr&gt; &quot;7.5&quot;, &quot;6.6&quot;, &quot;7.1&quot;, &quot;6.7&quot;, &quot;6.7&quot;, &quot;5.8&quot;, &quot;5.2&quot;, &quot;7.4&quot;…
+## $ imdbVotes      &lt;chr&gt; &quot;4,609&quot;, &quot;1,144&quot;, &quot;4,287&quot;, &quot;1,755&quot;, &quot;2,149&quot;, &quot;1,040&quot;, …
+## $ imdbID         &lt;chr&gt; &quot;tt0392728&quot;, &quot;tt0000003&quot;, &quot;tt0000014&quot;, &quot;tt0132134&quot;, &quot;t…
+## $ Type           &lt;chr&gt; &quot;movie&quot;, &quot;movie&quot;, &quot;movie&quot;, &quot;movie&quot;, &quot;movie&quot;, &quot;movie&quot;, …
+## $ DVD            &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ BoxOffice      &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ Production     &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ Website        &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;…
+## $ Response       &lt;chr&gt; &quot;True&quot;, &quot;True&quot;, &quot;True&quot;, &quot;True&quot;, &quot;True&quot;, &quot;True&quot;, &quot;True&quot;…
+## $ Source         &lt;chr&gt; &quot;Internet Movie Database&quot;, &quot;Internet Movie Database&quot;, …
+## $ Value          &lt;chr&gt; &quot;7.5/10&quot;, &quot;6.6/10&quot;, &quot;7.1/10&quot;, &quot;6.7/10&quot;, &quot;6.7/10&quot;, &quot;5.8…
+## $ Error          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ Season         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ Episode        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ seriesID       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ totalSeasons   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ Ratings        &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ deu_errado     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE…
+## $ imdbRating_num &lt;dbl&gt; 7.5, 6.6, 7.1, 6.7, 6.7, 5.8, 5.2, 7.4, 6.0, 7.5, 7.5,…</code></pre>
+</div>
+<div id="bechdel-por-país" class="section level3">
+<h3>Bechdel por País</h3>
+<p>Japão e Canadá são os países que apresentem tendências mais claras de mudanças. Os demais parecem estagnados. Brasil tem 45 filmes analisado e não parece diferente da Alemanha, Reino Unido, EUA ou França.</p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div id="filmes-brasileiros" class="section level4">
+<h4>Filmes brasileiros</h4>
+<pre class="r"><code>bechdel_com_imdb %&gt;%
+  filter(str_detect(Country, &quot;Brazil&quot;)) %&gt;%
+  select(year, Title, rating) %&gt;%
+  arrange(rating) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="left">Title</th>
+<th align="right">rating</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2007</td>
+<td align="left">Estomago: A Gastronomic Story</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2007</td>
+<td align="left">You, Me and Him</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2009</td>
+<td align="left">The Secret of Kells</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="left">Samsara</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="left">Boy and the World</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="left">Ardor</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2002</td>
+<td align="left">City of God</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2003</td>
+<td align="left">Fear X</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2011</td>
+<td align="left">Rio</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="left">Two Rabbits</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="left">Vai que dá Certo</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="left">Trash</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="left">Futuro Beach</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2018</td>
+<td align="left">Tito and the Birds</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">2019</td>
+<td align="left">Bacurau</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1985</td>
+<td align="left">Kiss of the Spider Woman</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">2003</td>
+<td align="left">The Man Who Copied</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">2009</td>
+<td align="left">From Beginning to End</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">2019</td>
+<td align="left">Turma da Mônica: Laços</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">1986</td>
+<td align="left">Hour of the Star</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">1998</td>
+<td align="left">Central Station</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2004</td>
+<td align="left">Nina</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="left">Æon Flux</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2007</td>
+<td align="left">Elite Squad</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2008</td>
+<td align="left">Blindness</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2008</td>
+<td align="left">Lion’s Den</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2010</td>
+<td align="left">So Hard to Forget</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="left">Fast Five</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2011</td>
+<td align="left">Found Memories</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="left">Neighboring Sounds</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2012</td>
+<td align="left">Tabu</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="left">Snezhnaya koroleva</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="left">Reaching for the Moon</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="left">Open Road</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="left">My Mom Is a Character</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="left">Brazilian Western</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="left">Time and the Wind</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="left">August Winds</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="left">The Way He Looks</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="left">Last Night</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2015</td>
+<td align="left">Neon Bull</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2015</td>
+<td align="left">The Second Mother</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="left">Aquarius</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="left">Call Me by Your Name</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="left">The Heiresses</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="filmes-premiados" class="section level3">
+<h3>Filmes Premiados</h3>
+<p>A base trás informação de premiações. Filmes sem premiação não destoa dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não justifica o sucesso de um filme.</p>
+<pre class="r"><code>bechdel_por_decada_e_premiacao &lt;- bechdel_com_imdb %&gt;%
+  mutate(
+    premiacao = case_when(
+      str_detect(Awards, &quot;N/A&quot;) | is.na(Awards) ~ &quot;z Sem Premiação&quot;,
+      str_detect(Awards, &quot;Won.*Oscar&quot;) ~ &quot;a Vencedor de Oscar&quot;,
+      str_detect(Awards, &quot;Won.*(BAFTA|Golden Globe)&quot;) ~ &quot;b Vencedor de BAFTA/Golden Globe&quot;,
+      str_detect(Awards, &quot;Nominated&quot;) ~ &quot;c Nomeado ao Oscar/BAFTA/Golden Globe&quot;,
+      str_detect(Awards, &quot;win&quot;) ~ &quot;d Vencedor de outros prêmios&quot;,
+      str_detect(Awards, &quot;nomination&quot;) ~ &quot;d Nomeado a outros prêmios&quot;,
+      TRUE ~ &quot;e Outro&quot;
+    )
+  ) %&gt;%
+  count(premiacao, decada, indice_bechdel, .drop = FALSE)
+  
+bechdel_por_decada_e_premiacao %&gt;%
+  filter(decada &gt;= 1940) %&gt;%
+  ggplot(aes(x = decada, fill = indice_bechdel, y = n)) +
+  geom_col(position = &quot;fill&quot;, colour = &quot;black&quot;, width = 10) +
+  scale_fill_brewer(palette = &quot;RdBu&quot;, guide = &quot;none&quot;) +
+  labs(x = &quot;Década&quot;, y = &quot;Proporção&quot;, title = &quot;Evolução dos Ratings Bechdel pelas Décadas&quot;) +
+  scale_y_continuous(labels = scales::percent) +
+  theme(
+    panel.grid = element_blank()
+  ) +
+  facet_wrap(vars(premiacao), ncol = 3)</code></pre>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="nota-imdb" class="section level3">
+<h3>Nota IMDB</h3>
+<p>Notas do IMDB também não diferem entre filmes que passaram no teste e filmes que não passaram no teste de Bechdel.</p>
+<pre class="r"><code>bechdel_por_decada_e_pais &lt;- bechdel_por_decada_e_pais %&gt;%
+  mutate(
+    imdbVotes = parse_number(imdbVotes),
+    passou_no_teste = case_when(
+      rating %in% 3 ~ &quot;Sim&quot;,
+      TRUE ~ &quot;Não&quot;
+    )
+  )
+bechdel_nota_por_decada &lt;- bechdel_por_decada_e_pais %&gt;%
+  group_by(pais) %&gt;%
+  filter(n() &gt; 10) %&gt;%
+  group_by(pais, decada, passou_no_teste) %&gt;%
+  summarise(
+    imdb_media = mean(imdbRating_num, na.rm = TRUE),
+    imdb_dp = sd(imdbRating_num, na.rm = TRUE),
+    imdb_inf = imdb_media - 2*imdb_dp,
+    imdb_sup = imdb_media + 2*imdb_dp
+  )
+
+bechdel_nota_por_decada %&gt;% 
+  filter(decada &gt;= 1940) %&gt;%
+  ggplot(aes(x = decada, y = imdb_media, colour = passou_no_teste)) +
+  geom_line() +
+  geom_point() +
+  geom_jitter(data = bechdel_por_decada_e_pais %&gt;% filter(decada &gt;= 1940), aes(y = imdbRating_num), alpha = 0.05) +
+  geom_ribbon(aes(ymin = imdb_inf, ymax = imdb_sup, fill = passou_no_teste), alpha = 0.1) +
+  facet_wrap(vars(pais)) +
+  labs(x = &quot;Década&quot;, y = &quot;Nota IMDB&quot;, colour = &quot;Passou no\nTeste&quot;, fill = &quot;Passou no\nTeste&quot;, title = &quot;Notas do IMDB vs Teste de Bechdel&quot;)</code></pre>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.</p>
+</div>
+</div>
