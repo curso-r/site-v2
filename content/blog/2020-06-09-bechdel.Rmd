@@ -1,0 +1,301 @@
+---
+title: "Bechdel: Filme e Machismo"
+date: "2020-06-10"
+tags: ["ggplot2", "tidyverse", "api", "imdb"]
+categories: ["análises"]
+banner: "img/banners/bechdel.png"
+author: ["Athos"]
+summary: "O teste de Bechdel avalia se um filme atende a uma condição simples: duas mulheres (com nomes) conversam entre si sobre algo que não seja homem. Existe um banco de dados de filmes avaliados por pelo índice Bechdel e nós analisamos."
+draft: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(tidyverse)
+library(jsonlite)
+ggplot2::theme_set(theme_minimal(16))
+```
+
+O [Teste de Bechdel](https://pt.wikipedia.org/wiki/Teste_de_Bechdel) avalia se um filme possui três regras básicas:
+
+1) Ao menos duas mulheres (com nome)
+2) ... que conversam entre si
+3) ... sobre algo que não seja homem
+
+Esse teste foi nomeado em homenagem à cartunista [Alison Bechdel](https://pt.wikipedia.org/wiki/Alison_Bechdel) que, em um de seus quadrinhos, apresentou essa ideia e hoje é utilizado para medir o grau de discriminação de gênero no cinema.
+
+O site [bechdeltest.com](https://bechdeltest.com/) oferece espaço para qualquer um contribuir com filmes avaliados no teste de Bechdel e disponibiliza fácil acesso a um banco de dados de 8.440 filmes de 1888 até os dias de hoje.
+
+Um pitaco pessoal (Athos): Imagine as mesmas regras, mas invertendo homem por mulher. Quantos filmes você acha que não passariam no teste? Na minha opinião? Menos de 1%! 
+
+## Achados
+
+- Países como Canadá e Japão parecem estarem melhorando;
+- Brasil tem poucos dados, mas não se destaca positivamente;
+- Prêmios e Notas IMDB não são diferentes entre filmes que passaram no teste e filmes que não passaram no teste. Pode-se argumentar que a discriminação de gênero, mesmo que sempre injustificável, não sustenta nem a retórica de que vale a pena financeiramente;
+
+## Dados
+
+```{r, echo=FALSE}
+bechdel <- readRDS("../../static/data/bechdel/bechdel.rds")
+```
+
+O site disponibiliza uma API para acessar os dados. Então para trazer para o R é simples como a linha abaixo.
+
+```{r, eval=FALSE}
+bechdel <- fromJSON("http://bechdeltest.com/api/v1/getAllMovies")
+```
+
+```{r}
+glimpse(bechdel)
+```
+
+OBS: reparem na coluna `imdbid`. Ela permite coletar informações do IMDB para maiores análises!
+
+## Rating
+
+O rating vai de 0 a 3, que representa quantas regras são atendidas no filme. Vamos rotular para melhor leitura.
+
+```{r}
+bechdel <- bechdel %>%
+  mutate(
+    indice_bechdel = case_when(
+      rating == 0 ~ "Menos de duas mulheres",
+      rating == 1 ~ "Pelo menos duas mulheres",
+      rating == 2 ~ "... que conversam entre si",
+      rating == 3 ~ "... sobre algo que não seja homem"
+    ),
+    indice_bechdel = fct_reorder(indice_bechdel, rating),
+    decada = (year %/% 10)*10
+  )
+```
+
+
+```{r}
+bechdel %>% 
+  count(indice_bechdel, rating) %>%
+  mutate(
+    rating_p = scales::percent(n/sum(n), accuracy = 1)
+  ) %>%
+  ggplot(aes(y = indice_bechdel, x = n)) +
+  geom_segment(aes(xend = 0, yend = indice_bechdel)) +
+  geom_point(size = 13) +
+  geom_text(aes(label = rating_p), color = "white", fontface = "bold") +
+  labs(x = "contagem", y = NULL, title = "Filmes por Rating Bechdel") +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+## Evolução nas Décadas
+
+```{r}
+bechdel_por_decada <- bechdel %>%
+  count(decada, indice_bechdel, .drop = FALSE)
+
+bechdel_por_decada %>%
+  ggplot(aes(x = decada, fill = indice_bechdel, y = n)) +
+  geom_col(position = "fill", colour = "black", width = 10) +
+  geom_text(aes(label = indice_bechdel), position = "fill", data = filter(bechdel_por_decada, decada == 1950), vjust = 2.5, colour = "white", fontface = "bold") +
+  scale_fill_brewer(palette = "RdBu", guide = "none") +
+  labs(x = "Década", y = "Proporção", title = "Evolução dos Ratings Bechdel pelas Décadas") +
+  scale_y_continuous(labels = scales::percent) +
+  theme(
+    panel.grid = element_blank()
+  ) 
+```
+
+O Teste de Bechdel vem melhorando com o tempo, então as perspectivas são positivas. Em um mundo cada vez mais conectado, espera-se que a informação chegue a cada vez mais pessoas e a discriminação encrustrada na nossa cultura se dissolva.
+
+## Informações do IMDB
+
+A API do [IMDB](https://www.imdb.com/) é muito burocrática de usar. Eu encontrei o site [OMDB](http://www.omdbapi.com/) que foi bem mais fácil de usar, mas talvez tenha menos informação legal. Vou mostrar como usar:
+
+### API Key
+
+Primeiro eu peguei uma API KEY no site deles e coloquei no meu .Renviron porque daí eu posso usar o `Sys.get()` pra usá-la sem precisar mostrar pra ninguém.
+
+```{r, eval=FALSE}
+Sys.getenv('OMDB_APIKEY')
+# [1] as48732f1d
+```
+
+### Chamando a API
+
+Depois eu chamei a API do OMDB usando tanto minha API KEY quanto o IMDB ID. A chamada tem que ser assim: `http://www.omdbapi.com/?apikey={Sys.getenv('OMDB_APIKEY')}&i=tt{imdbid}`. Ela vai devolver um json que pode ser facilmente formatado pelo `jsonlite::fromJSON()`.
+
+```{r, eval = FALSE}
+library(glue)
+pega_info_imdb <- function(imdbid) {
+  glue("http://www.omdbapi.com/?apikey={Sys.getenv('OMDB_APIKEY')}&i=tt{imdbid}") %>%
+    fromJSON() %>%
+    as_tibble()
+}
+# safely porque a API pode dar erro 522 (no servidor do OMDB)
+pega_info_imdb_safe <- safely(pega_info_imdb)
+
+# demora ~40 min
+bechdel_com_imdb <- bechdel %>%
+  as_tibble() %>%
+  mutate(
+    infos_imdb = map(imdbid, pega_info_imdb_safe)
+  )
+```
+
+### Arrumando os dados
+
+Os dados precisam de uma massagem antes porque vem em uma lista aninhada e tudo texto.
+
+```{r, echo=FALSE}
+bechdel_com_imdb <- readRDS("../../static/data/bechdel/bechdel_com_imdb.rds")
+```
+
+```{r,eval=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+# Arruma as tabelas aninhadas
+arruma_infos_imdb <- function(infos_imdb) {
+  if(!is.null(infos_imdb$Ratings)) {
+    infos_imdb %>% 
+      nest(Ratings = c(Ratings)) %>%
+      mutate(Ratings = map(Ratings, ~.x$Ratings %>% filter(Source %in% "Internet Movie Database"))) %>%
+      unnest(Ratings)
+  } else {
+    infos_imdb
+  }
+}
+
+# cria bechdel com as infos do imdb e arruma o tipo das variáveis
+bechdel_com_imdb <- bechdel_com_imdb %>%
+  mutate(
+    deu_errado = map_lgl(infos_imdb, ~ !is.null(.x$error)),
+    infos_imdb = infos_imdb %>% map("result") %>% map(arruma_infos_imdb)
+  ) %>%
+  unnest(infos_imdb) %>%
+  mutate(
+    imdbRating_num = imdbRating %>% parse_number()
+  )
+```
+
+### Tabela final
+
+```{r}
+glimpse(bechdel_com_imdb)
+```
+
+### Bechdel por País
+
+Japão e Canadá são os países que apresentem tendências mais claras de mudanças. Os demais parecem estagnados. Brasil tem 45 filmes analisado e não parece diferente da Alemanha, Reino Unido, EUA ou França.
+
+```{r, echo = FALSE}
+bechdel_por_decada_e_pais <- bechdel_com_imdb %>%
+  mutate(
+    pais = map(Country, str_split, ", ", 10) %>% map(unlist)
+  ) %>%
+  unnest(pais) %>%
+  mutate(
+    pais = case_when(
+      str_detect(pais, "Brazil") ~ "Brasil",
+     TRUE ~ as.character(fct_lump_n(pais, 7))
+    )
+  ) 
+```
+
+
+```{r, echo = FALSE}
+bechdel_por_decada_e_pais %>%
+  count(pais, decada, indice_bechdel, .drop = FALSE) %>%
+  filter(!is.na(pais), decada >= 1940) %>%
+  ggplot(aes(x = decada, fill = indice_bechdel, y = n)) +
+  geom_col(position = "fill", colour = "black", width = 10) +
+  scale_fill_brewer(palette = "RdBu", guide = "none") +
+  labs(x = "Década", y = "Proporção", title = "Evolução dos Ratings Bechdel pelas Décadas") +
+  scale_y_continuous(labels = scales::percent) +
+  theme(
+    panel.grid = element_blank()
+  ) +
+  facet_wrap(vars(pais), ncol = 3)
+```
+
+#### Filmes brasileiros
+```{r}
+bechdel_com_imdb %>%
+  filter(str_detect(Country, "Brazil")) %>%
+  select(year, Title, rating) %>%
+  arrange(rating) %>%
+  knitr::kable()
+```
+
+### Filmes Premiados
+
+A base trás informação de premiações. Filmes sem premiação não destoa dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não justifica o sucesso de um filme.
+
+```{r}
+bechdel_por_decada_e_premiacao <- bechdel_com_imdb %>%
+  mutate(
+    premiacao = case_when(
+      str_detect(Awards, "N/A") | is.na(Awards) ~ "z Sem Premiação",
+      str_detect(Awards, "Won.*Oscar") ~ "a Vencedor de Oscar",
+      str_detect(Awards, "Won.*(BAFTA|Golden Globe)") ~ "b Vencedor de BAFTA/Golden Globe",
+      str_detect(Awards, "Nominated") ~ "c Nomeado ao Oscar/BAFTA/Golden Globe",
+      str_detect(Awards, "win") ~ "d Vencedor de outros prêmios",
+      str_detect(Awards, "nomination") ~ "d Nomeado a outros prêmios",
+      TRUE ~ "e Outro"
+    )
+  ) %>%
+  count(premiacao, decada, indice_bechdel, .drop = FALSE)
+  
+bechdel_por_decada_e_premiacao %>%
+  filter(decada >= 1940) %>%
+  ggplot(aes(x = decada, fill = indice_bechdel, y = n)) +
+  geom_col(position = "fill", colour = "black", width = 10) +
+  scale_fill_brewer(palette = "RdBu", guide = "none") +
+  labs(x = "Década", y = "Proporção", title = "Evolução dos Ratings Bechdel pelas Décadas") +
+  scale_y_continuous(labels = scales::percent) +
+  theme(
+    panel.grid = element_blank()
+  ) +
+  facet_wrap(vars(premiacao), ncol = 3)
+```
+
+
+### Nota IMDB
+
+Notas do IMDB também não diferem entre filmes que passaram no teste e filmes que não passaram no teste de Bechdel.
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+bechdel_por_decada_e_pais <- bechdel_por_decada_e_pais %>%
+  mutate(
+    imdbVotes = parse_number(imdbVotes),
+    passou_no_teste = case_when(
+      rating %in% 3 ~ "Sim",
+      TRUE ~ "Não"
+    )
+  )
+bechdel_nota_por_decada <- bechdel_por_decada_e_pais %>%
+  group_by(pais) %>%
+  filter(n() > 10) %>%
+  group_by(pais, decada, passou_no_teste) %>%
+  summarise(
+    imdb_media = mean(imdbRating_num, na.rm = TRUE),
+    imdb_dp = sd(imdbRating_num, na.rm = TRUE),
+    imdb_inf = imdb_media - 2*imdb_dp,
+    imdb_sup = imdb_media + 2*imdb_dp
+  )
+
+bechdel_nota_por_decada %>% 
+  filter(decada >= 1940) %>%
+  ggplot(aes(x = decada, y = imdb_media, colour = passou_no_teste)) +
+  geom_line() +
+  geom_point() +
+  geom_jitter(data = bechdel_por_decada_e_pais %>% filter(decada >= 1940), aes(y = imdbRating_num), alpha = 0.05) +
+  geom_ribbon(aes(ymin = imdb_inf, ymax = imdb_sup, fill = passou_no_teste), alpha = 0.1) +
+  facet_wrap(vars(pais)) +
+  labs(x = "Década", y = "Nota IMDB", colour = "Passou no\nTeste", fill = "Passou no\nTeste", title = "Notas do IMDB vs Teste de Bechdel")
+```
+
+O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.
+
