@@ -21,6 +21,7 @@ ggplot2::theme_set(theme_minimal(16))
 
 Fui apresentado por uma amiga aO [Teste de Bechdel](https://pt.wikipedia.org/wiki/Teste_de_Bechdel), que avalia se um filme possui três regras básicas:
 
+
 1) Ao menos duas mulheres (com nome)
 2) ... que conversam entre si
 3) ... sobre algo que não seja homem
