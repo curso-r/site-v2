@@ -231,7 +231,7 @@ bechdel_com_imdb %>%
 
 ### Filmes Premiados
 
-A base trás informação de premiações. Filmes sem premiação não destoa dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não justifica o sucesso de um filme.
+A base traz informação de premiações. Filmes sem premiação não destoam dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não está relacionado com o sucesso de um filme.
 
 ```{r}
 bechdel_por_decada_e_premiacao <- bechdel_com_imdb %>%
@@ -298,6 +298,6 @@ bechdel_nota_por_decada %>%
   scale_x_continuous(breaks = c(1950, 2020)) +
   theme(legend.position = "top")
 ```
-
+ 
 O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.
 

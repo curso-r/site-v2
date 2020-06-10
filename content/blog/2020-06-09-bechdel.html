@@ -445,7 +445,7 @@ bechdel_com_imdb &lt;- bechdel_com_imdb %&gt;%
 </div>
 <div id="filmes-premiados" class="section level3">
 <h3>Filmes Premiados</h3>
-<p>A base trás informação de premiações. Filmes sem premiação não destoa dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não justifica o sucesso de um filme.</p>
+<p>A base traz informação de premiações. Filmes sem premiação não destoam dos filmes premiados em termos de avaliação de Bechdel, o que indica que o machismo não está relacionado com o sucesso de um filme.</p>
 <pre class="r"><code>bechdel_por_decada_e_premiacao &lt;- bechdel_com_imdb %&gt;%
   mutate(
     premiacao = case_when(
