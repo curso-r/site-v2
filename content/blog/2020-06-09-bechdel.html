@@ -1,3 +1,16 @@
+---
+title: "Bechdel: Filme e Machismo"
+date: "2020-06-09"
+tags: ["ggplot2", "tidyverse", "api", "imdb"]
+categories: ["análises"]
+banner: "img/banners/bechdel.png"
+author: ["Athos"]
+summary: "O teste de Bechdel avalia se um filme atende a uma condição simples: duas mulheres (com nomes) conversam entre si sobre algo que não seja homem. Existe um banco de dados de filmes avaliados por pelo índice Bechdel e nós analisamos."
+draft: false
+editor_options: 
+  chunk_output_type: console
+---
+
 
 
 <p>Fui apresentado por uma amiga aO <a href="https://pt.wikipedia.org/wiki/Teste_de_Bechdel">Teste de Bechdel</a>, que avalia se um filme possui três regras básicas:</p>
@@ -60,7 +73,7 @@
     panel.grid.major.y = element_blank(),
     panel.grid.major.x = element_blank()
   )</code></pre>
-<p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="evolução-nas-décadas" class="section level2">
 <h2>Evolução nas Décadas</h2>
@@ -77,7 +90,7 @@ bechdel_por_decada %&gt;%
   theme(
     panel.grid = element_blank()
   ) </code></pre>
-<p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>O Teste de Bechdel vem melhorando com o tempo, então as perspectivas são positivas. Em um mundo cada vez mais conectado, espera-se que a informação chegue a cada vez mais pessoas e a discriminação encrustrada na nossa cultura se dissolva.</p>
 </div>
 <div id="informações-do-imdb" class="section level2">
@@ -184,7 +197,7 @@ bechdel_com_imdb &lt;- bechdel_com_imdb %&gt;%
 <div id="bechdel-por-país" class="section level3">
 <h3>Bechdel por País</h3>
 <p>Japão e Canadá são os países que apresentem tendências mais claras de mudanças. Os demais parecem estagnados. Brasil tem 45 filmes analisado e não parece diferente da Alemanha, Reino Unido, EUA ou França.</p>
-<p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div id="filmes-brasileiros" class="section level4">
 <h4>Filmes brasileiros</h4>
 <pre class="r"><code>bechdel_com_imdb %&gt;%
@@ -458,7 +471,7 @@ bechdel_por_decada_e_premiacao %&gt;%
     panel.grid = element_blank()
   ) +
   facet_wrap(vars(premiacao), ncol = 3)</code></pre>
-<p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="nota-imdb" class="section level3">
 <h3>Nota IMDB</h3>
@@ -493,7 +506,7 @@ bechdel_nota_por_decada %&gt;%
   labs(x = &quot;Década&quot;, y = &quot;Nota IMDB&quot;, colour = &quot;Passou no Teste&quot;, fill = &quot;Passou no Teste&quot;, title = &quot;Notas do IMDB vs Teste de Bechdel&quot;) +
   scale_x_continuous(breaks = c(1950, 2020)) +
   theme(legend.position = &quot;top&quot;)</code></pre>
-<p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-09-bechdel_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.</p>
 </div>
 </div>
