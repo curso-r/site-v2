@@ -52,7 +52,7 @@
   ) %&gt;%
   ggplot(aes(y = indice_bechdel, x = n)) +
   geom_segment(aes(xend = 0, yend = indice_bechdel)) +
-  geom_point(size = 13) +
+  geom_point(size = 12) +
   geom_text(aes(label = rating_p), color = &quot;white&quot;, fontface = &quot;bold&quot;) +
   labs(x = &quot;contagem&quot;, y = NULL, title = &quot;Filmes por Rating Bechdel&quot;) +
   theme(
@@ -87,7 +87,7 @@ bechdel_por_decada %&gt;%
 <h3>API Key</h3>
 <p>Primeiro eu peguei uma API KEY no site deles e coloquei no meu .Renviron porque daí eu posso usar o <code>Sys.get()</code> pra usá-la sem precisar mostrar pra ninguém.</p>
 <pre class="r"><code>Sys.getenv(&#39;OMDB_APIKEY&#39;)
-# [1] as48732f1d</code></pre>
+# [1] as48732f1d (de mentirinha)</code></pre>
 </div>
 <div id="chamando-a-api" class="section level3">
 <h3>Chamando a API</h3>
@@ -490,7 +490,9 @@ bechdel_nota_por_decada %&gt;%
   geom_jitter(data = bechdel_por_decada_e_pais %&gt;% filter(decada &gt;= 1940), aes(y = imdbRating_num), alpha = 0.05) +
   geom_ribbon(aes(ymin = imdb_inf, ymax = imdb_sup, fill = passou_no_teste), alpha = 0.1) +
   facet_wrap(vars(pais)) +
-  labs(x = &quot;Década&quot;, y = &quot;Nota IMDB&quot;, colour = &quot;Passou no\nTeste&quot;, fill = &quot;Passou no\nTeste&quot;, title = &quot;Notas do IMDB vs Teste de Bechdel&quot;)</code></pre>
+  labs(x = &quot;Década&quot;, y = &quot;Nota IMDB&quot;, colour = &quot;Passou no Teste&quot;, fill = &quot;Passou no Teste&quot;, title = &quot;Notas do IMDB vs Teste de Bechdel&quot;) +
+  scale_x_continuous(breaks = c(1950, 2020)) +
+  theme(legend.position = &quot;top&quot;)</code></pre>
 <p><img src="2020-06-09-bechdel_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.</p>
 </div>

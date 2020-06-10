@@ -1,6 +1,6 @@
 ---
 title: "Bechdel: Filme e Machismo"
-date: "2020-06-10"
+date: "2020-06-09"
 tags: ["ggplot2", "tidyverse", "api", "imdb"]
 categories: ["análises"]
 banner: "img/banners/bechdel.png"
@@ -74,7 +74,6 @@ bechdel <- bechdel %>%
   )
 ```
 
-
 ```{r}
 bechdel %>% 
   count(indice_bechdel, rating) %>%
@@ -83,7 +82,7 @@ bechdel %>%
   ) %>%
   ggplot(aes(y = indice_bechdel, x = n)) +
   geom_segment(aes(xend = 0, yend = indice_bechdel)) +
-  geom_point(size = 13) +
+  geom_point(size = 12) +
   geom_text(aes(label = rating_p), color = "white", fontface = "bold") +
   labs(x = "contagem", y = NULL, title = "Filmes por Rating Bechdel") +
   theme(
@@ -123,7 +122,7 @@ Primeiro eu peguei uma API KEY no site deles e coloquei no meu .Renviron porque 
 
 ```{r, eval=FALSE}
 Sys.getenv('OMDB_APIKEY')
-# [1] as48732f1d
+# [1] as48732f1d (de mentirinha)
 ```
 
 ### Chamando a API
@@ -295,7 +294,9 @@ bechdel_nota_por_decada %>%
   geom_jitter(data = bechdel_por_decada_e_pais %>% filter(decada >= 1940), aes(y = imdbRating_num), alpha = 0.05) +
   geom_ribbon(aes(ymin = imdb_inf, ymax = imdb_sup, fill = passou_no_teste), alpha = 0.1) +
   facet_wrap(vars(pais)) +
-  labs(x = "Década", y = "Nota IMDB", colour = "Passou no\nTeste", fill = "Passou no\nTeste", title = "Notas do IMDB vs Teste de Bechdel")
+  labs(x = "Década", y = "Nota IMDB", colour = "Passou no Teste", fill = "Passou no Teste", title = "Notas do IMDB vs Teste de Bechdel") +
+  scale_x_continuous(breaks = c(1950, 2020)) +
+  theme(legend.position = "top")
 ```
 
 O que você achou das análises? Conte para a gente! É um tema que vale a pena ser discutido por todos.
