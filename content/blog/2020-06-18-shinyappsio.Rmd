@@ -1,0 +1,18 @@
+---
+title: "Conectando o RStudio com o shinyapps.io"
+date: "2020-06-18"
+tags: ["shiny", "rstudio", "deploy"]
+categories: ["tutorial", "r"]
+banner: "img/banners/shiny.jpg"
+author: ["William Amorim"]
+summary: "Aprenda como conectar a sua conta do shinyapps.io com o RStudio para compartilhar aplicativos Shiny na internet em apenas alguns minutos."
+draft: true
+---
+
+O [shinyapps.io](https://www.shinyapps.io/) é um serviço do RStudio que nos possibilita hospedar aplicativos em Shiny e compartilhá-los online com qualquer pessoa no mundo. A conta gratuita permite até 5 aplicativos simultâneos e 25 horas mensais de uso. Além disso, utilizando o shinyapps.io e o RStudio, a tarefa de subir um app para a internet pode ser feita em poucos minutos, com apenas alguns cliques.
+
+No vídeo abaixo, eu mostro como conectar o RStudio com a sua conta do shinyapps.io e, com as contas conectadas, como é fácil hospedar um aplicativo no serviço.
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jRXubw0kOrg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
