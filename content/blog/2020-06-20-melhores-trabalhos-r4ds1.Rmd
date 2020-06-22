@@ -1,0 +1,42 @@
+---
+title: "Melhores trabalhos do curso R para Ciência de dados I (maio de 2020)"
+date: "2020-06-18"
+tags: ["shiny", "rstudio", "deploy"]
+categories: ["tutorial", "r"]
+banner: "img/banners/shiny.jpg"
+author: ["William Amorim"]
+summary: "Apresentamos os melhores trabalhos de conclusão do nosso curso de R para Ciência de dados I e comentamos aspectos importantes sobre a comunicação dos resultados das nossas análises."
+draft: true
+---
+
+Ao fim do no nosso curso de R para Ciência de dados I, apresentamos aos alunos (que antes do curso tinham pouca ou nenhuma experiência com R) a tarefa de realizar uma análise estatística (descritiva) e comunicar os resultados utilizando um relatório produzido em R Markdown ou um dashboard feito com o pacote `flexdashboard`.
+
+A análise tinha o seguinte contexto: dois produtores que não sabem nada de cinema querem investir seus milhões em um filme, mas não sabem qual tipo de filme ou quais atrizes, atores e diretoras(res) teriam mais chance de gerar um potencial sucesso de crítica e bilheteria. Para responder essa pergunta, eles contrataram cientistas de dados para analisar uma base de filmes do IMDB e responder essa pergunta. O [Athos](https://twitter.com/athos_damiani) e eu ([William](https://twitter.com/Williamorim89)) fizemos o papel dos produtores, no sentido de que não demos nenhuma direção sobre a análise a ser realizada (apenas ajudamos com a programação em R, é claro) e os alunos fizeram o papel dos cientistas de dados.
+
+Para motivar, resolvemos premiar os melhores trabalhos com vagas em qualquer um dos nossos cursos. 
+
+O nosso objetivo, de início, era trazer aos alunos um pouco da experiência do dia-a-dia do cientista de dados: usar análise crítica (nesse caso, conhecimento sobre cinema) e uma ferramenta (no nosso caso, o R) para transformar uma base de dados em uma reposta para uma pergunta difícil^[E claro: em tempo limitado. Os alunos tiveram uma semana para fazer o trabalho.]. 
+
+Ao final, recebemos trabalhos tão maravilhosos que, além de parabenizar cada um dos participantes, decidimos compartilhar os 4 ganhadores com a comunidade. Esse é o objetivo desse post.
+
+Abaixo, apresentamos as análises, os autores e os principais pontos pelos quais decidimos destacar esses trabalhos. Todos os textos estão muito claros e bem escritos, então vamos focar apenas no que mais nos chamou atenção em cada trabalho.
+
+## Louise Mamedio
+
+Nós destacamos o trabalho da [Louise Mamedio]()...
+
+## Camila Bertini
+
+Nós destacamos o trabalho da [Camila Bertini](linkedin.com/in/camila-b-martins-ba06a371)...
+
+
+## Rodrigo Almeida
+
+Nós destacamos o trabalho do [Rodrigo Almeida]():
+
+
+
+
+## Mariana Costa
+
+Nós destacamos o trabalho do Mariana Costa...

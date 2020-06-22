@@ -937,8 +937,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   max-width: 600px;
 }
 
-#cursos-single .column {
-  flex: 50%;
+#cursos-single .column-esq {
+  flex: 70%;
+}
+
+#cursos-single .column-dir {
+  flex: 20%;
 }
 
 .tooltip-wrap {
