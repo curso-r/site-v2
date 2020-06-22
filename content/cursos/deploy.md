@@ -8,10 +8,10 @@ preco: "R$ 300,00"
 banner: "img/cursos/deploy-banner.png"
 desc: "Aprenda a disponibilizar o resultado dos seus modelos e dashboards na Web."
 requisitos: ""
-professores: ["Athos Damiani", "William Amorim"]
+professores: ["Caio Lente", "Daniel Falbel"]
 ordem: 27
 id: 20
-aberto: "true"
+aberto: "false"
 unit_price: 30000
 ---
 
