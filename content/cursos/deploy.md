@@ -10,8 +10,6 @@ desc: "Aprenda a disponibilizar o resultado dos seus modelos e dashboards na Web
 requisitos: ""
 professores: ["Caio Lente", "Daniel Falbel"]
 ordem: 27
-id: 20
-aberto: "false"
 unit_price: 30000
 ---
 

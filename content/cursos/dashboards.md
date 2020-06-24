@@ -10,8 +10,6 @@ desc: "Aprenda a criar dashboards incríveis a partir do R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
 ordem: 25
-id: 16
-aberto: "false"
 unit_price: 50000
 ---
 
