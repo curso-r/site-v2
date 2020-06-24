@@ -4,7 +4,7 @@ date: "2020-06-18"
 tags: ["shiny", "rstudio", "deploy"]
 categories: ["tutorial", "r"]
 banner: "img/banners/mariokart.png"
-author: ["William Amorim"]
+author: ["William"]
 summary: "Apresentamos os melhores trabalhos de conclusão do nosso curso de R para Ciência de dados I e comentamos aspectos importantes sobre a comunicação dos resultados das nossas análises."
 ---
 
