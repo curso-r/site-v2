@@ -5,7 +5,7 @@ hora: "18 horas de curso"
 local: "Aulas online"
 img: "img/cursos/r4ds-2.jpeg"
 preco: "R$ 500,00"
-banner: "img/cursos/r4ds-2.png"
+banner: "img/cursos/r4ds-2-banner.png"
 desc: "É hora de aprofundar os seus conhecimentos de R."
 requisitos: ""
 professores: ["Caio Lente", "William Amorim"]

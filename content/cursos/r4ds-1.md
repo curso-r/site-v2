@@ -70,7 +70,7 @@ O objetivo deste curso é apresentar os conceitos essenciais de programação em
 <li>Criando sumarizações</li>
 <li>Juntando duas colunas</li>
 </ul>
-<p>&#128204; <b>Gráficos (o pacote ggplot22)</b></p>
+<p>&#128204; <b>Gráficos (o pacote ggplot2)</b></p>
 <ul>
 <li>Gráficos de pontos (dispersão)</li>
 <li>Gráficos de barras</li>
