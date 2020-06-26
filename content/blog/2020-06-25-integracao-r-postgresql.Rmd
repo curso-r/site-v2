@@ -1,0 +1,244 @@
+---
+title: "Chamando o R do PostgreSQL"
+date: "2020-06-25"
+tags: ["sql", "postgresql", "r"]
+categories: ["pacotes", "r"]
+banner: "img/banners/integracao-r-postgresql.png"
+author: ["José de Jesus Filho"]
+summary: "Este tutorial irá mostrar como instalar o R e o PostgreSQL num mesmo servidor Ubuntu 18.04 ou 16.04 e, em seguida, sobre como chamar o R a partir do Postgres."
+draft: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introdução
+
+Este tutorial irá mostrar como instalar o *R* e o *PostgreSQL* num mesmo servidor Ubuntu 18.04 ou 16.04. Em seguida, falaremos sobre como chamar o R a partir do Postgres.
+
+Farei uma série de tutoriais. Este primeiro é voltado para aqueles com familiaridade com funções do R e que gostariam de rodá-las no PostgreSQL, sem necessariamente conhecer muito SQL. 
+
+Num próximo, iremos mostrar como criar queries e declarações do PostgreSQL do R, ou seja, será mais voltado para quem tem familiaridade com o SQL, mas não necessariamente versada em R. 
+
+Os tutoriais posteriores serão voltados para aqueles com bastante familiaridade em tidyverse e que gostariam de realizar as mesmas coisas em SQL. Igualmente, servirão para aqueles que sabem manipular dados em SQL, mas gostariam de fazer as mesmas coisas no R.
+
+Em futuros tutoriais, falaremos quando compensa iniciar no PostgreSQL e terminar no R. Por exemplo, quando é mais vantajoso dar um join no R em vez de fazê-lo no PostgreSQL e vice-versa.
+
+## Instalando o PostgreSQL
+
+A primeira coisa a fazer é atualizar os pacotes do sistema: 
+
+```sh
+sudo apt update
+sudo apt -y install vim bash-completion wget
+sudo apt -y upgrade
+
+```
+Feito isso, dê um reboot:
+
+```sh
+sudo reboot
+```
+
+Importe a chave GPG:
+```sh
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+```
+
+Adicione a chave GPG ao systema:
+
+```sh
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+
+```
+
+Atualize os pacotes do sistema e instale os pacotes do PostgreSQL necessários. Os dois primeiros são necessários para rodar o PostgreSQL, os três últimos são necessários para instalar o `plr`, o RPostgres e outras extensões. Falaremos deles mais adiante.
+
+```sh
+sudo apt update
+sudo apt install postgresql-12 postgresql-client-12 postgresql-server-dev-all libpq-dev postgresql-contrib
+
+```
+
+## Instalação do R
+
+```sh
+sudo echo "deb https://cloud.r-project.org/bin/linux/ubuntu `lsb_release -cs`-cran40/" | sudo tee -a /etc/apt/sources.list
+```
+
+### Adicionar a chave GPG
+
+```sh
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+```
+
+### Instale o R
+```sh
+sudo apt-get update
+sudo apt-get install -y r-base r-base-dev 
+```
+
+
+Instale também o git
+
+```sh
+sudo apt install git
+```
+
+
+Agora use o git para clonar o plr. Não importa o local onde você irá cloná-lo.  Desde que você tenha seguido fielmente os passos anteriores, tudo terminará bem.
+
+```sh
+git clone https://github.com/postgres-plr/plr
+
+```
+
+Feito isso, entre no diretório plr e rode os seguintes comandos para instalá-lo como extensão.
+
+```sh
+cd plr
+USE_PGXS=1 make
+USE_PGXS=1 make install
+```
+
+## Criando uma base de dados
+
+Vamos para o Postgres a fim de criar uma base de dados.
+
+```sh
+sudo -u postgres psql
+```
+
+```sql
+CREATE DATABASE datasets;
+```
+
+Além disso, você deve incluir a extensão `plr` na base de dados recentemente criada:
+
+```sql
+\c datasets -- conectar-se à base
+CREATE EXTENSION plr;
+\q -- sair do psql
+```
+
+De volta ao R.
+
+```sh
+R
+```
+
+### Instale os pacotes `RPostgres` e `broom`
+
+Instalando esses dois pacotes é suficiente para instalar também outras dependências como o DBI e o dplyr, as quais igualmente usaremos.
+```r
+install.packages(c("RPostgres","broom"))
+```
+
+## Connexão do R ao Postgres
+
+Eventualmente, você terá de autorizar a conexão local. Vá para o arquivo: 
+
+```sh
+vim /etc/postgresql/12/main/pg_hba.conf
+```
+
+E altere a seguinte linha de:
+
+```sh
+local all all peer
+```
+
+Para:
+```sh
+local all all trust
+```
+
+### Colocando uma tabela na base de dados
+
+Admitindo que você ainda se encontra no R, estamos em condições de incluir uma tabela na base de dados.
+
+Primeiramente, vamos conectar-nos à base:
+
+```r
+conn <- DBI::dbConnect(RPostgres::Postgres(), dbname="datasets")
+```
+Estou admidindo com o código acima que você está usando o R na mesma máquina do Postgres, usando o usuário `postgres` e dispensou o uso de senha para conexão local.
+
+Vamos enviar o dataframe mtcars para a base de dados. O exemplo do mtcars não é muito feliz porque ele poderia ser chamado do próprio R quando rodado no Postgres, mas apenas a título de exemplo, iremos assumir que ele seja qualquer outro data.frame. 
+
+```r
+DBI::dbWriteTable(conn,"tabela", mtcars)
+```
+## De volta ao Postgres
+
+Mostraremos num próximo tutorial como realizar os procedimentos a seguir sem sair do R, mas o propósito deste tutorial é justamente ilustrar como podemos chamar o R do Postgres. Assim, faremos tudo no Postgres mesmo.
+
+Voltando para o shell, vamos conectar-nos à base datasets:
+
+```sh
+sudo -u postgres psql datasets
+```
+
+Verifique se a tabela chamada "tabela" se encontra na base de dados:
+
+```sql
+\d+ -- ou 
+\d+ tabela
+```
+## Preparando o terreno
+
+Vamos criar uma tabela que servirá de referência para receber os resultados de uma regressão linear. Veja que as colunas são as mesmas do `tibble` retornado pela função `tidy` do pacote `broom`, com a diferença de que os pontos foram substituídos pelo sublinhado e os nomes das colunas passados para o português.
+
+```sql
+create table modelo (termo text, estimativa float8, erro_padrao float8, estatistica float8, p_valor float8);
+```
+
+### Criando uma função plr
+
+Enfim estamos em condições de criar uma função  no PostgreSQL que chama o R para rodar uma regressão linear em uma tabela contida no próprio Postgres:
+
+```sql
+CREATE OR REPLACE FUNCTION lm_teste() RETURNS SETOF modelo AS
+$$ 
+base <<- pg.spi.exec('select mpg, wt, qsec, am  from tabela')
+df <- lm(mpg ~ wt + qsec + factor(am), data=base)
+df <- broom::tidy(df)
+names(df) <- c('termo','estimativa','erro_padrao','estatistica','p_valor')
+df <- dplyr::mutate_at(df,dplyr::vars(2:5), ~round(.,2))
+return(df)
+$$
+language 'plr';
+```
+
+Note que o esqueleto da função é o mesmo para qualquer outra função do PostgreSQL. A diferença é que, para importar um objeto da base de dados para nossa função, devemos usar a função `pg.spi.exec`.
+
+## Rodando a regressão linear
+
+Agora ficou fácil. Basta chamar a função e ver os resultados:
+```sql
+select * from lm_teste();
+```
+
+```sql
+datasets=# select * from lm_teste();
+    termo    | estimativa | erro_padrao | estatistica | p_valor
+-------------+------------+-------------+-------------+---------
+ (Intercept) |       9.62 |        6.96 |        1.38 |    0.18
+ wt          |      -3.92 |        0.71 |       -5.51 |       0
+ qsec        |       1.23 |        0.29 |        4.25 |       0
+ factor(am)1 |       2.94 |        1.41 |        2.08 |    0.05
+(4 rows)
+```
+
+
+## Vantagens
+
+Eu apontaria duas principais vantagens em usar o plr:
+
+1 - Uma vez que a base se encontra no PostgreSQL, você não precisa mais transferi-la para o R a fim de rodar o modelo e retornar o resultado ao PostgreSQL. Essa  viagem dos dados  torna-se dispensável. No exemplo mostrado, porém, a base irá para uma sessão do R de qualquer forma. Veremos como solucionar isso em tutoriais futuros.
+
+2 - Você pode continuar trabalhando no R, enquanto seu modelo roda no PostgreSQL. Se o modelo tomar horas, este se torna um problema menor.
+
