@@ -1,0 +1,11 @@
+^LICENSE\.md$
+blogdown
+content
+layout
+public
+static
+redirects.R
+archetypes
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
