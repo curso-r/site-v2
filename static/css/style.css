@@ -1994,10 +1994,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .voce-saira > ul > li:before {
-  content: "\2705     ";
+  content: "\2705  ";
   margin-left: -3.3em;
   width: 1.3em;
   font-size: 10px;
+  margin-right: 13px;
 }
 
 #cursos-single .column-esq {
@@ -2018,6 +2019,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin-left: -2.3em;
   width: 1.3em;
   font-size: 20px;
+  margin-right: 5px;
 }
 
 #cursos-single .column-esq > ul > li > ul > li {
