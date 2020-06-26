@@ -44,6 +44,11 @@ criar_lista_voce_saira <- function(id) {
   
 }
 
+
+
+
+
+
 criar_topicos_ementa <- function(lista) {
   
   bullet <- "&#128204"
@@ -137,5 +142,37 @@ criar_ementa <- function(id) {
     .open = "{{",
     .close = "}}"
   )
+  
+}
+
+adicionar_professores <- function(id) {
+  
+  prof <- pegar_professores_turma(id)
+  
+  caminho_planilha <- baixar_dados()
+  data_professores <- readxl::read_excel(caminho_planilha, sheet = "professores") %>% 
+    dplyr::filter(nome %in% prof)
+
+  nomes <- data_professores$nome
+  nm_img <- data_professores$nm_img
+  url_github <- data_professores$url_github
+  url_twitter <- data_professores$url_twitter
+  url_linkedin <- data_professores$url_linkedin
+  desc <- data_professores$desc
+  
+  txt <- glue::glue(
+    '<div class="tooltip-wrap" align="center" style="margin-right: 50px; margin-left: 50px;">',
+    '<img src="/img/equipe/{{nm_img}}" width = "150px" height = "150px" style="border-radius: 50%;">',
+    '<div class="tooltip-content"><p>{{desc}}</p></div><br/>',
+    '<span style="font-weight: bold; text-transform: uppercase; font-size: 18px;">{{nomes}}</span><br/>',
+    '<a href="{{url_twitter}}" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a>&nbsp;&nbsp;',
+    '<a href="{{url_github}}" class="github" target="_blank"><i class="fa fa-github"></i></a>&nbsp;&nbsp;',
+    '<a href="{{url_linkedin}}" class="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>',
+    '</div>',
+    .open = "{{", .close = "}}"
+  ) %>% 
+    paste(collapse = "&nbsp;&nbsp;")
+  
+  glue::glue("<div class='row justify-content-center'>{{txt}}</div>", .open = "{{", .close = "}}")
   
 }

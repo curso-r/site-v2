@@ -40,9 +40,11 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 - costruir e disponibilizar online um aplicativo interativo para compartilhar resultados da sua análise.
 :::
 
+
 ```{r}
-siteCursoR:::criar_section_header("O que vamos ver?")
+siteCursoR:::criar_section_header("Conteúdo")
 ```
+
 
 ::: {.row}
 
@@ -83,20 +85,26 @@ siteCursoR::criar_lista_stickers(c('tidyverse', 'dplyr', 'stringr', 'lubridate',
 
 :::
 
+
+```{r}
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
 ```{r}
 siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
-
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
-
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
-
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}
-siteCursoR:::criar_section_header("Quais são os pré-requisitos?") 
+siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
 - O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
@@ -112,3 +120,4 @@ siteCursoR:::criar_section_header("O que eu preciso ter?")
 - Uma conta de e-mail Google para acessar o Google Classroom;
 
 -  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+
