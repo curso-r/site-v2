@@ -2,8 +2,6 @@ baixar_dados <- function() {
   temp <- tempdir()
   caminho_planilha <- paste0(temp, "/dados.xlsx")
   
-  googledrive::drive_auth("jtrecenti@curso-r.com")
-  
   id <- "1jACV67tPXktUp1rmbAurVRxzxnrhSwzBZgikwNTH8gE"
   
   if (!file.exists(caminho_planilha)) {

@@ -11,6 +11,7 @@ professores: ["Caio Lente", "William Amorim"]
 ordem: "`r siteCursoR::pegar_info_curso(3, 'ordem')`"
 id: 25
 aberto: "true"
+unit_price: 50000
 ---
 
 ```{r setup, include=FALSE}
