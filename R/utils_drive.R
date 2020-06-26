@@ -47,10 +47,10 @@ pegar_professores_turma <- function(id) {
   
   caminho_planilha <- baixar_dados()
   
-  info_curso <- pegar_info_curso(id, 'title')
+  nome_curso <- pegar_info_curso(id, 'title')
   
   readxl::read_excel(caminho_planilha, sheet = "cursos") %>%
-    dplyr::filter(curso == curso) %>% 
+    dplyr::filter(curso == nome_curso) %>% 
     dplyr::pull(professores) %>% 
     dplyr::last() %>% 
     stringr::str_split(", ?") %>% 

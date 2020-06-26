@@ -1,13 +1,12 @@
 ---
 title: "`r siteCursoR::pegar_info_curso(3, 'title')`"
-data: "de 17 de agosto a 02 de setembro de 2020, segundas e quartas, das 19h às 22h."
-hora: "Dezoito horas de curso"
+data: "18 de agosto a 03 de setembro de 2020, terças e quintas, das 19h00 às 22h00."
+hora: "6 aulas, 18 horas de curso"
 local: "Aulas online"
 img: "`r siteCursoR::pegar_info_curso(3, 'img')`"
 preco: "R$ 500,00"
 banner: "`r siteCursoR::pegar_info_curso(3, 'banner')`"
 desc: "`r siteCursoR::pegar_info_curso(3, 'desc')`"
-professores: ["Caio Lente", "William Amorim"]
 ordem: "`r siteCursoR::pegar_info_curso(3, 'ordem')`"
 id: 25
 aberto: "true"
@@ -24,7 +23,7 @@ id <- 3
 siteCursoR:::criar_section_header("Conheça o curso")
 ```
 
-O R é uma linguagem de programação criada para *data science*. Ela é uma das principais ferramentas utilizadas para manipulação, visualização, e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre a par das metodologias mais atuais.
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
 
 O objetivo deste curso é aprofundar os conceitos essenciais de programação em R para Ciência de Dados. A partir de problemas reais de análise de dados, apresentaremos técnicas intermediárias e avançadas de manipulação de dados, construção de gráficos e conceitos de programação funcional. Para motivar ainda mais, faremos ao final do curso uma introdução ao Shiny, possibilitando a criação de dashboards interativos que podem ser disponibizados online.
 

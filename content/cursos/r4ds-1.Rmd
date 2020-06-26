@@ -1,0 +1,138 @@
+---
+title: "`r siteCursoR::pegar_info_curso(2, 'title')`"
+data: "27 de julho a 17 de agosto, às segundas e quartas, das 19h00 às 22h00"
+hora: "7 aulas, 21 horas de curso"
+local: "Aulas online"
+img: "`r siteCursoR::pegar_info_curso(2, 'img')`"
+preco: "R$ 550,00"
+banner: "`r siteCursoR::pegar_info_curso(2, 'banner')`"
+desc: "`r siteCursoR::pegar_info_curso(2, 'desc')`"
+ordem: "`r siteCursoR::pegar_info_curso(2, 'ordem')`"
+id: 24
+aberto: "true"
+unit_price: 55000
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- 2
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+O objetivo deste curso é apresentar os conceitos essenciais de programação em R para Ciência de Dados. A partir de exemplos reais de análise de dados, apresentaremos os principais pacotes para importação, manipulação e visualização de dados. Para motivar ainda mais, ensinaremos também como utilizar o R para criar um dashboard para comunicarmos nossos resultados.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- importar e empilhar centenas de bases em poucos segundos;
+- fazer diversas operações de manipulação de base de dados, como selecionar, criar e modificar colunas, ordenar e filtrar linhas, criar agregações e juntar duas bases;
+- construir gráficos de pontos (dispersão), linhas (séries temporais), barras, boxplots e histogramas;
+- produzir relatórios estatísticos automáticos e reprodutíveis;
+- construir dashboards estáticos para comunicar seus resultados.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **Ambientação ao R e ao RStudio**
+  - Vantagens de usarmos programação para analisar dados
+  - O que é e por que usar o RStudio 
+  - Escrevendo e rodando códigos
+- **Introdução à programação em R**
+  - Objetos e vetores
+  - Classes: números, caracteres, lógicos e data frames
+  - Utilizando e criando funções no R 
+  - Loopings de programação: `for` e `while`
+  - O operador pipe (`%>%`)
+- **Importação de bases para dentro do R**
+  - Importando arquivos de texto: `.csv` e `.txt`
+  - Importando arquivos excel: `.xls` e `.xlsx`
+  - Conexão com um servidor SQL
+- **Manipulação de bases de dados (o pacote `dplyr`)**
+  - Selecionando colunas 
+  - Filtrando e ordenando linhas
+  - Modificando e criando colunas 
+  - Criando sumarizações
+  - Juntando duas colunas
+- **Gráficos (o pacote `ggplot2`)**
+  - Gráficos de pontos (dispersão)
+  - Gráficos de barras
+  - Boxplots e histogramas
+  - Customizando gráficos
+- **Relatórios e dashboards em R Markdown**
+  - Introdução ao `R Markdown`
+  - Construindo relatórios em HTML, PDF e Word
+  - Construindo dashboards com o pacote flexdashboard
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+siteCursoR::criar_lista_stickers(c('tidyverse', 'magrittr', 'readr', 'readxl', 'dplyr', 'ggplot2', 'rmarkdown', 'flexdashboard'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- Interesse por Ciência de Dados;
+
+- Desejo de aprender a programar (em R);
+
+- Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
+
+- Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+
