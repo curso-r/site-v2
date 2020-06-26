@@ -1,8 +1,8 @@
 ---
 title: "Chamando o R do PostgreSQL"
-date: "2020-06-25"
+date: "2020-06-26"
 tags: ["sql", "postgresql", "r"]
-categories: ["pacotes", "r"]
+categories: ["tutoriais", "r"]
 banner: "img/banners/integracao-r-postgresql.png"
 author: ["José de Jesus Filho"]
 summary: "Este tutorial irá mostrar como instalar o R e o PostgreSQL num mesmo servidor Ubuntu 18.04 ou 16.04 e, em seguida, sobre como chamar o R a partir do Postgres."
