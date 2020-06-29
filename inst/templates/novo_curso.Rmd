@@ -1,0 +1,129 @@
+---
+title: "`r siteCursoR::pegar_info_curso(param_id, 'title')`"
+data: "`r siteCursoR::pegar_data_curso(param_id)`"
+hora: "`r siteCursoR::pegar_carga_horaria(param_id)`"
+local: "`r siteCursoR::pegar_info_turma(param_id, 'local')`"
+img: "`r siteCursoR::pegar_info_curso(param_id, 'img')`"
+preco: "`r siteCursoR::pegar_preco(param_id)`"
+banner: "`r siteCursoR::pegar_info_curso(param_id, 'banner')`"
+desc: "`r siteCursoR::pegar_info_curso(param_id, 'desc')`"
+ordem: "`r siteCursoR::pegar_info_curso(param_id, 'ordem')`"
+id: "`r as.character(siteCursoR::pegar_info_turma(param_id, 'curso_id'))`"
+aberto: "`r siteCursoR::verificar_turma_aberta(param_id)`"
+unit_price: "`r siteCursoR::pegar_info_turma(param_id, 'valor')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- param_id
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+[DESCREVER OBJETIVO DO CURSO]
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
+- tarefas 1
+- tarefas 2
+- tarefas 3
+- ...
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+[ESCREVER EMENTA DO CURSO]
+- **Grande tópico**
+  - tópico 1
+  - tópico 2
+  - tópico 3
+- **Grande tópico**
+  - tópico 1
+  - tópico 2
+  - tópico 3
+- **Grande tópico**
+  - tópico 1
+  - tópico 2
+  - tópico 3
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR::criar_lista_stickers(c('tidyverse'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+[LISTAR PRÉ-REQUISITOS DO CURSO]
+
+- Interesse por Ciência de Dados;
+
+- Desejo de aprender a programar (em R);
+
+- Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
+
+- Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+[VERIFICAR MATERIAL NECESSÁRIO]
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+

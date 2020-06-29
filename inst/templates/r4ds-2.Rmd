@@ -1,0 +1,128 @@
+---
+title: "`r siteCursoR::pegar_info_curso(2, 'title')`"
+data: "`r siteCursoR::pegar_data_curso(2)`"
+hora: "`r siteCursoR::pegar_carga_horaria(2)`"
+local: "`r siteCursoR::pegar_info_turma(2, 'local')`"
+img: "`r siteCursoR::pegar_info_curso(2, 'img')`"
+preco: "`r siteCursoR::pegar_preco(2)`"
+banner: "`r siteCursoR::pegar_info_curso(2, 'banner')`"
+desc: "`r siteCursoR::pegar_info_curso(2, 'desc')`"
+ordem: "`r siteCursoR::pegar_info_curso(2, 'ordem')`"
+id: "`r as.character(siteCursoR::pegar_info_turma(2, 'curso_id'))`"
+aberto: "`r siteCursoR::verificar_turma_aberta(2)`"
+unit_price: "`r siteCursoR::pegar_info_turma(2, 'valor')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- 2
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+O objetivo deste curso é aprofundar os conceitos essenciais de programação em R para Ciência de Dados. A partir de problemas reais de análise de dados, apresentaremos técnicas intermediárias e avançadas de manipulação de dados, construção de gráficos e conceitos de programação funcional. Para motivar ainda mais, faremos ao final do curso uma introdução ao Shiny, possibilitando a criação de dashboards interativos que podem ser disponibizados online.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- organizar seus projetos de análise de dados para gerar agilidade e eficiência;
+- fazer manipulações de dados mais complexas com os pacotes dplyr e tidyr, como pivotagem e diversos tipos de joins;
+- manipular texto e datas com os pacotes stringr e lubridate;
+- substituir loopings em for e while pelas maravilhosas funções do pacote purrr;
+- costruir e disponibilizar online um aplicativo interativo para compartilhar resultados da sua análise.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+
+::: {.row}
+
+:::: {.column-esq}
+- **Organização de projetos**
+  - Por que não usar `.RData` e `.Rhistory`
+  - Git e Github
+  - Funções e dependências
+  - Pacotes
+- **Manipulação de dados**
+  - dplyr avançado: `across()`, `where()` e joins
+  - Manipulação de textos com o pacote `{stringr}`
+  - Manipulação de datas com o pacote `{lubridate}`
+- **Visualização de dados**
+  - Extensões do pacote `{ggplot2}`
+  - Construindo mapas com o `geom_sf()`
+  - Construindo seu próprio tema no `{ggplot2}`
+- **Programação funcional**
+  - Listas e list-columns
+  - Introdução ao pacote `{purrr}`
+  - Substituindo for e while pelas funções `map_()`
+- **Comunicação**
+  - Introdução ao Shiny
+  - A lógica ui/server
+  - Inputs e outputs
+  - Hospedando um aplicativo no [shinyapps.io](https://www.shinyapps.io/)
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+siteCursoR::criar_lista_stickers(c('tidyverse', 'dplyr', 'stringr', 'lubridate', 'ggplot2', 'purrr', 'usethis', 'devtools', 'shiny')) 
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+
+- Conhecimentos básicos de Estatística: média, mediana, variância, proporção.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+
