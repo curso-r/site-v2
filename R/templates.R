@@ -16,7 +16,7 @@ criar_novo_curso <- function() {
 }
 
 gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc, 
-                             titulo_imagem = NULL, ordem = NULL) {
+                             ordem = NULL) {
   
   if (!stringr::str_detect(rstudioapi::getActiveProject(), "site-v2$")) {
     stop("Você precisa estar com o projeto 'site-v2' aberto!")
@@ -79,8 +79,7 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
   }
   
   usethis::ui_todo("Formatando imagem...")
-  if (is.null(titulo_imagem)) titulo_imagem <- nome
-  formatar_imagem(caminho_imagem, titulo_imagem)
+  formatar_imagem(caminho_imagem, nome)
   usethis::ui_done("Imagem formatada.")
   
   usethis::ui_todo("Inserindo curso no catálogo...")
@@ -123,6 +122,8 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
 
 formatar_imagem <- function(caminho_imagem, nome) {
   
+  nome <- stringr::str_wrap(nome, width = 22)
+  
   imagem <- magick::image_read(caminho_imagem)
   
   imagem %>%
@@ -134,7 +135,7 @@ formatar_imagem <- function(caminho_imagem, nome) {
       )
     ) %>% 
     magick::image_annotate(
-      text = nome[1],
+      text = nome,
       location = "+25-182",
       gravity = "West",
       color = "white",
@@ -142,15 +143,6 @@ formatar_imagem <- function(caminho_imagem, nome) {
       font = "Roboto Condensed",
       weight = 550
     ) %>% 
-    magick::image_annotate(
-      text = nome[2],
-      location = "+25-132",
-      gravity = "West",
-      color = "white",
-      size = 42,
-      font = "Roboto Condensed",
-      weight = 550
-    ) %>%
     magick::image_write(path = caminho_imagem)
 }
 
