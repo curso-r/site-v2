@@ -8,9 +8,9 @@ id <- params$id_unico
 siteCursoR:::criar_section_header("Conheça o curso")
 ```
 
-O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+A regressão linear é historicamente a técnica mais discutida e utilizada na Estatística. Graças à sua facilidade de implementação e interpretação e por se ajustar bem a diversos problemas reais, ela é aplicada para modelagem de dados e testes de hipóteses nas mais diversas áreas do conhecimento.
 
-[DESCREVER OBJETIVO DO CURSO]
+O objetivo deste workshop é apresentar os principais conceitos por trás da regressão linear, discutindo quando é razoável aplicar essa técnica e como ajustá-la utilizando o R. Também vamos abordar interpretação de  parâmetros, testes de hipóteses e técnicas para avaliar se nossos modelos estão bem ajustados.
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,11 +18,9 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
-- tarefas 1
-- tarefas 2
-- tarefas 3
-- ...
+- implementar modelos de regressão linear no R;
+- interpretar e testar hipóteses sobre os parâmetros da regressão;
+- avaliar a qualidade e validade dos modelos ajustados.
 :::
 
 
@@ -34,19 +32,21 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
+- **Introdução**
+  - O que é e quando usar regressão linear
+  - O que são parâmetros e como interpretá-los
+- **Ajuste**
+  - Implementação de modelos de regressão linear no R
+  - Transformações nas variáveis
+  - Interações de variáveis
+- **Testando hipóteses**
+  - Construindo intervalos de confiança
+  - Construindo testes de hipóteses
+  - O valor p
+- **Diagnóstico**
+  - Avaliando as suposições do modelo
+  - Avaliando *outliers*
+  - Avaliando a qualidade do ajuste
 ::::
 
 :::: {.column-dir}
@@ -54,7 +54,7 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::::: {.row .justify-content-center}
 ```{r}
 # LISTAR PACOTES UTILIZADOS NO CURSO
-siteCursoR:::criar_lista_stickers(c('tidyverse'))
+siteCursoR:::criar_lista_stickers(c('readxl', 'dplyr', 'ggplot2', 'broom', 'janitor'))
 ```
 :::::
 
@@ -77,11 +77,8 @@ shiny::hr()
 siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
-[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
-
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
-- Diversos exercícios "para casa" para praticar e tirar dúvidas.
-- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Exercícios "para casa" para praticar e tirar dúvidas.
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}
@@ -89,11 +86,10 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-[LISTAR PRÉ-REQUISITOS DO CURSO]
 
 - Interesse por Ciência de Dados;
 
-- Desejo de aprender a programar (em R);
+- Conhecimento básico de programação (capítulos 1 a 6 do [nosso livro](https://livro.curso-r.com/));
 
 - Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
 
@@ -103,8 +99,6 @@ siteCursoR:::criar_section_header("Pré-requisitos")
 shiny::hr()
 siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
-
-[VERIFICAR MATERIAL NECESSÁRIO]
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 

@@ -1,22 +1,7 @@
----
-title: "`r siteCursoR::pegar_info_curso(2, 'title')`"
-data: "`r siteCursoR::pegar_data_curso(2)`"
-hora: "`r siteCursoR::pegar_carga_horaria(2)`"
-local: "`r siteCursoR::pegar_info_turma(2, 'local')`"
-img: "`r siteCursoR::pegar_info_curso(2, 'img')`"
-preco: "`r siteCursoR::pegar_preco(2)`"
-banner: "`r siteCursoR::pegar_info_curso(2, 'banner')`"
-desc: "`r siteCursoR::pegar_info_curso(2, 'desc')`"
-ordem: "`r siteCursoR::pegar_info_curso(2, 'ordem')`"
-id: "`r as.character(siteCursoR::pegar_info_turma(2, 'curso_id'))`"
-aberto: "`r siteCursoR::verificar_turma_aberta(2)`"
-unit_price: "`r siteCursoR::pegar_info_turma(2, 'valor')`"
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-id <- 2
+id <- params$id_unico
 ```
 
 ```{r, results='asis'}
