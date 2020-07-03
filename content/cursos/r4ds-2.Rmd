@@ -1,22 +1,25 @@
 ---
-title: "`r siteCursoR::pegar_info_curso(3, 'title')`"
-data: "18 de agosto a 03 de setembro de 2020, terças e quintas, das 19h00 às 22h00."
+title: "R para Ciência de Dados II"
+data: "18 de agosto a 3 de setembro, às terças e quintas, das 19h00 às 22h00"
 hora: "6 aulas, 18 horas de curso"
-local: "Aulas online"
-img: "`r siteCursoR::pegar_info_curso(3, 'img')`"
-preco: "R$ 500,00"
-banner: "`r siteCursoR::pegar_info_curso(3, 'banner')`"
-desc: "`r siteCursoR::pegar_info_curso(3, 'desc')`"
-ordem: "`r siteCursoR::pegar_info_curso(3, 'ordem')`"
-id: 25
-aberto: "true"
-unit_price: 50000
+local: "Online"
+img: "img/cursos/r4ds-2.jpeg"
+preco: "R$500,00"
+banner: "img/cursos/r4ds-2-banner.png"
+desc: "É hora de aprofundar os seus conhecimentos de programação em R."
+ordem: "10"
+id: "25"
+aberto: "false"
+unit_price: "50000"
+params:
+  id_unico: 2
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-id <- 3
+id <- params$id_unico
 ```
 
 ```{r, results='asis'}
@@ -78,7 +81,7 @@ siteCursoR:::criar_section_header("Conteúdo")
 
 ::::: {.row .justify-content-center}
 ```{r}
-siteCursoR::criar_lista_stickers(c('tidyverse', 'dplyr', 'stringr', 'lubridate', 'ggplot2', 'purrr', 'usethis', 'devtools', 'shiny')) 
+siteCursoR:::criar_lista_stickers(c('tidyverse', 'dplyr', 'stringr', 'lubridate', 'ggplot2', 'purrr', 'usethis', 'devtools', 'shiny')) 
 ```
 :::::
 
