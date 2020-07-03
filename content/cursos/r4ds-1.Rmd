@@ -8,7 +8,7 @@ preco: "R$500,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
 desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
 ordem: "5"
-id: "28"
+id: "24"
 aberto: "true"
 unit_price: "50000"
 params:
