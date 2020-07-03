@@ -2036,7 +2036,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 #cursos-single .column-esq > ul> li {
   padding-left: 1rem;
   margin-bottom: 15px;
-  display: inline-block;
+  display: block;
 }
 
 #cursos-single .column-esq > ul > li:before {
