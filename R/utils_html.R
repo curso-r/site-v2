@@ -2,14 +2,6 @@ colar_html <- function(...) {
   paste(..., sep = "\n")
 }
 
-#' Cria um header h3
-#'
-#' @param titulo 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 criar_section_header <- function(titulo) {
   glue::glue(
     colar_html(
@@ -23,15 +15,16 @@ criar_section_header <- function(titulo) {
     shiny::HTML()
 }
 
+markdown_to_html <- function(text) {
+  writeLines(text, "temp.md")
+  markdown::markdownToHTML("temp.md", "temp.html", fragment.only = TRUE)
+  res <- readLines("temp.html") %>% 
+    paste(sep = "\n") %>% 
+    shiny::HTML()
+  file.remove(c("temp.html", "temp.md"))
+  res
+}
 
-#' Title
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 criar_lista_voce_saira <- function(id) {
   
   bullet <- "<span style = 'font-size: 10px'>&#9989;</span>"
@@ -43,10 +36,6 @@ criar_lista_voce_saira <- function(id) {
   glue::glue(paste(bullet, lista, collapse = "\n\n"))
   
 }
-
-
-
-
 
 
 criar_topicos_ementa <- function(lista) {
@@ -71,18 +60,11 @@ criar_topicos_ementa <- function(lista) {
   
 }
 
-
-#' Title
-#'
-#' @param stickers 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 criar_lista_stickers <- function(stickers) {
   
-  tab <- readxl::read_excel(system.file("pacotes.xlsx", package = "siteCursoR")) %>% 
+  tab <- readxl::read_excel(
+    system.file("pacotes.xlsx", package = "siteCursoR")
+  ) %>% 
     dplyr::filter(pacote %in% stickers)
   
   links <- tab$link
@@ -95,8 +77,7 @@ criar_lista_stickers <- function(stickers) {
     '<div class="tooltip-content">',
     '<a href = "{{links}}" target = "_blank">{{pacotes}}</a>',
     '<p>{{frases}}</p>',
-    '</div>',
-    '</div>',
+    '</div></div>',
     .open = "{{",
     .close = "}}"
   ) %>% 
@@ -104,14 +85,6 @@ criar_lista_stickers <- function(stickers) {
   
 }
 
-#' Title
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 criar_ementa <- function(id) {
   
   ementa <- pegar_info_curso(id, "ementa")
@@ -161,7 +134,7 @@ adicionar_professores <- function(id) {
   desc <- data_professores$desc
   
   txt <- glue::glue(
-    '<div class="tooltip-wrap" align="center" style="margin-right: 50px; margin-left: 50px;">',
+    '<div class="tooltip-wrap2" align="center" style="margin-right: 50px; margin-left: 50px;">',
     '<img src="/img/equipe/{{nm_img}}" width = "150px" height = "150px" style="border-radius: 50%;">',
     '<div class="tooltip-content"><p>{{desc}}</p></div><br/>',
     '<span style="font-weight: bold; text-transform: uppercase; font-size: 18px;">{{nomes}}</span><br/>',

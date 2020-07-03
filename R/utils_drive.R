@@ -1,29 +1,20 @@
-baixar_dados <- function() {
+baixar_dados <- function(force = FALSE) {
   temp <- tempdir()
   caminho_planilha <- paste0(temp, "/dados.xlsx")
   
   id <- "1jACV67tPXktUp1rmbAurVRxzxnrhSwzBZgikwNTH8gE"
   
-  if (!file.exists(caminho_planilha)) {
+  if (!file.exists(caminho_planilha) | force) {
     googledrive::drive_download(
       file = googledrive::as_id(id),
-      path = caminho_planilha
+      path = caminho_planilha,
+      overwrite = TRUE
     )
   }
   
   return(caminho_planilha)
 }
 
-
-#' Pega a informação de algum curso
-#'
-#' @param id 
-#' @param info 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_info_curso <- function(id, info) {
   
   caminho_planilha <- baixar_dados()
@@ -34,15 +25,6 @@ pegar_info_curso <- function(id, info) {
   
 }
 
-#' Pega a informação da turma mais recente de um curso
-#'
-#' @param id 
-#' @param info 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_info_turma <- function(id, info) {
   
   pegar_turma(id) %>% 
@@ -61,15 +43,6 @@ pegar_turma <- function(id) {
 
 }
 
-#' Pega a informação da turma de algum curso
-#'
-#' @param id 
-#' @param info 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_professores_turma <- function(id) {
   
   pegar_turma(id) %>% 
@@ -79,14 +52,6 @@ pegar_professores_turma <- function(id) {
   
 }
 
-#' Pega e formata a carga horária do curso
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_carga_horaria <- function(id) {
   
   tab <-  pegar_turma(id) %>% 
@@ -102,14 +67,6 @@ pegar_carga_horaria <- function(id) {
   
 }
 
-#' Pega e formata o preço fo curso
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_preco <- function(id) {
   pegar_turma(id) %>% 
     dplyr::mutate(valor = valor / 100) %>% 
@@ -122,15 +79,6 @@ pegar_preco <- function(id) {
     )
 }
 
-
-#' Verifica se existe uma turma aberta
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 verificar_turma_aberta <- function(id) {
   
   tab <- pegar_turma(id)
@@ -152,19 +100,11 @@ pegar_dia_semana <- function(data) {
     paste0("s")
 }
 
-#' Title
-#'
-#' @param id 
-#'
-#' @return
-#' @export
-#'
-#' @examples
 pegar_data_curso <- function(id) {
   
-  data_inicio <- pegar_info_turma(id, "data_inicio")
-  data_fim <- pegar_info_turma(id, "data_fim")
-  horario <- pegar_info_turma(id, "horario")
+  data_inicio <- pegar_info_turma(id, "data_inicio") %>% lubridate::dmy()
+  data_fim <- pegar_info_turma(id, "data_fim") %>% lubridate::dmy()
+  horario <- pegar_info_turma(id, "horario") 
   
   paste0(
     ifelse(lubridate::day(data_inicio) == 1, "1º", lubridate::day(data_inicio)),
@@ -187,4 +127,35 @@ pegar_data_curso <- function(id) {
   )
 }
 
+pegar_id_unico <- function(nome = NULL, nome_abrev = NULL, force = FALSE) {
+  
+  caminho_planilha <- baixar_dados(force)
+  
+  tab <- readxl::read_excel(caminho_planilha, sheet = "catalogo-de-cursos")
+  
+  if (!is.null(nome)) {
+    tab %>% 
+      dplyr::filter(title == nome) %>% 
+      dplyr::pull(id_unico)
+  } else if (!is.null(nome_abrev)) {
+    tab %>% 
+      dplyr::filter(abrev == nome_abrev) %>% 
+      dplyr::pull(id_unico)
+  } else {
+    tab %>% 
+      dplyr::select(id_unico, title, abrev)
+  }
+    
+}
+
+pegar_unit_price <- function(id) {
+  pegar_info_turma(id, 'valor') %>% 
+    format(scientific = FALSE)
+}
+
+ver_ordem_cursos <- function() {
+  caminho_planilha <- baixar_dados(TRUE)
+  readxl::read_excel(caminho_planilha, sheet = "catalogo-de-cursos") %>% 
+    dplyr::select(title, ordem)
+}
 

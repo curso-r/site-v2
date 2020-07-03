@@ -1,42 +1,22 @@
+#' Cria um novo curso
+#'
+#' @return
+#' @export
+#'
+#' @examples
 criar_novo_curso <- function() {
   
   pasta_temp <- tempdir()
+  arq_temp <- paste0(pasta_temp, "/criar_novo_curso.R")
   
-  file.copy(
-    paste0(system.file(package = "siteCursoR"), "/dev/criar_novo_curso.R"),
-    paste0(pasta_temp, "/criar_novo_curso.R"),
-  )
+  file.copy("inst/dev/criar_novo_curso.R", arq_temp)
   
-  rstudioapi::navigateToFile(
-    paste0(pasta_temp, "/criar_novo_curso.R")
-  )
+  rstudioapi::navigateToFile(arq_temp)
+  
 }
 
-formatar_imagem <- function(caminho_imagem, nome) {
-
-  imagem <- magick::image_read(caminho_imagem)
-  
-  imagem %>%
-    magick::image_resize(
-      magick::geometry_size_pixels(
-        width = 500, 
-        height = 500, 
-        preserve_aspect = FALSE
-      )
-    ) %>% 
-    magick::image_annotate(
-      text = nome,
-      location = "-70-182",
-      gravity = "center",
-      color = "white",
-      size = 36,
-      font = "Roboto Condensed",
-      weight = 500
-    ) %>% 
-    magick::image_write(path = caminho_imagem)
-}
-
-gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
+gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc, 
+                             titulo_imagem = NULL, ordem = NULL) {
   
   if (!stringr::str_detect(rstudioapi::getActiveProject(), "site-v2$")) {
     stop("Você precisa estar com o projeto 'site-v2' aberto!")
@@ -47,7 +27,13 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
   tab <- readxl::read_excel(planilha, sheet = "catalogo-de-cursos")
   
   novo_id <- max(tab$id_unico) + 1
-  nova_ordem <- max(tab$ordem) + 5
+  
+  if (is.null(ordem)) {
+    nova_ordem <- max(tab$ordem) + 5
+  } else {
+    nova_ordem <- ordem
+  }
+  
   usethis::ui_done("Id único criado.")
   
   caminho_imagem <- caminho_banner <- paste0(
@@ -93,7 +79,8 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
   }
   
   usethis::ui_todo("Formatando imagem...")
-  formatar_imagem(caminho_imagem, nome)
+  if (is.null(titulo_imagem)) titulo_imagem <- nome
+  formatar_imagem(caminho_imagem, titulo_imagem)
   usethis::ui_done("Imagem formatada.")
   
   usethis::ui_todo("Inserindo curso no catálogo...")
@@ -102,8 +89,9 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
   novo_curso <- data.frame(
     id_unico = novo_id,
     title = nome,
-    img = caminho_imagem,
-    banner = caminho_banner,
+    abrev = nome_abrev,
+    img = stringr::str_remove(caminho_imagem, "^static/"),
+    banner = stringr::str_remove(caminho_banner, "^static/"),
     desc = desc,
     ordem = nova_ordem
   )
@@ -116,7 +104,14 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
   usethis::ui_done("Curso inserido no catálogo.")
   
   usethis::ui_todo("Gerando template para página do curso...")
-  criar_template_novo_curso(novo_id, nome_abrev)
+  
+  novo_template <- paste0("inst/templates/", nome_abrev, ".Rmd")
+  file.copy(
+    from = "inst/templates/novo_curso.Rmd",
+    to = novo_template
+  )
+  rstudioapi::navigateToFile(novo_template)
+  
   usethis::ui_done("Template para página do curso gerado.")
   
   usethis::ui_done("Curso gerado com sucesso!")
@@ -126,85 +121,161 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc) {
   
 }
 
-criar_template_novo_curso <- function(novo_id, nome_abrev) {
+formatar_imagem <- function(caminho_imagem, nome) {
   
-  text <- readLines(
-    paste0(system.file(package = "siteCursoR"), "/templates/novo_curso.Rmd")
-  )
+  imagem <- magick::image_read(caminho_imagem)
   
-  nome_arquivo <- paste0("inst/templates/", nome_abrev, ".Rmd")
-  
-  text <- gsub("param_id", novo_id, text)
-  writeLines(text, nome_arquivo, sep = "\n")
-  
-  rstudioapi::navigateToFile(nome_arquivo)
-  
+  imagem %>%
+    magick::image_resize(
+      magick::geometry_size_pixels(
+        width = 500, 
+        height = 500, 
+        preserve_aspect = FALSE
+      )
+    ) %>% 
+    magick::image_annotate(
+      text = nome[1],
+      location = "+25-182",
+      gravity = "West",
+      color = "white",
+      size = 42,
+      font = "Roboto Condensed",
+      weight = 550
+    ) %>% 
+    magick::image_annotate(
+      text = nome[2],
+      location = "+25-132",
+      gravity = "West",
+      color = "white",
+      size = 42,
+      font = "Roboto Condensed",
+      weight = 550
+    ) %>%
+    magick::image_write(path = caminho_imagem)
 }
 
-markdown_to_html <- function(text) {
-  writeLines(text, "temp.md")
-  markdown::markdownToHTML("temp.md", "temp.html", fragment.only = TRUE)
-  res <- readLines("temp.html") %>% 
-    paste(sep = "\n") %>% 
-    shiny::HTML()
-  file.remove(c("temp.html", "temp.md"))
-  res
+imputar_id_no_template <- function(arquivo, id_unico) {
+  text <- readLines(arquivo)
+  text <- gsub("param_id", id_unico, text)
+  writeLines(text, arquivo, sep = "\n")
 }
 
-#' Title
-#'
-#' @param overwrite 
-#' @param output_file 
+#' Abre uma nova turma
 #'
 #' @return
 #' @export
 #'
 #' @examples
-abrir_nova_turma <- function(overwrite = FALSE, output_file = NULL) {
+abrir_nova_turma <- function() {
   
-  cursos <- list.files(
-    paste0(system.file(package = "siteCursoR"), "/templates/")
-  )
+  pasta_temp <- tempdir()
+  arq_temp <- paste0(pasta_temp, "/abrir_nova_turma.R")
   
-  cursos <- cursos[cursos != "novo_curso.Rmd"] %>% 
+  file.copy("inst/dev/abrir_nova_turma.R", arq_temp)
+  
+  rstudioapi::navigateToFile(arq_temp)
+}
+
+abrir_turma <- function(modelo, data_inicio, data_fim, horario,
+                             valor, vagas, carga_horaria, num_aulas,
+                             local, professores, classroom = "",
+                             valor_aluguel = 0, valor_monitoria = 0,
+                             valor_professor = 0, valor_coffee = 0,
+                             valor_outras_despesas = 0, bolsas = 2,
+                             obs = "") {
+  
+  cursos <- list.files("inst/templates/")
+  
+  cursos <- cursos[!cursos %in% c("novo_curso.Rmd", "metadados.Rmd")] %>% 
     stringr::str_remove(".Rmd")
   
   curso_selecionado <- cursos[
     menu(choices = cursos, title = "Escolha um curso:")
     ]
   
-  if (is.null(output_file)) {
-    arquivo_md <- paste0("content/cursos/", curso_selecionado, ".md")
-    arquivo_rmd <- paste0("content/cursos/", curso_selecionado, ".Rmd")
-    if (file.exists(arquivo_md)) {
-      stop(paste0("Arquivo '", arquivo_md, "' já existe e overwrite = FALSE."))
-    }
-  } else {
-    arquivo_md <- paste0("content/cursos/", output_file, ".md")
-    arquivo_rmd <- paste0("content/cursos/", output_file, ".Rmd")
-    if (file.exists(arquivo_md)) {
-      stop(paste0("Arquivo '", arquivo_md, "' já existe e overwrite = FALSE."))
+  usethis::ui_todo("Criando id da turma...")
+  planilha <- baixar_dados(force = TRUE)
+  tab_turmas <- readxl::read_excel(planilha, sheet = "cursos")
+  id_turma <- max(tab_turmas$curso_id) + 1
+  usethis::ui_done("Id da turma criado.")
+  
+  curso_nome <- pegar_id_unico() %>% 
+    dplyr::filter(abrev == curso_selecionado) %>% 
+    dplyr::pull(title)
+  
+  nova_turma <- data.frame(
+    curso_id = id_turma,
+    curso = curso_nome,
+    modelo = modelo[1],
+    data_inicio = data_inicio[1],
+    data_fim = data_fim[1],
+    horario = horario[1],
+    valor = valor[1]*100,
+    vagas = vagas[1],
+    carga_horaria = carga_horaria[1],
+    num_aulas = num_aulas[1],
+    valor_aluguel = valor_aluguel[1],
+    valor_monitoria = valor_monitoria[1],
+    valor_professor = valor_professor[1],
+    valor_coffee = valor_coffee[1],
+    valor_outras_despesas = valor_outras_despesas[1],
+    bolsas = bolsas[1],
+    obs = obs[1],
+    local = local[1],
+    professores = paste(professores[1:2], collapse = ", "),
+    classroom = classroom[1]
+  )
+  
+  usethis::ui_todo("Inserindo turma no catálogo...")
+  ss_id <- "1jACV67tPXktUp1rmbAurVRxzxnrhSwzBZgikwNTH8gE"
+  
+  googlesheets4::sheet_append(
+    ss = googledrive::as_id(ss_id),
+    data = nova_turma,
+    sheet = "cursos"
+  )
+  usethis::ui_done("Turma inserida no catálogo.")
+  
+  usethis::ui_todo("Gerando/atualizando página do curso...")
+  gerar_pagina_curso(curso_selecionado)
+  usethis::ui_done("Página do curso gerada/atualizada.")
+  
+}
+
+gerar_pagina_curso <- function(curso_selecionado) {
+  
+  arquivo_rmd <- paste0("content/cursos/", curso_selecionado, ".Rmd")
+  
+  if (file.exists(arquivo_rmd)) {
+    res <- usethis::ui_yeah(
+      paste0("Arquivo '", arquivo_rmd, "' será sobrescrito. Deseja continuar?")
+    )
+    if (!res) {
+      stop(paste0("Processo interrompido pelo usuário."))
     }
   }
   
-  template <- system.file(
-    paste0("templates/", curso_selecionado, ".Rmd"), 
-    package = "siteCursoR"
-  )
+  template <- paste0("inst/templates/", curso_selecionado, ".Rmd")
+  metadados <- paste0("inst/templates/metadados.Rmd")
   
-  file.copy(template, arquivo_rmd, overwrite = TRUE)
+  file.copy(metadados, arquivo_rmd, overwrite = TRUE)
+  
+  id_unico <- pegar_id_unico(nome_abrev = curso_selecionado, force = TRUE)
+  imputar_id_no_template(arquivo_rmd, id_unico)
   
   rmarkdown::render(
     input = arquivo_rmd,
     output_format = rmarkdown::md_document(
+      # variant = "markdown_phpextra",
       preserve_yaml = TRUE,
-      variant = "commonmark"
+      ext = ".Rmd"
     ),
     quiet = TRUE
   )
   
-  file.remove(arquivo_rmd)
+  pagina <- readLines(template)
+  write(pagina, file = arquivo_rmd, append = TRUE, sep = "\n")
   
-  usethis::ui_done("Página criada com sucesso!")
+  rstudioapi::navigateToFile(arquivo_rmd)
   
 }
