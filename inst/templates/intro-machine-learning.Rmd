@@ -1,0 +1,131 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+Machine Learning é um framework de análise preditiva, muito utilizado hoje em dia em problemas de classificação. Sua fama recente se deve ao sucesso em aplicações de transcrição de áudio e classificação de imagens, mas uma grande parte de suas técnicas são muito úteis em qualquer problema de modelagem estatística.
+
+O objetivo deste curso é apresentar as etapas essenciais de um projeto de *Machine Learning*, desenvolvendo a análise crítica necessária para escolher, ajustar, avaliar e interpretar modelos preditivos, utilizando o R como ferramanta. Também será discutido aspectos teóricos para compreender como a matemática dos modelos funciona por trás.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- construir um projeto de *machine learning* do começo ao fim;
+- ajustar modelos de regressão e de classificação;
+- identificar quando aplicar técnica de *machine learning* no seu negócio.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **O que é Machine Learning**
+  - História
+  - O que é modelagem preditiva
+  - Definições e Nomenclaturas
+  - Por que e quando usar
+  - Métricas e Funções de Custo
+- **Conceitos Centrais**
+  - Overfitting
+  - Hiperparâmetros
+  - Bases de Treino/Teste/Validação
+  - Cross-Validation
+  - Relação Viés-Variância
+- **Modelos de Regressão**
+  - Regressão Linar
+  - RMSE, MAPE, R2.
+  - Gradient Descent
+  - Estimadores e estimativas
+  - Regularização LASSO
+  - Principais cuidados com os dados
+- **Modelos de Classificação**
+  - Regressão Logística
+  - Binary Cross-entropy (Deviance)
+  - Probabilidades vs Classes
+  - Matriz de Confusão
+  - Curva ROC
+  - Acurácia, recall, precisão, F1, AUROC.
+- **Modelos de Árvores**
+  - Árvores de decisão
+  - GINI e Entropia
+  - Ganho de Informação
+  - Random Forest
+  - Gradient Boosting (XGBoost)
+- **Tidymodels**
+  - O que é
+  - Como usar no R
+  - {workflows} e {recipes}
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('tidymodels', 'parsnip', 'dials', 'yardstick', 'recipes', 'rsamples', 'vip'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Desafio no Kaggle e construção de portifólio de um projeto de Machine Learning.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+
+- Interesse por Ciência de Dados;
+
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+
+- Conhecimentos básicos de Estatística: média, mediana, variância, proporção, histograma;
+
+- Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

@@ -1,0 +1,16 @@
+---
+title: "`r siteCursoR:::pegar_info_curso(4, 'title')`"
+data: "`r siteCursoR:::pegar_data_curso(4)`"
+hora: "`r siteCursoR:::pegar_carga_horaria(4)`"
+local: "`r siteCursoR:::pegar_info_turma(4, 'local')`"
+img: "`r siteCursoR:::pegar_info_curso(4, 'img')`"
+preco: "`r siteCursoR:::pegar_preco(4)`"
+banner: "`r siteCursoR:::pegar_info_curso(4, 'banner')`"
+desc: "`r siteCursoR:::pegar_info_curso(4, 'desc')`"
+ordem: "`r siteCursoR:::pegar_info_curso(4, 'ordem')`"
+id: "`r as.character(siteCursoR:::pegar_info_turma(4, 'curso_id'))`"
+aberto: "`r siteCursoR:::verificar_turma_aberta(4)`"
+unit_price: "`r siteCursoR:::pegar_unit_price(4)`"
+params:
+  id_unico: 4
+---
