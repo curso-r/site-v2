@@ -945,7 +945,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: none;
   position: absolute;
   top: 100%;
-  left: -25%;
+  left: -19%;
   background-color: #fff;
   width: 200px;
   z-index: 999;
@@ -959,6 +959,31 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .tooltip-wrap:hover .tooltip-content {
+  display: block;
+}
+
+.tooltip-wrap2 {
+  position: relative;
+}
+
+.tooltip-wrap2 .tooltip-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -17%;
+  background-color: #fff;
+  width: 200px;
+  z-index: 999;
+  padding: .5em;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #da4d4d;
+  font-size: 15px !important;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-wrap2:hover .tooltip-content {
   display: block;
 }
 
