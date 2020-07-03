@@ -1,22 +1,25 @@
 ---
-title: "`r siteCursoR::pegar_info_curso(2, 'title')`"
-data: "27 de julho a 17 de agosto, às segundas e quartas, das 19h00 às 22h00"
-hora: "7 aulas, 21 horas de curso"
-local: "Aulas online"
-img: "`r siteCursoR::pegar_info_curso(2, 'img')`"
-preco: "R$ 550,00"
-banner: "`r siteCursoR::pegar_info_curso(2, 'banner')`"
-desc: "`r siteCursoR::pegar_info_curso(2, 'desc')`"
-ordem: "`r siteCursoR::pegar_info_curso(2, 'ordem')`"
-id: 24
+title: "R para Ciência de Dados I"
+data: "30 de novembro a 31 de dezembro, às segundas e quintas, das 19h00 às 22h00"
+hora: "6 aulas, 18 horas de curso"
+local: "Online"
+img: "img/cursos/r4ds-1.jpg"
+preco: "R$500,00"
+banner: "img/cursos/r4ds-1-banner.jpg"
+desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
+ordem: "5"
+id: "28"
 aberto: "true"
-unit_price: 55000
+unit_price: "50000"
+params:
+  id_unico: 1
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-id <- 2
+id <- params$id_unico
 ```
 
 ```{r, results='asis'}
@@ -46,7 +49,7 @@ shiny::hr()
 siteCursoR:::criar_section_header("Conteúdo")
 ```
 
-::: {.row}
+::::: {.row}
 
 :::: {.column-esq}
 - **Ambientação ao R e ao RStudio**
@@ -82,15 +85,15 @@ siteCursoR:::criar_section_header("Conteúdo")
 
 :::: {.column-dir}
 
-::::: {.row .justify-content-center}
-```{r}
-siteCursoR::criar_lista_stickers(c('tidyverse', 'magrittr', 'readr', 'readxl', 'dplyr', 'ggplot2', 'rmarkdown', 'flexdashboard'))
+::: {.row .justify-content-center}
+```{r, results='asis'}
+siteCursoR:::criar_lista_stickers(c('tidyverse', 'magrittr', 'readr', 'readxl', 'dplyr', 'ggplot2', 'rmarkdown', 'flexdashboard'))
 ```
-:::::
+:::
 
 :::: 
 
-:::
+:::::
 
 
 ```{r}
@@ -102,6 +105,8 @@ siteCursoR:::criar_section_header("Professores")
 siteCursoR:::adicionar_professores(id)
 ```
 
+
+
 ```{r}
 shiny::hr()
 siteCursoR:::criar_section_header("Como será o curso?")
@@ -112,18 +117,17 @@ siteCursoR:::criar_section_header("Como será o curso?")
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
+
 ```{r}
 shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
 - Interesse por Ciência de Dados;
-
 - Desejo de aprender a programar (em R);
-
 - Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
-
 - Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+
 
 ```{r}
 shiny::hr()
@@ -131,8 +135,6 @@ siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
-
 - Uma conta de e-mail Google para acessar o Google Classroom;
-
--  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+- Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
 
