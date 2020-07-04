@@ -1,0 +1,133 @@
+---
+title: "Dashboards"
+data: "15 de setembro a 1 de outubro, às terças e quintas, das 19h00 às 22h00"
+hora: "6 aulas, 18 horas de curso"
+local: "Online"
+img: "img/cursos/dashboards.jpeg"
+preco: "R$550,00"
+banner: "img/cursos/dashboards-banner.jpeg"
+desc: "Comunique seus resultados construindo dashboards incríveis a partir do R."
+ordem: "25"
+id: "28"
+aberto: "true" 
+unit_price: "55000"
+params:
+  id_unico: 5
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico 
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso") 
+```
+
+Dashboards são excelentes ferramentas para comunicar os resultados de análises de dados. No entanto, a sua criação depende muitas vezes de softwares proprietários pouco acessíveis ou de amplo conhecimento de desenvolvimento Web.
+A linguagem de programação R possui frameworks que nos permitem desenvolver dashboards estáticos ou dinâmicos, altamente customizáveis, que podem ser facilmente disponibilizados na internet e podem fazer uso de todo poder analítico do R.
+
+O objetivo deste curso é introduzir o pacote `Shiny`, para a construção de dashboards dinâmicos ([veja alguns exemplos](https://shiny.rstudio.com/gallery/)), e o pacote `flexdashboard`, para a construção de dashboards estáticos ([veja alguns exemplos](https://rmarkdown.rstudio.com/flexdashboard/examples.html)).
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+::: {.voce-saira}
+- usar o pacote `shiny` para construir dashboards dinâmicos;
+- hospedar um dashboard online utilizando o serviço [https://www.shinyapps.io/](https://www.shinyapps.io/);
+- usar o pacote `auth0` para criar dashboards com autenticação;
+- usar o pacote `flexdashboard` para construir dashboards estáticos.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **Introdução ao Shiny**
+  - Dashboards estáticos e dinâmicos
+  - O que é o Shiny?
+  - UI e server
+  - Inputs e Outputs
+- **Reatividade**
+  - Valores reativos e funções reativas
+  - Construindo UIs reativas
+  - Construindo filtros hierárquicos
+- **Layout**
+  - Costumizando a aparência do dashboard
+  - O pacote `shinydasboard`
+  - O pacote `bs4Dash`
+- **htmlwidgets**
+  - Tabelas com `reactable`
+  - Gráficos com `plotly`
+  - Mapas com `leaflet`
+- **Deploy**
+  - Hospedando um app no `shinyapps.io`
+  - Como colocar senha no seu dashboard com o `auth0`
+- **Dashboards estáticos**
+  - O pacote `flexdashboard`
+  - Integrando `flexdashboard` e `shiny`
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('shiny', "rmarkdown", "flexdashboard", "auth0", ""))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+
+- Conhecimentos básicos de Estatística: média, mediana, variância, proporção.
+
+- Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
