@@ -1,6 +1,6 @@
 ---
 title: "Dashboards"
-data: "15 de setembro a 1 de outubro, às terças e quintas, das 19h00 às 22h00"
+data: "15 de setembro a 1º de outubro, às terças e quintas, das 19h00 às 22h00"
 hora: "6 aulas, 18 horas de curso"
 local: "Online"
 img: "img/cursos/dashboards.jpeg"

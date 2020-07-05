@@ -1,6 +1,6 @@
 ---
 title: "Introdução ao Machine Learning"
-data: "14 de setembro a 5 de outubro, às segundas e segundas, das 19h00 às 22h00"
+data: "14 de setembro a 5 de outubro, às segundas e quartas, das 19h00 às 22h00"
 hora: "7 aulas, 21 horas de curso"
 local: "Online"
 img: "img/cursos/intro-machine-learning.jpg"
