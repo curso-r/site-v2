@@ -37,7 +37,7 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 ::: {.voce-saira}
 - usar o pacote `shiny` para construir dashboards dinâmicos;
-- hospedar um dashboard online utilizando o serviço [https://www.shinyapps.io/](https://www.shinyapps.io/);
+- hospedar um dashboard online utilizando o serviço [shinyapps.io](https://www.shinyapps.io/);
 - usar o pacote `auth0` para criar dashboards com autenticação;
 - usar o pacote `flexdashboard` para construir dashboards estáticos.
 :::
@@ -128,6 +128,6 @@ siteCursoR:::criar_section_header("O que eu preciso ter?")
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 
-- Uma conta de e-mail Google para acessar o Google Classroom;
+- Uma conta de e-mail Google para acessar o Google Classroom e uma conta no [shinyapps.io/](https://www.shinyapps.io/);
 
 -  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

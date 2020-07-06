@@ -8,9 +8,9 @@ id <- params$id_unico
 siteCursoR:::criar_section_header("Conheça o curso")
 ```
 
-O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+O XGBoost é um dos algoritmos mais utilizados atualmente para resolver problemas de modelagem preditiva, sendo um dos modelos mais vezes campeão de competições do Kaggle.
 
-[DESCREVER OBJETIVO DO CURSO]
+O objetivo deste workshop é apresentar os principais conceitos por trás desse algoritmo e mostrar como ajustar, tunar e avalir a sua performance. Também vamos discutir sobre o framework do Machine Learning e apresentar algumas técnicas de interpretabilidade.
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,11 +18,11 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
-- tarefas 1
-- tarefas 2
-- tarefas 3
-- ...
+- organizar um projeto de Machine Learning;
+- utilizar o XGBoost em problemas de modelagem preditiva;
+- ajustar um XGBoost utilizando o R;
+- avaliar a performance dos seus modelos preditivos;
+- utilizar técnicas de interpretabilidade para interpretarr as predições do modelo.
 :::
 
 
@@ -34,34 +34,25 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
+- O que é e quando utilizar o XGBoost
+- Tunning do modelo
+- *Overfitting* e validação cruzada
+- Métricas de performance
+- Técnicas de interpretabilidade
+- Ajustanto um XGBoost no R
 ::::
 
 :::: {.column-dir}
 
 ::::: {.row .justify-content-center}
 ```{r}
-# LISTAR PACOTES UTILIZADOS NO CURSO
-siteCursoR:::criar_lista_stickers(c('tidyverse'))
+siteCursoR:::criar_lista_stickers(c('tidymodels', 'parsnip', 'dials', 'yardstick', 'recipes', 'rsample'))
 ```
 :::::
 
 :::: 
 
 :::
-
 
 ```{r}
 shiny::hr()
@@ -74,13 +65,11 @@ siteCursoR:::adicionar_professores(id)
 
 ```{r}
 shiny::hr()
-siteCursoR:::criar_section_header("Como será o curso?")
+siteCursoR:::criar_section_header("Como será o workshop?")
 ```
 
-[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
-
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
-- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Exercícios "para casa" para praticar e tirar dúvidas.
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
@@ -89,11 +78,7 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-[LISTAR PRÉ-REQUISITOS DO CURSO]
-
-- Interesse por Ciência de Dados;
-
-- Desejo de aprender a programar (em R);
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
 
 - Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
 

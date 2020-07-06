@@ -36,15 +36,14 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
 - O que é deploy (implantação)
 - O que é uma API
-- O pacote {plumber}
+- O pacote `{plumber}`
 - O que é uma máquina virtual
-- O que é docker
+- O que é `docker`
 - Como empacotar um dashboard
-- O pacote {golem}
-- Como automatizar um deploy com docker
+- O pacote `{golem}`
+- Como automatizar um deploy com `docker`
 ::::
 
 :::: {.column-dir}
@@ -76,8 +75,7 @@ siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
-- Diversos exercícios "para casa" para praticar e tirar dúvidas.
-- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Exercícios "para casa" para praticar e tirar dúvidas.
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}
@@ -94,10 +92,9 @@ shiny::hr()
 siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
 
-[VERIFICAR MATERIAL NECESSÁRIO]
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 
-- Uma conta de e-mail Google para acessar o Google Classroom;
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/), cadastro no [Google Cloud](https://cloud.google.com/), uma conta no [GitHub](http://github.com/) e uma conta no [Docker Hub](https://hub.docker.com/);
 
 -  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

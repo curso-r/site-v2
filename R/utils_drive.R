@@ -92,12 +92,16 @@ verificar_turma_aberta <- function(id) {
 }
 
 pegar_dia_semana <- function(data) {
-  data %>% 
+  primeiro_dia <- data %>% 
     lubridate::wday(label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8") %>% 
     stringr::str_remove("Feira") %>%
     stringr::str_to_lower() %>% 
     stringr::str_squish() %>% 
     paste0("s")
+  
+  segundo_dia <- ifelse(primeiro_dia == "segundas", "quartas", "quintas")
+  
+  paste(primeiro_dia, "e", segundo_dia)
 }
 
 pegar_data_curso <- function(id) {
@@ -105,26 +109,49 @@ pegar_data_curso <- function(id) {
   data_inicio <- pegar_info_turma(id, "data_inicio") %>% lubridate::dmy()
   data_fim <- pegar_info_turma(id, "data_fim") %>% lubridate::dmy()
   horario <- pegar_info_turma(id, "horario") 
+  modelo <- pegar_info_turma(id, "modelo")
   
-  paste0(
-    ifelse(lubridate::day(data_inicio) == 1, "1º", lubridate::day(data_inicio)),
-    " de ",
-    lubridate::month(
-      data_inicio, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
-    ) %>% tolower(),
-    " a ",
-    lubridate::day(data_fim),
-    " de ",
-    lubridate::month(
-      data_fim, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
-    ) %>% tolower(),
-    ", às ",
-    pegar_dia_semana(data_inicio),
-    " e ",
-    pegar_dia_semana(data_fim),
-    ", das ",
-    horario
+  if (modelo == "curso") {
+    paste0(
+      ifelse(lubridate::day(data_inicio) == 1, "1º", lubridate::day(data_inicio)),
+      " de ",
+      lubridate::month(
+        data_inicio, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
+      ) %>% tolower(),
+      " a ",
+      lubridate::day(data_fim),
+      " de ",
+      lubridate::month(
+        data_fim, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
+      ) %>% tolower(),
+      ", às ",
+      pegar_dias_semana(data_inicio),
+      ", das ",
+      horario
+    )
+  } else (
+    paste0(
+      ifelse(
+        lubridate::day(data_inicio) == 1, 
+        "1º", 
+        lubridate::day(data_inicio)
+      ),
+      " de ",
+      lubridate::month(
+        data_inicio, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
+      ) %>% tolower(),
+      " e ",
+      lubridate::day(data_fim),
+      " de ",
+      lubridate::month(
+        data_fim, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
+      ) %>% tolower(),
+      ", dois sábados",
+      ", das ",
+      horario
+    )
   )
+  
 }
 
 pegar_id_unico <- function(nome = NULL, nome_abrev = NULL, force = FALSE) {
