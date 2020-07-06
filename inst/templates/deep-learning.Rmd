@@ -8,9 +8,9 @@ id <- params$id_unico
 siteCursoR:::criar_section_header("Conheça o curso")
 ```
 
-O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+Deep learning é uma classe de modelos que ficou famosa nos últimos anos dentro do Machine Learning por resolver problemas historicamnte difíceis de detecção de imagem, transcrição de áudio e classificação de textos.
 
-[DESCREVER OBJETIVO DO CURSO]
+O objetivo deste curso é se familiarizar com as principais técnicas utilizadas em Deep Learning, discutindo como funcionam as redes neurais, quais são os softwares utilizados para treiná-las e quais são as principais técnicas para tunar esses modelos.
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,11 +18,10 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
-- tarefas 1
-- tarefas 2
-- tarefas 3
-- ...
+- identificar em quais problemas aplicar deep learning;
+- construir modelos de deep learning para classificação de texto;
+- construir modelos de deep learning para classificação de imagens;
+- ajustar modelos de deep learning utilizando o R.
 :::
 
 
@@ -34,34 +33,30 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
+- **Introdução**
+  - O que é e quando utilizar Deep Learning
+  - O que são redes neurais profundas
+- **Ajuste**
+  - Ajustando modelos de deep learning no R
+  - O pacote `keras`
+  - Técnicas de regularização
+- **Arquiteturas**
+  - Redes neurais recorrentes (RNN)
+  - Redes neurais convolucionais (CNN)
+  - *Long short-term memory* (LSTM)
 ::::
 
 :::: {.column-dir}
 
 ::::: {.row .justify-content-center}
 ```{r}
-# LISTAR PACOTES UTILIZADOS NO CURSO
-siteCursoR:::criar_lista_stickers(c('tidyverse'))
+siteCursoR:::adicionar_imagens_deeplearning()
 ```
 :::::
 
 :::: 
 
 :::
-
 
 ```{r}
 shiny::hr()
@@ -77,11 +72,8 @@ shiny::hr()
 siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
-[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
-
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
-- Projeto de análise de dados para aplicar o conteúdo aprendido.
 - Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
@@ -90,11 +82,9 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-[LISTAR PRÉ-REQUISITOS DO CURSO]
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1);
 
-- Interesse por Ciência de Dados;
-
-- Desejo de aprender a programar (em R);
+- O conteúdo do curso [Introdução ao Machine Learning](https://www.curso-r.com/cursos/intro-machine-learning/)
 
 - Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
 
@@ -105,7 +95,6 @@ shiny::hr()
 siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
 
-[VERIFICAR MATERIAL NECESSÁRIO]
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 

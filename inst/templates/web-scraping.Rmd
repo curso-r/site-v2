@@ -8,9 +8,9 @@ id <- params$id_unico
 siteCursoR:::criar_section_header("Conheça o curso")
 ```
 
-O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+Web scraping é a tarefa de extrair (raspar) dados da internet de forma automatizada. Dificuldade de acesso a dados públicos gerada por sistemas mal construídos ou motivação política torna essa prática uma etapa essencial em diversas análises.
 
-[DESCREVER OBJETIVO DO CURSO]
+O objetivo deste workshop é apresentar as principais ferramentas e estratégias para baixar dados da internet utilizando o R. Para isso, abordaremos as noções básicas de como um site é construído, como funcionam as requisições web e como descobrir o caminho até um conteúdo específico de uma página. Também abordaremos o uso de APIs e o que fazer quando o fluxo usual de raspagem não funciona.
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,11 +18,12 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
-- tarefas 1
-- tarefas 2
-- tarefas 3
-- ...
+- organizar um projeto de web scraping;
+- escrever scripts em R para baixar dados da internet;
+- construir robôs para coletar dados da internet de forma automática;
+- estruturar dados de arquivos `.xml`, `.html` e `.json`;
+- baixar dados de APIs.
+- identificar a forma mais eficiente de implementar soluções para raspar sites complexos.
 :::
 
 
@@ -34,19 +35,26 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
+- **Introdução**
+  - O que é e quando fazer web scraping
+  - O ciclo do web scraping
+  - Noções de protocolo HTTP
+- **Construindo um scraper**
+  - Requisições HTTP
+  - Baixando páginas a partir do R
+  - O pacote `httr`
+  - O pacote `xml2`
+  - Validando os dados baixados
+  - Estruturando os dados baixados
+  - Como iterar algoritmos no R
+- **APIs**
+  - Acessando dados de APIs
+  - Acessar APIs com OAuth2
+- **Melhorando seu algoritmo**
+  - Tratamento de erros
+  - Paralelização
+- **Raspagem de páginas complexas**
+  - Páginas dinâmicas com Selenium
 ::::
 
 :::: {.column-dir}
@@ -62,7 +70,6 @@ siteCursoR:::criar_lista_stickers(c('tidyverse'))
 
 :::
 
-
 ```{r}
 shiny::hr()
 siteCursoR:::criar_section_header("Professores")
@@ -77,11 +84,8 @@ shiny::hr()
 siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
-[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
-
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
-- Projeto de análise de dados para aplicar o conteúdo aprendido.
 - Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
@@ -90,13 +94,7 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-[LISTAR PRÉ-REQUISITOS DO CURSO]
-
-- Interesse por Ciência de Dados;
-
-- Desejo de aprender a programar (em R);
-
-- Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
 
 - Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
 
@@ -104,8 +102,6 @@ siteCursoR:::criar_section_header("Pré-requisitos")
 shiny::hr()
 siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
-
-[VERIFICAR MATERIAL NECESSÁRIO]
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 

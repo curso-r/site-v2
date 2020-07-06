@@ -149,3 +149,13 @@ adicionar_professores <- function(id) {
   glue::glue("<div class='row justify-content-center'>{{txt}}</div>", .open = "{{", .close = "}}")
   
 }
+
+
+adicionar_imagens_deeplearning <- function() {
+  shiny::HTML('<a href = "https://tensorflow.rstudio.com/" target = "_blank">
+  <img src = "/img/cursos/logos-empresas/tensorflow.png" width = "186" height = "104px">
+</a>
+<a href = "https://keras.rstudio.com/" target = "_blank">
+  <img src = "/img/cursos/logos-empresas/keras.png" width = "186" height = "63px">
+</a>')
+}
