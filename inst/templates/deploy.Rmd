@@ -1,0 +1,103 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+Hoje em dia não é suficiente ter seus dashboards e modelos funcionando apenas localmente: em um mundo cada vez mais conectado, interativo e automatizado, é necessário também colocar os resultados de suas análises em produção. Felizmente, esse requisito nunca foi tão simples de cumprir.
+
+O objetivo deste workshop é ensinar os conceitos fundamentais para que você seja capaz de fazer o deploy robusto e eficiente dos seus produtos.
+
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- consultar uma API com e sem autenticação;
+- criar uma API a partir de código R;
+- usar o Google Cloud Platform para criar máquinas virtuais;
+- criar uma imagem docker;
+- transformar um shiny em um pacote e em um docker;
+- disponibilizar uma API e um shiny na internet.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+[ESCREVER EMENTA DO CURSO]
+- O que é deploy (implantação)
+- O que é uma API
+- O pacote {plumber}
+- O que é uma máquina virtual
+- O que é docker
+- Como empacotar um dashboard
+- O pacote {golem}
+- Como automatizar um deploy com docker
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('shiny', 'golem', 'plumber'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+
+- O conteúdo do curso [Dashboards](https://www.curso-r.com/cursos/dashboards/)
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+[VERIFICAR MATERIAL NECESSÁRIO]
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o Google Classroom;
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
