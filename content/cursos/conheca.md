@@ -9,7 +9,7 @@ banner: "img/cursos/workshop-r-banner.png"
 desc: "Comece a explorar o universo da ciência de dados e da programação a partir do R."
 requisitos: ""
 professores: ["Athos Damiani", "William Amorim"]
-ordem: 40
+ordem: 100
 ---
 
 <header class="section-header">

@@ -125,7 +125,7 @@ pegar_data_curso <- function(id) {
         data_fim, label = TRUE, abbr = FALSE, locale = "pt_BR.UTF-8"
       ) %>% tolower(),
       ", às ",
-      pegar_dias_semana(data_inicio),
+      pegar_dia_semana(data_inicio),
       ", das ",
       horario
     )

@@ -195,12 +195,12 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
     dplyr::filter(abrev == curso_selecionado) %>% 
     dplyr::pull(title)
   
-  nova_turma <- data.frame(
+  nova_turma <- tibble::tibble(
     curso_id = id_turma,
     curso = curso_nome,
     modelo = modelo[1],
-    data_inicio = data_inicio[1],
-    data_fim = data_fim[1],
+    data_inicio = as.character(data_inicio[1]),
+    data_fim = as.character(data_fim[1]),
     horario = horario[1],
     valor = valor[1]*100,
     vagas = vagas[1],
