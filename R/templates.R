@@ -36,7 +36,7 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
   
   usethis::ui_done("Id único criado.")
   
-  caminho_imagem <- caminho_banner <- paste0(
+  caminho_imagem <- paste0(
     "static/img/cursos/",
     nome_abrev,
     ".",
