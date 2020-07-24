@@ -36,7 +36,7 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
   
   usethis::ui_done("Id único criado.")
   
-  caminho_imagem <- caminho_banner <- paste0(
+  caminho_imagem <- paste0(
     "static/img/cursos/",
     nome_abrev,
     ".",
@@ -122,7 +122,7 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
 
 formatar_imagem <- function(caminho_imagem, nome) {
   
-  nome <- stringr::str_wrap(nome, width = 22)
+  nome <- stringr::str_wrap(nome, width = 21)
   
   imagem <- magick::image_read(caminho_imagem)
   
