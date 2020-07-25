@@ -1,0 +1,136 @@
+---
+title: "Introdução ao R com C++"
+data: "21 de novembro e 28 de novembro, dois sábados, das 9h00 às 13h00"
+hora: "2 aulas, 8 horas de curso"
+local: "Online"
+img: "img/cursos/rcpp.jpg"
+preco: "R$400,00"
+banner: "img/cursos/rcpp-banner.jpg"
+desc: "Acelere seus scripts integrando o R com o C++"
+ordem: "50"
+id: "31"
+aberto: "true"
+unit_price: "40000"
+params:
+  id_unico: 10
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+O objetivo do curso é trazer a experiência de como aumentar a eficiência computacional do R. O C++ (leia-se C plus plus ou simplesmente Cpp) é uma linguagem de programação de baixo nível que roda algoritmos muito mais rápido que o R, mas que tem uma sintaxe um pouco mais difícil de utilizar. Através dos pacotes `{Rcpp}` e `{cpp11}` veremos como juntar o que há de melhor nos dois mundos: a facilidade de utilização do R com a eficiência computacional do Cpp.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+::: {.voce-saira}
+
+- Escrever algoritmos simples em C++
+- Substituir uma função escrita em R por uma função escrita em C++, chamando-a pelo R, usando o pacote `{Rcpp}`
+- Utilizar as funções no seu pacote
+- Trabalhar com matrizes e arrays no Cpp
+- Utilizar funções de bibliotecas externas feitas em C++
+- Navegar pelo maravilhoso universo do R com C++ através do pacote `{cpp11}`
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+
+- **Traduzindo loops do R para Cpp**
+- **Manipulando atributos de objetos do R**
+- **Manipulando matrizes e arrays**
+    - O pacote `{RcppArmadillo}`
+- **Colocando Cpp no seu pacote**
+    - Exemplo do `{ranger}`
+- **Integrando seu código com outras bibliotecas Cpp**
+    - Exemplo do `{torch}`
+- **Tópicos extras**
+    - O novíssimo `{cpp11}`
+  
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+# siteCursoR:::criar_lista_stickers()
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Exercícios "para casa" para praticar e tirar dúvidas.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- Interesse por Ciência de Dados;
+
+- Conhecimento intermediário sobre lógica de programação e estruturas de dados (vetores, matrizes), independentemente da linguagem;
+
+- Conhecimento intermediário da linguagem R;
+
+- Conhecimento básico de pacotes em R (Ver https://r-pkgs.org).
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Se você utilizar Windows, [RTools](https://cran.r-project.org/bin/windows/Rtools/) instalado. 
+
+- Se utilizar Linux, instalar o `r-base-dev`.
+
+- Se utilizar o Mac, instalar o Mac Xcode Command Line Tools. 
+
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
+
+
+

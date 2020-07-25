@@ -122,7 +122,7 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
 
 formatar_imagem <- function(caminho_imagem, nome) {
   
-  nome <- stringr::str_wrap(nome, width = 22)
+  nome <- stringr::str_wrap(nome, width = 21)
   
   imagem <- magick::image_read(caminho_imagem)
   
