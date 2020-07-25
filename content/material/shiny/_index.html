@@ -9,12 +9,12 @@ minidesc: "O shiny é um framework de programação web em R."
 desc: "O shiny é um framework de programação web em R. Com Shiny é possível criar páginas e relatórios interativos usando R de forma muito intuitiva."
 requisitos: ["r-base"]
 layout: "article"
-ordem: 12
+ordem: 200
 ---
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <p>Até gora, pincelamos os principais elementos de transformação, visualização e modelagem de dados. Para completar nossa análise, precisamos de boas ferramentas de comunicação.</p>
 <p>A maior parte dos trabalhos de análise estatística possui três <em>outputs</em> possíveis:</p>
@@ -34,7 +34,7 @@ ordem: 12
 <pre class="r"><code>install.packages(&quot;shiny&quot;)</code></pre>
 <p>e, em seguida, carregue o pacote</p>
 <pre class="r"><code>library(shiny)</code></pre>
-<div id="estrutura-basica" class="section level2">
+<div id="estrutura-básica" class="section level2">
 <h2>Estrutura básica</h2>
 <p>Um aplicativo em Shiny (ou Shiny app) é gerado por um único script chamado <code>app.R</code>. Esse script tem três componentes:</p>
 <ul>
@@ -98,7 +98,7 @@ server &lt;- function(input, output) {
 
 shinyApp(ui = ui, server = server)</code></pre>
 <p>Não se assuste com tanto vocabulário novo! Vamos passar por cada função ao decorrer desta seção. Nesse primeiro momento, queremos apenas que você se familiarize com a estrutura do código: primeiro a definição do objeto <code>ui</code>, em seguida a estruturação da função <code>server()</code> e por fim a chamada da função <code>shinyApp()</code>.</p>
-<p>Existem duas maneiras de rodar o aplicativo. A primeira é rodar a função <code>runApp(&quot;caminho-para-o-arquivo-app.R&quot;)</code>. A segunda é clicar no botão “Run App” que vai aparecer no RStudio logo acima do seu script. Sempre que você estruturar um arquivo da maneira acima, o RStudio vai entender que se trata de um Shiny app e vai gerar essa opção (e outras).</p>
+<p>Existem duas maneiras de rodar o aplicativo. A primeira é rodar a função <code>runApp("caminho-para-o-arquivo-app.R")</code>. A segunda é clicar no botão “Run App” que vai aparecer no RStudio logo acima do seu script. Sempre que você estruturar um arquivo da maneira acima, o RStudio vai entender que se trata de um Shiny app e vai gerar essa opção (e outras).</p>
 <p>Ao rodar o app, uma nova janela se abrirá e você terá acesso ao aplicativo (veja figura baixo). Ele estará rodando localmente, então você ainda não poderá acessá-lo pela internet.</p>
 <p><img src="/material/shiny/figures/app_minimal.png" style="width: 85%;"></p>
 <p>Minimize a janela e veja no seu console que a sessão do R estará ocupada rodando o aplicativo. Assim, um Shiny app terá sempre uma sessão de R rodando por trás.</p>
@@ -302,13 +302,13 @@ shinyApp(ui = ui, server = server)</code></pre>
 <li><p><code>isolate()</code> - Usada para inserir valores reativos dentro de funções reativas sem criar um fluxo de reatividade.</p></li>
 <li><p><code>observeEvent()</code> - Usada como um gatilho para rodar código dentro do servidor. Esse código se refere a alguma ação, como imprimir uma mensagem no console ou salvar um arquivo. Geralmente usada com a função <code>actionButton()</code>, que criam botões de ação no <em>user side</em>. A função recebe um valor reativo e um bloco de código. Ela rodará o código sempre que o valor reativo especificado for atualizado. Valores reativos dentro do código que não o especificado funcionarão como se estivesse com <code>isolate()</code>.</p></li>
 <li><p><code>observe()</code> - Também usada como um gatilho para rodar código no servidor, mas, diferentemente da <code>observeEvent()</code>, vai responder a qualquer valor reativo que estiver dentro do código.</p></li>
-<li><code>eventReactive()</code> - Funciona como a <code>oberserveEvent()</code>, mas em vez de executar uma ação, essa função é utilizada para criar valores reativos condicionados à atualização do valor reativo especificado como argumento.</li>
+<li><p><code>eventReactive()</code> - Funciona como a <code>oberserveEvent()</code>, mas em vez de executar uma ação, essa função é utilizada para criar valores reativos condicionados à atualização do valor reativo especificado como argumento.</p></li>
 <li><p><code>reactiveValues()</code> - Cria uma lista de valores reativos que podem ser manipulados no código.</p></li>
 </ul>
 <p>A melhor dica para orientar a utilização dessas funções é fazer com que o seu código rode o menor número de vezes possível. Em um app complexo, saber o que deve ser ou não reativo pode não ser trivial. Por isso, o domínio desse conceito e dessas funções é importante para que o seu aplicativo seja eficiente, principalmente quando ele for ser utilizado por várias pessoas ao mesmo tempo.</p>
 <p>Acesse o <code>help()</code> para mais informações sobre essas funções. Um tutorial muito mais completo sobre reatividade está disponível na <a href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/">página do Shiny no site do Rstudio</a>.</p>
 </div>
-<div id="costumizando-aparencia" class="section level1">
+<div id="costumizando-aparência" class="section level1">
 <h1>Costumizando aparência</h1>
 <p>Como já vimos na introdução desta seção, o objeto <code>ui</code> nada mais é do que um código em HTML estruturado pela função <code>fluidPage()</code>.</p>
 <p>Quem conhece um pouco de HTML sabe que adicionamos conteúdo estático a uma página web a partir de tags.</p>
@@ -321,7 +321,15 @@ shinyApp(ui = ui, server = server)</code></pre>
 &lt;/div&gt;</code></pre>
 <p>Não se preocupe em entender o código acima. Ele é apenas um exemplo de como as tags funcionam no HTML. Veja, por exemplo, que a tag <code>&lt;h1&gt;</code> é utilizada para criar um título, a tag <code>&lt;p&gt;</code> cria parágrafos e a tag <code>&lt;a&gt;</code> cria hiperlinks. A tag <code>&lt;div&gt;</code> cria seções dentro da página com um mesmo estilo ou formato.</p>
 <p>No Shiny, também podemos trabalhar com tags utilizando a função <code>tags()</code>. Essa função, na verdade, é uma lista de funções que mimetizam as tags do HTML. Veja as principais:</p>
-<p><code>tags$h1()</code> - Cria um título. <code>tags$a()</code> - Cria um hiperlink. <code>tags$p()</code> - Cria um parágrafo. <code>tags$em()</code> - Formata o texto em itálico. <code>tags$code()</code> - Formata o texto em código. <code>tags$strong()</code> - Formata o texto em negrito. <code>tags$br()</code> - Pula uma linha. <code>tags$hr()</code> - Cria uma linha horizontal. <code>tags$img()</code> - Adiciona uma imagem (é preciso salvá-la em um subdiretório chamado <code>www</code>).</p>
+<p><code>tags$h1()</code> - Cria um título.
+<code>tags$a()</code> - Cria um hiperlink.
+<code>tags$p()</code> - Cria um parágrafo.
+<code>tags$em()</code> - Formata o texto em itálico.
+<code>tags$code()</code> - Formata o texto em código.
+<code>tags$strong()</code> - Formata o texto em negrito.
+<code>tags$br()</code> - Pula uma linha.
+<code>tags$hr()</code> - Cria uma linha horizontal.
+<code>tags$img()</code> - Adiciona uma imagem (é preciso salvá-la em um subdiretório chamado <code>www</code>).</p>
 <pre class="r"><code>library(shiny)
 
 ui &lt;- fluidPage(
@@ -422,7 +430,7 @@ shinyApp(ui, server)
 <p>Para começar a usar o shinyapps.io, você precisa:</p>
 <p><strong>1.</strong> Instalar o pacote <code>rsconnect</code>.</p>
 <pre class="r"><code>devtools::install_github(&quot;rstudio/rsconnect&quot;)</code></pre>
-<p><strong>2.</strong> Criar uma conta no <a href="shinyapps.io" class="uri">shinyapps.io</a>.</p>
+<p><strong>2.</strong> Criar uma conta no <a href="shinyapps.io">shinyapps.io</a>.</p>
 <p><strong>3.</strong> No RStudio, rodar o app e clicar em <em>Publish</em>.</p>
 <p><img src="/material/shiny/figures/app-publish.png" style="width: 85%;"></p>
 <p>Basta seguir as instruções e em alguns minutos você receberá um link para acessar o seu app online. Assim, tudo o que uma pessoa precisará para acessá-lo é um navegador web.</p>

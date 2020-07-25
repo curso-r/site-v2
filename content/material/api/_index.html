@@ -4,30 +4,30 @@ author: "Curso-R"
 date: 2018-07-18
 categories: ["R"]
 tags: ["API"]
-slug: "api"
+slug: "plumber"
 minidesc: "Construa API's para conectar a sua análise com outros programas."
 desc: "O fluxo da ciência de dados se encerra na parte de comunicação. Essa parte é responsável por transferir todo o conhecimento gerado durante a análise de dados. E isso não é nada fácil. A forma de construir a comunicação depende muito do interlocutor."
 requisitos: ["r-base", "dplyr"]
 layout: "article"
-ordem: 13
+ordem: 210
 ---
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <p>O fluxo da ciência de dados se encerra na parte de comunicação. Essa parte é responsável por transferir todo o conhecimento gerado durante a análise de dados. E isso não é nada fácil!!</p>
 <p><img src="/material/api/figures/data-science-communicate.png"></p>
 <p>A forma de construir a comunicação depende muito do interlocutor. Por exemplo, se a pessoa que vai receber a comunicação é um técnico como você, é importante elaborar um documento que deixe claro o que você fez e como você chegou nos resultados. Por outro lado, se a pessoa que vai receber seus trabalhos for um tomador de decisão, o desafio é passar os resultados de uma forma intuitiva e impactante.</p>
 <p>Mas, e se o interlocutor for um robô? Qual a melhor forma de se comunicar com uma máquina?</p>
 <p>Nesse material trabalhamos o conceito e aplicação de <em>Application Programming Interfaces</em>, ou APIs. Essa é a forma que as máquinas se comunicam nos dias de hoje.</p>
-<div id="pre-requisitos" class="section level2">
+<div id="pré-requisitos" class="section level2">
 <h2>Pré-requisitos</h2>
 <p>Esse material assume que você sabe usar <code>dplyr</code> e o <code>%&gt;%</code>, que sabe o que é o <code>RStudio</code> e <code>rmarkdown</code>. Se você não sabe usar essas coisas, veja os materiais em <a href="http://material.curso-r.com/pipe" class="uri">http://material.curso-r.com/pipe</a> e <a href="http://material.curso-r.com/manip" class="uri">http://material.curso-r.com/manip</a>.</p>
 <p>Também seria interessante ter uma noção de pacotes em R e a utilização do <code>curl</code> (via terminal).</p>
 </div>
 </div>
-<div id="o-que-e-uma-api" class="section level1">
+<div id="o-que-é-uma-api" class="section level1">
 <h1>O que é uma API?</h1>
 <p>Para explicar APIs, podemos utilizar a analogia do Matrix. Tem aquela cena:</p>
 <p><img src="/material/api/figures/kungfu.gif"></p>
@@ -40,26 +40,20 @@ ordem: 13
 <p>No R, existem duas soluções principais para trabalhar com APIs: <code>opencpu</code> e <code>plumber</code>. A diferença entre os dois é que o <code>opencpu</code> é um framework mais geral e apresenta diversas formas de resolver problemas de segurança e escalabilidade. Enquanto isso, o <code>plumber</code> foi montado para ser simples.</p>
 <p>Nesse tutorial, vamos primeiro trabalhar com o <code>plumber</code>, depois com o <code>opencpu</code>. No final, voltaremos ao <code>plumber</code> para uma aplicação mais prática.</p>
 <p>Para contextualizar nossa aplicação, utilizaremos um preditor de notas dos filmes do IMDb. Para isso, utilizaremos a base de dados <code>movies</code> do pacote <code>ggplot2movies</code>. Essa base contém informações das notas e outras características de 58.788 filmes. Para mais detalhes sobre a base, rode <code>?movies</code>.</p>
-<p>Se não tiver esse pacote, rode <code>install.packages(&quot;ggplot2movies&quot;)</code>.</p>
+<p>Se não tiver esse pacote, rode <code>install.packages("ggplot2movies")</code>.</p>
 <pre class="r"><code>library(tidyverse)
-## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1.9000 ──
-## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
-## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
-## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
-## ✔ readr   1.1.1     ✔ forcats 0.3.0
-## Warning: package &#39;ggplot2&#39; was built under R version 3.4.4
-## Warning: package &#39;tidyr&#39; was built under R version 3.4.4
-## Warning: package &#39;purrr&#39; was built under R version 3.4.4
-## Warning: package &#39;dplyr&#39; was built under R version 3.4.4
-## Warning: package &#39;stringr&#39; was built under R version 3.4.4
-## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
+## ── Attaching packages ────────────────────────── tidyverse 1.3.0 ──
+## ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
+## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
+## ✓ tidyr   1.0.3     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0
+## ── Conflicts ───────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
 dados &lt;- ggplot2movies::movies %&gt;% 
   filter(!is.na(budget), budget &gt; 0) %&gt;% 
   select(title, year, budget, rating) %&gt;% 
   arrange(desc(year))
-## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4
 
 dados
 ## # A tibble: 5,183 x 4
@@ -75,7 +69,7 @@ dados
 ##  8 Ash Wednesday                 2005     4999    8.6
 ##  9 Assault on Precinct 13        2005 20000000    6.3
 ## 10 Ballad of Jack and Rose, The  2005  1500000    6.2
-## # ... with 5,173 more rows</code></pre>
+## # … with 5,173 more rows</code></pre>
 <p>Nosso modelo tentará prever <code>rating</code> utilizando as seguintes variáveis:</p>
 <ul>
 <li><code>budget</code>: orçamento do filme em dólares</li>
@@ -148,7 +142,7 @@ funcao_que_preve &lt;- function(orcamento, ano) {
 p$run(port = 8888)</code></pre>
 <p>Agora, você pode prever a nota do IMDb rodando:</p>
 <pre><code>curl --data &quot;orcamento=10000&amp;ano=1991&quot; &quot;http://localhost:8888/prever&quot;</code></pre>
-<div id="exercicios" class="section level2">
+<div id="exercícios" class="section level2">
 <h2>Exercícios</h2>
 <p>Entre na documentação do plumber em <a href="https://www.rplumber.io/" class="uri">https://www.rplumber.io/</a> e leia.</p>
 <ol style="list-style-type: decimal">
@@ -230,8 +224,7 @@ devtools::install(&#39;preditorIMDb&#39;)</code></pre>
 <p>Assim, basta acessar <a href="http://cran.ocpu.io" class="uri">http://cran.ocpu.io</a> para ter todos os pacotes do R em suas mãos. Por exemplo, podemos rodar</p>
 <pre class="r"><code>r &lt;- httr::POST(&quot;http://cran.ocpu.io/praise/R/praise/json&quot;)
 httr::content(r)
-## [[1]]
-## [1] &quot;You are unreal!&quot;</code></pre>
+## [1] &quot;there is no package called &#39;praise&#39;\n\nIn call:\nfind.package(pkgname, lib.loc = lib.loc)&quot;</code></pre>
 <p>(o pacote <code>praise</code> é um gerador de elogios aleatório)</p>
 <p>E tem mais! Com o serviço do <code>ocpu.io</code> você pode vincular sua conta ao GitHub e deixar todos os seus pacotes funcionarem como APIs automaticamente. Veja em <a href="https://www.opencpu.org/cloud.html" class="uri">https://www.opencpu.org/cloud.html</a> como fazer isso.</p>
 <p>Por exemplo, o post da Curso-R chamado <a href="http://curso-r.com/blog/2017/08/28/2017-08-27-safadao/">Aquele 1% é deep learning</a> foi montado usando OpenCPU como gerador dos textos do Wesley Safadão.</p>
@@ -240,7 +233,7 @@ cat(httr::content(r)[[1]])
 ## 47</code></pre>
 </div>
 </div>
-<div id="plumber-em-producao" class="section level1">
+<div id="plumber-em-produção" class="section level1">
 <h1>Plumber em produção</h1>
 <p>Agora vamos mostrar um exemplo que utilizamos em produção para quebrar captchas. Vamos estudar o repositório <code>api</code> da página do github <a href="https://github.com/decryptr" class="uri">https://github.com/decryptr</a>. Trata-se de um código que carrega os modelos dos quebradores de CAPTCHA e cria funções do tipo <code>predict_*</code> que recebem uma imagem de CAPTCHA e retornam um texto contendo o resultado da classificação.</p>
 <p>Por exemplo, o código abaixo, salvo em <code>R/captcha.R</code> serve para carregar o modelo para quebrar o CAPTCHA da receita federal.</p>

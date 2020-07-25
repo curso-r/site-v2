@@ -9,17 +9,17 @@ minidesc: "O stringr contém dezenas de funções úteis para tratamento de stri
 desc: "O stringr é um pacote que contém dezenas de funções úteis para tratamento de cadeia de caracteres no R. Sempre que precisar de algo relacionado a esse assunto, procure esse pacote."
 requisitos: ["r-base"]
 layout: "article"
-ordem: 7
+ordem: 70
 ---
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <p>Variáveis de texto são muito comuns nos bancos de dados e, geralmente, dão bastante trabalho para serem manipuladas. É muito comum encontrarmos colunas com categorias não padronizadas, como, por exemplo, uma variável <code>Estado</code> com “SP”, “sp”, “Sao Paulo”, “São Paulo” etc, todas indicando o mesmo estado.</p>
 <p>O R possui várias funções para manipular textos (ou <em>strings</em>). No entanto, as funções do <code>base</code> não possuem uma interface consistente e cada uma tem a sua forma de passar os parâmetros, dificultando a programação durante a análise.</p>
 <p>Pensando nisso, Hadley Wickham deu aquela força para a comunidade R e criou o pacote <code>stringr</code>, que possui uma sintaxe consistente, permitindo o usuário manipular textos com muito mais facilidade.</p>
-<div id="vantagens-do-stringr-em-relacao-ao-base" class="section level2">
+<div id="vantagens-do-stringr-em-relação-ao-base" class="section level2">
 <h2>Vantagens do stringr em relação ao base</h2>
 <ul>
 <li>Sintaxe unificada, o que auxilia na memorização e leitura do código.</li>
@@ -27,7 +27,7 @@ ordem: 7
 <li>Construído sobre a <a href="http://site.icu-project.org/">biblioteca ICU</a>, implementada em <code>C</code> e <code>C++</code>. É uma garantia de resultados mais rápidos e confiáveis.</li>
 </ul>
 </div>
-<div id="regras-basicas-do-pacote" class="section level2">
+<div id="regras-básicas-do-pacote" class="section level2">
 <h2>Regras básicas do pacote</h2>
 <ul>
 <li>As funções de manipulação de texto começam com <code>str_</code>. Caso esqueça o nome de uma função, basta digitar <code>stringr::str_</code> e apertar <code>TAB</code> para ver quais são as opções.</li>
@@ -36,12 +36,17 @@ ordem: 7
 </div>
 <div id="curiosidade" class="section level2">
 <h2>Curiosidade</h2>
-<p>Inicialmente, o <code>stringr</code> era um <em>wrapper</em> de funções do <code>base</code>. Depois disso, surgiu um novo pacote <code>stringi</code>, com sintaxe similar ao <code>stringr</code>, mas funcionando como <em>wrapper</em> da biblioteca ICU. Wickham gostou tanto do pacote <code>stringi</code> que decidiu reescrever o <code>stringr</code> como um <em>wrapper</em> do <code>stringi</code>. Veja <a href="https://github.com/tidyverse/stringr/blob/master/NEWS.md">essa página</a> para detalhes.</p>
+<p>Inicialmente, o <code>stringr</code> era um <em>wrapper</em> de funções do <code>base</code>. Depois disso,
+surgiu um novo pacote <code>stringi</code>, com sintaxe similar ao <code>stringr</code>, mas funcionando como <em>wrapper</em> da biblioteca ICU. Wickham gostou tanto do pacote <code>stringi</code>
+que decidiu reescrever o <code>stringr</code> como um <em>wrapper</em> do <code>stringi</code>.
+Veja <a href="https://github.com/tidyverse/stringr/blob/master/NEWS.md">essa página</a> para detalhes.</p>
 </div>
 </div>
-<div id="conceitos-basicos" class="section level1">
+<div id="conceitos-básicos" class="section level1">
 <h1>Conceitos básicos</h1>
-<p>Todas as funções do <code>stringr</code> começam com o prefixo <code>str_</code>. Isso ajuda na hora de encontrar a função que você está procurando. No RStudio, digite <code>str_</code> e aperte <strong>TAB</strong> para visualizar a lista de funções com esse prefixo. Você pode verificar o que cada função faz até encontrar a que atende às suas necessidades.</p>
+<p>Todas as funções do <code>stringr</code> começam com o prefixo <code>str_</code>. Isso ajuda na hora de
+encontrar a função que você está procurando. No RStudio, digite <code>str_</code> e
+aperte <strong>TAB</strong> para visualizar a lista de funções com esse prefixo. Você pode verificar o que cada função faz até encontrar a que atende às suas necessidades.</p>
 <p><img src="/material/stringr/figures/str_tab.png" style="width: 80%;"></p>
 <p>Nesta seção, vamos utilizar as funções mais simples do <code>stringr</code>. Em seguida, vamos falar um pouco de regex e então veremos funções mais avançadas do pacote.</p>
 <p>Antes de mais nada, instale e carregue o pacote <code>stringr</code>.</p>
@@ -49,7 +54,7 @@ ordem: 7
 <pre class="r"><code>library(stringr)</code></pre>
 <div id="str_length" class="section level2">
 <h2>str_length</h2>
-<p>A função mais simples do <code>stringr()</code> é a função <code>str_length()</code>. Esta função recebe como argumento um vetor de <em>strings</em> e retorna o número de caracteres de cada <em>string</em>. Repare que o espaço <code>&quot; &quot;</code> é considerado um caracter.</p>
+<p>A função mais simples do <code>stringr()</code> é a função <code>str_length()</code>. Esta função recebe como argumento um vetor de <em>strings</em> e retorna o número de caracteres de cada <em>string</em>. Repare que o espaço <code>" "</code> é considerado um caracter.</p>
 <pre class="r"><code>str_length(&quot;São Paulo&quot;)
 ## [1] 9
 str_length(c(&quot;São Paulo&quot;, &quot;Rio de Janeiro&quot;, 
@@ -78,7 +83,8 @@ str_to_title(s)
 </div>
 <div id="str_trim" class="section level2">
 <h2>str_trim</h2>
-<p>É muito comum encontrar textos que vêm com espaços a mais, principalmente de dados provenientes de formulários em que cada usuário escreve da forma que prefere. Isso é um problema pois cria categorias diferentes para valores que deveriam ser iguais. Espaços antes e após o texto são especialmente chatos, pois pode ser difícil detectá-los.</p>
+<p>É muito comum encontrar textos que vêm com espaços a mais, principalmente de dados
+provenientes de formulários em que cada usuário escreve da forma que prefere. Isso é um problema pois cria categorias diferentes para valores que deveriam ser iguais. Espaços antes e após o texto são especialmente chatos, pois pode ser difícil detectá-los.</p>
 <pre class="r"><code>s &lt;- c(&quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot; M&quot;, &quot; F &quot;, &quot;M&quot;)
 as.factor(s)
 ## [1] M   F   F    M   F  M  
@@ -166,7 +172,7 @@ as.formula
 ##         rval
 ##     }
 ## }
-## &lt;bytecode: 0x7fc479aa7c68&gt;
+## &lt;bytecode: 0x7fbe1ed23318&gt;
 ## &lt;environment: namespace:stats&gt;
 
 # Modeloo linear (Off-topic)
@@ -202,7 +208,7 @@ summary(fit)
 <p>Essas são as funções mais simples do pacote <code>stringr</code> e não exigem nenhum conhecimento de <strong>expressões regulares</strong>. Note que nenhuma delas possui o parâmetro <code>pattern</code>. Você verá como especificar esse parâmetro nas próximas seções.</p>
 </div>
 </div>
-<div id="expressoes-regulares" class="section level1">
+<div id="expressões-regulares" class="section level1">
 <h1>Expressões Regulares</h1>
 <p>Trabalhar com textos exige um certo conhecimento de <a href="https://pt.wikipedia.org/wiki/Express%C3%A3o_regular">expressões regulares</a>. As expressões regulares — ou simplesmente <strong>regex</strong> — permitem identificar conjuntos de caracteres, palavras e outros padrões por meio de uma sintaxe concisa.</p>
 <p>O <code>stringr</code> utiliza regex da forma descrita <a href="http://www.gagolewski.com/software/stringi/manual/?manpage=stringi-search-regex">neste documento</a>. A própria <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">definição</a> de regex do R é um ótimo manual.</p>
@@ -304,7 +310,7 @@ str_detect(&quot;sao paulo sp&quot;, pattern = &quot;paulo$&quot;)
 <li>Use <code>[[:space:]]+</code> para reconhecer espaços e <code>[[:punct:]]+</code> para reconhecer pontuações.</li>
 </ul>
 </div>
-<div id="miscelanea" class="section level2">
+<div id="miscelânea" class="section level2">
 <h2>Miscelânea</h2>
 <ul>
 <li>Use <code>abjutils::rm_accent()</code> para retirar os acentos de um texto.</li>
@@ -312,13 +318,15 @@ str_detect(&quot;sao paulo sp&quot;, pattern = &quot;paulo$&quot;)
 <li>O código <code>\n</code> pula linha, <code>\f</code> é final da página, <code>\t</code> é tab. Use <code>\</code> para transformar caracteres especiais em literais.</li>
 <li>Use as funções <code>tolower()</code> e <code>toupper()</code> para mudar o case de uma <em>string</em>.</li>
 </ul>
-<p>A lista de possibilidades com expressões regulares é extensa. Um bom lugar para testar o funcionamento das regex é o <a href="https://regex101.com/">regex101</a>.</p>
+<p>A lista de possibilidades com expressões regulares é extensa.
+Um bom lugar para testar o funcionamento das regex é o <a href="https://regex101.com/">regex101</a>.</p>
 </div>
 </div>
-<div id="funcoes-avancadas" class="section level1">
+<div id="funções-avançadas" class="section level1">
 <h1>Funções avançadas</h1>
 <p>Agora que já vimos as funções básicas do <code>stringr</code> e aprendemos um pouco de regex, vamos às funções mais avançadas. Basicamente, essas funções buscarão <code>patterns</code> em um vetor de <em>strings</em> e farão alguma coisa quando encontrá-lo.</p>
-<p>Como já vimos na sessão sobre regex, a função mais simples que possui o argumento <code>pattern=</code> é a <code>str_detect()</code>.</p>
+<p>Como já vimos na sessão sobre regex, a função mais simples que possui o argumento
+<code>pattern=</code> é a <code>str_detect()</code>.</p>
 <div id="str_detect" class="section level2">
 <h2>str_detect()`</h2>
 <p>Retorna <code>TRUE</code> se a regex é compatível com a string e <code>FALSE</code> caso contrário.</p>
@@ -368,11 +376,14 @@ s
 s &lt;- str_replace_all(s, &quot; +&quot;, &quot; &quot;) 
 s
 ## [1] &quot;A vida, o universo e tudo mais&quot;</code></pre>
-<p>Muitas vezes queremos remover alguns caracteres especiais de um texto, mas esses caracteres fazem parte de comandos de regex, por exemplo:</p>
+<p>Muitas vezes queremos remover alguns caracteres especiais de um texto, mas esses
+caracteres fazem parte de comandos de regex, por exemplo:</p>
 <pre class="r"><code>s &lt;- &quot;1 + 2 + 5&quot;
 str_replace_all(s, &quot;+&quot;, &quot;-&quot;)
 ## Error in stri_replace_all_regex(string, pattern, fix_replacement(replacement), : Syntax error in regexp pattern. (U_REGEX_RULE_SYNTAX)</code></pre>
-<p>Essa forma retorna um erro, pois a função tenta montar uma regex. Você poderia tentar de outras formas, que não retornariam erro, mas também não retornariam o resultado esperado.</p>
+<p>Essa forma retorna um erro, pois a função tenta montar uma regex. Você poderia
+tentar de outras formas, que não retornariam erro, mas também não retornariam o
+resultado esperado.</p>
 <pre class="r"><code>str_replace_all(s, &quot; + &quot;, &quot; - &quot;)
 ## [1] &quot;1 + 2 + 5&quot;</code></pre>
 <p>Nesse caso, use a função <code>fixed()</code> para indicar que o parâmetro não é uma regex.</p>
@@ -390,9 +401,8 @@ str_replace_all(s, &quot;+&quot;, &quot;-&quot;)
 
 sobrenomes &lt;- str_extract(r_core_group, &#39;[:alpha:]+$&#39;)
 sobrenomes
-##  [1] &quot;Bates&quot;     &quot;Chambers&quot;  &quot;Dalgaard&quot;  &quot;Gentleman&quot; &quot;Hornik&quot;   
-##  [6] &quot;Ihaka&quot;     &quot;Kalibera&quot;  &quot;Lawrence&quot;  &quot;Leisch&quot;    &quot;Ligges&quot;   
-## [11] NA</code></pre>
+##  [1] &quot;Bates&quot;     &quot;Chambers&quot;  &quot;Dalgaard&quot;  &quot;Gentleman&quot; &quot;Hornik&quot;    &quot;Ihaka&quot;    
+##  [7] &quot;Kalibera&quot;  &quot;Lawrence&quot;  &quot;Leisch&quot;    &quot;Ligges&quot;    NA</code></pre>
 </div>
 <div id="str_match-e-str_match_all" class="section level2">
 <h2>str_match() e str_match_all()</h2>
@@ -447,11 +457,11 @@ str_subset(frases, &#39;d[eo]&#39;)
 ## [1] &quot;a roupa do rei&quot; &quot;de roma&quot;</code></pre>
 </div>
 </div>
-<div id="exercicios" class="section level1">
+<div id="exercícios" class="section level1">
 <h1>Exercícios</h1>
 <p><strong>1.</strong> O CPF é um número de 11 dígitos, por exemplo: 54491651884. No entanto para facilitar a visualização costumamos mostrá-lo com separadores a cada 3 casas: 544.916.518-84. Crie uma função que transforma um número de 11 dígitos em uma string com as separações, como um CPF.</p>
 <hr />
-<p><strong>2.</strong> Transforme o vetor de <em>strings</em> abaixo em <code>&quot;01 - Alto&quot; &quot;02 - Médio&quot; &quot;03 - Baixo&quot;</code>.</p>
+<p><strong>2.</strong> Transforme o vetor de <em>strings</em> abaixo em <code>"01 - Alto" "02 - Médio" "03 - Baixo"</code>.</p>
 <pre class="r"><code>s &lt;- c(&#39;Alto&#39;, &#39;Médio&#39;, &#39;Baixo&#39;)</code></pre>
 <hr />
 <p><strong>3.</strong> Crie uma regex que capture múltiplas versões da palavra ‘casa’. Ela deve funcionar com as palavras ‘Casa’, ‘CASA’, ‘CaSa’, ‘CAsa’. Teste-a usando a função <code>str_detect()</code>.</p>
@@ -552,7 +562,7 @@ formata_CPF &lt;- function(num) {
 </ul></li>
 </ul>
 <hr />
-<p><strong>2.</strong> Transforme o vetor de <em>strings</em> abaixo em <code>&quot;01 - Alto&quot; &quot;02 - Médio&quot; &quot;03 - Baixo&quot;</code>.</p>
+<p><strong>2.</strong> Transforme o vetor de <em>strings</em> abaixo em <code>"01 - Alto" "02 - Médio" "03 - Baixo"</code>.</p>
 <pre class="r"><code>s &lt;- c(&#39;Alto&#39;, &#39;Médio&#39;, &#39;Baixo&#39;)
 
 # Usando str_c()

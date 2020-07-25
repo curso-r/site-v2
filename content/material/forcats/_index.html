@@ -9,12 +9,12 @@ minidesc: "Use o forcats para lidar com variáveis categóricas."
 desc: "As principais funções do forcats servem para alterar a ordem e modificar os níveis de um fator. Para exemplificar a utilidade dessas funções, neste tutorial vamos utilizá-las em situações corriqueiras."
 requisitos: ["r-base", "ggplot", "dplyr"]
 layout: "article"
-ordem: 9
+ordem: 90
 ---
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <p>Se você já utilizou R anteriormente, provavelmente já escreveu a expressão <code>stringsAsFactors = F</code> quando importava dados usando as funções <code>read.csv</code> ou <code>read.table</code>. É muito frustrante quando uma coluna de <code>strings</code> é lida como um fator, pois fatores não podem ser manipulados do mesmo jeito que manipulamos vetores de <code>strings</code>.</p>
 <p>Felizmente, depois de aprender a usar o <code>tidyverse</code> você não terá mais esse problema, pois o pacote <code>readr</code> não lê colunas de caracteres como fatores por padrão. Mas isso não significa que fatores são inúteis. Eles representam uma forma muito prática de lidar com variáveis categorizadas, tanto para fins de modelagem quanto para fins de visualização.</p>
@@ -23,15 +23,13 @@ ordem: 9
 <p>Vamos carregar alguns pacotes que usaremos nesse tutorial:</p>
 <pre class="r"><code>library(forcats)
 library(ggplot2)
-## Warning: package &#39;ggplot2&#39; was built under R version 3.4.4
-library(dplyr)
-## Warning: package &#39;dplyr&#39; was built under R version 3.4.4</code></pre>
-<div id="relembrando-o-que-sao-fatores" class="section level2">
+library(dplyr)</code></pre>
+<div id="relembrando-o-que-são-fatores" class="section level2">
 <h2>Relembrando: o que são fatores?</h2>
 <p>No R, fatores são estruturas de dados utilizadas para ordenar <code>strings</code>. Formalmente, um fator é definido como um vetor de <code>integers</code> com dois atributos específicos:</p>
 <ul>
 <li><code>levels</code>: m vetor de <code>strings</code> que indica a relação de ordem entre as variáveis.</li>
-<li><code>class</code>: a <code>string</code> atômica <code>&quot;factor&quot;</code>.</li>
+<li><code>class</code>: a <code>string</code> atômica <code>"factor"</code>.</li>
 </ul>
 <p>Em modelos estatísticos clássicos, como ANOVA, é útil e adequado interpretar um vetor de textos como um vetor de números inteiros. O nome “fator”, inclusive, foi definido fazendo alusão à literatura estatística.</p>
 </div>
@@ -112,12 +110,11 @@ library(dplyr)
   mutate(restaurante = factor(restaurante, levels = c(&quot;Frutaria da vila&quot;, &quot;Outlet&quot;, &quot;Max Donalds&quot;))) %&gt;% 
   ggplot(aes(x = restaurante, y = pressao)) +
   geom_point() + 
-  theme_bw(15)
-## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
+  theme_bw(15)</code></pre>
 <p><img src="/material/forcats/_index_files/figure-html/unnamed-chunk-5-1.png" width="75%" /></p>
 </div>
 </div>
-<div id="estrutura-basica" class="section level1">
+<div id="estrutura-básica" class="section level1">
 <h1>Estrutura básica</h1>
 <p>O <code>forcats</code> é um pacote bastante simples. Ele é composto por funções de apenas dois tipos:</p>
 <ul>
@@ -144,7 +141,7 @@ fator_3_com_sentido
 <pre class="r"><code>fator &lt;- factor(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;))
 novos_niveis &lt;- c(&quot;c&quot;, &quot;b&quot;, &quot;a&quot;)
 fator &lt;- forcats::lvls_revalue(fator, novos_niveis)</code></pre>
-<div id="principais-funcoes" class="section level2">
+<div id="principais-funções" class="section level2">
 <h2>Principais funções</h2>
 <p>Nesta seção, vamos estudar o funcionamento das principais funções do <code>forcats</code> utilizando como motivação a visualização dos dados de uma base analisada pela Associação Brasileira de Jurimetria. A base foi simplificada para otimizar seu uso neste curso. Além disso, os dados passaram por um processo de anonimização, pois os resultados ainda não foram divulgados.</p>
 <p>A base contém informações sobre uma amostra de vítimas de homicídios no município de São Paulo e é composta pelas seguintes variáveis:</p>
@@ -154,7 +151,7 @@ fator &lt;- forcats::lvls_revalue(fator, novos_niveis)</code></pre>
 <li><code>idade.vítima</code>: idade da vítima.</li>
 </ul>
 </div>
-<div id="modificar-niveis-de-fatores" class="section level2">
+<div id="modificar-níveis-de-fatores" class="section level2">
 <h2>Modificar níveis de fatores</h2>
 <p>A tabela abaixo ilustra a distribuição dos valores da variável <code>instrumento.usado</code>.</p>
 <table>
@@ -253,7 +250,7 @@ fct_lump(fator, 2, other_level = &quot;Outros&quot;)
 </tbody>
 </table>
 </div>
-<div id="reordenar-niveis-de-fatores" class="section level2">
+<div id="reordenar-níveis-de-fatores" class="section level2">
 <h2>Reordenar níveis de fatores</h2>
 <p>Vamos visualizar a tabela anterior como um gráfico.</p>
 <p><img src="/material/forcats/_index_files/figure-html/unnamed-chunk-12-1.png" width="75%" /></p>
@@ -303,7 +300,7 @@ lvls_reorder(fator, length(letters):1)
 vetor &lt;- c(1,2,3,1,1,1.2)
 
 #ordena os níveis de acordo com a média da variável vetor em cada nível
-fct_reorder(fator, vetor, fun = mean)
+fct_reorder(fator, vetor, .fun = mean)
 ## [1] a a a b b c
 ## Levels: b c a</code></pre>
 <ul>
@@ -323,7 +320,7 @@ fct_relevel(fator, &quot;b&quot;,&quot;c&quot;)
 <p>Nesta sessão, vamos utilizar as funções para exemplificar utilizações do pacote <code>forcats</code> para visualizações.</p>
 <p>A visualização abaixo ordena os níveis de “instrumento.usado” de acordo com a mediana da idade das vítimas de homicídio.</p>
 <pre class="r"><code>bd_enasp_abj %&gt;%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median)) %&gt;% 
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median)) %&gt;% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 
   geom_boxplot() +
   theme_bw(15) +
@@ -333,7 +330,7 @@ fct_relevel(fator, &quot;b&quot;,&quot;c&quot;)
 <p><img src="/material/forcats/_index_files/figure-html/unnamed-chunk-19-1.png" width="75%" /></p>
 <p>A visualização abaixo exemplifica um caso em que a ordem dos facets foi invertida reordenando o fator <code>sexo.vítima</code>.</p>
 <pre class="r"><code>bd_enasp_abj %&gt;%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median),
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median),
          `sexo.vítima` = fct_recode(`sexo.vítima`, Homem = &quot;M&quot;, Mulher = &quot;F&quot;)) %&gt;% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 
   geom_boxplot() +
@@ -344,7 +341,7 @@ fct_relevel(fator, &quot;b&quot;,&quot;c&quot;)
   theme(legend.position = &#39;none&#39;)</code></pre>
 <p><img src="/material/forcats/_index_files/figure-html/unnamed-chunk-20-1.png" width="75%" /></p>
 <pre class="r"><code>bd_enasp_abj %&gt;%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median),
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median),
          `sexo.vítima` = fct_recode(`sexo.vítima`, Homem = &quot;M&quot;, Mulher = &quot;F&quot;),
          `sexo.vítima` = fct_relevel(`sexo.vítima`, &quot;Homem&quot;, &quot;Mulher&quot;)) %&gt;% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 

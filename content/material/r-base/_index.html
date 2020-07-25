@@ -9,7 +9,7 @@ minidesc: "Comece a se ambientar com o básico da linguagem R."
 desc: "Neste capítulo vamos introduzir o R, suas principais estruturas de dados e um pequeno vocabulário de funções úteis."
 requisitos: ["rstudio"]
 layout: "article"
-ordem: 2
+ordem: 10
 ---
 
 
@@ -26,7 +26,7 @@ ordem: 2
 <li>Coleguinha</li>
 </ul>
 <p>A busca por ajuda é feita preferencialmente, mas não necessariamente, na ordem acima.</p>
-<div id="documentacao-do-r" class="section level2">
+<div id="documentação-do-r" class="section level2">
 <h2>Documentação do R</h2>
 <p>A documentação do R serve para você aprender a usar uma determinada função.</p>
 <pre class="r"><code>?mean
@@ -95,8 +95,8 @@ help(mean)</code></pre>
 <h1>R como calculadora</h1>
 <p>Pelo console, é possível executar qualquer comando do R.</p>
 <pre class="r"><code>1:30
-##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-## [24] 24 25 26 27 28 29 30</code></pre>
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+## [26] 26 27 28 29 30</code></pre>
 <p>Esse comando é uma forma simplificada de criar um vetor de inteiros de 1 a 30.
 Os números que aparecem entre colchetes ([1] e [24]) indicam o índice do primeiro elemento impresso em cada linha.</p>
 <blockquote>
@@ -156,7 +156,7 @@ a
 <blockquote>
 <p>Atenção! O R diferencia letras maiúsculas e minúsculas, isto é, “a” é considerado um objeto diferente de “A”.</p>
 </blockquote>
-<div id="objetos-atomicos" class="section level2">
+<div id="objetos-atômicos" class="section level2">
 <h2>Objetos atômicos</h2>
 <p>Existem cinco classes básicas ou “atômicas” no R:</p>
 <ul>
@@ -249,8 +249,8 @@ vetor1 * 10</code></pre>
 <p>Neste caso, o R irá alinhar os dois vetores e multiplicar elemento por elemento. Isso pode ficar um pouco confuso quando os dois vetores não possuem o mesmo tamanho:</p>
 <pre class="r"><code>vetor2 &lt;- 1:3
 vetor1 * vetor2
-## Warning in vetor1 * vetor2: longer object length is not a multiple of
-## shorter object length
+## Warning in vetor1 * vetor2: longer object length is not a multiple of shorter
+## object length
 ## [1] 1 4 9 4</code></pre>
 <p>O R alinhou os dois vetores e, como eles não possuíam o mesmo tamanho, foi repetindo o vetor menor até completar o vetor maior. Esse comportamento é chamado de <strong>reciclagem</strong> e é útil para fazer operações elemento por elemento (vetorizadamente), mas às vezes pode ser confuso. Com o tempo, você aprenderá a se aproveitar dele.</p>
 </div>
@@ -266,7 +266,7 @@ y &lt;- c(TRUE, &quot;a&quot;) # character</code></pre>
 <p>A ordem de precedência é:</p>
 <p><strong>DOMINANTE</strong> — <code>character &gt; complex &gt; numeric &gt; integer &gt; logical</code> — <strong>RECESSIVO</strong></p>
 </div>
-<div id="forcando-classes-explicitamente" class="section level2">
+<div id="forçando-classes-explicitamente" class="section level2">
 <h2>Forçando classes explicitamente</h2>
 <p>Você pode coagir um objeto a ser de uma classe específica com as funções <code>as.character()</code>, <code>as.numeric()</code>, <code>as.integer()</code> e <code>as.logical()</code>. É equivalente à função <code>convert()</code> do SQL.</p>
 <pre class="r"><code>x &lt;- 0:4
@@ -442,7 +442,7 @@ if(x == 1) {
 if(x == 1) {
   Sys.time()
 }
-## [1] &quot;2019-08-19 18:14:58 -03&quot;</code></pre>
+## [1] &quot;2020-07-25 18:14:43 -03&quot;</code></pre>
 <p>O R só vai executar o que está na expressão dentro das chaves <code>{}</code> se o que estiver dentro dos parênteses <code>()</code> retornar <code>TRUE</code>.</p>
 <p>A sintaxe com o <code>else</code> e o <code>if else</code> é</p>
 <pre class="r"><code>if(x &lt; 0) {
@@ -555,7 +555,7 @@ for(i in indices) {
 </table>
 </div>
 </div>
-<div id="formulas" class="section level1">
+<div id="fórmulas" class="section level1">
 <h1>Fórmulas</h1>
 <p>Fórmulas são objetos do tipo <code>y ~ x</code>. Em geral, elas representam associações entre objetos, como em um modelo de regressão. As funções as usam de diversas maneiras, mas o exemplo mais emblemático vem da modelagem estatística.</p>
 <pre class="r"><code>formula &lt;- y ~ x1 + x2
@@ -576,7 +576,7 @@ lm(minha_formula, data = iris)
 <p>No caso específico dos modelos lineares, são nas fórmulas que conseguimos descrever as variáveis explicativas e suas interações. A fórmula <code>y ~ x1 * x2</code> significa “y regredido por x1, x2 e a interação entre x1 e x2”. Fórmulas aparecem frequentemente em tarefas de modelagem.</p>
 <p>Demais usos de fórmulas aparecerão em outras funções, como as do pacote <code>ggplot2</code>, com outros significados, e a documentação nos dirá como usá-las.</p>
 </div>
-<div id="graficos-base" class="section level1">
+<div id="gráficos-base" class="section level1">
 <h1>Gráficos (base)</h1>
 <p>O R já vem com funções básicas que fazem gráficos estatísticos de todas as naturezas.</p>
 <ul>
@@ -584,7 +584,7 @@ lm(minha_formula, data = iris)
 <li>Desvantagens: são feias e difíceis para gerar gráficos complexos.</li>
 </ul>
 <p>Nesta seção, mostraremos como construir alguns tipos de gráficos usando as funções base do R, mas <a href="http://material.curso-r.com/ggplot/">o nosso foco em visualização de dados</a> está nas funções do pacote <code>ggplot2</code>.</p>
-<div id="grafico-de-dispersao" class="section level2">
+<div id="gráfico-de-dispersão" class="section level2">
 <h2>Gráfico de dispersão</h2>
 <p>Para construir um gráfico de dispersão, utilizamos a função <code>plot()</code>. Seus principais parâmetros são:</p>
 <ul>
@@ -634,7 +634,7 @@ plot(x, y)</code></pre>
 <pre class="r"><code>boxplot(count ~ spray, data = InsectSprays, col = &quot;lightgray&quot;)</code></pre>
 <p><img src="/material/r-base/_index_files/figure-html/unnamed-chunk-43-1.png" width="75%" /></p>
 </div>
-<div id="grafico-de-barras" class="section level2">
+<div id="gráfico-de-barras" class="section level2">
 <h2>Gráfico de barras</h2>
 <p>Para construir gráficos de barras, precisamos combinar as funções <code>table()</code> e <code>barplot()</code>.</p>
 <p>No gráfico abaixo, primeiro criamos uma tabela de frequências com a função <code>table()</code> e, em seguida, construímos o gráfico com a função <code>barplot()</code>. A função <code>data()</code> carrega bases de dados de pacotes instalados. Veja <code>help(data)</code> para mais detalhes.</p>
@@ -658,7 +658,7 @@ barplot(tabela)</code></pre>
 <p><img src="/material/r-base/_index_files/figure-html/unnamed-chunk-46-1.png" width="75%" /></p>
 </div>
 </div>
-<div id="exercicios" class="section level1">
+<div id="exercícios" class="section level1">
 <h1>Exercícios</h1>
 <p><strong>Sugestão</strong>: resolva os exercícios em arquivo R Markdown, aproveitando para fazer anotações e registrar suas dúvidas ao longo do caminho.</p>
 <p><strong>1.</strong> Calculo o número de ouro no R.</p>
@@ -826,7 +826,7 @@ media(1:3)
 }
 
 alea()
-## [1] 8</code></pre>
+## [1] 10</code></pre>
 <p>Veja que construímos uma função sem argumentos. Podemos generalizá-la incluindo os argumentos da função <code>runif()</code>.</p>
 <pre class="r"><code>alea &lt;- function(n, min, max) {
   
@@ -837,9 +837,9 @@ alea()
 }
 
 alea(2, 2, 5)
-## [1] 4 3
+## [1] 3 4
 alea(5, 100, 105)
-## [1] 101 104 105 102 101</code></pre>
+## [1] 101 102 102 104 102</code></pre>
 <p>Observe que não há problema em usar os mesmos nomes para os argumentos. Isso se deve aos <em>environments</em>. Para saber mais, confira <a href="http://curso-r.com/blog/2017/06/19/2017-06-19-environments/">este post</a>.</p>
 <hr />
 <p><strong>10.</strong> Rode <code>help(sample)</code> para descobrir o que a função <code>sample()</code> faz. Em seguida, use-a para escrever uma função que escolha uma linha aleatoriamente de uma matriz e devolva os seus valores.</p>
@@ -856,14 +856,14 @@ linha_alea &lt;- function(matriz) {
 }
 
 matriz
-##           [,1]        [,2]      [,3]      [,4]
-## [1,] 0.5983035 0.271268710 0.1041378 0.8081555
-## [2,] 0.1272590 0.001899282 0.0262577 0.2617585
-## [3,] 0.6990443 0.333766474 0.4608654 0.5149115
-## [4,] 0.4297517 0.227522596 0.6247019 0.4743193
-## [5,] 0.5315838 0.426228065 0.4818493 0.6258397
+##           [,1]       [,2]      [,3]      [,4]
+## [1,] 0.3715787 0.68187096 0.1228961 0.9200409
+## [2,] 0.9745553 0.74242326 0.5544797 0.5777733
+## [3,] 0.8355170 0.98707994 0.5098119 0.4217573
+## [4,] 0.4693785 0.01481568 0.6213907 0.0756326
+## [5,] 0.9005799 0.88311621 0.2875828 0.4955203
 linha_alea(matriz)
-## [1] 0.6990443 0.3337665 0.4608654 0.5149115</code></pre>
+## [1] 0.3715787 0.6818710 0.1228961 0.9200409</code></pre>
 <hr />
 <p><strong>11.</strong> Rode <code>help(paste)</code> e <code>help(names)</code> para descobrir o que as funções <code>paste()</code> e <code>names()</code> fazem. Em seguida, use-as para escrever um código para gerar a fórmula <code>mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb</code> a partir do data frame <code>mtcars</code>.</p>
 <p><strong>Resposta:</strong></p>

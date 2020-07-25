@@ -11,3 +11,21 @@ requisitos: ["r-base"]
 layout: "article"
 ordem: 30
 ---
+
+```{r, echo=FALSE}
+download.file(
+  "https://raw.githubusercontent.com/curso-r/livro-material/master/052-readr.Rmd", 
+  "readr.Rmd"
+)
+download.file(
+  "https://raw.githubusercontent.com/curso-r/livro-material/master/assets/data/imdb.csv",
+  "assets/data/imdb.csv"
+)
+```
+
+O conteúdo a seguir faz parte do nosso livro [Ciência de Dados em R](https://livro.curso-r.com/5-2-readr.html).
+
+```{r, child = "readr.Rmd"}
+
+```
+

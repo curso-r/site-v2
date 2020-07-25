@@ -9,12 +9,12 @@ minidesc: "Vamos usar os pacotes dplyr e tidyr que facilitam a manipulação de 
 desc: "Em muitos projetos de ciência de dados a maior parte do trabalho está em transformar os dados para um formato que seja útil para fazer as análises. Neste tutorial vamos discutir os pacotes dplyr e tidyr que facilitam (e muito) a realização dessa tarefa."
 requisitos: ["r-base"]
 layout: "article"
-ordem: 5
+ordem: 40
 ---
 
 
 
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1>Introdução</h1>
 <blockquote>
 <p>“(…) The fact that data science exists as a field is a colossal failure of statistics. To me, what I do is what statistics is all about. It is gaining insight from data using modelling and visualization. Data munging and manipulation is hard and statistics has just said that’s not our domain.” - Hadley Wickham</p>
@@ -61,9 +61,8 @@ library(tibble)</code></pre>
 ##  8 Batma…  2016 Zack S…     183 Color Action… USA   A partir de … 250000000
 ##  9 Super…  2006 Bryan …     169 Color Action… USA   A partir de … 209000000
 ## 10 Pirat…  2006 Gore V…     151 Color Action… USA   A partir de … 225000000
-## # ... with 3,797 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 3,797 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <p>Veja que, por padrão, apenas as dez primeiras linhas da <code>tibble</code> são impressas na tela. Além disso, as colunas que não couberem na largura do console serão omitidas. Também são apresentadas a dimensão da tabela e as classes de cada coluna.</p>
 </div>
 <div id="o-pacote-dplyr" class="section level1">
@@ -105,7 +104,7 @@ library(tibble)</code></pre>
 ## 1 The S…  1994 Frank …     142 Color Crime|… USA   A partir de …  25000000
 ## 2 The G…  1972 Franci…     175 Color Crime|… USA   A partir de …   6000000
 ## 3 Kickb…  2016 John S…      90 &lt;NA&gt;  Action  USA   Outros         17000000
-## # ... with 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## # … with 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
 ## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <p>Para fazer várias condições, use os operadores lógicos <code>&amp;</code> e <code>|</code> ou separe filtros entre vírgulas.</p>
 <pre class="r"><code>imdb %&gt;% 
@@ -118,7 +117,7 @@ library(tibble)</code></pre>
 ## 3 A Beg…  2016 Mitche…      87 Color Comedy… USA   Outros               NA
 ## 4 Kickb…  2016 John S…      90 &lt;NA&gt;  Action  USA   Outros         17000000
 ## 5 Butte…  2014 Cary B…      78 Color Docume… USA   Outros           180000
-## # ... with 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## # … with 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
 ## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;
 
 imdb %&gt;% 
@@ -136,14 +135,13 @@ imdb %&gt;%
 ##  8 Man o…  2013 Zack S…     143 Color Action… USA   A partir de … 225000000
 ##  9 The A…  2012 Joss W…     173 Color Action… USA   A partir de … 220000000
 ## 10 The A…  2012 Marc W…     153 Color Action… USA   A partir de … 230000000
-## # ... with 1,752 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 1,752 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <p>O operador <code>%in%</code> é muito útil na hora de criar filtros. O resultado das operações com <code>%in%</code> é um vetor lógico o tamanho do vetor do elemento da esquerda, identificando quais elementos da esquerda batem com algum elemento da direita.</p>
 <pre class="r"><code>letters %in% c(&quot;a&quot;, &quot;e&quot;, &quot;z&quot;)
-##  [1]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-## [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [23] FALSE FALSE FALSE  TRUE
+##  [1]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE  TRUE
 
 imdb %&gt;% 
   filter(diretor %in% c(&quot;Steven Spielberg&quot;, &quot;Quentin Tarantino&quot;))
@@ -160,9 +158,8 @@ imdb %&gt;%
 ##  8 The T…  2004 Steven…     128 Color Comedy… USA   A partir de …  60000000
 ##  9 Inglo…  2009 Quenti…     153 Color Advent… USA   A partir de …  75000000
 ## 10 Hook    1991 Steven…     142 Color Advent… USA   Livre          70000000
-## # ... with 22 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 22 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <p>Também podemos usar funções que retornam valores lógicos, como a <code>str_detect()</code>, do pacote <code>stringr</code>. Esse pacote possui funções para a manipulação de strings, e será abordado com mais detalhes <a href="https://www.curso-r.com/material/stringr/">nesta seção</a>.</p>
 <pre class="r"><code>library(stringr)
 
@@ -181,9 +178,8 @@ imdb %&gt;%
 ##  8 Super…  2006 Bryan …     169 Color Action… USA   A partir de … 209000000
 ##  9 Pirat…  2006 Gore V…     151 Color Action… USA   A partir de … 225000000
 ## 10 The L…  2013 Gore V…     150 Color Action… USA   A partir de … 215000000
-## # ... with 851 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 851 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <hr />
 </div>
 <div id="selecionando-colunas" class="section level2">
@@ -204,7 +200,7 @@ imdb %&gt;%
 ##  8 Batman v Superman: Dawn of Justice           2016 250000000
 ##  9 Superman Returns                             2006 209000000
 ## 10 Pirates of the Caribbean: Dead Man&#39;s Chest   2006 225000000
-## # ... with 3,797 more rows
+## # … with 3,797 more rows
 
 imdb %&gt;% 
   select(starts_with(&quot;ator&quot;))
@@ -221,42 +217,42 @@ imdb %&gt;%
 ##  8 Henry Cavill    Lauren Cohan      Alan D. Purwin      
 ##  9 Kevin Spacey    Marlon Brando     Frank Langella      
 ## 10 Johnny Depp     Orlando Bloom     Jack Davenport      
-## # ... with 3,797 more rows</code></pre>
+## # … with 3,797 more rows</code></pre>
 <p>O operador <code>:</code> pode ser usado para selecionar intervalos de colunas.</p>
 <pre class="r"><code>imdb %&gt;% 
   select(titulo, ator_1:ator_3)
 ## # A tibble: 3,807 x 4
-##    titulo                        ator_1       ator_2        ator_3        
-##    &lt;chr&gt;                         &lt;chr&gt;        &lt;chr&gt;         &lt;chr&gt;         
-##  1 Avatar                        CCH Pounder  Joel David M… Wes Studi     
-##  2 Pirates of the Caribbean: At… Johnny Depp  Orlando Bloom Jack Davenport
-##  3 The Dark Knight Rises         Tom Hardy    Christian Ba… Joseph Gordon…
-##  4 John Carter                   Daryl Sabara Samantha Mor… Polly Walker  
-##  5 Spider-Man 3                  J.K. Simmons James Franco  Kirsten Dunst 
-##  6 Tangled                       Brad Garrett Donna Murphy  M.C. Gainey   
-##  7 Avengers: Age of Ultron       Chris Hemsw… Robert Downe… Scarlett Joha…
-##  8 Batman v Superman: Dawn of J… Henry Cavill Lauren Cohan  Alan D. Purwin
-##  9 Superman Returns              Kevin Spacey Marlon Brando Frank Langella
-## 10 Pirates of the Caribbean: De… Johnny Depp  Orlando Bloom Jack Davenport
-## # ... with 3,797 more rows</code></pre>
+##    titulo                            ator_1        ator_2        ator_3         
+##    &lt;chr&gt;                             &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;          
+##  1 Avatar                            CCH Pounder   Joel David M… Wes Studi      
+##  2 Pirates of the Caribbean: At Wor… Johnny Depp   Orlando Bloom Jack Davenport 
+##  3 The Dark Knight Rises             Tom Hardy     Christian Ba… Joseph Gordon-…
+##  4 John Carter                       Daryl Sabara  Samantha Mor… Polly Walker   
+##  5 Spider-Man 3                      J.K. Simmons  James Franco  Kirsten Dunst  
+##  6 Tangled                           Brad Garrett  Donna Murphy  M.C. Gainey    
+##  7 Avengers: Age of Ultron           Chris Hemswo… Robert Downe… Scarlett Johan…
+##  8 Batman v Superman: Dawn of Justi… Henry Cavill  Lauren Cohan  Alan D. Purwin 
+##  9 Superman Returns                  Kevin Spacey  Marlon Brando Frank Langella 
+## 10 Pirates of the Caribbean: Dead M… Johnny Depp   Orlando Bloom Jack Davenport 
+## # … with 3,797 more rows</code></pre>
 <p>Para retirar colunas da base, base acrescentar um <code>-</code> antes da seleção.</p>
 <pre class="r"><code>imdb %&gt;% 
   select(-ano, - diretor)
 ## # A tibble: 3,807 x 13
-##    titulo duracao cor   generos pais  classificacao orcamento receita
-##    &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;   &lt;int&gt;
-##  1 Avata…     178 Color Action… USA   A partir de … 237000000  7.61e8
-##  2 Pirat…     169 Color Action… USA   A partir de … 300000000  3.09e8
-##  3 The D…     164 Color Action… USA   A partir de … 250000000  4.48e8
-##  4 John …     132 Color Action… USA   A partir de … 263700000  7.31e7
-##  5 Spide…     156 Color Action… USA   A partir de … 258000000  3.37e8
-##  6 Tangl…     100 Color Advent… USA   Livre         260000000  2.01e8
-##  7 Aveng…     141 Color Action… USA   A partir de … 250000000  4.59e8
-##  8 Batma…     183 Color Action… USA   A partir de … 250000000  3.30e8
-##  9 Super…     169 Color Action… USA   A partir de … 209000000  2.00e8
-## 10 Pirat…     151 Color Action… USA   A partir de … 225000000  4.23e8
-## # ... with 3,797 more rows, and 5 more variables: nota_imdb &lt;dbl&gt;,
-## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;
+##    titulo duracao cor   generos pais  classificacao orcamento receita nota_imdb
+##    &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;   &lt;int&gt;     &lt;dbl&gt;
+##  1 Avata…     178 Color Action… USA   A partir de … 237000000  7.61e8       7.9
+##  2 Pirat…     169 Color Action… USA   A partir de … 300000000  3.09e8       7.1
+##  3 The D…     164 Color Action… USA   A partir de … 250000000  4.48e8       8.5
+##  4 John …     132 Color Action… USA   A partir de … 263700000  7.31e7       6.6
+##  5 Spide…     156 Color Action… USA   A partir de … 258000000  3.37e8       6.2
+##  6 Tangl…     100 Color Advent… USA   Livre         260000000  2.01e8       7.8
+##  7 Aveng…     141 Color Action… USA   A partir de … 250000000  4.59e8       7.5
+##  8 Batma…     183 Color Action… USA   A partir de … 250000000  3.30e8       6.9
+##  9 Super…     169 Color Action… USA   A partir de … 209000000  2.00e8       6.1
+## 10 Pirat…     151 Color Action… USA   A partir de … 225000000  4.23e8       7.3
+## # … with 3,797 more rows, and 4 more variables: likes_facebook &lt;int&gt;,
+## #   ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;
 
 imdb %&gt;% 
   select(-starts_with(&quot;ator&quot;))
@@ -273,8 +269,8 @@ imdb %&gt;%
 ##  8 Batma…  2016 Zack S…     183 Color Action… USA   A partir de … 250000000
 ##  9 Super…  2006 Bryan …     169 Color Action… USA   A partir de … 209000000
 ## 10 Pirat…  2006 Gore V…     151 Color Action… USA   A partir de … 225000000
-## # ... with 3,797 more rows, and 3 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;</code></pre>
+## # … with 3,797 more rows, and 3 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;</code></pre>
 <hr />
 </div>
 <div id="ordenando-a-base" class="section level2">
@@ -296,9 +292,8 @@ imdb %&gt;%
 ##  8     10000 Pink …  1972 John W…     108 Color Comedy… USA   A partir de …
 ##  9     13000 The T…  2007 Jane C…       7 Color Romanc… USA   Outros       
 ## 10     15000 Paran…  2007 Oren P…      84 Color Horror  USA   A partir de …
-## # ... with 3,797 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;
+## # … with 3,797 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;
 
 imdb %&gt;% 
   arrange(desc(orcamento)) %&gt;% 
@@ -316,9 +311,8 @@ imdb %&gt;%
 ##  8 250000000 Batma…  2016 Zack S…     183 Color Action… USA   A partir de …
 ##  9 250000000 Pirat…  2011 Rob Ma…     136 Color Action… USA   A partir de …
 ## 10 250000000 Capta…  2016 Anthon…     147 Color Action… USA   A partir de …
-## # ... with 3,797 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;
+## # … with 3,797 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;
 
 imdb %&gt;% 
   arrange(desc(ano), titulo) %&gt;% 
@@ -336,9 +330,8 @@ imdb %&gt;%
 ##  8 Bad M…  2016 Jon Lu…     100 Color Comedy  USA   A partir de …  20000000
 ##  9 Bad M…  2016 Jon Lu…     100 Color Comedy  USA   A partir de …  20000000
 ## 10 Batma…  2016 Zack S…     183 Color Action… USA   A partir de … 250000000
-## # ... with 3,797 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 3,797 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <hr />
 </div>
 <div id="mutate" class="section level2">
@@ -361,7 +354,7 @@ imdb %&gt;%
 ##  8    3.05
 ##  9    2.82
 ## 10    2.52
-## # ... with 3,797 more rows
+## # … with 3,797 more rows
 
 # Criamos uma nova coluna na base
 imdb %&gt;% 
@@ -380,7 +373,7 @@ imdb %&gt;%
 ##  8     183          3.05
 ##  9     169          2.82
 ## 10     151          2.52
-## # ... with 3,797 more rows
+## # … with 3,797 more rows
 
 # Podemos fazer diversas operações em um mesmo mutate.
 imdb %&gt;% 
@@ -402,7 +395,7 @@ imdb %&gt;%
 ##  8   80249062 lucro    
 ##  9   -8930592 prejuizo 
 ## 10  198032628 lucro    
-## # ... with 3,797 more rows</code></pre>
+## # … with 3,797 more rows</code></pre>
 <hr />
 </div>
 <div id="agrupando-e-sumarizando-a-base" class="section level2">
@@ -430,6 +423,7 @@ imdb %&gt;%
 imdb %&gt;% 
   group_by(ano) %&gt;% 
   summarise(qtd_filmes = n())
+## `summarise()` ungrouping output (override with `.groups` argument)
 ## # A tibble: 91 x 2
 ##      ano qtd_filmes
 ##    &lt;int&gt;      &lt;int&gt;
@@ -443,11 +437,12 @@ imdb %&gt;%
 ##  8  1934          1
 ##  9  1935          1
 ## 10  1936          2
-## # ... with 81 more rows
+## # … with 81 more rows
 
 imdb %&gt;% 
   group_by(diretor) %&gt;% 
   summarise(orcamento_medio = mean(orcamento, na.rm = TRUE))
+## `summarise()` ungrouping output (override with `.groups` argument)
 ## # A tibble: 1,813 x 2
 ##    diretor          orcamento_medio
 ##    &lt;chr&gt;                      &lt;dbl&gt;
@@ -461,7 +456,7 @@ imdb %&gt;%
 ##  8 Adam Green               1500000
 ##  9 Adam Jay Epstein             NaN
 ## 10 Adam Marcus              2500000
-## # ... with 1,803 more rows</code></pre>
+## # … with 1,803 more rows</code></pre>
 </div>
 <div id="juntando-duas-bases" class="section level2">
 <h2>Juntando duas bases</h2>
@@ -496,21 +491,21 @@ imdb %&gt;%
 
 imdb_gather
 ## # A tibble: 11,421 x 15
-##    nome_ator importancia_ator titulo   ano diretor duracao cor   generos
-##    &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
-##  1 CCH Poun… ator_1           Avata…  2009 James …     178 Color Action…
-##  2 Johnny D… ator_1           Pirat…  2007 Gore V…     169 Color Action…
-##  3 Tom Hardy ator_1           The D…  2012 Christ…     164 Color Action…
-##  4 Daryl Sa… ator_1           John …  2012 Andrew…     132 Color Action…
-##  5 J.K. Sim… ator_1           Spide…  2007 Sam Ra…     156 Color Action…
-##  6 Brad Gar… ator_1           Tangl…  2010 Nathan…     100 Color Advent…
-##  7 Chris He… ator_1           Aveng…  2015 Joss W…     141 Color Action…
-##  8 Henry Ca… ator_1           Batma…  2016 Zack S…     183 Color Action…
-##  9 Kevin Sp… ator_1           Super…  2006 Bryan …     169 Color Action…
-## 10 Johnny D… ator_1           Pirat…  2006 Gore V…     151 Color Action…
-## # ... with 11,411 more rows, and 7 more variables: pais &lt;chr&gt;,
-## #   classificacao &lt;chr&gt;, orcamento &lt;int&gt;, receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
-## #   likes_facebook &lt;int&gt;, id &lt;int&gt;</code></pre>
+##    nome_ator importancia_ator titulo   ano diretor duracao cor   generos pais 
+##    &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;
+##  1 CCH Poun… ator_1           Avata…  2009 James …     178 Color Action… USA  
+##  2 Johnny D… ator_1           Pirat…  2007 Gore V…     169 Color Action… USA  
+##  3 Tom Hardy ator_1           The D…  2012 Christ…     164 Color Action… USA  
+##  4 Daryl Sa… ator_1           John …  2012 Andrew…     132 Color Action… USA  
+##  5 J.K. Sim… ator_1           Spide…  2007 Sam Ra…     156 Color Action… USA  
+##  6 Brad Gar… ator_1           Tangl…  2010 Nathan…     100 Color Advent… USA  
+##  7 Chris He… ator_1           Aveng…  2015 Joss W…     141 Color Action… USA  
+##  8 Henry Ca… ator_1           Batma…  2016 Zack S…     183 Color Action… USA  
+##  9 Kevin Sp… ator_1           Super…  2006 Bryan …     169 Color Action… USA  
+## 10 Johnny D… ator_1           Pirat…  2006 Gore V…     151 Color Action… USA  
+## # … with 11,411 more rows, and 6 more variables: classificacao &lt;chr&gt;,
+## #   orcamento &lt;int&gt;, receita &lt;int&gt;, nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;,
+## #   id &lt;int&gt;</code></pre>
 <hr />
 </div>
 <div id="spread" class="section level2">
@@ -536,12 +531,11 @@ imdb_spread
 ##  8 Batma…  2016 Zack S…     183 Color Action… USA   A partir de … 250000000
 ##  9 Super…  2006 Bryan …     169 Color Action… USA   A partir de … 209000000
 ## 10 Pirat…  2006 Gore V…     151 Color Action… USA   A partir de … 225000000
-## # ... with 3,797 more rows, and 7 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, id &lt;int&gt;, ator_1 &lt;chr&gt;,
-## #   ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
+## # … with 3,797 more rows, and 7 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, id &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <hr />
 </div>
-<div id="outras-funcoes-do-tidyr" class="section level2">
+<div id="outras-funções-do-tidyr" class="section level2">
 <h2>Outras funções do <code>tidyr</code></h2>
 <ul>
 <li><p>A função <code>unite()</code> junta duas ou mais colunas usando algum separador (<code>_</code>, por exemplo).</p></li>
@@ -566,9 +560,8 @@ imdb_spread
 ##  8 Batman v Supe…  2016     183 Color Action… USA   A partir de … 250000000
 ##  9 Superman Retu…  2006     169 Color Action… USA   A partir de … 209000000
 ## 10 Pirates of th…  2006     151 Color Action… USA   A partir de … 225000000
-## # ... with 3,797 more rows, and 6 more variables: receita &lt;int&gt;,
-## #   nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;,
-## #   ator_3 &lt;chr&gt;</code></pre>
+## # … with 3,797 more rows, and 6 more variables: receita &lt;int&gt;, nota_imdb &lt;dbl&gt;,
+## #   likes_facebook &lt;int&gt;, ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 <pre class="r"><code>imdb %&gt;% 
   separate(
     col = generos, 
@@ -589,7 +582,7 @@ imdb_spread
 ##  8 Batma…  2016 Zack S…     183 Color Action   Adventu… Sci-Fi   USA  
 ##  9 Super…  2006 Bryan …     169 Color Action   Adventu… Sci-Fi   USA  
 ## 10 Pirat…  2006 Gore V…     151 Color Action   Adventu… Fantasy  USA  
-## # ... with 3,797 more rows, and 8 more variables: classificacao &lt;chr&gt;,
+## # … with 3,797 more rows, and 8 more variables: classificacao &lt;chr&gt;,
 ## #   orcamento &lt;int&gt;, receita &lt;int&gt;, nota_imdb &lt;dbl&gt;, likes_facebook &lt;int&gt;,
 ## #   ator_1 &lt;chr&gt;, ator_2 &lt;chr&gt;, ator_3 &lt;chr&gt;</code></pre>
 </div>

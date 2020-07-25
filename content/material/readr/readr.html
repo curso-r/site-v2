@@ -1,0 +1,106 @@
+
+
+
+<div id="readr" class="section level2">
+<h2>O pacote readr</h2>
+<p>O pacote <code>readr</code>do tidyverse é utilizado para importar arquivos de texto, como <code>.txt</code> ou <code>.csv</code>, para o R. Para carregá-lo, rode o código:</p>
+<pre class="r"><code>library(readr)</code></pre>
+<p>O <code>readr</code> transforma arquivos de textos em <code>tibbles</code> usando as funções:</p>
+<ul>
+<li><p><code>read_csv()</code>: para arquivos separados por vírgula.</p></li>
+<li><p><code>read_tsv()</code>: para arquivos separados por tabulação.</p></li>
+<li><p><code>read_delim()</code>: para arquivos separados por um delimitador genérico. O argumento <code>delim=</code> indica qual caracter separa cada coluna no arquivo de texto.</p></li>
+<li><p><code>read_table()</code>: para arquivos de texto tabular com colunas separadas por espaço.</p></li>
+<li><p><code>read_fwf()</code>: para arquivos compactos que devem ter a largura de cada coluna especificada.</p></li>
+<li><p><code>read_log()</code>: para arquivos padrões de log.</p></li>
+</ul>
+<p>Vamos mostrar na próxima seção como importar as extensões mais comuns: <code>.csv</code> e <code>.txt</code>.</p>
+<div id="lendo-arquivos-de-texto" class="section level3">
+<h3>Lendo arquivos de texto</h3>
+<p>Como exemplo, utilizaremos uma base de filmes do IMDB, gravada em diversos formatos. O download dos arquivos pode ser realizado a partir <a href="https://github.com/curso-r/livro-material/raw/master/assets/data/imdb.zip">deste repositório</a>.</p>
+<p>Primeiro, vamos ler a base em formato <code>.csv</code>.</p>
+<pre class="r"><code>imdb_csv &lt;- read_csv(file = &quot;imdb.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   titulo = col_character(),
+##   ano = col_double(),
+##   diretor = col_character(),
+##   duracao = col_double(),
+##   cor = col_character(),
+##   generos = col_character(),
+##   pais = col_character(),
+##   classificacao = col_character(),
+##   orcamento = col_double(),
+##   receita = col_double(),
+##   nota_imdb = col_double(),
+##   likes_facebook = col_double(),
+##   ator_1 = col_character(),
+##   ator_2 = col_character(),
+##   ator_3 = col_character()
+## )</code></pre>
+<p>A mensagem retornada pela função indica qual classe foi atribuída para cada coluna. Repare que o argumento <code>file=</code> representa o caminho até o arquivo. Se o arquivo a ser lido não estiver no diretório de trabalho da sua sessão, você precisa especificar o caminho até o arquivo.</p>
+<pre class="r"><code># Se o arquivo estiver dentro de uma pasta chamada dados.
+imdb_csv &lt;- read_csv(file = &quot;dados/imdb.csv&quot;)</code></pre>
+<p>A maioria das funções de leitura do <code>readr</code> possuem argumentos muito úteis para resolver problemas de importação:</p>
+<ul>
+<li><p><code>col_names=</code>: indica se a primeira linha da base contém ou não o nome das colunas. Também pode ser utilizado para (re)nomear colunas.</p></li>
+<li><p><code>col_types=</code>: caso alguma coluna seja importada com a classe errada (uma coluna de números foi importada como texto, por exemplo), você pode usar esse argumento para especificar a classe das colunas.</p></li>
+<li><p><code>locale=</code>: útil para tratar problema de <em>encoding</em>.</p></li>
+<li><p><code>skip=</code>: pula linhas no começo do arquivo antes de iniciar a importação. Útil para quando o arquivo a ser importado vem com metadados ou qualquer tipo de texto nas primeiras linhas, antes da base.</p></li>
+<li><p><code>na=</code>: indica quais <em>strings</em> deverão ser considaras <code>NA</code> na hora da importação.</p></li>
+</ul>
+<p>Em alguns países, como o Brasil, as vírgulas são utilizadas para separar as casas decimais dos números, inviabilizando o uso de arquivos <code>.csv</code>. Nesses casos, quando a vírgula é o separador de decimal, os arquivos <code>.csv</code> passam a ser separados por ponto-e-vírgula. Para importar bases de arquivos separados por ponto-e-vírgula no R, basta usar a função <code>read_csv2()</code>.</p>
+<pre class="r"><code>imdb_csv2 &lt;- read_csv2(&quot;dados/imdb2.csv&quot;)</code></pre>
+<p>Arquivos <code>.txt</code> em geral podem ser lidos com a função <code>read_delim()</code>. Além do caminho até o arquivo, você também precisa indicar qual é o caractere utilizado para separar as colunas da base. Um arquivo separado por tabulação, por exemplo, pode ser lido utilizando a o código abaixo. O código <code>\t</code> é uma forma textual de representar a tecla TAB.</p>
+<pre class="r"><code>imdb_txt &lt;- read_delim(&quot;dados/imdb.txt&quot;, delim = &quot;\t&quot;)</code></pre>
+<p>Repare que a sintaxe é igual a da função <code>read_csv()</code>. Em geral, as funções de importação do <code>tidyverse</code> terão sintaxe e comportamento muito parecidos.</p>
+<p>A seguir, vamos falar das funções <code>parse_()</code>, muito úteis para tratar problemas na classe das variáveis na hora da importação.</p>
+</div>
+<div id="parseando-valores" class="section level3">
+<h3>Parseando valores</h3>
+</div>
+<div id="locale" class="section level3">
+<h3>Locale</h3>
+</div>
+<div id="escrevendo-arquivos-de-texto" class="section level3">
+<h3>Escrevendo arquivos de texto</h3>
+<p>Para a maioria das funções <code>read_</code>, existe uma respectiva função <code>write_</code>. Essas funções servem para salvar bases em um formato específico de arquivo. Além do caminho/nome do arquivo a ser criado, você também precisa passar o objeto que será escrito. Para o arquivo criado funcionar corretamente, você precisa especificar a extensão correta no nome do arquivo.</p>
+<pre class="r"><code># Arquivo .csv
+write_csv(x = mtcars, path = &quot;data/mtcars.csv&quot;)
+
+# Base separada por tabulação
+write_delim(x = mtcars, path = &quot;data/mtcars.txt&quot;, delim = &quot;\t&quot;)</code></pre>
+</div>
+<div id="arquivos-.rds" class="section level3">
+<h3>Arquivos .rds</h3>
+<p>A linguagem R tem uma extensão própria de arquivos binários chamada <code>RDS</code> ou <code>.rds</code>. Essa extensão pode ser utilizada para guarda qualquer tipo de objeto do R, inclusive bases de dados. Temos duas principais vantagens ao utilizarmos essa extensão para salvarvamos as nossas bases:</p>
+<ul>
+<li><p>ele salva as classes especificadas para as colunas;</p></li>
+<li><p>ele pode ser compactado, gerando arquivos muito menores.</p></li>
+</ul>
+<p>A desvantagem é que ele só poderá ser lido dentro do R.</p>
+<p>Para criar um arquivo <code>.rds</code>, utilize a função <code>write_rds()</code>.</p>
+<pre class="r"><code>write_rds(mtcars, path = &quot;mtcars.rds&quot;, compress = &quot;gz&quot;)</code></pre>
+<p>O argumento <code>compress</code> é opcional e indica qual o tipo de compactação deve ser feito. O padrão é não compactar.</p>
+<p>Para ler um arquivo <code>.rds</code> de volta para o R, utilizamos a função <code>read_rds()</code>. Repare que essa função não possui outros argumentos, pois o objeto importado será exatamente igual ao objeto que foi gravado no arquivo.</p>
+<pre class="r"><code>imdb_rds &lt;- read_rds(path = &quot;imdb.rds&quot;)</code></pre>
+<div id="exercícios" class="section level4 unnumbered">
+<h4>Exercícios</h4>
+<ol style="list-style-type: decimal">
+<li><p>Qual a diferença entre as funções <code>read_csv()</code> e <code>read_csv2()</code>?</p></li>
+<li><p>Leia o arquivo <code>imdb.csv</code> utilizando a função <code>read_delim()</code>.</p></li>
+<li><p>Escreva a base mtcars em um arquivo <code>mtcars.csv</code> que não contenha o nome das colunas.</p></li>
+<li><p>Use a função <code>write_rds()</code> para salvar em arquivos</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Um número.</li>
+<li>Um vetor de strings.</li>
+<li>Uma lista com valores númericos, textuais e lógicos.</li>
+<li>As 3 primeiras colunas da base <code>mtcars</code>.</li>
+</ol>
+<ol start="5" style="list-style-type: decimal">
+<li>Utilize a função <code>read_rds()</code> para importar de volta para o R os arquivos criados no exercício 4.</li>
+</ol>
+</div>
+</div>
+</div>

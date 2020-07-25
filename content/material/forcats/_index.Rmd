@@ -237,7 +237,7 @@ fator <- factor(c("a","a","a","b","b","c"))
 vetor <- c(1,2,3,1,1,1.2)
 
 #ordena os níveis de acordo com a média da variável vetor em cada nível
-fct_reorder(fator, vetor, fun = mean)
+fct_reorder(fator, vetor, .fun = mean)
 ```
 
 - `fct_relevel`, que "puxa" os níveis de um fator para o começo do vetor de níveis.
@@ -270,7 +270,7 @@ A visualização abaixo ordena os níveis de "instrumento.usado" de acordo com a
 
 ```{r}
 bd_enasp_abj %>%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median)) %>% 
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median)) %>% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 
   geom_boxplot() +
   theme_bw(15) +
@@ -283,7 +283,7 @@ A visualização abaixo exemplifica um caso em que a ordem dos facets foi invert
 
 ```{r}
 bd_enasp_abj %>%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median),
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median),
          `sexo.vítima` = fct_recode(`sexo.vítima`, Homem = "M", Mulher = "F")) %>% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 
   geom_boxplot() +
@@ -296,7 +296,7 @@ bd_enasp_abj %>%
 
 ```{r}
 bd_enasp_abj %>%
-  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, fun = median),
+  mutate(instrumento.usado = fct_reorder(instrumento.usado, `idade.vítima`, .fun = median),
          `sexo.vítima` = fct_recode(`sexo.vítima`, Homem = "M", Mulher = "F"),
          `sexo.vítima` = fct_relevel(`sexo.vítima`, "Homem", "Mulher")) %>% 
   ggplot(aes(x = instrumento.usado, y = `idade.vítima`, fill = instrumento.usado)) + 
