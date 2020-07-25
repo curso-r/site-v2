@@ -9,7 +9,7 @@ minidesc: "O pipe (%>%) é uma das funções do R com maior importância na atua
 desc: "O pipe (%>%) é uma das funções do R com maior importância na atualidade. Seu uso revolucionou a forma com que usamos o R e dita a filosofia por trás da construção de diversos pacotes."
 requisitos: ["r-base"]
 layout: "article"
-ordem: 3
+ordem: 20
 ---
 
 ```{r setup, include=FALSE}
