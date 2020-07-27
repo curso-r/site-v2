@@ -15,7 +15,7 @@ A terminologia _master/slave_ (mestre/escravo) existe há muitas décadas na com
 
 Várias linguagens de programação já abandonaram essa terminologia. Em 2018, no caso em que possivelmente houve maior repercussão até hoje, o Python [abandonou](https://www.vice.com/en_us/article/8x7akv/masterslave-terminology-was-removed-from-python-programming-language) a palavra _master_ por _parent process_ (processo pai) e a palavra _slave_ por _worker_ (trabalhador) ou _helper_ (ajudante) após um [debate](https://bugs.python.org/issue34605) acalorado.
 
-Enquanto isso, já em 2014, o Django passou a adotar a terminologia _primary/replica_ (primário/réplica) e foi seguido pelo Drupal. Em 2017, o Internet Systems Consortium optou por _primary/secondary_ (primário/secundário). Como pode-se ver, não faltam alternativas para uma referência à escravidão.
+Enquanto isso, já em 2014, o Django passou a adotar a terminologia _primary/replica_ (primário/réplica) e foi seguido pelo Drupal. Em 2017, o Internet Systems Consortium optou por _primary/secondary_ (primário/secundário). Como se pode ver, não faltam alternativas para uma referência à escravidão.
 
 Enfim, este ano foi a vez do GitHub. Desde sua criação, a plataforma de controle de versão tem utilizado o termo _master_ para tratar do _branch_ principal de um repositório e, apesar de nem existir uma analogia para algo como um _slave branch_, a palavra continua até hoje. Antes tarde do que nunca, a empresa [anunciou](https://www.vice.com/en_us/article/k7qbyv/github-to-remove-masterslave-terminology-from-its-platform) que vai fazer uma transição em breve para o termo _main_ (principal) e aposentar seu antecessor.
 
@@ -43,6 +43,6 @@ git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 git push origin --delete master
 ```
 
-Note apenas que o Passo 4 deve ser realizado diretamente o GitHub de acordo com a [documentação](https://docs.github.com/pt/github/administering-a-repository/setting-the-default-branch) (disponível em português).
+Note apenas que o Passo 4 deve ser realizado diretamente no GitHub de acordo com a [documentação](https://docs.github.com/pt/github/administering-a-repository/setting-the-default-branch) (disponível em português).
 
 Caso você queira que o processo seja completamente automatizado, existe um [aplicativo web](https://eyqs.ca/tools/rename/) que faz tudo para você. Para saber mais sobre os esforços do próprio GitHub, acesse [a página](https://github.com/github/renaming) na qual estão sendo discutidas as mudanças.
