@@ -18,11 +18,40 @@
     </div>
     
     <div class="container-fluid">
+      
+    <header class="section-header">
+      <h3 style = "font-size: 24px">Tutoriais</h3>
+      <p style = "margin-block-end: 5px;">Tutoriais dos principais pacotes utilizados para Ciência de Dados.</p>
+    </header>
     
      {{ partial "hex-material.html" . }}
+     
+    </div>
+     
+    <div class="container">
       
+     <header class="section-header">
+      <h3 style = "font-size: 24px">Material dos cursos</h3>
+      <p style = "margin-block-end: 5px;">Confira os slides e scripts utilizados em nossos cursos.</p>
+      
+      {{ partial "material-cursos.html" . }}
+      
+    </header>
+    
     </div>
     
+    <div class="container">
+      
+     <header class="section-header">
+      <h3 style = "font-size: 24px">Material extra</h3>
+      <p style = "margin-block-end: 5px;">Confira alguns materias extras produzidos pela Curso-R.</p>
+      
+      {{ partial "material-extra.html" . }}
+      
+    </header>
+    
+    </div>
+      
     </section>
     
     {{ partial "duvidas.html" . }}

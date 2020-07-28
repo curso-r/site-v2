@@ -17,9 +17,9 @@ ordem: 30
 <p>O conteúdo a seguir faz parte do nosso livro <a href="https://livro.curso-r.com/5-2-readr.html">Ciência de Dados em R</a>.</p>
 <div id="readr" class="section level2">
 <h2>O pacote readr</h2>
-<p>O pacote <code>readr</code>do tidyverse é utilizado para importar arquivos de texto, como <code>.txt</code> ou <code>.csv</code>, para o R. Para carregá-lo, rode o código:</p>
+<p>O pacote <code>{readr}</code>do tidyverse é utilizado para importar arquivos de texto, como <code>.txt</code> ou <code>.csv</code>, para o R. Para carregá-lo, rode o código:</p>
 <pre class="r"><code>library(readr)</code></pre>
-<p>O <code>readr</code> transforma arquivos de textos em <code>tibbles</code> usando as funções:</p>
+<p>O <code>{readr}</code> transforma arquivos de textos em <code>tibbles</code> usando as funções:</p>
 <ul>
 <li><p><code>read_csv()</code>: para arquivos separados por vírgula.</p></li>
 <li><p><code>read_tsv()</code>: para arquivos separados por tabulação.</p></li>
@@ -55,7 +55,7 @@ ordem: 30
 <p>A mensagem retornada pela função indica qual classe foi atribuída para cada coluna. Repare que o argumento <code>file=</code> representa o caminho até o arquivo. Se o arquivo a ser lido não estiver no diretório de trabalho da sua sessão, você precisa especificar o caminho até o arquivo.</p>
 <pre class="r"><code># Se o arquivo estiver dentro de uma pasta chamada dados.
 imdb_csv &lt;- read_csv(file = &quot;dados/imdb.csv&quot;)</code></pre>
-<p>A maioria das funções de leitura do <code>readr</code> possuem argumentos muito úteis para resolver problemas de importação:</p>
+<p>A maioria das funções de leitura do <code>{readr}</code> possuem argumentos muito úteis para resolver problemas de importação:</p>
 <ul>
 <li><p><code>col_names=</code>: indica se a primeira linha da base contém ou não o nome das colunas. Também pode ser utilizado para (re)nomear colunas.</p></li>
 <li><p><code>col_types=</code>: caso alguma coluna seja importada com a classe errada (uma coluna de números foi importada como texto, por exemplo), você pode usar esse argumento para especificar a classe das colunas.</p></li>
@@ -67,14 +67,117 @@ imdb_csv &lt;- read_csv(file = &quot;dados/imdb.csv&quot;)</code></pre>
 <pre class="r"><code>imdb_csv2 &lt;- read_csv2(&quot;dados/imdb2.csv&quot;)</code></pre>
 <p>Arquivos <code>.txt</code> em geral podem ser lidos com a função <code>read_delim()</code>. Além do caminho até o arquivo, você também precisa indicar qual é o caractere utilizado para separar as colunas da base. Um arquivo separado por tabulação, por exemplo, pode ser lido utilizando a o código abaixo. O código <code>\t</code> é uma forma textual de representar a tecla TAB.</p>
 <pre class="r"><code>imdb_txt &lt;- read_delim(&quot;dados/imdb.txt&quot;, delim = &quot;\t&quot;)</code></pre>
-<p>Repare que a sintaxe é igual a da função <code>read_csv()</code>. Em geral, as funções de importação do <code>tidyverse</code> terão sintaxe e comportamento muito parecidos.</p>
+<p>Repare que a sintaxe é igual a da função <code>read_csv()</code>. Em geral, as funções de importação do <code>{tidyverse}</code> terão sintaxe e comportamento muito parecidos.</p>
 <p>A seguir, vamos falar das funções <code>parse_()</code>, muito úteis para tratar problemas na classe das variáveis na hora da importação.</p>
-</div>
-<div id="parseando-valores" class="section level3">
-<h3>Parseando valores</h3>
 </div>
 <div id="locale" class="section level3">
 <h3>Locale</h3>
+<p>Muitas funções de importação e formatação possuem um argumento <code>locale</code>. Esse argumento é utilizado para definir opções de formatação próprias de uma certa localidade, como idioma, formato de data e hora, fuso horário, separador de decimal e milhar ou encoding.</p>
+<p>O pacote <code>{readr}</code> possui uma função chamada <code>locale()</code>, que pode ser utilizada para definir todos esses atributos. Para saber quais são os padrões atualmente definidos na sua sessão, basta rodar:</p>
+<pre class="r"><code>locale()
+## &lt;locale&gt;
+## Numbers:  123,456.78
+## Formats:  %AD / %AT
+## Timezone: UTC
+## Encoding: UTF-8
+## &lt;date_names&gt;
+## Days:   Sunday (Sun), Monday (Mon), Tuesday (Tue), Wednesday (Wed), Thursday
+##         (Thu), Friday (Fri), Saturday (Sat)
+## Months: January (Jan), February (Feb), March (Mar), April (Apr), May (May),
+##         June (Jun), July (Jul), August (Aug), September (Sep), October
+##         (Oct), November (Nov), December (Dec)
+## AM/PM:  AM/PM</code></pre>
+<p>Em geral, teremos padrões norte-americanos. Se quisermos que os nomes de dias e meses fiquem em português, podemos fazer:</p>
+<pre class="r"><code>locale(date_names = &quot;pt&quot;)
+## &lt;locale&gt;
+## Numbers:  123,456.78
+## Formats:  %AD / %AT
+## Timezone: UTC
+## Encoding: UTF-8
+## &lt;date_names&gt;
+## Days:   domingo (dom), segunda-feira (seg), terça-feira (ter), quarta-feira
+##         (qua), quinta-feira (qui), sexta-feira (sex), sábado (sáb)
+## Months: janeiro (jan), fevereiro (fev), março (mar), abril (abr), maio (mai),
+##         junho (jun), julho (jul), agosto (ago), setembro (set), outubro
+##         (out), novembro (nov), dezembro (dez)
+## AM/PM:  AM/PM</code></pre>
+<p>Ou trocar o separador de decimal de ponto para vírgula, caso a base a ser importada esteja nesse formato.</p>
+<pre class="r"><code>locale(decimal_mark = &quot;,&quot;)
+## &lt;locale&gt;
+## Numbers:  123.456,78
+## Formats:  %AD / %AT
+## Timezone: UTC
+## Encoding: UTF-8
+## &lt;date_names&gt;
+## Days:   Sunday (Sun), Monday (Mon), Tuesday (Tue), Wednesday (Wed), Thursday
+##         (Thu), Friday (Fri), Saturday (Sat)
+## Months: January (Jan), February (Feb), March (Mar), April (Apr), May (May),
+##         June (Jun), July (Jul), August (Aug), September (Sep), October
+##         (Oct), November (Nov), December (Dec)
+## AM/PM:  AM/PM</code></pre>
+<p>A função <code>locale()</code> deve ser utilizada dentro das funções <code>read_()</code>, no argumento <code>locale</code>. Uma utilização muito comum é a definição do <em>encoding</em> do arquivo. O encoding se refere a como o computador traduz os caracteres que vemos na tela para os valores binários que ele utiliza internamente. Existem vários tipos de encoding e isso é um problema principalmente porque o Windows utiliza um encoding diferente do Linux/Mac. Você saberá que tem um problema de encoding quando letras com acento ou outros caracteres especiais ficarem desconfigurados após importar uma base para o R.</p>
+<pre class="r"><code># Vamos produzir um problema de encoding
+
+frase_com_acentos &lt;- &quot;Você comerá uma maçã amanhã à tarde&quot;
+
+# Vendo encoding. UTF-8 é o padrão do Linux/Mac
+Encoding(frase_com_acentos)
+## [1] &quot;UTF-8&quot;
+
+# Forçando um novo encoding. 
+# latin1 é um dos padrões que funcionam no Windows.
+Encoding(frase_com_acentos) &lt;-  &quot;latin1&quot;
+
+# Agora temos um problema de encoding
+frase_com_acentos
+## [1] &quot;VocÃª comerÃ¡ uma maÃ§Ã£ amanhÃ£ Ã  tarde&quot;</code></pre>
+<p>Quando estivermos enfrentando esse problema, devemos dizer à função <code>read_()</code> qual o encoding deve ser utilizado no arquivo.</p>
+<pre class="r"><code>read_csv(&quot;base_que_veio_do_windows.csv&quot;, locale = locale(encoding = &quot;latin1&quot;))</code></pre>
+<p>O <code>latin1</code> é apenas um dos encodings que podem funcionar em arquivos do Windows. Outras sugestões são: <code>windows-1250</code>, <code>windows-1252</code>, <code>ISO-8859-2</code> e <code>ISO-8859-1</code>. Se você estiver lendo um arquivo cruado no Linux/Mac no Windows, basta usar o encoding <code>UTF-8</code>.</p>
+<blockquote>
+<p>Eu consegui resolver 99% dos meus problemas de encoding quando passei a fingir que o Windows não existe. — Julio Trecenti</p>
+</blockquote>
+<p>Na seção a seguir, mostramos mais alguns exemplos da função <code>locale()</code>.</p>
+</div>
+<div id="parseando-valores" class="section level3">
+<h3>Parseando valores</h3>
+<p>O pacote <code>{readr}</code> possui algumas funções muito úteis para parsear valores. Parsear é um termo muito utilizado em programação e tem o sentido de <em>arrumar</em> ou <em>formatar</em>. Se estamos parseando um número, por exemplo, estamos pegando um texto que é muito parecido com um número e o transforando em um número de fato.</p>
+<pre class="r"><code>parse_number(c(&quot;5&quot;, &quot;5.0&quot;, &quot;5,0&quot;, &quot;R$5.00&quot;, &quot;5 a&quot;))
+## [1]  5  5 50  5  5</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-16"></span>
+<img src="https://raw.githubusercontent.com/curso-r/livro-material/master/assets/img/importacao/parse_number.png" alt="Arte por Allison Horst (@allison_horst). Veja nas Referências onde encontrá-la." width="500" height="500" />
+<p class="caption">
+Figure 1: Arte por Allison Horst (<span class="citation">@allison_horst</span>). Veja nas Referências onde encontrá-la.
+</p>
+</div>
+<p>Veja que podemos usar o argumento <code>locale</code> para especificar coordenadas para o parseamento</p>
+<pre class="r"><code>parse_number(&quot;5,0&quot;, locale = locale(decimal_mark = &quot;,&quot;))
+## [1] 5</code></pre>
+<p>ou o idioma usado em datas</p>
+<pre class="r"><code># Inglês
+parse_date(
+  &quot;01/June/2010&quot;, 
+  format = &quot;%d/%B/%Y&quot;
+)
+## [1] &quot;2010-06-01&quot;
+
+# Português
+parse_date(
+  &quot;01/Junho/2010&quot;, 
+  format = &quot;%d/%B/%Y&quot;,
+  locale = locale(date_names = &quot;pt&quot;)
+)
+## [1] &quot;2010-06-01&quot;</code></pre>
+<p>Você também pode especificar <code>NAs</code> utilizando o argumento <code>na</code>.</p>
+<pre class="r"><code>parse_number(c(&quot;5&quot;, &quot;5.0&quot;, &quot;5,0&quot;, &quot;R$5.00&quot;, &quot;5 a&quot;), na = &quot;5 a&quot;)
+## [1]  5  5 50  5 NA</code></pre>
+<p>Outras funções de parseamento úteis são:</p>
+<ul>
+<li><code>readr::parse_integer()</code>, para parsear números inteiros.</li>
+<li><code>readr::parse_character()</code>, para parsear strings</li>
+<li><code>readr::parse_date()</code>, <code>readr::parse_time()</code>, <code>readr::parse_datetime()</code>para parsear datas, horas e data/horas.</li>
+</ul>
+<p>Todas essas funções são utilizadas nas colunas de uma base quando utilizamos as funções de importação do <code>{readr}</code>. Assim, se algum valor foi modificado incorretamente durante a importação, você pode testar importar tudo como texto (<code>character</code>) e usar essas funções para reproduzir a transformação que o <code>{readr}</code> fez.</p>
 </div>
 <div id="escrevendo-arquivos-de-texto" class="section level3">
 <h3>Escrevendo arquivos de texto</h3>

@@ -1,20 +1,6 @@
----
-title: "R Básico"
-author: "Curso-R"
-date: 2018-07-16
-categories: ["R"]
-tags: ["R-Básico"]
-slug: "r-base"
-minidesc: "Comece a se ambientar com o básico da linguagem R."
-desc: "Neste capítulo vamos introduzir o R, suas principais estruturas de dados e um pequeno vocabulário de funções úteis."
-requisitos: ["rstudio"]
-layout: "article"
-ordem: 10
----
 
 
 
-<p>O conteúdo a seguir faz parte do nosso livro <a href="https://livro.curso-r.com/3-r-base.html">Ciência de Dados em R</a>.</p>
 <div id="r-base" class="section level1">
 <h1>R Básico</h1>
 <p>Introduziremos aqui os principais conceitos de programação em R. Indicamos a leitura deste capítulo a quem nunca teve contato com uma linguagem de programação ou a quem gostaria de entender um pouco melhor a estrutura de objetos, funções e classes do R.</p>
@@ -24,7 +10,7 @@ ordem: 10
 <p>A linguagem <code>R</code> é bem intuitiva. É possível fazer bastante coisa à base da tentativa e erro. Além disso, grande parte do conhecimento é escalável, isto é, aprender a utilizar uma função é meio caminho andado para aprender todas as outras funções que operam de forma semelhante<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <p>No entanto, a intuição não infalível, e recorrentemente vamos precisar de ajuda para rodar alguma função ou descobrir como fazer alguma tarefa no R. Felizmente, a comunidade R é bem ativa e existem vários lugares para buscar respostas. Nesta seção, vamos apresentar as principais maneiras algumas dessas maneiras.</p>
 <div class="figure" style="text-align: center"><span id="fig:r-base-1"></span>
-<img src="https://raw.githubusercontent.com/curso-r/livro-material/master/assets/img/r-base/code_hero_rstats.png" alt="Arte por Allison Horst. Procure por @allison_horst nas redes sociais para encontrá-la." width="500" height="500" />
+<img src="https://raw.githubusercontent.com/curso-r/livro-material/master/assets/img/r-base/code_hero_rstats.png" alt="Arte por Allison Horst. Procure por @allison_horst nas redes sociais para encontrá-la."  />
 <p class="caption">
 Figure 1: Arte por Allison Horst. Procure por <span class="citation">@allison_horst</span> nas redes sociais para encontrá-la.
 </p>
@@ -1070,7 +1056,7 @@ x &lt;- 1
 if (x == 1) {         
   Sys.time()
 }
-## [1] &quot;2020-07-28 20:00:04 -03&quot;</code></pre>
+## [1] &quot;2020-07-28 20:00:06 -03&quot;</code></pre>
 <p>O R só vai executar o que está na expressão dentro das chaves <code>{}</code> se a expressão que estiver dentro dos parênteses <code>()</code> retornar <code>TRUE</code>. Veja outro exemplo:</p>
 <pre class="r"><code># Vai fazer  a soma
 x &lt;- c(1, 3, 10, 15)
@@ -1420,11 +1406,11 @@ x &lt;- 1:N
 y &lt;- 5 + 2 * x + rnorm(N, sd = 30)
 
 plot(x, y)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-1-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No código acima, a função <code>rnorm()</code> gera uma amostra aleatória da distribuição Normal com média 0 e desvio-padrão 30.</p>
 <p>O parâmetro <code>type = "l"</code> indica que queremos que os pontos sejam interligados por linhas.</p>
 <pre class="r"><code>plot(x, y, type = &quot;l&quot;)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-2-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="histograma" class="section level4">
 <h4>Histograma</h4>
@@ -1434,9 +1420,9 @@ plot(x, y)</code></pre>
 <li><code>breaks</code>: número (aproximado) de retângulos.</li>
 </ul>
 <pre class="r"><code>hist(rnorm(1000))</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-3-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>hist(rnorm(1000), breaks = 6)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-4-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="boxplot" class="section level4">
 <h4>Boxplot</h4>
@@ -1445,11 +1431,11 @@ plot(x, y)</code></pre>
 <li><code>x</code>: o vetor numérico para o qual o boxplot será construído.</li>
 </ul>
 <pre class="r"><code>boxplot(mtcars$mpg, col = &quot;lightgray&quot;)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-5-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Observe que o argumento <code>col=</code> muda a cor da caixa do boxplot.</p>
 <p>Para mapear duas variáveis ao gráfico, passamos um <em>data frame</em> para o argumento <code>data=</code> e utilizamos a seguinte sintaxe <code>var_numerica ~ var_categorica</code>.</p>
 <pre class="r"><code>boxplot(mpg ~ cyl, data = mtcars, col = &quot;purple&quot;)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-6-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="gráfico-de-barras" class="section level4">
 <h4>Gráfico de barras</h4>
@@ -1462,7 +1448,7 @@ tabela
 ## 11  7 14
 
 barplot(tabela)</code></pre>
-<p><img src="/material/r-base/_index_files/figure-html/r-base-plot-7-1.png" width="500" height="500" style="display: block; margin: auto;" /></p>
+<p><img src="/material/r-base/r-base_files/figure-html/r-base-plot-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>

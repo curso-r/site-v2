@@ -1,0 +1,188 @@
+
+
+
+<div id="pipe" class="section level1">
+<h1>Pipe</h1>
+<p>O operador <code>%&gt;%</code> (<em>pipe</em>) foi uma das grandes revoluções recentes do R, tornando a escrita e leitura de códigos mais intuitiva e compreensível. Ele foi introduzido por <a href="https://github.com/smbache">Stefan Milton Bache</a> no pacote <code>magrittr</code>, cujo nome é uma referência ao famoso quadro do pintor belga René Magritte <em>La Trahison des images (Ceci n’est pas une pipe)</em>.</p>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="https://raw.githubusercontent.com/curso-r/livro-material/master/assets/img/pipe/ceci-nest-pas-une-pipe.jpg" alt="Reprodução do quadro La Trahison des images (Ceci n’est pas une pipe). do pintor René Magritte."  />
+<p class="caption">
+Figure 1: Reprodução do quadro La Trahison des images (Ceci n’est pas une pipe). do pintor René Magritte.
+</p>
+</div>
+<p>Para começar a utilizar o <em>pipe</em>, instale e carregue o pacote <code>magrittr</code>.</p>
+<pre class="r"><code>install.packages(&quot;magrittr&quot;)
+library(magrittr)</code></pre>
+<div id="o-operador-pipe" class="section level2">
+<h2>O operador pipe</h2>
+<p>A ideia do operador <code>%&gt;%</code> (<em>pipe</em>) é bem simples: usar o valor resultante da expressão do lado esquerdo como primeiro argumento da função do lado direito.</p>
+<pre class="r"><code># As duas linhas abaixo são equivalentes.
+
+f(x, y)
+x %&gt;% f(y)</code></pre>
+<p>Nos casos mais simples, o <em>pipe</em> parece não trazer grandes vantagens. Agora, veja como fica um caso com mais etapas.</p>
+<pre class="r"><code># Vamos calcular a raiz quadrada da soma dos valores de 1 a 4. Primeiro, sem o pipe.
+
+x &lt;- c(1, 2, 3, 4)
+sqrt(sum(x))</code></pre>
+<pre><code>## [1] 3.162278</code></pre>
+<pre class="r"><code># Agora com o pipe.
+
+x %&gt;% sum() %&gt;% sqrt()</code></pre>
+<pre><code>## [1] 3.162278</code></pre>
+<p>O caminho que o código <code>x %&gt;% sum %&gt;% sqrt</code> seguiu foi enviar o objeto <code>x</code> como argumento da função <code>sum()</code> e, em seguida, enviar a saida da expressão <code>sum(x)</code> como argumento da função <code>sqrt()</code>. Observe que escrevemos o código na mesma ordem em que as operações são realizadas. A utilização de parênteses após o nome das funções não é necessário, mas recomendável.</p>
+<p>Se você ainda não está convencido com o poder do <em>pipe</em>, fica que vai ter bolo!</p>
+<p>No exemplo abaixo, vamos ilustrar um caso em que temos um grande número de funções aninhadas. Veja como a utilização do <em>pipe</em> transforma um código confuso e difícil de ser lido em algo simples e intuitivo.</p>
+<pre class="r"><code># Receita de bolo sem pipe. Tente entender o que é preciso fazer.
+
+esfrie(
+  asse(
+    coloque(
+      bata(
+        acrescente(
+          recipiente(
+            rep(&quot;farinha&quot;, 2), 
+            &quot;água&quot;, 
+            &quot;fermento&quot;, 
+            &quot;leite&quot;, 
+            &quot;óleo&quot;
+          ), 
+          &quot;farinha&quot;, 
+          ate = &quot;macio&quot;
+        ), 
+        duracao = &quot;3min&quot;
+      ), 
+      lugar = &quot;forma&quot;, 
+      tipo = &quot;grande&quot;, 
+      untada = TRUE
+    ), 
+    duracao = &quot;50min&quot;
+  ), 
+  lugar = &quot;geladeira&quot;, 
+  duracao = &quot;20min&quot;
+)
+
+
+# Veja como o código acima pode ser reescrito utilizando-se o pipe. Agora realmente se parece com uma receita de bolo.
+
+recipiente(rep(&quot;farinha&quot;, 2), &quot;água&quot;, &quot;fermento&quot;, &quot;leite&quot;, &quot;óleo&quot;) %&gt;%
+  acrescente(&quot;farinha&quot;, ate = &quot;macio&quot;) %&gt;%
+  bata(duracao = &quot;3min&quot;) %&gt;%
+  coloque(lugar = &quot;forma&quot;, tipo = &quot;grande&quot;, untada = TRUE) %&gt;%
+  asse(duracao = &quot;50min&quot;) %&gt;%
+  esfrie(lugar = &quot;geladeira&quot;, duracao = &quot;20min&quot;)</code></pre>
+<p>Às vezes, queremos que o resultado do lado esquerdo vá para outro argumento do lado direito que não o primeiro. Para isso, utilizamos um <code>.</code> como marcador.</p>
+<pre class="r"><code># Queremos que o dataset seja recebido pelo segundo argumento (data=) da função &quot;lm&quot;.
+
+airquality %&gt;%
+  na.omit() %&gt;%
+  lm(Ozone ~ Wind + Temp + Solar.R, data = .) %&gt;%
+  summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ozone ~ Wind + Temp + Solar.R, data = .)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -40.485 -14.219  -3.551  10.097  95.619 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -64.34208   23.05472  -2.791  0.00623 ** 
+## Wind         -3.33359    0.65441  -5.094 1.52e-06 ***
+## Temp          1.65209    0.25353   6.516 2.42e-09 ***
+## Solar.R       0.05982    0.02319   2.580  0.01124 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 21.18 on 107 degrees of freedom
+## Multiple R-squared:  0.6059, Adjusted R-squared:  0.5948 
+## F-statistic: 54.83 on 3 and 107 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>O <em>pipe</em> é a força da gravidade dentro do <code>tidyverse</code>. Veremos nos próximos capítulos como as funções de diferentes pacotes interagem perfeitamente graças a esse operador.</p>
+</div>
+<div id="outros-operadores" class="section level2">
+<h2>Outros operadores</h2>
+<p>O pacote <code>{magrittr}</code> possui outros operadores, que, embora sejam menos utilizados, também são úteis. São eles:</p>
+<ul>
+<li><p><em>Assignment operator</em> <code>%&lt;&gt;%</code></p></li>
+<li><p><em>Operador tee</em> <code>%T&gt;%</code></p></li>
+<li><p><em>Exposition operator</em> <code>%$%</code></p></li>
+</ul>
+<p>Imagine que queremos tirar a raiz quadrada de um vetor de números.</p>
+<pre class="r"><code>x &lt;- c(1, 2, 3, 4, 5)
+
+x %&gt;% sqrt()</code></pre>
+<pre><code>## [1] 1.000000 1.414214 1.732051 2.000000 2.236068</code></pre>
+<p>Se quisermos sobrescrever o objeto <code>x</code> com a raiz quadrada dos seus valores, basta utilizarmos o nosso bom e velho operador de atribuição <code>&lt;-</code>.</p>
+<pre class="r"><code>x &lt;- x %&gt;% sqrt()</code></pre>
+<p>Podemos, no entanto, utilizar o operador <code>%&lt;&gt;%</code> para reescrever o código acima de uma maneira mais compacta.</p>
+<pre class="r"><code>x &lt;- c(1, 2, 3, 4, 5)
+x %&lt;&gt;% sqrt()</code></pre>
+<p>Além de mandar o objeto <code>x</code> para o primeiro argumento da função <code>sqrt()</code>, assim como o <code>%&gt;%</code> faria, esse operador também salva o resultado da operação de volta no objeto <code>x</code>, o sobrescrevendo.</p>
+<p>Este operador pode ser usado sempre que desejamos fazer algo da forma</p>
+<pre class="r"><code>objeto &lt;- objeto %&gt;% 
+  funcao_1() %&gt;% 
+  funcao_2() %&gt;% 
+  ...
+  funcao_n()</code></pre>
+<p>O operador <code>%T&gt;%</code> retorna o valor do comando anterior a ele, não o resultado do lado direito como o <code>%&gt;%</code> faz. O seguinte exemplo vai imprimir na tela os valores de 1 a 10. Se usássemos o pipe, o código retornaria a soma dos dez números.</p>
+<pre class="r"><code>1:10 %T&gt;% sum() %&gt;% cat()</code></pre>
+<pre><code>## 1 2 3 4 5 6 7 8 9 10</code></pre>
+<p>Neste caso, o operador não parece fazer sentido e apenas deixa o código mais complicado, mas se desejamos usar funções como <code>cat()</code> ou <code>plot()</code> que não retornam nada, o operador se torna muito útil.</p>
+<pre class="r"><code># Vamos imprimir na tela os valores de 1 a 10 e depois soma-los.
+1:10 %T&gt;% 
+  cat() %&gt;% 
+  sum()</code></pre>
+<pre><code>## 1 2 3 4 5 6 7 8 9 10</code></pre>
+<pre><code>## [1] 55</code></pre>
+<p>O operador <code>%$%</code> pode ser utilizado para <em>expor</em> as colunas de um <em>data frame</em> para a função aplicada no lado direito.</p>
+<pre class="r"><code># Podemos chamar qualquer coluna da base diretamente.
+mtcars %$% mean(mpg)</code></pre>
+<pre><code>## [1] 20.09062</code></pre>
+<p>Se não ficou claro o que esse operador está fazendo, imagine que ele transforma todas as colunas da base em objetos (assim como a nefasta função <code>attach()</code>), mas sem salvar nada no nosso <em>environment</em>.</p>
+<pre class="r"><code>mtcars %$%
+  mpg %&gt;% 
+  mean() %&gt;% 
+  sqrt()</code></pre>
+<pre><code>## [1] 4.482257</code></pre>
+<p>Ele faz um papel equivalente ao operador <code>$</code>.</p>
+<pre class="r"><code>mtcars$mpg</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+## [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+## [31] 15.0 21.4</code></pre>
+<pre class="r"><code>mtcars %$% mpg</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+## [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+## [31] 15.0 21.4</code></pre>
+<p>Para mais informações sobre o <code>pipe</code> e outras funções do pacote <code>{magrittr}</code>, visite a página <a href="http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html">Ceci n’est pas un pipe</a>.</p>
+</div>
+<div id="exercícios" class="section level2">
+<h2>Exercícios</h2>
+<hr />
+<p><strong>1.</strong> Reescreva a expressão abaixo utilizando o <code>%&gt;%</code>.</p>
+<pre class="r"><code>round(mean(sum(1:10)/3), digits = 1)</code></pre>
+<p><strong>Dica</strong>: utilize a função <code>magrittr::divide_by()</code>. Veja o help da função para mais informações.</p>
+<hr />
+<p><strong>2.</strong> Reescreva o código abaixo utilizando o <code>%&gt;%</code>.</p>
+<pre class="r"><code>
+x &lt;- rnorm(100)
+
+x.pos &lt;- x[x&gt;0]
+
+media &lt;- mean(x.pos)
+
+saida &lt;- round(media, 1)
+</code></pre>
+<hr />
+<p><strong>3.</strong> Sem rodar, diga qual a saída do código abaixo. Consulte o help das funções caso precise.</p>
+<pre class="r"><code>2 %&gt;%
+  add(2) %&gt;%
+  c(6, NA) %&gt;%
+  mean(na.rm = T) %&gt;%
+  equals(5)</code></pre>
+<hr />
+<p><strong>4.</strong> Leia o capítulo sobre <em>pipes</em> do <a href="http://r4ds.had.co.nz/pipes.html">R for data science</a>. É curto e vale muito a pena.</p>
+<hr />
+<p><strong>5.</strong> Pegue algum script que você já tenha programado em R e o reescreva utilizando o operador <em>pipe</em>. Se você não tiver nenhum, não se preocupe. Utilizaremos <strong>bastante</strong> o <em>pipe</em> daqui pra frente.</p>
+</div>
+</div>
