@@ -170,7 +170,7 @@ abrir_nova_turma <- function() {
 
 abrir_turma <- function(modelo, data_inicio, data_fim, horario,
                              valor, vagas, carga_horaria, num_aulas,
-                             local, professores, classroom = "",
+                             local, professores,
                              valor_aluguel = 0, valor_monitoria = 0,
                              valor_professor = 0, valor_coffee = 0,
                              valor_outras_despesas = 0, bolsas = 2,
@@ -195,6 +195,16 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
     dplyr::filter(abrev == curso_selecionado) %>% 
     dplyr::pull(title)
   
+  info_classroom <- criar_classroom(
+    curso_nome, 
+    data_inicio[1]
+  )
+  
+  convidar_professores_classroom(
+    info_classroom,
+    professores
+  )
+  
   nova_turma <- tibble::tibble(
     curso_id = id_turma,
     curso = curso_nome,
@@ -215,7 +225,8 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
     obs = obs[1],
     local = local[1],
     professores = paste(professores[1:2], collapse = ", "),
-    classroom = classroom[1]
+    classroom = info_classroom$enrollmentCode,
+    classroom_id = info_classroom$id
   )
   
   usethis::ui_todo("Inserindo turma no catálogo...")
