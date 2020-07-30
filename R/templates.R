@@ -169,12 +169,12 @@ abrir_nova_turma <- function() {
 }
 
 abrir_turma <- function(modelo, data_inicio, data_fim, horario,
-                             valor, vagas, carga_horaria, num_aulas,
-                             local, professores, classroom = "",
-                             valor_aluguel = 0, valor_monitoria = 0,
-                             valor_professor = 0, valor_coffee = 0,
-                             valor_outras_despesas = 0, bolsas = 2,
-                             obs = "") {
+                        valor, vagas, carga_horaria, num_aulas,
+                        local, professores,
+                        valor_aluguel = 0, valor_monitoria = 0,
+                        valor_professor = 0, valor_coffee = 0,
+                        valor_outras_despesas = 0, bolsas = 2,
+                        obs = "") {
   
   cursos <- list.files("inst/templates/")
   
@@ -183,7 +183,7 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
   
   curso_selecionado <- cursos[
     menu(choices = cursos, title = "Escolha um curso:")
-    ]
+  ]
   
   usethis::ui_todo("Criando id da turma...")
   planilha <- baixar_dados(force = TRUE)
@@ -194,6 +194,20 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
   curso_nome <- pegar_id_unico() %>% 
     dplyr::filter(abrev == curso_selecionado) %>% 
     dplyr::pull(title)
+  
+  usethis::ui_todo("Criando turma no classroom...")
+  info_classroom <- criar_classroom(
+    curso_nome, 
+    data_inicio[1]
+  )
+  usethis::ui_done("Turma criada no classroom.")
+  
+  usethis::ui_todo("Convidando professores para o classroom...")
+  convidar_professores_classroom(
+    info_classroom,
+    professores
+  )
+  usethis::ui_done("E-mail enviados para professores.")
   
   nova_turma <- tibble::tibble(
     curso_id = id_turma,
@@ -215,7 +229,8 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
     obs = obs[1],
     local = local[1],
     professores = paste(professores[1:2], collapse = ", "),
-    classroom = classroom[1]
+    classroom = info_classroom$enrollmentCode,
+    classroom_id = as.character(info_classroom$id)
   )
   
   usethis::ui_todo("Inserindo turma no catálogo...")

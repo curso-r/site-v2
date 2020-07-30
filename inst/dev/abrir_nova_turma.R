@@ -20,7 +20,6 @@ siteCursoR:::abrir_turma(
   num_aulas = 6,
   local = c("Online", "Endereço"),
   professores = c("Athos Damiani", "William Amorim"), # Vetor com dois nomes/sobrenomes
-  classroom = "",
   #opcional
   valor_aluguel = 0,
   valor_monitoria = 0,
