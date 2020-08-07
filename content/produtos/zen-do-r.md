@@ -1,6 +1,6 @@
 ---
 title: "Zen do R"
-img: "img/produtos/hex-zen.png"
+img: "img/produtos/zen-do-r.png"
 desc: "Melhore a organização de seus projetos de análise de dados em R."
 ordem: "105"
 tipo: Livro
