@@ -2,7 +2,7 @@
 title: "treesnip"
 img: "img/produtos/treesnip.png"
 desc: "Estende o pacote {parsnip} para trabalhar com modelos baseados em árvores."
-ordem: "8"
+ordem: "102"
 tipo: Pacote
 corlabel: green
 link: "https://curso-r.github.io/treesnip/"

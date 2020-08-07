@@ -2,7 +2,7 @@
 title: "decryptr"
 img: "img/produtos/decryptr.png"
 desc: "Utilizando redes neurais para resolver Captchas baseados em textos."
-ordem: "3"
+ordem: "104"
 tipo: Pacote
 corlabel: green
 link: "https://github.com/decryptr/decryptr"
