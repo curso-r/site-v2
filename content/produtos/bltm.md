@@ -1,11 +1,11 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+title: "bltm"
+img: "img/produtos/bltm.png"
+desc: "Ajusta modelo dinâmico Bayesiano com limiares nos parâmetros (Bayesian Latent Threshold Model) ."
+ordem: "2"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://curso-r.github.io/bltm/"
 ---
 
 <!--

@@ -1,11 +1,11 @@
 ---
-title: "auth0"
+title: "rightgbm"
 img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
+desc: "Instalação do LightGBM da Microsoft de maneira simples e rápida."
 ordem: "30"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://github.com/curso-r/rightgbm/"
 ---
 
 <!--

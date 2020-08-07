@@ -1,11 +1,11 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+title: "treesnip"
+img: "img/produtos/treesnip.png"
+desc: "Estende o pacote {parsnip} para trabalhar com modelos baseados em árvores."
+ordem: "7"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://curso-r.github.io/treesnip/"
 ---
 
 <!--

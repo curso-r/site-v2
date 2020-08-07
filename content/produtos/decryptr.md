@@ -1,11 +1,11 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+title: "decryptr"
+img: "img/produtos/decryptr.png"
+desc: "Utilizando redes neurais para resolver Captchas baseados em textos."
+ordem: "3"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://github.com/decryptr/decryptr"
 ---
 
 <!--
