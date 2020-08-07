@@ -1,33 +1,9 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
-tipo: Pacote
-corlabel: green
-link: "https://curso-r.github.io/auth0/"
+title: "Ciência de Dados em R"
+img: "img/produtos/hex-livro.png"
+desc: "Explore todas as etapas de uma análise de dados, utilizando o R como ferramenta."
+ordem: "100"
+tipo: Livro
+corlabel: "#5371f9"
+link: "https://livro.curso-r.com/"
 ---
-
-<!--
-# # planejamento
-# 
-# - auth0
-# - treesnip
-# - shinyhttr
-# - livro
-# - zen do R
-# - decryptr
-# - rightgbm
-# - kuber
-# - bltm
-# - wavesurfer
-# - pesqEle
-# 
-# # o que precisamos fazer?
-# 
-# - copiar a estrutura de cursos
-# 
-# - imagem
-# - descrição
-# - nome
--->

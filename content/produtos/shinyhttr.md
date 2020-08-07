@@ -1,33 +1,9 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+title: "shinyhttr"
+img: "img/produtos/hex-shinyhttr.png"
+desc: "Permite que o httr::progress converse com o shinyWidgets::progressBar."
+ordem: "90"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://github.com/curso-r/shinyhttr"
 ---
-
-<!--
-# # planejamento
-# 
-# - auth0
-# - treesnip
-# - shinyhttr
-# - livro
-# - zen do R
-# - decryptr
-# - rightgbm
-# - kuber
-# - bltm
-# - wavesurfer
-# - pesqEle
-# 
-# # o que precisamos fazer?
-# 
-# - copiar a estrutura de cursos
-# 
-# - imagem
-# - descrição
-# - nome
--->

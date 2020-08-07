@@ -1,33 +1,9 @@
 ---
-title: "auth0"
-img: "img/cursos/deploy.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+title: "pesqEle"
+img: "img/produtos/hex-pesqEle.png"
+desc: "Scraper de estatísticos registrados nas pesquisas eleitorais do Tribunal Superior Eleitoral (TSE)."
+ordem: "90"
 tipo: Pacote
 corlabel: green
-link: "https://curso-r.github.io/auth0/"
+link: "https://github.com/conre3/pesqele"
 ---
-
-<!--
-# # planejamento
-# 
-# - auth0
-# - treesnip
-# - shinyhttr
-# - livro
-# - zen do R
-# - decryptr
-# - rightgbm
-# - kuber
-# - bltm
-# - wavesurfer
-# - pesqEle
-# 
-# # o que precisamos fazer?
-# 
-# - copiar a estrutura de cursos
-# 
-# - imagem
-# - descrição
-# - nome
--->
