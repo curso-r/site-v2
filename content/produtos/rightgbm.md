@@ -1,8 +1,8 @@
 ---
 title: "rightgbm"
-img: "img/cursos/deploy.png"
+img: "img/produtos/rightgbm.png"
 desc: "Instalação do LightGBM da Microsoft de maneira simples e rápida."
-ordem: "30"
+ordem: "6"
 tipo: Pacote
 corlabel: green
 link: "https://github.com/curso-r/rightgbm/"
