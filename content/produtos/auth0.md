@@ -1,8 +1,8 @@
 ---
 title: "auth0"
-img: "img/cursos/deploy.png"
+img: "img/produtos/auth0.png"
 desc: "Autenticação em Shiny Apps usando o serviço Auth0."
-ordem: "30"
+ordem: "1"
 tipo: Pacote
 corlabel: green
 link: "https://curso-r.github.io/auth0/"
