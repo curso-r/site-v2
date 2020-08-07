@@ -1,7 +1,7 @@
 ---
 title: "shinyhttr"
 img: "img/produtos/hex-shinyhttr.png"
-desc: "Permite que o httr::progress converse com o shinyWidgets::progressBar."
+desc: "Permite que o httr::progress converse com o barra de progresso do shinyWidgets."
 ordem: "8"
 tipo: Pacote
 corlabel: green
