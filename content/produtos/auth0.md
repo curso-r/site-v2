@@ -1,7 +1,7 @@
 ---
 title: "auth0"
 img: "img/produtos/auth0.png"
-desc: "Autenticação em Shiny Apps usando o serviço Auth0."
+desc: "Autenticação simples em Shiny Apps usando o serviço gratuito Auth0."
 ordem: "1"
 tipo: Pacote
 corlabel: green
