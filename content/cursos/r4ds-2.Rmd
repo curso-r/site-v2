@@ -59,7 +59,7 @@ siteCursoR:::criar_section_header("Conteúdo")
   - Funções e dependências
   - Pacotes
 - **Manipulação de dados**
-  - dplyr avançado: `across()`, `where()` e joins
+  - dplyr avançado: `across()`, `where()` e pivotagem
   - Manipulação de textos com o pacote `{stringr}`
   - Manipulação de datas com o pacote `{lubridate}`
 - **Visualização de dados**
