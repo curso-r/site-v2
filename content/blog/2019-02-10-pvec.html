@@ -9,8 +9,10 @@ summary: "Nesse post vou te mostrar minha função preferida e como ela funciona
 draft: false
 ---
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
+<p><strong>AVISO: Infelizmente a função <code>pvec()</code> não está mais no pacote <code>abjutils</code>! No final deste texto deixamos o seu código para que o leitor possa implementá-la por conta própria.</strong></p>
 <p>Quando usamos laços para rodar algoritmos complexos em uma lista de <em>inputs</em>, podemos pensar em <em>power-ups</em>. Tratam-se de funcionalidades que ajudam na aplicação dos laços, tanto do ponto de vista de eficiência do código quanto do ponto de vista de eficiência do trabalho do cientista de dados.</p>
 <p>Aqui na Curso-R nós já vimos três desses power-ups:</p>
 <ul>
@@ -20,7 +22,7 @@ draft: false
 </ul>
 <p>Mas será que tem um jeito de juntar essas três funcionalidades em apenas uma operação?</p>
 <p><img src="/img/blog/pvec/nao_tinha_agora_tem.jpg" /></p>
-<p>Sim, é claro que tem. E se algo é possível no R, o <a href="https://ctlente.com">Caio Lente</a> já fez. Trata-se da operação <code>pvec()</code>, do pacote <code>abjutils</code>.</p>
+<p>Sim, é claro que tem. E se algo é possível no R, o <a href="https://lente.dev">Caio Lente</a> já fez. Trata-se da operação <code>pvec()</code>, do pacote <code>abjutils</code>.</p>
 <p>Para utilizá-la, você precisará instalar a versão de desenvolvimento do <code>abjutils</code> no GitHub:</p>
 <pre class="r"><code>devtools::install_github(&quot;abjur/abjutils&quot;)</code></pre>
 <p>Pode ser que o <code>pvec()</code> não funcione muito bem no Windows. Isso é algo que vamos trabalhar no futuro.</p>
@@ -77,7 +79,7 @@ Progress: ───────────────────────�
 8 h     error  &lt;S3: simpleError&gt;</code></pre>
 <p>Se você quiser desligar a barra de progresso, basta adicionar <code>.progress = FALSE</code>.</p>
 </div>
-<div id="o-parametro-.flatten" class="section level2">
+<div id="o-parâmetro-.flatten" class="section level2">
 <h2>O parâmetro <code>.flatten</code></h2>
 <p>Esse é o parâmetro dos preguiçosos (eu que pedi para o Caio adicionar). Em muitas operações, o resultado que sai no <code>output</code> é uma lista de <code>data.frame</code>s ou uma lista de vetores. A opção <code>.flatten</code> faz <code>tidyr::unnest()</code>, empilhando os resultados e colando tudo num vetor ou <code>data.frame</code>.</p>
 <p>O único problema é que nesse caso não é possível guardar os erros. Por isso, o <code>pvec()</code> retorna um warning:</p>
@@ -98,7 +100,7 @@ Warning message:
 Since &#39;.flatten = TRUE&#39;, a total of 2 errors are being ignored     </code></pre>
 <p>Note que o resultado tem 6 linhas, menor que a entrada, que tem 8 elementos. Por isso, use <code>.flatten</code> somente quando você tem certeza do que está fazendo.</p>
 </div>
-<div id="por-tras-dos-panos-o-furrr" class="section level2">
+<div id="por-trás-dos-panos-o-furrr" class="section level2">
 <h2>Por trás dos panos: o <code>furrr</code></h2>
 <p>O <code>pvec()</code> só funciona por conta de dois excelentes pacotes:</p>
 <ul>
@@ -107,7 +109,7 @@ Since &#39;.flatten = TRUE&#39;, a total of 2 errors are being ignored     </cod
 </ul>
 <p>Se quiser estudar esses pacotes e implementar suas próprias soluções, recomendo acessar <a href="https://github.com/HenrikBengtsson/future">aqui</a> e <a href="https://github.com/DavisVaughan/furrr">aqui</a>. Não incluí detalhes desses pacotes aqui para não sair do foco.</p>
 <p>Se quiser adicionar opções do <code>future</code> no <code>pvec()</code>, basta adicioná-las na opção <code>.options</code>. Por padrão, passamos <code>furrr::future_options()</code> nesse argumento.</p>
-<div id="discussao-o-future-e-o-futuro-do-purrr" class="section level3">
+<div id="discussão-o-future-é-o-futuro-do-purrr" class="section level3">
 <h3>Discussão: o <code>future</code> é o futuro do <code>purrr</code>?</h3>
 <p>O <code>purrr</code> contém uma série de <a href="https://github.com/tidyverse/purrr/milestone/2">discussões no GitHub</a> sobre a possibilidade de rodar funções em paralelo e com barras de progresso. Pode ser que a funcionalidade do <code>pvec()</code> passe a ser parte oficial no futuro.</p>
 <p>Veremos!</p>
@@ -121,4 +123,98 @@ Since &#39;.flatten = TRUE&#39;, a total of 2 errors are being ignored     </cod
 <li>Estude <code>future</code> e <code>furrr</code> se quiser estender as funcionalidades do <code>pvec()</code>.</li>
 </ol>
 <p>É isso pessoal. Happy coding ;)</p>
+</div>
+<div id="p.s.-código" class="section level2">
+<h2>P.S.: Código</h2>
+<p>Como dito no começo deste post, a função <code>pvec()</code> foi removida do <code>abjutils</code> por causa de alguns problemas nas dependências que dificultavam a sua manutenção em um pacote. O código dela está preservado aqui para que você possa implementá-la por conta própria e ainda é possível acessá-la no <a href="https://github.com/abjur/abjutils/blob/cc3ec0c3474a4d29820e5dde4322799cdb0317b0/R/pvec.R">arquivo</a> do <code>abjutils</code>.</p>
+<pre class="r"><code>#&#39; @title Verbose, parallel, and safe map-like
+#&#39;
+#&#39; @description Using the same argument notation as [purrr::map()], this function
+#&#39; iterates over a list of inputs `.x`, applying `.f` to each element. It
+#&#39; returns a tibble with the id, whether the function returned an error
+#&#39; and the output.
+#&#39;
+#&#39; @importFrom magrittr %&gt;%
+#&#39;
+#&#39; @param .x A list or atomic vector
+#&#39; @param .f A function, formula, or atomic vector (see [purrr::map()])
+#&#39; @param ... Other parameters passed on to `.f`
+#&#39; @param .cores Number of cores to use when multiprocessing
+#&#39; @param .progress Whether or not to display progress
+#&#39; @param .flatten If `TRUE`, the errors are filtered from the output,
+#&#39; and the returned object is flattened (a vector, a list, or a tibble)
+#&#39; @param .options Options passed on to [furrr::future_map()]
+#&#39; ([furrr::future_options()] by default)
+#&#39;
+#&#39; @seealso [purrr::map()], [furrr::future_map()], [furrr::future_options()]
+#&#39;
+#&#39; @return A tibble with 3 columns: input, return, and output
+#&#39; @export
+pvec &lt;- function(.x, .f, ..., .cores = get_cores(), .progress = TRUE, .flatten = FALSE, .options = future_options()) {
+  .Deprecated(&quot;furrr::future_map&quot;)
+
+  # Preserve execution plan
+  oplan &lt;- future::plan()
+  on.exit(future::plan(oplan), add = TRUE)
+
+  # Set execution plan to multicore
+  future::plan(future::multicore, workers = .cores)
+
+  # Capture function side-effects
+  .f &lt;- purrr::safely(purrr::as_mapper(.f))
+
+  # Run future map
+  out &lt;- furrr::future_map(.x, .f, ..., .progress = .progress, .options = .options)
+
+  # Compact with care
+  compact_ &lt;- function(x) {
+    if (is.null(x[[1]]) &amp;&amp; is.null(x[[2]])) {
+      return(list(result = NULL))
+    }
+    else {
+      if (length(x$result) == 0) {
+        return(list(result = NULL))
+      }
+      return(purrr::compact(x))
+    }
+  }
+
+  # Process output
+  pout &lt;- out %&gt;%
+    purrr::map(compact_) %&gt;%
+    purrr::flatten() %&gt;%
+    dplyr::tibble(
+      id = purrr::`%||%`(names(.x), seq_along(.x)),
+      return = names(.), output = .
+    )
+
+  # Flatten results if necessary
+  if (.flatten) {
+    n_error &lt;- length(pout$return[pout$return == &quot;error&quot;])
+    if (n_error &gt; 0) {
+      warning(
+        &quot;Since &#39;.flatten = TRUE&#39;, a total of &quot;, n_error,
+        &quot; errors are being ignored&quot;,
+        call. = FALSE
+      )
+    }
+
+    pout &lt;- pout %&gt;%
+      dplyr::filter(return != &quot;error&quot;) %&gt;%
+      dplyr::select(-return) %&gt;%
+      tidyr::unnest()
+
+    if (ncol(pout) == 1) {
+      pout &lt;- dplyr::pull(pout, output)
+    }
+  }
+
+  return(pout)
+}
+
+# Get number of available cores
+get_cores &lt;- purrr::partial(future::availableCores, constraints = &quot;multicore&quot;)
+
+# Import of future_options()
+future_options &lt;- furrr::future_options</code></pre>
 </div>

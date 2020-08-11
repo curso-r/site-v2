@@ -9,6 +9,8 @@ summary: "Nesse post vou te mostrar minha função preferida e como ela funciona
 draft: false
 ---
 
+**AVISO: Infelizmente a função `pvec()` não está mais no pacote `abjutils`! No final deste texto deixamos o seu código para que o leitor possa implementá-la por conta própria.**
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, cache = FALSE, eval = FALSE)
 ```
@@ -25,7 +27,7 @@ Mas será que tem um jeito de juntar essas três funcionalidades em apenas uma o
 
 ![](/img/blog/pvec/nao_tinha_agora_tem.jpg)
 
-Sim, é claro que tem. E se algo é possível no R, o [Caio Lente](https://ctlente.com) já fez. Trata-se da operação `pvec()`, do pacote `abjutils`.
+Sim, é claro que tem. E se algo é possível no R, o [Caio Lente](https://lente.dev) já fez. Trata-se da operação `pvec()`, do pacote `abjutils`.
 
 Para utilizá-la, você precisará instalar a versão de desenvolvimento do `abjutils` no GitHub:
 
@@ -166,3 +168,100 @@ Veremos!
 3. Estude `future` e `furrr` se quiser estender as funcionalidades do `pvec()`.
 
 É isso pessoal. Happy coding ;)
+
+## P.S.: Código
+
+Como dito no começo deste post, a função `pvec()` foi removida do `abjutils` por causa de alguns problemas nas dependências que dificultavam a sua manutenção em um pacote. O código dela está preservado aqui para que você possa implementá-la por conta própria e ainda é possível acessá-la no [arquivo](https://github.com/abjur/abjutils/blob/cc3ec0c3474a4d29820e5dde4322799cdb0317b0/R/pvec.R) do `abjutils`.
+
+```{r eval=FALSE}
+#' @title Verbose, parallel, and safe map-like
+#'
+#' @description Using the same argument notation as [purrr::map()], this function
+#' iterates over a list of inputs `.x`, applying `.f` to each element. It
+#' returns a tibble with the id, whether the function returned an error
+#' and the output.
+#'
+#' @importFrom magrittr %>%
+#'
+#' @param .x A list or atomic vector
+#' @param .f A function, formula, or atomic vector (see [purrr::map()])
+#' @param ... Other parameters passed on to `.f`
+#' @param .cores Number of cores to use when multiprocessing
+#' @param .progress Whether or not to display progress
+#' @param .flatten If `TRUE`, the errors are filtered from the output,
+#' and the returned object is flattened (a vector, a list, or a tibble)
+#' @param .options Options passed on to [furrr::future_map()]
+#' ([furrr::future_options()] by default)
+#'
+#' @seealso [purrr::map()], [furrr::future_map()], [furrr::future_options()]
+#'
+#' @return A tibble with 3 columns: input, return, and output
+#' @export
+pvec <- function(.x, .f, ..., .cores = get_cores(), .progress = TRUE, .flatten = FALSE, .options = future_options()) {
+  .Deprecated("furrr::future_map")
+
+  # Preserve execution plan
+  oplan <- future::plan()
+  on.exit(future::plan(oplan), add = TRUE)
+
+  # Set execution plan to multicore
+  future::plan(future::multicore, workers = .cores)
+
+  # Capture function side-effects
+  .f <- purrr::safely(purrr::as_mapper(.f))
+
+  # Run future map
+  out <- furrr::future_map(.x, .f, ..., .progress = .progress, .options = .options)
+
+  # Compact with care
+  compact_ <- function(x) {
+    if (is.null(x[[1]]) && is.null(x[[2]])) {
+      return(list(result = NULL))
+    }
+    else {
+      if (length(x$result) == 0) {
+        return(list(result = NULL))
+      }
+      return(purrr::compact(x))
+    }
+  }
+
+  # Process output
+  pout <- out %>%
+    purrr::map(compact_) %>%
+    purrr::flatten() %>%
+    dplyr::tibble(
+      id = purrr::`%||%`(names(.x), seq_along(.x)),
+      return = names(.), output = .
+    )
+
+  # Flatten results if necessary
+  if (.flatten) {
+    n_error <- length(pout$return[pout$return == "error"])
+    if (n_error > 0) {
+      warning(
+        "Since '.flatten = TRUE', a total of ", n_error,
+        " errors are being ignored",
+        call. = FALSE
+      )
+    }
+
+    pout <- pout %>%
+      dplyr::filter(return != "error") %>%
+      dplyr::select(-return) %>%
+      tidyr::unnest()
+
+    if (ncol(pout) == 1) {
+      pout <- dplyr::pull(pout, output)
+    }
+  }
+
+  return(pout)
+}
+
+# Get number of available cores
+get_cores <- purrr::partial(future::availableCores, constraints = "multicore")
+
+# Import of future_options()
+future_options <- furrr::future_options
+```
