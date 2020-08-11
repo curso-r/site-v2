@@ -1,0 +1,33 @@
+<!--==========================
+  Clients Section
+============================-->
+<section id="testimonials" class="section-bg wow fadeInUp">
+  <div class="container">
+
+    <header class="section-header">
+      <h3>Desenvolvedores</h3>
+    </header>
+
+    <div class="owl-carousel testimonials-carousel">
+      
+      {{ $pag := (where (where .Site.Pages "Section" "equipe") "Kind" "page") }}
+     
+      {{ range ($pag) }}
+      
+      <div class="testimonial-item">
+        <img src="{{.Params.foto}}" class="testimonial-img" alt="">
+        <h3>{{.Title}}</h3>
+        <h4>{{.Params.cargo}}</h4>
+        <p>
+          <img src="/img/quote-sign-left.png" class="quote-sign-left" alt="">
+          {{.Params.bio}}
+          <img src="/img/quote-sign-right.png" class="quote-sign-right" alt="">
+        </p>
+      </div>
+      
+      {{end}}
+
+    </div>
+
+  </div>
+</section><!-- #testimonials -->

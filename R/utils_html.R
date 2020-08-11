@@ -124,7 +124,8 @@ adicionar_professores <- function(id) {
   
   caminho_planilha <- baixar_dados()
   data_professores <- readxl::read_excel(caminho_planilha, sheet = "professores") %>% 
-    dplyr::filter(nome %in% prof)
+    dplyr::filter(nome %in% prof) %>% 
+    dplyr::arrange(nome)
 
   nomes <- data_professores$nome
   nm_img <- data_professores$nm_img
