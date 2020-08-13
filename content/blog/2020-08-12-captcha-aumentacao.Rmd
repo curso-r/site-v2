@@ -1,0 +1,53 @@
+---
+title: "Resolvendo Captchas - Parte VII: Aumentação de Dados"
+date: "2020-08-12"
+tags: ["captcha"]
+categories: ["tutorial", "r"]
+banner: "img/banners/captcha_07.png"
+author: ["Julio"]
+summary: "Discussão sobre aumentação de dados para resolução de Captchas de imagens baseadas em textos."
+draft: true
+---
+
+## Conceito
+
+A aumentação de dados consiste em aplicar perturbações aleatórias na imagem, com o fim de obter uma base de treino maior. Com uma base maior, espera-se que o modelo tenha maiores chances de chegar em resultados positivos.
+
+Do ponto de vista estatístico, a princípio, essa ideia parece sem sentido. Afinal, são os mesmos dados, mas com ruído! É como se utilizássemos uma base de dados mais suja que a original para o mesmo modelo.
+
+No entanto, quando tratamos de imagem, a utilidade da aumentação de dados é visível. Quando tratamos de um Captcha (ou mesmo um classificador de gatinhos), queremos identificar as letras e distinguí-las de outras, não importando a forma que essas letras apareçam. Grande ou pequeno, achatado ou esticado, embaçado ou nítido, um "J" é um "J", sempre. 
+
+Na prática, a aumentação de dados podem trazer ainda mais benefícios. Ao inserir ruído nas imagens, tornamos nosso modelo mais robusto a pequenas mudanças na imagem. Dessa forma, é possível que um modelo ajustado para um Captcha específico possa ajudar a predizer o resultado de um novo Captcha, gerado de outra forma.
+
+E a verdade é que, de fato, a aumentação de dados tem uma justificação estatística. No fundo, essa técnica nada mais é do que um método de regularização. O *dropout*, por exemplo, que é bem conhecido no universo do deep learning, pode ser entendido como uma forma de aumentar os dados através de ruidos multiplicativos. 
+
+Para mais detalhes, veja o excelente capítulo do [Deep Learning Book](https://www.deeplearningbook.org/contents/regularization.html) sobre regularização. Esse capítulo abriu minha cabeça.
+
+## Tipos de aumentação de dados
+
+Os tipos principais de perturbações que podemos fazer em um Captcha são
+
+- Pan & zoom. Talvez a técnica mais importante. Envolve mover o centro da imagem para outro lugar, ou dar zoom no conteúdo da imagem
+
+![img](pan-zoom)
+
+- Rotação. Não pode rotacionar muito, se não o 6 vira um 9!
+- Modificações nas propriedades da imagem: brilho, saturação, contraste etc.
+- Ruído branco
+- Distorções senoidais
+
+## Implementação com `{tfdatasets}`
+
+## Exemplo
+
+## Wrap-up
+
+- Aumentação de dados é uma técnica de regularização simples e eficaz em problemas de classificação de imagens, como Captchas.
+- É muito fácil de implementar no R, usando o pacote `{tfdatasets}`.
+- Na base de dados considerada, a técnica reduziu a quantidade de dados necessária para ajustar um bom modelo em mais de XX%.
+
+É isso pessoal. Happy coding ;)
+
+
+
+
