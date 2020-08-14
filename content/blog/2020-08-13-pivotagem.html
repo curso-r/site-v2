@@ -1,0 +1,119 @@
+---
+title: "As novas funções de pivotagem"
+date: "2020-08-13"
+tags: ["manipulação", "tidyr", "r"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/lego.jpeg"
+author: ["Nicole Luduvice"]
+summary: "Apresentamos aqui as novas funções de pivotagem do {tidyr}."
+draft: false
+---
+
+
+
+<p>O tidyr é um pacote muito útil para arrumar os dados, ou seja, deixá-los <em>tidy</em>. Dizemos que os dados estão arrumados quando</p>
+<ul>
+<li>cada coluna é uma variável;</li>
+<li>cada linha é uma observação;</li>
+<li>cada célula representa um único valor.</li>
+</ul>
+<p>O lançamento da versão 1.0.0 (em 09/11/19) apresentou uma grande mudança do pacote: a substituição das funções <code>gather()</code> e <code>spread()</code> pelas novas funções <code>pivot_longer()</code> e <code>pivot_wider()</code>.</p>
+<p><img src = "/img/blog/pivotagem/tidyr-spread-gather.gif"></p>
+<p>Neste post, vamos apresentar o que mudou nessas novas funções e mostrar como aplicar as operações de pivotagem nesse novo framework.</p>
+<div id="os-dados" class="section level4">
+<h4>Os dados</h4>
+<p>Para ilustrar a utilização das funções, vamos criar uma tabelinha bem simples, que nos permita visualizar a mudança entre os formatos <em>long</em> e <em>wide</em>.</p>
+<p>Suponhamos que os dados a seguir representem as vendas de duas lojas nos meses de janeiro a junho de um determinado ano. É muito comum recebermos uma tabela no formado <code>wide</code>.</p>
+<pre class="r"><code>dados &lt;- tibble::tribble(
+  ~loja, ~jan, ~fev, ~mar, ~abr, ~mai, ~jun,
+  1, 20, 30, 23, 10, 40, 55,
+  2, 30, 43, 29, 15, 40, 60
+)
+
+dados
+## # A tibble: 2 x 7
+##    loja   jan   fev   mar   abr   mai   jun
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1    20    30    23    10    40    55
+## 2     2    30    43    29    15    40    60</code></pre>
+<p>Repare que, embora nessa tabela existam 3 variáveis, apenas 2 estão explícitas: a loja e o mês. As vendas estão apenas no corpo da tabela e, sem contexo, não saberíamos o que esses valores significam.</p>
+<p>Além disso, essa tabela não está no formato <em>tidy</em>, pois cada coluna não represta uma variável: a variável <em>mês</em> está espalhada nas colunas e a variável <em>vendas</em> não é uma coluna.</p>
+<p>A seguir, vamos ver como utilizar as antigas funções gather() e spread() para deixar essa tabela <em>tidy</em> (ou para, uma vez <em>tidy</em>, voltar ao formato original).</p>
+</div>
+<div id="as-antigas-funções-gather-e-spread" class="section level4">
+<h4>As antigas funções gather() e spread()</h4>
+<p>Para deixar os dados arrumados com as três variáveis (mês vendas e loja) como colunas, usamos a função gather(). Essa função vai transformar as colunas de janeiro a junho em valores de uma única coluna e vai criar uma nova coluna com os dados de vendas.</p>
+<pre class="r"><code>library(tidyr)
+
+dados_gather &lt;- dados %&gt;% 
+  gather(jan:jun, key = &quot;mes&quot;, value = &quot;vendas&quot;)
+
+dados_gather
+## # A tibble: 12 x 3
+##     loja mes   vendas
+##    &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1     1 jan       20
+##  2     2 jan       30
+##  3     1 fev       30
+##  4     2 fev       43
+##  5     1 mar       23
+##  6     2 mar       29
+##  7     1 abr       10
+##  8     2 abr       15
+##  9     1 mai       40
+## 10     2 mai       40
+## 11     1 jun       55
+## 12     2 jun       60</code></pre>
+<p>Aqui estamos selecionando as colunas de janeiro a junho e aplicando <code>gather()</code>. O argumento <code>key</code> recebe o nome da variável com os nomes das colunas (no nosso exemplo, <code>meses</code>) e <code>value</code> recebe o nome da variável com as observações das colunas, <code>vendas</code>.</p>
+<p>Ok, conseguimos deixar nossos dados no formato tidy. Será que é possivel retorná-los ao formato original?
+Para isso, precisamos de uma função que faça o inverso de <code>gather()</code>, “espalhando” as observações da variável mês em várias colunas e transformando vendas em observações dessas colunas. No pacote <code>{tidyr}</code> essa função se chama <code>spread()</code>.</p>
+<pre class="r"><code>dados_spread &lt;- dados_gather %&gt;%
+  spread(key = mes, value = vendas)
+
+dados_spread
+## # A tibble: 2 x 7
+##    loja   abr   fev   jan   jun   mai   mar
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1    10    30    20    55    40    23
+## 2     2    15    43    30    60    40    29</code></pre>
+<p>Observe que o argumento <code>key</code> indica o nome da variável que será espalhada em várias colunas e o argumento <code>value</code> indica o nome da variável que vai ser transformada em observações.</p>
+<p>No <code>{tidyr}</code> 1.0.0, essas funções foram aprimoradas, recebendo nomes e argumentos mais intuitivos e fáceis de lembrar, além de apresentarem mais possibilidade de uso a fim de auxiliar na tarefa de estruturar os dados.</p>
+</div>
+<div id="as-novas-funções-pivot_longer-e-pivot_wider" class="section level4">
+<h4>As novas funções pivot_longer() e pivot_wider()</h4>
+<p>O <code>pivot_longer()</code>, em casos mais simples, equivale a função <code>gather()</code>. Esse nome foi dado pois, ao rodar a função, o banco de dados se torna mais longo (<em>longer</em>) em relação aos dados originais.</p>
+<pre class="r"><code>dados_longer &lt;- dados %&gt;%
+  pivot_longer(
+    cols = jan:jun, 
+    names_to = &quot;mes&quot;, 
+    values_to = &quot;vendas&quot;
+  ) 
+
+dados_longer
+## # A tibble: 12 x 3
+##     loja mes   vendas
+##    &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1     1 jan       20
+##  2     1 fev       30
+##  3     1 mar       23
+##  4     1 abr       10
+##  5     1 mai       40
+##  6     1 jun       55
+##  7     2 jan       30
+##  8     2 fev       43
+##  9     2 mar       29
+## 10     2 abr       15
+## 11     2 mai       40
+## 12     2 jun       60</code></pre>
+<p>A função <code>spread()</code> foi substituida por <code>pivot_wider()</code>. Ela vai transformar os dados em um formato mais largo. Veja que as duas funções funcionam de forma equivalente.</p>
+<pre class="r"><code>dados_wider &lt;- dados_longer %&gt;%
+  pivot_wider(names_from = mes, values_from = vendas)
+
+dados_wider
+## # A tibble: 2 x 7
+##    loja   jan   fev   mar   abr   mai   jun
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1    20    30    23    10    40    55
+## 2     2    30    43    29    15    40    60</code></pre>
+<p>Essas novas funções de pivotagem trazem várias outras funcionalidades para remodelar as bases de dados. Vamos falar delas em novos posts. Em quanto isso, se você quiser conferir, basta acessar o <a href="https://tidyr.tidyverse.org/articles/pivot.html">vignette do tidyr</a> (inglês).</p>
+</div>
