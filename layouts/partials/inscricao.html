@@ -5,8 +5,36 @@
           
           <br>
 
-          <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se</button>
+          <button id="pagamento" class="cta-btn" style="background: none;">Inscreva-se agora</button>
+          <button id="carrinho", class="cta-btn" style="background: none;">Adicionar no  carrinho</button>
           
+          <script>
+            
+            var item_pagina = {
+                    id: '{{ .Params.id }}',
+                    title: '{{ .Params.title }}',
+                    unit_price: {{ .Params.unit_price }},
+                    quantity: 1,
+                    tangible: true
+                  }
+            
+            var button = document.querySelector('#carrinho');  
+            button.addEventListener('click', function() {
+              
+              var carrinho_items = localStorage.getItem("items");
+              
+              if (carrinho_items != null) {
+                carrinho_items = JSON.parse(carrinho_items);
+              } else {
+                carrinho_items = [];
+              }
+                
+              carrinho_items.push(item_pagina);
+              localStorage.setItem("items", JSON.stringify(carrinho_items));
+              
+            })
+            
+          </script>
           
           <script>
           
