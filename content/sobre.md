@@ -21,7 +21,7 @@ A Curso-R oferece:
 
 - Cursos introdutórios de avançados de programação em R;
 - Cursos de modelagem preditiva e redes neurais em R;
-- Curos de web scraping e construção de dashboards (Shiny) utilizando o R;
+- Cursos de web scraping e construção de dashboards (Shiny) utilizando o R;
 - Aulas com professores formados Estatística ou Ciência da Computação e possuim vasta experiência em análise de dados;
 - Material aberto em português sobre Ciência de dados e programação em R.
 - Consultoria em Ciência de Dados com a R6 Consultoria, o braço da Curso-R para projetos.
