@@ -1,3 +1,21 @@
+---
+title: "XGBoost"
+data: "17, 24 e 31 de outubro, três sábados, das 09h00 às 12h00"
+hora: "3 aulas, 9 horas de curso"
+local: "Online"
+img: "img/cursos/xgboost.png"
+preco: "R$350,00"
+banner: "img/cursos/xgboost-banner.png"
+desc: "Aprenda a implementar um dos algoritmos de Machine Learning mais utilizados da atualidade."
+ordem: "35"
+id: "34"
+aberto: "true"
+unit_price: "35000"
+params:
+  id_unico: 7
+---
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
@@ -29,7 +47,7 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 shiny::hr()
 siteCursoR:::criar_section_header("Conteúdo")
 ```
-
+ 
 ::: {.row}
 
 :::: {.column-esq}
