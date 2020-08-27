@@ -54,6 +54,11 @@
           {{ if and (isset .Params "aberto") (ne .Params.aberto "") (ne .Params.aberto "false") }} 
           
               {{ partial "inscricao.html" . }}
+              
+            </br>
+            </br>
+            
+            <p style = "font-size: 12px;">Ao se inscrever no curso, você declara estar de acordo com os nossos <a href = "https://www.curso-r.com/termos-de-uso/">Termos de uso</a>.</p>
           
           {{ else if ne .Params.title "Treinamento in-company"}}
           
