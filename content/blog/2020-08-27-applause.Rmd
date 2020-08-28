@@ -1,0 +1,26 @@
+---
+title: "Aplauda-me"
+date: "2020-08-27"
+tags: ["manipulação", "tidyr", "r"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/applause.jpg"
+author: ["Julio", "Athos"]
+summary: "Fizemos um teste do pacote {applause}."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE, 
+  message = FALSE, 
+  collapse = TRUE
+)
+```
+
+```{r applause-button, echo=FALSE}
+applause::button(
+  color = "#0C4047",
+  width = "100px"
+)
+```
