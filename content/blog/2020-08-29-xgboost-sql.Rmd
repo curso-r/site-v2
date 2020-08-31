@@ -1,5 +1,5 @@
 ---
-title: "XGBoost traduzido para SQL"
+title: "Predições XGBoost diretamente pelo SQL"
 date: "2020-08-29"
 tags: ["sql", "xgboost", "r", "machine learning"]
 categories: ["tutoriais", "r"]
