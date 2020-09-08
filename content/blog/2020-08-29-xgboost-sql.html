@@ -1,0 +1,142 @@
+---
+title: "Predições XGBoost diretamente pelo SQL"
+date: "2020-08-29"
+tags: ["sql", "xgboost", "r", "machine learning"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/xgboost-sql.jpg"
+author: ["Athos"]
+summary: "Criar um XGBoost no R e colocar para o SQL gerar as predições em uma linha de código com o {tidypredict}."
+draft: false
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/viz/viz.js"></script>
+<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/grViz-binding/grViz.js"></script>
+
+
+<p>O que você vai aprender a fazer ao final da leitura é:</p>
+<p><img src = "/img/blog/xgboost-sql/xgboost_para_sql.gif"></p>
+<p>Ou seja, uma vez que você tenha um modelo de XGBoost ajustado dentro do seu R, dá para pedir para o {tidypredict} gerar a query de SQL que calcularia o score. PS: o XGBoost do gif tem 2 árvores.</p>
+<div id="motivos-para-usar" class="section level3">
+<h3>Motivos para usar</h3>
+<p>Se existir um servidor com SQL muito poderoso (ou cluster, etc), a predição pode ser feita diretamente dentro do banco de dados, sem necessidade de outras ferramentas. Além disso, colocar em produção estará a um CTRL+C/CTRL+V de distância =P.</p>
+</div>
+<div id="preditor-do-xgboost" class="section level3">
+<h3>Preditor do XGBoost</h3>
+<p>O valor predito pelo XGBoost é, no fundo, uma soma de CASE WHEN’s (ou IF ELSE’s). O número de árvores que vai definir quantos CASE WHEN’s serão somados.</p>
+<p>A cara do preditor de um XGBoost com 2 árvores ficaria assim no SQL:</p>
+<pre><code>&lt;SQL&gt; 0.0 + CASE
+WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.95000005)
+WHEN (`dose` &gt;= 14.0 AND `dose` &gt;= 5.0) THEN (-1.6500001)
+WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 14.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.05000007)
+WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 14.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.35000002)
+END + CASE
+WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.36500013)
+WHEN (`dose` &gt;= 14.0 AND `dose` &gt;= 5.0) THEN (-1.15499997)
+WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 14.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.734999955)
+WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 14.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.945000052)
+END + 0.5</code></pre>
+</div>
+<div id="código-minimal" class="section level3">
+<h3>Código minimal</h3>
+<p>O verdadeiro herói do código abaixo é a linha <code>tidypredict_sql(xgb_fit$fit, con)</code> do pacote <a href="https://tidypredict.tidymodels.org/"><code>{tidypredict}</code></a> que recebe o objeto com o XGBoost ajustado e retorna a query de SQL com os CASE WHEN’s.</p>
+<div id="ajuste-do-xgboost-com-tidymodels" class="section level4">
+<h4>Ajuste do XGBoost com {tidymodels}</h4>
+<pre class="r"><code>library(tidymodels)
+library(tidypredict)
+library(xgboost)
+
+# dados ----------------------------------------------------
+data &lt;- tibble(
+  dose = c(2, 8, 12, 18),
+  eficacia = c(-6, 4, 5, -5)
+)
+
+# especificacao do modelo ---------------------------------
+xgb_model &lt;- boost_tree(min_n = 1, 
+  trees = 2
+) %&gt;%
+  set_engine(&quot;xgboost&quot;, lambda = 0) %&gt;%
+  set_mode(&quot;regression&quot;)
+
+# ajuste do modelo -----------------------------------------
+xgb_fit &lt;- fit(xgb_model, eficacia ~ dose, data = data)
+
+# Conexão com o banco SQL ----------------------------------
+con &lt;- DBI::dbConnect(RSQLite::SQLite(), &quot;meu_sqlite_db.db&quot;)
+
+# Transcrevendo XGBoost para SQL ---------------------------
+tidypredict_sql(xgb_fit$fit, con)
+## &lt;SQL&gt; 0.0 + CASE
+## WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.95000005)
+## WHEN (`dose` &gt;= 15.0 AND `dose` &gt;= 5.0) THEN (-1.6500001)
+## WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.05000007)
+## WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.35000002)
+## END + CASE
+## WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.36500013)
+## WHEN (`dose` &gt;= 15.0 AND `dose` &gt;= 5.0) THEN (-1.15499997)
+## WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.734999955)
+## WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.945000052)
+## END + 0.5</code></pre>
+</div>
+<div id="usando-o-dplyr-para-rodar-código-no-sql" class="section level4">
+<h4>Usando o {dplyr} para rodar código no SQL</h4>
+<pre class="r"><code># apenas subindo os dados no banco de dados SQL ------
+copy_to(con, data, &quot;data&quot;, overwrite = TRUE)
+
+# Criando coluna `pred` com as predições em SQL ------
+data_sql &lt;- tbl(con, &quot;data&quot;) %&gt;%
+  mutate(
+    pred = !!tidypredict_sql(xgb_fit$fit, con)
+  )
+
+# resultado -------------------------------------------
+data_sql
+## # Source:   lazy query [?? x 3]
+## # Database: sqlite 3.30.1
+## #   [/media/athos/DATA/OneDrive/Documents/site-v2/content/blog/meu_sqlite_db.db]
+##    dose eficacia  pred
+##   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1     2       -6 -2.82
+## 2     8        4  2.29
+## 3    12        5  2.80
+## 4    18       -5 -2.31</code></pre>
+<p>PS: a função <code>tidypredict_sql()</code> devolve uma string e por isso usamos o operador <code>!!</code> para interpretar como código de R literal. Essa parte pode ser confusa porque o dplyr vai pegar o código, traduzir para o literal, mas <strong>não</strong> vai rodar o código no R, vai traduzir do R para o SQL diretamente (e é por isso que dá certo porque a string não é um código de R válido =P).</p>
+</div>
+<div id="sql-por-trás-dos-panos" class="section level4">
+<h4>SQL por trás dos panos</h4>
+<p>A tabela <code>data_sql</code> gerada acima pelo {dplyr} é, na verdade, uma query SQL. A função <code>show_query()</code> mostra a tradução resultante:</p>
+<pre class="r"><code>show_query(data_sql)
+## &lt;SQL&gt;
+## SELECT `dose`, `eficacia`, 0.0 + CASE
+## WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.95000005)
+## WHEN (`dose` &gt;= 15.0 AND `dose` &gt;= 5.0) THEN (-1.6500001)
+## WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.05000007)
+## WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (1.35000002)
+## END + CASE
+## WHEN ((`dose` &lt; 5.0 OR ((`dose`) IS NULL))) THEN (-1.36500013)
+## WHEN (`dose` &gt;= 15.0 AND `dose` &gt;= 5.0) THEN (-1.15499997)
+## WHEN ((`dose` &lt; 10.0 OR ((`dose`) IS NULL)) AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.734999955)
+## WHEN (`dose` &gt;= 10.0 AND (`dose` &lt; 15.0 OR ((`dose`) IS NULL)) AND `dose` &gt;= 5.0) THEN (0.945000052)
+## END + 0.5 AS `pred`
+## FROM `data`</code></pre>
+</div>
+</div>
+<div id="resumo" class="section level2">
+<h2>Resumo</h2>
+<ul>
+<li>XGBoost para SQL é simples como uma linha de código: <code>tidypredict_sql(xgb_fit$fit, con)</code></li>
+<li>A query SQL pode ser usada dentro do <code>mutate()</code> com o <code>!!</code></li>
+<li>Predições com XGBoost não é nenhum bicho de sete cabeças, são singelas somas de CASE WHEN’s.</li>
+</ul>
+<div id="apêndice-as-duas-árvores" class="section level3">
+<h3>Apêndice: as duas árvores</h3>
+<pre class="r"><code>library(DiagrammeR)
+xgb.plot.tree(model=xgb_fit$fit)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"digraph {\n\ngraph [layout = \"dot\",\n       rankdir = \"LR\"]\n\nnode [color = \"DimGray\",\n      style = \"filled\",\n      fontname = \"Helvetica\"]\n\nedge [color = \"DimGray\",\n     arrowsize = \"1.5\",\n     arrowhead = \"vee\",\n     fontname = \"Helvetica\"]\n\n  \"1\" [label = \"Tree 1\ndose\nCover: 4\nGain: 19.7633343\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"2\" [label = \"Leaf\nCover: 1\nValue: -1.36500013\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"3\" [label = \"dose\nCover: 3\nGain: 29.4816647\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"4\" [label = \"dose\nCover: 2\nGain: 0.244999886\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"5\" [label = \"Leaf\nCover: 1\nValue: -1.15499997\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"6\" [label = \"Leaf\nCover: 1\nValue: 0.734999955\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"7\" [label = \"Leaf\nCover: 1\nValue: 0.945000052\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"8\" [label = \"Tree 0\ndose\nCover: 4\nGain: 40.3333321\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"9\" [label = \"Leaf\nCover: 1\nValue: -1.95000005\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"10\" [label = \"dose\nCover: 3\nGain: 60.1666679\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"11\" [label = \"dose\nCover: 2\nGain: 0.5\", shape = \"rectangle\", fontcolor = \"black\", fillcolor = \"Beige\"] \n  \"12\" [label = \"Leaf\nCover: 1\nValue: -1.6500001\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"13\" [label = \"Leaf\nCover: 1\nValue: 1.05000007\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n  \"14\" [label = \"Leaf\nCover: 1\nValue: 1.35000002\", shape = \"oval\", fontcolor = \"black\", fillcolor = \"Khaki\"] \n\"1\"->\"2\" [label = \"< 5\", style = \"bold\"] \n\"3\"->\"4\" [label = \"< 15\", style = \"bold\"] \n\"4\"->\"6\" [label = \"< 10\", style = \"bold\"] \n\"8\"->\"9\" [label = \"< 5\", style = \"bold\"] \n\"10\"->\"11\" [label = \"< 15\", style = \"bold\"] \n\"11\"->\"13\" [label = \"< 10\", style = \"bold\"] \n\"1\"->\"3\" [style = \"bold\", style = \"solid\"] \n\"3\"->\"5\" [style = \"solid\", style = \"solid\"] \n\"4\"->\"7\" [style = \"solid\", style = \"solid\"] \n\"8\"->\"10\" [style = \"solid\", style = \"solid\"] \n\"10\"->\"12\" [style = \"solid\", style = \"solid\"] \n\"11\"->\"14\" [style = \"solid\", style = \"solid\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<pre><code>## /media/athos/DATA/OneDrive/Documents/site-v2/content/blog
+## [1] FALSE</code></pre>
+</div>
+</div>
