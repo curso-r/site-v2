@@ -102,6 +102,17 @@ gerar_novo_curso <- function(nome, nome_abrev, imagem, banner, desc,
   )
   usethis::ui_done("Curso inserido no catálogo.")
   
+  usethis::ui_todo("Criando repositório do curso...")
+  
+  url <- criar_repositorio_main(
+    curso_nome = nome, 
+    curso_abrev = nome_abrev
+  )
+  
+  usethis::ui_done(
+    glue::glue("Repositório criado em: {url}")
+  )
+  
   usethis::ui_todo("Gerando template para página do curso...")
   
   novo_template <- paste0("inst/templates/", nome_abrev, ".Rmd")
@@ -194,6 +205,18 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
   curso_nome <- pegar_id_unico() %>% 
     dplyr::filter(abrev == curso_selecionado) %>% 
     dplyr::pull(title)
+  
+  usethis::ui_todo("Criando repositório do curso...")
+  
+  url <- criar_repositorio_main(
+    curso_nome = curso_nome, 
+    curso_abrev = curso_selecionado,
+    data = data_inicio
+  )
+  
+  usethis::ui_done(
+    glue::glue("Repositório criado em: {url}")
+  )
   
   usethis::ui_todo("Criando turma no classroom...")
   info_classroom <- criar_classroom(
