@@ -39,7 +39,6 @@ siteCursoR:::criar_section_header("Conteúdo")
   - Por que não usar `.RData` e `.Rhistory`
   - Git e Github
   - Funções e dependências
-  - Pacotes
 - **Manipulação de dados**
   - Explorando mais funções do `{dplyr}`
   - `{dplyr} 1.0`: `across()`, `where()`
