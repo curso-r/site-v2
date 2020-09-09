@@ -1,0 +1,48 @@
+<!doctype html5>
+<html>
+<head>
+  {{ partial "head.html" . }}
+</head>
+  <body data-spy="scroll" data-target="#toc">
+    {{ partial "header.html" . }}
+    
+    <div class="container" id="article-container">
+      
+      
+      <div class="row">
+        
+        <div class="col-sm-2-material">
+          
+          <div class="sticky-top">
+            <div class="hex-material">
+              <a href="{{.URL}}">
+                <img src='/img/cursos/hex/{{ replace (replace .Dir "material" "") "/" ""}}.png' alt="" />
+              </a>
+            </div>
+            <hr>
+            <nav id="toc" data-toggle="toc"></nav>
+          </div>
+          
+        </div>
+        
+        <div class="col-sm-10" id="material-container">
+          <header class="section-header" id="header-title">
+            <h1 data-toc-skip>{{ .Title }}</h1>
+          </header> 
+          {{.Content}}
+        </div>  
+        
+      </div>
+      
+    </div>
+    
+    {{ partial "newsletter.html" . }}
+    
+    {{ partial "footer.html" . }}
+    
+  </body>
+  
+  {{ partial "scripts.html" .}}
+  {{ partial "toc.html" . }}
+  
+</html>
