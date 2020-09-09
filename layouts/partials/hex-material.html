@@ -4,7 +4,7 @@
           <ul id="hexGrid">
             {{ range sort .Site.Pages "Params.ordem" }}
             {{ if and (eq (substr .Dir 0 8) "material") (in .Kind "section")}}
-            {{ if eq .Params.layout "article"}}
+            {{ if eq .Params.layout "pacote"}}
             <li class="hex">
               <div class="hexIn">
                 <a class="hexLink" href="{{.URL}}">

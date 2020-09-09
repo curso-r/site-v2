@@ -1,0 +1,26 @@
+---
+title: "Instalação"
+author: "Curso-R"
+date: 2018-07-23
+categories: ["R"]
+tags: ["instalacao"]
+slug: "instalacao"
+minidesc: "Instale o R e RStudio no seu computador."
+desc: "Comece instalando os pacotes, IDE's necessários para iniciar a sua jornada no R."
+requisitos: ["rstudio"]
+layout: "artigo"
+ordem: 1
+---
+
+```{r, echo=FALSE}
+download.file(
+  "https://raw.githubusercontent.com/curso-r/livro-material/master/01-instalacao.Rmd", 
+  "pipe.Rmd"
+)
+```
+
+O conteúdo a seguir faz parte do nosso livro [Ciência de Dados em R](https://livro.curso-r.com/1-instalacao.html).
+
+```{r, child = "pipe.Rmd"}
+
+```

@@ -1,0 +1,22 @@
+<div id="grid" class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <ul id="hexGrid">
+            {{ range sort .Site.Pages "Params.ordem" }}
+            {{ if and (eq (substr .Dir 0 8) "material") (in .Kind "section")}}
+            {{ if eq .Params.layout "artigo"}}
+            <li class="hex">
+              <div class="hexIn">
+                <a class="hexLink" href="{{.URL}}">
+                  <img src='/img/cursos/hex/{{ replace (replace .Dir "material" "") "/" ""}}.png' alt=""/>
+                  <p>{{.Params.minidesc}}</p>
+                </a>
+              </div>
+            </li>
+            {{ end }}
+            {{ end }}
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+    </div>

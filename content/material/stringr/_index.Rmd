@@ -8,7 +8,7 @@ slug: "stringr"
 minidesc: "O stringr contém dezenas de funções úteis para tratamento de strings no R."
 desc: "O stringr é um pacote que contém dezenas de funções úteis para tratamento de cadeia de caracteres no R. Sempre que precisar de algo relacionado a esse assunto, procure esse pacote."
 requisitos: ["r-base"]
-layout: "article"
+layout: "pacote"
 ordem: 70
 ---
 

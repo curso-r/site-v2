@@ -5,11 +5,11 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["Modelagem"]
 slug: "modelagem"
-minidesc: "Neste tutorial discutiremos regressão linear e árvores de decisão em R."
+minidesc: "Uma introdução à regressão linear e às árvores de decisão em R."
 desc: "Criamos modelos estatísticos para fazer previsões ou estudar a relação entre as variáveis de um banco de dados. Os modelos são importantes pois resumem a informação de um banco de dados para um conjunto de regras que podem ser reutilizadas em outros momentos. Neste tutorial discutiremos regressão linear e árvores de decisão."
 requisitos: ["r-base", "ggplot"]
-layout: "article"
-ordem: 110
+layout: "artigo"
+ordem: 20
 ---
 
 ```{r setup, include=FALSE}

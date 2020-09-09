@@ -8,7 +8,7 @@ slug: "r-base"
 minidesc: "Comece a se ambientar com o básico da linguagem R."
 desc: "Neste capítulo vamos introduzir o R, suas principais estruturas de dados e um pequeno vocabulário de funções úteis."
 requisitos: ["rstudio"]
-layout: "article"
+layout: "pacote"
 ordem: 10
 ---
 

@@ -1,0 +1,13 @@
+<div class="row justify-content-center" align="center">
+  {{ range $i, $member := sort (where .Site.Pages "Section" "cursos") "Params.ordem"}}
+  {{ if and (isset .Params "github") (ne .Kind "section")}}
+  
+    <a href="{{$member.Params.github}}">
+      <img src="{{ .Site.BaseURL }}{{$member.Params.banner}}" style = "width:200px; height: 200px; border-radius: 50%; padding: 30px;">
+      <br>
+      <span style="font-weight: bold; text-transform: uppercase; font-size: 15px; color: white">{{$member.Params.title}}<span>
+    </a>
+  
+  {{ end }}
+  {{ end }}
+</div>

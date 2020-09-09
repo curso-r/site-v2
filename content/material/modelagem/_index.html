@@ -5,11 +5,11 @@ date: 2018-07-18
 categories: ["R"]
 tags: ["Modelagem"]
 slug: "modelagem"
-minidesc: "Neste tutorial discutiremos regressão linear e árvores de decisão em R."
+minidesc: "Uma introdução à regressão linear e às árvores de decisão em R."
 desc: "Criamos modelos estatísticos para fazer previsões ou estudar a relação entre as variáveis de um banco de dados. Os modelos são importantes pois resumem a informação de um banco de dados para um conjunto de regras que podem ser reutilizadas em outros momentos. Neste tutorial discutiremos regressão linear e árvores de decisão."
 requisitos: ["r-base", "ggplot"]
-layout: "article"
-ordem: 110
+layout: "artigo"
+ordem: 20
 ---
 
 
@@ -364,9 +364,9 @@ usando a função <code>summary</code>.</p>
 ##           CP nsplit rel error    xerror       xstd
 ## 1 0.44444444      0 1.0000000 1.0000000 0.04244576
 ## 2 0.02339181      1 0.5555556 0.5555556 0.03574957
-## 3 0.01461988      2 0.5321637 0.6023392 0.03679713
-## 4 0.01169591      4 0.5029240 0.5906433 0.03654436
-## 5 0.01000000      6 0.4795322 0.5584795 0.03581795
+## 3 0.01461988      2 0.5321637 0.5994152 0.03673449
+## 4 0.01169591      4 0.5029240 0.5964912 0.03667148
+## 5 0.01000000      6 0.4795322 0.5701754 0.03608751
 ## 
 ## Variable importance
 ##    Sex Pclass    Age 
@@ -491,11 +491,12 @@ quando ela é positiva.</p>
 <p>Para escolher o melhor ponto de corte da probabilidade, podemos usar a curva ROC, e
 uma função de custo. Existem diversos pacotes que ajudam a calcular essas medidas. Vamos fazer aqui sem usá-los para praticar.</p>
 <pre class="r"><code>library(tidyverse)
-## ── Attaching packages ───────────────────────── tidyverse 1.3.0 ──
+## Warning: package &#39;tidyverse&#39; was built under R version 4.0.2
+## ── Attaching packages ─────────────────────────── tidyverse 1.3.0 ──
 ## ✓ tibble  3.0.1     ✓ stringr 1.4.0
 ## ✓ tidyr   1.0.3     ✓ forcats 0.5.0
 ## ✓ purrr   0.3.4
-## ── Conflicts ──────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()
 cortes &lt;- seq(0,1,by = 0.01)
