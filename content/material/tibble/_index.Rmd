@@ -1,0 +1,29 @@
+---
+title: "tibble"
+author: "Curso-R"
+date: 2020-09-09
+categories: ["R"]
+tags: ["tibble"]
+slug: "tibble"
+minidesc: "Uma repaginação do nosso bom e velho data frame."
+desc: "Uma tibble é um data frame com ajustes que as deixam mais amigáveis a nós cientistas de dados. "
+requisitos: ["r-base"]
+layout: "pacote"
+ordem: 30
+---
+
+```{r, echo=FALSE}
+download.file(
+  "https://raw.githubusercontent.com/curso-r/livro-material/master/071-tibble.Rmd", 
+  "tibble.Rmd"
+)
+
+knitr::opts_chunk$set(out.width = 500, out.height = 500)
+```
+
+O conteúdo a seguir faz parte do nosso livro [Ciência de Dados em R](https://livro.curso-r.com/7-1-tibbles.html).
+
+```{r, child = "tibble.Rmd"}
+
+```
+

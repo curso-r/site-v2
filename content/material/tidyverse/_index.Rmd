@@ -1,0 +1,28 @@
+---
+title: "Tidyverse"
+author: "Curso-R"
+date: 2020-09-09
+categories: ["R"]
+tags: ["tidyverse"]
+slug: "tidyverse"
+minidesc: "Explore a filosia tidy e a nova maneira de programar em R!"
+desc: "Conheça mais sobre os conceitos por trás do tidyverse."
+requisitos: ["r-base"]
+layout: "pacote"
+ordem: 15
+---
+
+```{r, echo=FALSE}
+download.file(
+  "https://raw.githubusercontent.com/curso-r/livro-material/master/04-pacotes.Rmd", 
+  "tidyverse.Rmd"
+)
+
+knitr::opts_chunk$set(out.width = 500, out.height = 500)
+```
+
+O conteúdo a seguir faz parte do nosso livro [Ciência de Dados em R](https://livro.curso-r.com/4-pacotes.html).
+
+```{r, child = "tidyverse.Rmd"}
+
+```
