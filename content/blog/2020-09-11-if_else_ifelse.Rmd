@@ -1,0 +1,151 @@
+---
+title: "Warnings no if_else(), mas não no ifelse()?"
+date: "2020-09-11"
+tags: ["r", "programação", "avançado"]
+categories: ["conceitos", "r"]
+banner: "img/banners/if_else_ifelse.jpg"
+author: ["Caio"]
+summary: "Por que às vezes recebemos warnings no if_else(), mas não no ifelse()? Uma investigação revela que o problema pode não estar onde imaginamos..."
+draft: false
+---
+
+Essa semana o Julio fez uma [pergunta](https://discourse.curso-r.com/t/warnings-no-if-else-case-when-mas-nao-no-ifelse/529) aparentemente inocente no nosso [fórum](https://discourse.curso-r.com/). Achei a resposta fosse ser simples, mas depois de 1 hora percebi que tinha virado quase um detetive da computação...
+
+Abaixo copiei a pergunta do Julio e a minha resposta, ligeiramente editadas por questões didáticas.
+
+## A Pergunta
+
+Quero aplicar essa `funcao_chata()` em uma coluna do meu data frame. Mas quero aplicar isso somente a uma parte do vetor. E não queria os warnings.
+
+Usando as funções do `{dplyr}`, tenho warnings, mas usando um simples `ifelse()` não tenho warnings. Nesse caso tudo bem, uso `ifelse()`, mas se eu tiver um caso com várias condições (que é quando uso o `case_when()`), qual seria o melhor jeito de fazer?
+
+```r
+library(tidyverse)
+funcao_chata <- function(x) {
+  if (any(x > 10)) warning("não gosto de vc")
+  1 / x
+}
+
+# usando if_else(), com warnings
+resultado <- mtcars %>% 
+  mutate(res = if_else(
+    mpg < 10, 
+    funcao_chata(mpg),
+    mpg
+  ))
+#> Warning: Problem with `mutate()` input `res`.
+#> ℹ não gosto de vc
+#> ℹ Input `res` is `if_else(mpg < 10, funcao_chata(mpg), mpg)`.
+#> Warning in funcao_chata(mpg): não gosto de vc
+
+# usando case_when(), com warnings
+resultado <- mtcars %>% 
+  mutate(res = case_when(
+    mpg < 10 ~ funcao_chata(mpg),
+    TRUE ~ mpg
+  ))
+#> Warning: Problem with `mutate()` input `res`.
+#> ℹ não gosto de vc
+#> ℹ Input `res` is `case_when(mpg < 10 ~ funcao_chata(mpg), TRUE ~ mpg^2)`.
+
+#> Warning: não gosto de vc
+
+# usando ifelse(), sem warnings
+resultado <- mtcars %>% 
+  mutate(res = ifelse(
+    mpg < 10, 
+    funcao_chata(mpg),
+    mpg
+  ))
+```
+
+Thanks.
+
+## A Resposta
+
+A sua pergunta é muito pertinente e já foi feita [outras vezes](https://stackoverflow.com/questions/60079566/vectorized-if-else-or-case-when-which-doesnt-eagerly-evaluate-its-potential-out), mas, para ficar bem claro, esse comportamento é *proposital*. Veja o que o Hadley fala na [vignette](https://vctrs.r-lib.org/articles/stability.html#ifelse-) sobre estabilidade do `{vectrs}`:
+
+> Unlike `ifelse()` this implies that `if_else()` must always evaluate both `yes` and `no` in order to figure out the correct type. I think this is consistent with `&&` (scalar operation, short circuits) and `&` (vectorised, evaluates both sides).
+
+Como fica claro pelas próprias palavras do Hadley, esse tipo de comportamento tem precedentes no R, mas para entender exatamente o que ele quer dizer vamos ter que aprender sobre alguns conceitos de linguagens de programação. Infelizmente vou aproveitar a sua pergunta para fazer o meu diploma valer alguma coisa...
+
+### Execução especulativa
+
+[Execução especulativa](https://en.wikipedia.org/wiki/Speculative_execution) uma técnica de otimização na qual um programa executa uma tarefa que talvez não seja necessária. Isso pode ser útil por uma série de razões apesar de parecer um desperdício! Se o seu computador consegue processar comandos em paralelo, ele pode executar a condição do `if`, o resultado caso ela seja `TRUE` e o resultado caso ela seja `FALSE` _ao mesmo tempo_, permitindo uma resposta até 2x mais rápida.
+
+Essa técnica é tão comum que aqueles famosos bugs de 2018 ([Spectre](https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)) e [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability))) acontecem principalmente por causa dela.
+
+Voltando para o `if_else()`, a sua implementação de execução especulativa é diferentemente da de outras linguagens que tentam "adivinhar" se o `if` vai retornar `TRUE` ou `FALSE`: ele usa [avaliação ansiosa](https://en.wikipedia.org/wiki/Eager_evaluation), ou seja, ele sempre executa os dois ramos do condicional independentemente do resultado do `if`. A motivação disso é bem diferente de "otimizar" a computação (como vimos no exemplo anterior), mas sim _garantir que ambos os lados da resposta vão ter o mesmo comprimento e o mesmo tipo_.
+
+Veja o [código](https://github.com/tidyverse/dplyr/blob/master/R/if_else.R#L30) do `if_else()` e perceba que nele não existe nenhum `if` ou `else`, ou seja, ambos os ramos do condicional necessariamente vão ser executados:
+
+```r
+if_else <- function(condition, true, false, missing = NULL) {
+  if (!is.logical(condition)) {
+    bad_args("condition", "must be a logical vector.")
+  }
+
+  out <- true[rep(NA_integer_, length(condition))]
+  out <- replace_with(
+    out, condition, true,
+    fmt_args(~ true),
+    glue("length of {fmt_args(~condition)}")
+  )
+  out <- replace_with(
+    out, !condition, false,
+    fmt_args(~ false),
+    glue("length of {fmt_args(~condition)}")
+  )
+  out <- replace_with(
+    out, is.na(condition), missing,
+    fmt_args(~ missing),
+    glue("length of {fmt_args(~condition)}")
+  )
+
+  out
+}
+```
+
+### Avaliação de curto-circuito
+
+O conceito de [avaliação de curto-circuito](https://en.wikipedia.org/wiki/Short-circuit_evaluation) é mais simples e foi citado diretamente pelo Hadley. Ele basicamente quer dizer que, em uma operação booleana, o segundo argumento somente será executado se o valor do primeiro não for suficiente para determinar o valor da expressão (por exemplo, se temos `A && B` e `A` for `FALSE`, não precisamos saber o valor de `B` para saber que a resposta da expressão é `FALSE`).
+
+Armados desse conhecimento, podemos entender finalmente a frase do Hadley: " I think this is consistent with `&&` (scalar operation, short circuits) and `&` (vectorised, evaluates both sides)". A implementação do `if_else()` foi feita para ser consistente com o operador `&`, ou seja, vetorizada e com avaliação especulativa (ansiosa), enquanto um `if-else` comum é consistente com o `&&`, a saber, escalar e com avaliação de curto-circuito.
+
+Agora vamos ver alguns exemplos para tentar entender como cada um desses operadores se comporta:
+
+```r
+# Função que retorna TRUE
+f <- function() {
+  warning("ANSIOSO")
+  TRUE
+}
+
+# Preguiçoso (só escalares)
+if (TRUE) TRUE else f()
+#> [1] TRUE
+
+# Ansioso (funciona para vetores)
+dplyr::if_else(TRUE, TRUE, f())
+#> Warning in f(): ANSIOSO
+#> [1] TRUE
+
+# Com curto-circuito (só escalares)
+FALSE && f()
+#> [1] FALSE
+
+# Sem curto-circuito (fuciona para vetores)
+FALSE & f()
+#> Warning in f(): ANSIOSO
+#> [1] FALSE
+```
+
+Acho que com esses códigos fica claro que, na verdade, o `ifelse()` é a _exceção_ e não a regra! Note que aqui eu usei sempre entradas escalares (comprimento 1) por questão didática, mas estão marcados os operadores que podem receber vetores.
+
+```r
+# Preguiçoso (funciona para vetores)
+ifelse(TRUE, TRUE, f())
+#> [1] TRUE
+```
+
+Conclui-se que, no que diz respeito à sua pergunta, não existe um jeito óbvio de fazer o `if_else()` e o `case_when()` trabalharem com execução preguiçosa sem mudar fundamentalmente o comportamento (e a lógica por trás) dessas funções. Se você quiser uma alternativa, aparentemente o `data.table::fcase()` funciona como um `case_when()` sem avaliação ansiosa.
