@@ -33,7 +33,7 @@ da_countries_raw &lt;- r_capitals %&gt;%
 </div>
 <div id="arrumando-os-dados" class="section level2">
 <h2>Arrumando os dados</h2>
-<p>Como bom faxineiro de dados, eu não poderia deixar se mostrar a parte mais divertida da ciência de dados: organizar os dados brutos! Primeiro, as coordenadas de latitude e longitude estavam em texto e, ao invés de mostrar valores positivos e negativos, mostrava os valores N (norte), S (sul), E (lest), W (oeste). Além disso, a latitude e longitude de Jerusalém (Israel) estava incorreta.</p>
+<p>Como bom faxineiro de dados, eu não poderia deixar se mostrar a parte mais divertida da ciência de dados: organizar os dados brutos! Primeiro, as coordenadas de latitude e longitude estavam em texto e, ao invés de mostrar valores positivos e negativos, mostrava os valores N (norte), S (sul), E (leste), W (oeste). Além disso, a latitude e longitude de Jerusalém (Israel) estava incorreta.</p>
 <pre class="r"><code>library(tidyverse)
 
 da_countries_tidy &lt;- da_countries_raw %&gt;% 
