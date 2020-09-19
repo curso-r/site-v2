@@ -1,0 +1,284 @@
+---
+title: "Qual a capital mais distante de Brasília?"
+date: "2020-09-19"
+tags: ["r", "visualizacao", "mapas"]
+categories: ["tutorial", "r"]
+banner: "img/banners/map-dist.png"
+author: ["Julio"]
+summary: "Qual é a capital mais próxima de Brasília? E a mais distante? Tutorial usando o pacote {sf}, com direito a gráficos 3D!"
+draft: false
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Hoje acordei curioso para saber qual era a capital mais distante de Brasília. Essa não é uma questão tão trivial quanto parece, pois, como a Terra é esférica (apesar de todas as controvérsias), podemos chegar em um ponto por mais de um caminho. Por isso, resolvi calcular todas as distâncias e montar um mapinha!</p>
+<div id="encontrando-as-coordenadas-geográficas" class="section level2">
+<h2>Encontrando as coordenadas geográficas</h2>
+<p>O primeiro passo para essa aventura foi encontrar as coordenadas geográficas das capitais de todo o mundo. Encontrei <a href="https://rpubs.com/jycheah/266868">nesse post</a> uma forma de fazer isso em R. O post estava desatualizado, então resolvi reescrevê-lo da maneira <em>tidy</em>.</p>
+<p>Começamos usando o maravilhoso pacote <code>{httr}</code> para obter o HTML <a href="https://lab.lmnixon.org/4th/worldcapitals.html">da página que contém os dados</a>. Precisei modificar o User-Agent pois, sem ele, a requisição retornava com <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/406">código 406</a>.</p>
+<pre class="r"><code>## Download a partir do site
+r_capitals &lt;- httr::GET(
+  &quot;https://lab.lmnixon.org/4th/worldcapitals.html&quot;,
+  httr::user_agent(&quot;Mozilla/5.0 (X11; Linux x86_64)&quot;)
+)</code></pre>
+<p>Em seguida, usamos nosso queridinho <code>{xml2}</code> para encontrar a tabela, e o não tão queridinho <code>{rvest}</code> para transformar essa tabela (temos uma discussão sobre isso <a href="https://www.curso-r.com/blog/2020-04-09-xml2/">aqui</a>). Os pacotes <code>{tibble}</code> e <code>{janitor}</code> foram usados para deixar a tabela formatada.</p>
+<pre class="r"><code>## Parse do resultado do site
+da_countries_raw &lt;- r_capitals %&gt;% 
+  xml2::read_html() %&gt;% 
+  xml2::xml_find_first(&quot;//table&quot;) %&gt;% 
+  rvest::html_table(header = TRUE) %&gt;% 
+  tibble::as_tibble() %&gt;% 
+  janitor::clean_names()</code></pre>
+</div>
+<div id="arrumando-os-dados" class="section level2">
+<h2>Arrumando os dados</h2>
+<p>Como bom faxineiro de dados, eu não poderia deixar se mostrar a parte mais divertida da ciência de dados: organizar os dados brutos! Primeiro, as coordenadas de latitude e longitude estavam em texto e, ao invés de mostrar valores positivos e negativos, mostrava os valores N (norte), S (sul), E (lest), W (oeste). Além disso, a latitude e longitude de Jerusalém (Israel) estava incorreta.</p>
+<pre class="r"><code>library(tidyverse)
+
+da_countries_tidy &lt;- da_countries_raw %&gt;% 
+  filter(country != &quot;&quot;) %&gt;% 
+  # transforma (N,S) (E,W) em (1,-1), (1,-1)
+  mutate(
+    lat_num = str_detect(latitude, &quot;N&quot;) * 2 - 1,
+    lng_num = str_detect(longitude, &quot;E&quot;) * 2 - 1
+  ) %&gt;% 
+  # transforma em numérico
+  mutate(
+    across(c(latitude, longitude), parse_number),
+    lat = latitude * lat_num,
+    lng = longitude * lng_num
+  ) %&gt;% 
+  # arruma Israel
+  mutate(
+    lat = if_else(country == &quot;Israel&quot;, 31.7683, lat),
+    lng = if_else(country == &quot;Israel&quot;, 35.2137, lng)
+  ) %&gt;% 
+  select(country, capital, lat, lng)</code></pre>
+</div>
+<div id="transformando-os-dados" class="section level2">
+<h2>Transformando os dados</h2>
+<p>Com os dados arrumados em mãos, calculei as distâncias através da distância geodésica<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, usando latitude e longitude como base e o maravilhoso pacote <code>{sf}</code>. São duas funções principais: a <code>sf::st_point()</code> cria um objeto especial do tipo <em>ponto</em>, e a <code>sf::st_distance()</code> calcula a distância entre dois pontos. Utilizamos <code>map2()</code> e <code>map()</code> do pacote <code>{purrr}</code> para fazer aplicar essas operações em todos os países. No final, temos a base ordenada pelas distâncias. As distâncias são calculadas em metros, que transformamos para quilômetros.</p>
+<pre class="r"><code>da_countries &lt;- da_countries_tidy %&gt;% 
+  # cria pontos com base em lat lng e sf::st_point()
+  # sf::st_sfc() transforma a lista num objeto POINT do {sf}
+  # crs = 4326 serve para o {sf} saber que
+  #   são coordenadas no planeta Terra.
+  mutate(pt = sf::st_sfc(
+    map2(lng, lat, ~sf::st_point(c(.x, .y, 1))),
+    crs = 4326
+  )) %&gt;%
+  mutate(
+    across(c(lat, lng), list(br = ~.x[country == &quot;Brazil&quot;])),
+    pt_br = sf::st_sfc(
+      list(sf::st_point(c(lng_br[1], lat_br[1], 1))), 
+      crs = 4326
+    )
+  ) %&gt;% 
+  mutate(
+    dist_br = sf::st_distance(pt, pt_br, by_element = TRUE),
+    dist_br = as.numeric(dist_br / 1000)
+  ) %&gt;% 
+  # ordena a base pelas distâncias
+  arrange(dist_br)</code></pre>
+</div>
+<div id="visualizando" class="section level2">
+<h2>Visualizando</h2>
+<p>As capitais mais próximas estão na Tabela <a href="#tab:proximas">1</a>. Sem muitas surpresas aqui: como Brasília fica na região central do país, a capital mais próxima é a do Paraguai, seguida por outros países da América do Sul.</p>
+<table>
+<caption><span id="tab:proximas">Table 1: </span>Capitais mais próximas de Brasília.</caption>
+<thead>
+<tr class="header">
+<th align="left">País</th>
+<th align="left">Capital</th>
+<th align="right">Distância (km)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Paraguay</td>
+<td align="left">Asuncion</td>
+<td align="right">1473</td>
+</tr>
+<tr class="even">
+<td align="left">Bolivia</td>
+<td align="left">La Paz (administrative) / Sucre (legislative)</td>
+<td align="right">2202</td>
+</tr>
+<tr class="odd">
+<td align="left">Uruguay</td>
+<td align="left">Montevideo</td>
+<td align="right">2276</td>
+</tr>
+<tr class="even">
+<td align="left">French Guiana</td>
+<td align="left">Cayenne</td>
+<td align="right">2326</td>
+</tr>
+<tr class="odd">
+<td align="left">Suriname</td>
+<td align="left">Paramaribo</td>
+<td align="right">2464</td>
+</tr>
+<tr class="even">
+<td align="left">Argentina</td>
+<td align="left">Buenos Aires</td>
+<td align="right">2618</td>
+</tr>
+<tr class="odd">
+<td align="left">Guyana</td>
+<td align="left">Georgetown</td>
+<td align="right">2695</td>
+</tr>
+<tr class="even">
+<td align="left">Chile</td>
+<td align="left">Santiago</td>
+<td align="right">3028</td>
+</tr>
+<tr class="odd">
+<td align="left">Peru</td>
+<td align="left">Lima</td>
+<td align="right">3206</td>
+</tr>
+<tr class="even">
+<td align="left">Barbados</td>
+<td align="left">Bridgetown</td>
+<td align="right">3409</td>
+</tr>
+</tbody>
+</table>
+<p>As coisas ficam mais interessantes quando visualizamos as capitais mais distantes, na Tabela <a href="#tab:distantes">2</a>. E temos nosso resultado: Koror (Palau) é a capital mais distante da capital, Brasília, seguida por Manila (Filipinas) e Saipan (Ilhas Mariana do Norte).</p>
+<table>
+<caption><span id="tab:distantes">Table 2: </span>Capitais mais distantes de Brasília.</caption>
+<thead>
+<tr class="header">
+<th align="left">País</th>
+<th align="left">Capital</th>
+<th align="right">Distância (km)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Palau</td>
+<td align="left">Koror</td>
+<td align="right">19069</td>
+</tr>
+<tr class="even">
+<td align="left">Philippines</td>
+<td align="left">Manila</td>
+<td align="right">18801</td>
+</tr>
+<tr class="odd">
+<td align="left">Northern Mariana Islands</td>
+<td align="left">Saipan</td>
+<td align="right">18639</td>
+</tr>
+<tr class="even">
+<td align="left">Macao, China</td>
+<td align="left">Macau</td>
+<td align="right">17887</td>
+</tr>
+<tr class="odd">
+<td align="left">Brunei Darussalam</td>
+<td align="left">Bandar Seri Begawan</td>
+<td align="right">17765</td>
+</tr>
+<tr class="even">
+<td align="left">Republic of Korea</td>
+<td align="left">Seoul</td>
+<td align="right">17517</td>
+</tr>
+<tr class="odd">
+<td align="left">North Korea</td>
+<td align="left">Pyongyang</td>
+<td align="right">17296</td>
+</tr>
+<tr class="even">
+<td align="left">East Timor</td>
+<td align="left">Dili</td>
+<td align="right">17264</td>
+</tr>
+<tr class="odd">
+<td align="left">Viet Nam</td>
+<td align="left">Hanoi</td>
+<td align="right">17126</td>
+</tr>
+<tr class="even">
+<td align="left">Micronesia (Federated States of)</td>
+<td align="left">Palikir</td>
+<td align="right">17066</td>
+</tr>
+</tbody>
+</table>
+<p>Mas será mesmo? Vamos usar o pacote <code>{leaflet}</code> para visualizar:</p>
+<pre class="r"><code>library(leaflet)
+
+# Cria as labels dos popups
+make_label &lt;- function(pais, capital) {
+  txt &lt;- stringr::str_glue(
+    &quot;&lt;b&gt;País&lt;/b&gt;: {pais}&lt;br&gt;&quot;,
+    &quot;&lt;b&gt;Capital&lt;/b&gt;: {capital}&quot;
+  )
+  htmltools::HTML(txt)
+}
+
+p_leaflet &lt;- da_countries %&gt;% 
+  mutate(lab = map2(country, capital, make_label)) %&gt;% 
+  # cria mapa
+  leaflet() %&gt;% 
+  # adiciona a casquinha
+  addTiles() %&gt;% 
+  # adiciona os pontos
+  addMarkers(
+    clusterOptions = markerClusterOptions(), 
+    lat = ~lat, lng = ~lng, popup = ~lab
+  )
+
+p_leaflet</code></pre>
+<p><img src="/img/blog/map-dist/leaflet.png" /></p>
+<p>Acesse o mapa dinâmico <a href="/blog/2020-09-19-map-dist_files/p_leaflet_world.html">neste link</a>.</p>
+<p>Olhando o mapa (e considerando que a terra é esférica), parece mesmo que esses países estão bem longe, mesmo tentando acessar pelo leste ou pelo oeste.</p>
+<p>E, já que a terra é esférica, que tal criar um mapa 3D? Fiz isso usando o <code>{plotly}</code>, com base no tutorial disponível <a href="https://github.com/ropensci/plotly/blob/master/demo/sf-plotly-3D-globe.R">neste link</a>.</p>
+<pre class="r"><code>library(plotly)
+
+p_plotly &lt;- plot_ly(height = 1000) %&gt;%
+  # adiciona o mapa mundi
+  add_sf(
+    data = world, 
+    x = ~coord_x(x, y),
+    y = ~coord_y(x, y),
+    z = ~coord_z(y),
+    color = I(&quot;gray80&quot;), 
+    size = I(2),
+    hoverinfo = &quot;none&quot;
+  ) %&gt;% 
+  # adiciona as linhas
+  add_sf(
+    data = da_lines_sf,
+    name = &quot;linhas&quot;,
+    x = ~coord_x(x, y),
+    y = ~coord_y(x, y),
+    z = ~coord_z(y),
+    color = ~dist_br,
+    size = I(3),
+    text = ~label_plotly(country, capital, dist_br),
+    hoverinfo = &quot;text&quot;
+  ) %&gt;% 
+  layout(showlegend = FALSE)
+
+p_plotly</code></pre>
+<p><img src="/img/blog/map-dist/plotly.png" /></p>
+<p>Acesse o mapa dinâmico <a href="/blog/2020-09-19-map-dist_files/p_plotly_world.html">neste link</a>.</p>
+</div>
+<div id="wrap-up" class="section level2">
+<h2>Wrap-up</h2>
+<p>Nesse post vimos como usar ferramentas do <code>{tidyverse}</code>, <code>{sf}</code> para transformação de dados para mapas, além de utilizar o <code>{leaflet}</code> e o <code>{plotly}</code> para visualizações interativas.</p>
+<p>O código completo para construir as visualizações do zero está <a href="https://gist.github.com/d896765d56a886ee2bb77f265def79d9">neste link</a>.</p>
+<p>É isso pessoal. Happy coding ;)</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Karney, Charles FF, 2013, Algorithms for geodesics, Journal of Geodesy 87(1), 43–55.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
