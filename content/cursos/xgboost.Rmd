@@ -53,7 +53,7 @@ siteCursoR:::criar_section_header("Conteúdo")
 :::: {.column-esq}
 - O que é e quando utilizar o XGBoost
 - Criando um XGBoost passo-a-passo
-- Tunning do modelo
+- Tuning do modelo
 - *Overfitting* e validação cruzada
 - Métricas de performance
 - Introdução ao Tidymodels

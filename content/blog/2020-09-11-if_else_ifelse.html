@@ -1,0 +1,132 @@
+---
+title: "Warnings no if_else(), mas não no ifelse()?"
+date: "2020-09-11"
+tags: ["r", "programação", "avançado"]
+categories: ["conceitos", "r"]
+banner: "img/banners/if_else_ifelse.jpg"
+author: ["Caio"]
+summary: "Por que às vezes recebemos warnings no if_else(), mas não no ifelse()? Uma investigação revela que o problema pode não estar onde imaginamos..."
+draft: false
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Essa semana o Julio fez uma <a href="https://discourse.curso-r.com/t/warnings-no-if-else-case-when-mas-nao-no-ifelse/529">pergunta</a> aparentemente inocente no nosso <a href="https://discourse.curso-r.com/">fórum</a>. Achei a resposta fosse ser simples, mas depois de 1 hora percebi que tinha virado quase um detetive da computação…</p>
+<p>Abaixo copiei a pergunta do Julio e a minha resposta, ligeiramente editadas por questões didáticas.</p>
+<div id="a-pergunta" class="section level2">
+<h2>A Pergunta</h2>
+<p>Quero aplicar essa <code>funcao_chata()</code> em uma coluna do meu data frame. Mas quero aplicar isso somente a uma parte do vetor. E não queria os warnings.</p>
+<p>Usando as funções do <code>{dplyr}</code>, tenho warnings, mas usando um simples <code>ifelse()</code> não tenho warnings. Nesse caso tudo bem, uso <code>ifelse()</code>, mas se eu tiver um caso com várias condições (que é quando uso o <code>case_when()</code>), qual seria o melhor jeito de fazer?</p>
+<pre class="r"><code>library(tidyverse)
+funcao_chata &lt;- function(x) {
+  if (any(x &gt; 10)) warning(&quot;não gosto de vc&quot;)
+  1 / x
+}
+
+# usando if_else(), com warnings
+resultado &lt;- mtcars %&gt;% 
+  mutate(res = if_else(
+    mpg &lt; 10, 
+    funcao_chata(mpg),
+    mpg
+  ))
+#&gt; Warning: Problem with `mutate()` input `res`.
+#&gt; ℹ não gosto de vc
+#&gt; ℹ Input `res` is `if_else(mpg &lt; 10, funcao_chata(mpg), mpg)`.
+#&gt; Warning in funcao_chata(mpg): não gosto de vc
+
+# usando case_when(), com warnings
+resultado &lt;- mtcars %&gt;% 
+  mutate(res = case_when(
+    mpg &lt; 10 ~ funcao_chata(mpg),
+    TRUE ~ mpg
+  ))
+#&gt; Warning: Problem with `mutate()` input `res`.
+#&gt; ℹ não gosto de vc
+#&gt; ℹ Input `res` is `case_when(mpg &lt; 10 ~ funcao_chata(mpg), TRUE ~ mpg^2)`.
+
+#&gt; Warning: não gosto de vc
+
+# usando ifelse(), sem warnings
+resultado &lt;- mtcars %&gt;% 
+  mutate(res = ifelse(
+    mpg &lt; 10, 
+    funcao_chata(mpg),
+    mpg
+  ))</code></pre>
+<p>Thanks.</p>
+</div>
+<div id="a-resposta" class="section level2">
+<h2>A Resposta</h2>
+<p>A sua pergunta é muito pertinente e já foi feita <a href="https://stackoverflow.com/questions/60079566/vectorized-if-else-or-case-when-which-doesnt-eagerly-evaluate-its-potential-out">outras vezes</a>, mas, para ficar bem claro, esse comportamento é <em>proposital</em>. Veja o que o Hadley fala na <a href="https://vctrs.r-lib.org/articles/stability.html#ifelse-">vignette</a> sobre estabilidade do <code>{vectrs}</code>:</p>
+<blockquote>
+<p>Unlike <code>ifelse()</code> this implies that <code>if_else()</code> must always evaluate both <code>yes</code> and <code>no</code> in order to figure out the correct type. I think this is consistent with <code>&amp;&amp;</code> (scalar operation, short circuits) and <code>&amp;</code> (vectorised, evaluates both sides).</p>
+</blockquote>
+<p>Como fica claro pelas próprias palavras do Hadley, esse tipo de comportamento tem precedentes no R, mas para entender exatamente o que ele quer dizer vamos ter que aprender sobre alguns conceitos de linguagens de programação. Infelizmente vou aproveitar a sua pergunta para fazer o meu diploma valer alguma coisa…</p>
+<div id="execução-especulativa" class="section level3">
+<h3>Execução especulativa</h3>
+<p><a href="https://en.wikipedia.org/wiki/Speculative_execution">Execução especulativa</a> uma técnica de otimização na qual um programa executa uma tarefa que talvez não seja necessária. Isso pode ser útil por uma série de razões apesar de parecer um desperdício! Se o seu computador consegue processar comandos em paralelo, ele pode executar a condição do <code>if</code>, o resultado caso ela seja <code>TRUE</code> e o resultado caso ela seja <code>FALSE</code> <em>ao mesmo tempo</em>, permitindo uma resposta até 2x mais rápida.</p>
+<p>Essa técnica é tão comum que aqueles famosos bugs de 2018 (<a href="https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)">Spectre</a> e <a href="https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability)">Meltdown</a>) acontecem principalmente por causa dela.</p>
+<p>Voltando para o <code>if_else()</code>, a sua implementação de execução especulativa é diferentemente da de outras linguagens que tentam “adivinhar” se o <code>if</code> vai retornar <code>TRUE</code> ou <code>FALSE</code>: ele usa <a href="https://en.wikipedia.org/wiki/Eager_evaluation">avaliação ansiosa</a>, ou seja, ele sempre executa os dois ramos do condicional independentemente do resultado do <code>if</code>. A motivação disso é bem diferente de “otimizar” a computação (como vimos no exemplo anterior), mas sim <em>garantir que ambos os lados da resposta vão ter o mesmo comprimento e o mesmo tipo</em>.</p>
+<p>Veja o <a href="https://github.com/tidyverse/dplyr/blob/master/R/if_else.R#L30">código</a> do <code>if_else()</code> e perceba que nele não existe nenhum <code>if</code> ou <code>else</code>, ou seja, ambos os ramos do condicional necessariamente vão ser executados:</p>
+<pre class="r"><code>if_else &lt;- function(condition, true, false, missing = NULL) {
+  if (!is.logical(condition)) {
+    bad_args(&quot;condition&quot;, &quot;must be a logical vector.&quot;)
+  }
+
+  out &lt;- true[rep(NA_integer_, length(condition))]
+  out &lt;- replace_with(
+    out, condition, true,
+    fmt_args(~ true),
+    glue(&quot;length of {fmt_args(~condition)}&quot;)
+  )
+  out &lt;- replace_with(
+    out, !condition, false,
+    fmt_args(~ false),
+    glue(&quot;length of {fmt_args(~condition)}&quot;)
+  )
+  out &lt;- replace_with(
+    out, is.na(condition), missing,
+    fmt_args(~ missing),
+    glue(&quot;length of {fmt_args(~condition)}&quot;)
+  )
+
+  out
+}</code></pre>
+</div>
+<div id="avaliação-de-curto-circuito" class="section level3">
+<h3>Avaliação de curto-circuito</h3>
+<p>O conceito de <a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation">avaliação de curto-circuito</a> é mais simples e foi citado diretamente pelo Hadley. Ele basicamente quer dizer que, em uma operação booleana, o segundo argumento somente será executado se o valor do primeiro não for suficiente para determinar o valor da expressão (por exemplo, se temos <code>A &amp;&amp; B</code> e <code>A</code> for <code>FALSE</code>, não precisamos saber o valor de <code>B</code> para saber que a resposta da expressão é <code>FALSE</code>).</p>
+<p>Armados desse conhecimento, podemos entender finalmente a frase do Hadley: " I think this is consistent with <code>&amp;&amp;</code> (scalar operation, short circuits) and <code>&amp;</code> (vectorised, evaluates both sides)". A implementação do <code>if_else()</code> foi feita para ser consistente com o operador <code>&amp;</code>, ou seja, vetorizada e com avaliação especulativa (ansiosa), enquanto um <code>if-else</code> comum é consistente com o <code>&amp;&amp;</code>, a saber, escalar e com avaliação de curto-circuito.</p>
+<p>Agora vamos ver alguns exemplos para tentar entender como cada um desses operadores se comporta:</p>
+<pre class="r"><code># Função que retorna TRUE
+f &lt;- function() {
+  warning(&quot;ANSIOSO&quot;)
+  TRUE
+}
+
+# Preguiçoso (só escalares)
+if (TRUE) TRUE else f()
+#&gt; [1] TRUE
+
+# Ansioso (funciona para vetores)
+dplyr::if_else(TRUE, TRUE, f())
+#&gt; Warning in f(): ANSIOSO
+#&gt; [1] TRUE
+
+# Com curto-circuito (só escalares)
+FALSE &amp;&amp; f()
+#&gt; [1] FALSE
+
+# Sem curto-circuito (fuciona para vetores)
+FALSE &amp; f()
+#&gt; Warning in f(): ANSIOSO
+#&gt; [1] FALSE</code></pre>
+<p>Acho que com esses códigos fica claro que, na verdade, o <code>ifelse()</code> é a <em>exceção</em> e não a regra! Note que aqui eu usei sempre entradas escalares (comprimento 1) por questão didática, mas estão marcados os operadores que podem receber vetores.</p>
+<pre class="r"><code># Preguiçoso (funciona para vetores)
+ifelse(TRUE, TRUE, f())
+#&gt; [1] TRUE</code></pre>
+<p>Conclui-se que, no que diz respeito à sua pergunta, não existe um jeito óbvio de fazer o <code>if_else()</code> e o <code>case_when()</code> trabalharem com execução preguiçosa sem mudar fundamentalmente o comportamento (e a lógica por trás) dessas funções. Se você quiser uma alternativa, aparentemente o <code>data.table::fcase()</code> funciona como um <code>case_when()</code> sem avaliação ansiosa.</p>
+</div>
+</div>
