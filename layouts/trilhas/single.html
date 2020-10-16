@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="{{ .Summary | plainify }}">
+  <meta property="og:title" content="{{.Title}}">
+  <meta property="og:description" content="{{.Summary | plainify}}">
+  <meta property="og:image" content="{{ .Site.BaseURL }}{{.Params.banner}}">
+  <meta property="og:url" content="{{.URL}}">
+
+  <!-- =======================================================
+    Theme Name: BizPage
+    Theme URL: https://bootstrapmade.com/bizpage-bootstrap-business-template/
+    Author: BootstrapMade.com
+    License: https://bootstrapmade.com/license/
+  ======================================================= -->
+  
+  {{ partial "head.html" . }}
+  <script src="https://assets.pagar.me/checkout/1.1.0/checkout.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
+</head>
+
+<body>
+
+  <!--==========================
+    Header
+  ============================-->
+  <header style="z-index: 91921921;">
+    {{ partial "header.html" . }}
+  </header><!-- #header -->
+
+  <!--==========================
+    Intro Section
+  ============================-->
+  <section id="intro">
+
+    <div class="trilha-intro-header">
+
+      <div class="trilha-header-text-box row">
+        <div class="col-xs-8">
+        <h1>
+          <span class="trilha-header-text-box-main">{{ .Params.title }}</span>
+          <span class="trilha-header-text-box-desc">{{ .Params.desc }}</span>
+        </h1>
+        <a href="" class=trilha-inscrever>Inscreva-se</a>
+      </div>
+      </div>
+
+      
+    </div>
+      
+  </section><!-- #intro -->
+
+  <main id="main">
+    
+    <!--==========================
+      Nossos Cursos
+    ============================-->
+    <div id="container-crusos-single">
+      <section id="cursos-single">
+        <div class="container">
+
+            {{.Content}}
+          
+        </div>
+      </section><!-- #about -->
+    </div>
+    
+    <section id="call-to-action" class="wow fadeIn">
+      <div class="container text-center">
+          
+          {{ if and (isset .Params "aberto") (ne .Params.aberto "" ) }} 
+          
+          <p style="color: #fff; font-size: 20px;">
+            Inscreva-se agora para embarcar nessa nova jornada pelo universo da Ciência de Dados!
+          </p>
+          
+              {{ partial "inscricao.html" . }}
+          
+          {{ else if ne .Params.title "Treinamento in-company"}}
+          
+              {{ partial "form-curso.html" . }}
+              
+          {{ else}}
+          
+          <p style="color: #fff; font-size: 20px;">
+            Comece a usar dados para impulsionar a sua empresa. Introduza a sua equipe ao universo da Ciência de Dados!
+          </p>
+          
+              <a href = "/contato">
+                <button id="pagamento" class="cta-btn" style="background: none;">
+                  Solicite um orçamento
+                </button>
+              </a>
+        
+          {{ end }}
+       
+      </div>
+      
+      
+    </section><!-- #call-to-action -->
+    
+    
+    {{partial "footer.html" . }}
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  {{ partial "scripts.html" .}}
+
+</body>
+</html>

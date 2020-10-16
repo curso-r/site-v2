@@ -375,8 +375,56 @@ nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:foc
   animation-fill-mode: forwards; 
 }
 
-
-
 #vocesaira {
   color: #da4d4d
+}
+
+.trilha-header-text-box, .trilha-header-text-box  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.trilha-intro-header {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 75vh;
+  background-color: white;
+}
+
+.trilha-header-text-box {
+  color: black;
+  position: absolute;
+  text-align: left;
+  top: 20%;
+  left: 10%;
+  width: 70%;
+}
+
+.trilha-header-text-box-main {
+  display: block;
+}
+
+.trilha-header-text-box-desc {
+  padding-top: 20px;
+  font-size: 16px;
+  display: block;
+  font-style: normal;
+  text-transform: none;
+  font-family: "Lato", sans-serif;
+}
+
+.trilha-inscrever {
+  padding: 10px 40px;
+  display: inline-block;
+  margin-top: 20px;
+  border-radius: 0px;
+  color: #fff ;
+  background-color: #777;
+  font-size: 20px;
+}
+
+.trilha-inscrever:hover {
+  color: purple;
 }
