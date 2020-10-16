@@ -26,11 +26,27 @@
   <!--==========================
       Nossos Cursos
     ============================-->
+    
+
+    
     <section id="cursos">
+      
+      <div class="container" style="background: 'white'">
+        
+        <header class="section-header">
+          <h3>Trilhas</h3>
+          <p>Monte sua carreira em Data Science com as trilhas da Curso-R! Escolhemos a dedo os cursos que te levarão ao sucesso, de seja qual for sua necessidade.</p>
+        </header>
+        
+        {{partial "trilhas.html" .}}
+        
+      </div>
+      
+      
       <div class="container" style="background: none;">
         
         <header class="section-header">
-          <h3>Nossos cursos</h3>
+          <h3>Cursos individuais</h3>
           <p>Cursos de qualidade com conhecimento em R e estatística. Venha explorar esse novo universo!</p>
         </header>
         
@@ -38,6 +54,7 @@
         
       </div>
     </section><!-- #about -->
+    
     
     {{ partial "newsletter.html" . }}
     
