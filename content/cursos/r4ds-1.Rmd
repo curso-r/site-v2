@@ -9,7 +9,7 @@ banner: "img/cursos/r4ds-1-banner.jpg"
 desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
 ordem: "5"
 id: "32"
-aberto: "true"
+aberto: "false"
 unit_price: "55000"
 params:
   id_unico: 1
