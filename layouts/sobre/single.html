@@ -23,6 +23,29 @@
   </header><!-- #header -->
   
   <br>
+  
+  <!--==========================
+    Intro
+  ============================-->
+    <section id="intro">
+    
+    <div class="intro-header" style="background-image: url(/img/sobre/hero-bg.jpg);">
+      <div class="container intro-content">
+        <h3 style = "color: #fff"> 
+        A Curso-R é o braço de educação <br>
+        da <span style = "color: #da4d4d">R6 Consultoria</span>, uma empresa <br>
+        especializada em Ciência de Dados e <br>
+        programação em R.
+        </h3>
+        <a href = "/contato">
+          <button id="pagamento" class="cta-btn" style="background: none; font-size: 13px;">
+            Entre em contato
+          </button>
+        </a>
+      </div>
+    </div>
+  </section><!-- #intro -->
+  
   <!--==========================
       Nossos Cursos
     ============================-->
@@ -30,8 +53,10 @@
       <div class="container" style="background: none;">
         
         <header class="section-header">
-          <h3>Sobre a Curso-R</h3>
+          <h3>O que fazemos</h3>
         </header>
+        
+        <br>
         
         {{.Content}}
         
@@ -39,9 +64,49 @@
 
     </section><!-- #about -->
     
-    {{ partial "newsletter.html" . }}
+   <section id="call-to-action" class="wow fadeIn">
+  <div class="container text-center">
+    <h4 data-toc-skip style = "color: #fff">NOSSA MISSÃO É DESCOMPLICAR O APRENDIZADO DA CIÊNCIA DE DADOS </h4>
+   <button id="pagamento" class="cta-btn" style="background: none; font-size: 13px;">
+    Entre em contato
+  </button>
+  </div>
+</section><!-- #call-to-action -->
     
     {{ partial "equipe.html" . }}
+    
+    <section id="call-to-action" class="wow fadeIn">
+      <div class="container text-center">
+        <h6 data-toc-skip style = "color: #fff">O R é uma linguagem de programação <span style = "color: #da4d4d">criada para a Ciência de Dados</span>. Ela é altamente utilizada por especialistas em análise de dados e vem se tornando cada vez mais popular, com uma <span style = "color: #da4d4d">comunidade super ativa</span> e <span style = "color: #da4d4d">novas ferramentas a cada dia</span>. No R, encontramos tudo o que há de novo para análise de dados. </h6>
+      </div>
+    </section>
+    
+    <section id="sobre">
+      <div class="container" style="background: none;">
+    
+      <header class="section-header">
+        <h3>Nossos clientes</h3>
+      </header>
+      
+      <center>
+        
+        <p>Algumas empresas com as quais já tivemos o prazer de trabalhar.</p>
+        
+        <img src = "/img/cursos/logos-empresas/logo-mateus.png" width = "190px" height = "130px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-spc.jpg" width = "210px" height = "140px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-kantar.png" width = "190px" height = "130px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-ias.png" width = "260px" height = "130px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-banco-honda.png" width = "190px" height = "100px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-john-deere.png" width = "250px" height = "200px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-edp.jpg" width = "190px" height = "150px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/tesouro-nacional.png" width = "200px" height = "200px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-gp.png" width = "350px" height = "250px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-sabesp.png" width = "200px" height = "250px" style = "padding: 20px;">
+        <img src = "/img/cursos/logos-empresas/logo-elo.png" width = "270px" height = "250px" style = "padding: 20px;">
+      </center>
+      
+    </div>
+  </section>
     
     {{partial "footer.html" .}}
     
