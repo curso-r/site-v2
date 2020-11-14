@@ -1,0 +1,504 @@
+.reg-all{
+    font-family: 'montserrat';
+    max-width: 100vw;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    all: initial;
+}
+.home-info-row{
+    background: #9A1334  url(../images/telescopio.png) no-repeat right center;
+ 
+    padding: 40px 0;
+    color: white;
+    position: relative;
+}
+.bg-gradient{
+background: rgba(154,19,52,1);
+background: -moz-linear-gradient(left, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(154,19,52,1)), color-stop(38%, rgba(154,19,52,1)), color-stop(100%, rgba(154,19,52,0)));
+background: -webkit-linear-gradient(left, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -o-linear-gradient(left, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -ms-linear-gradient(left, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: linear-gradient(to right, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9a1334', endColorstr='#9a1334', GradientType=1 );
+    height: 100%;
+    width: 100%;
+    top:0 ;
+    position: absolute;
+   
+}
+.home-info-row h1{
+    margin: 0;
+    font-weight: 700;
+    font-size: 32px;
+    margin-top: 5px;
+}
+.home-info-row h1:nth-child(2){
+    margin-top: 25px;
+}
+.home-info-row .description{
+    margin-top: 20px;
+    font-weight: 300;
+    font-size: 15px;
+    margin-bottom: 20px;
+    
+}
+.local-btn{
+    padding: 7px 5px;
+    border: solid 1px white;
+    width: 120px;
+    text-align: center;
+    border-radius: 50px;
+    font-weight: 300;
+}
+.date-cont img,.time-cont img{
+    width: 32px
+}
+.date-cont, .time-cont{
+    margin: 8px 0
+}
+.desc-info{
+    margin: 15px 0 5px
+}
+.text-input{
+    background: none;
+    border: 1px solid white;
+    padding: 6px 15px;
+    border-radius: 50px;
+    color: white;
+    width: 230px;
+  
+
+}
+.text-input-btn{
+    background: #000;
+    padding: 6px 15px;
+    border: 1px solid white;
+    border-radius: 50px;
+    margin-left: -50px;
+    width: 80px;
+    transition: .7s;
+   
+}
+.text-input-btn:hover{
+    width: 100px;
+    margin-left: -60px
+}
+.text-input:focus, .text-input-btn:focus{
+    outline: 0;
+
+}
+::placeholder{
+    color: white;
+}
+::selection{
+    background: #CC023C;
+    color: white
+}
+.price-row h3{
+    font-size: 16px;
+    margin-bottom: 2px;
+    font-weight: 300
+}
+.price-row h2{
+    font-size: 45px;
+    font-weight: 700;
+    margin-top: 0
+}
+.old-price{
+    text-decoration:line-through
+}
+.insc-btn{
+    background: black;
+    padding: 18px 40px;
+    width: 300px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 20px;
+    border: none;
+    margin-top: 20px;
+    margin-left: 10px;
+    transition: .7s
+}
+.insc-btn:hover{
+    transform: scale(1.06)
+}
+.insc-btn:focus{
+    outline: 0
+}
+.disclaimer{
+    margin-top: 15px;
+    font-size: 12px
+}
+.terms{
+    color: white;
+  
+    border-bottom: 2px solid white;
+    transition: .7 s
+}
+.terms:hover{
+    color: black;
+    text-decoration: none;
+    border-bottom: 2px solid black;
+      font-weight: 700;
+}
+.nav-cont-row{
+    padding: 15px 0;
+    background: black;
+    color: white;
+}
+.nav-cont-row ul{
+    margin: 0;
+    padding: 0;
+}
+.nav-cont-row li{
+    display: inline-block;
+    text-decoration: none;
+    margin-right: 20px
+   
+        
+}
+.nav-cont-row li a{
+     color: white;
+    font-weight: 700;
+}
+.nav-item-active a{
+    color: #CC023C !important;
+}
+.nav-item:hover a{
+    color: #CC023C !important;
+    text-decoration: none
+}
+a, a:visited, a:hover, a:active {
+    text-decoration:none;
+}
+.stick{
+    position: fixed;
+    top: 0;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 2
+}
+
+.title-r{
+    color: black;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.title-r span{
+    border-bottom: 3px solid #CC023C;
+    line-height:40px
+}
+.item-skill div{
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 50px;
+    margin-right: 5px;
+    margin-top: 5px
+    
+}
+.item-skill div:hover{
+    border: 1pX solid #CC023C
+}
+.item-skill{
+    margin-top: 15px;
+}
+.one-row p{
+    line-height: 23px
+}
+.box-r h1{
+    font-size: 18px;
+    margin-top: 10px
+}
+.red{
+    color: #CC023C;
+}
+.bold{
+    font-weight: 700;
+}
+.box-r{
+    padding: 12px;
+    border: 1px solid black;
+    border-radius: 12px;
+    margin-top: 50px;
+}
+.box-r img{
+    width: 45px;
+    display: block;
+    margin-left: 20px;
+    margin-top: 5px
+}
+.box-r h4{
+    font-size: 15px;
+    margin-bottom: 0
+}
+.box-r p{
+    margin-top: 0;
+    font-size: 12px
+}
+.box-r p a{
+    text-decoration: underline
+}
+.box-r p a:hover{
+    color: #CC023C
+}
+.curso-number h1{
+    font-size: 120px;
+    font-weight: 900;
+    text-align: center;
+    color: #CC023C;
+    margin: 0;
+    margin-top: -10px
+    
+}
+.curso-number h4{
+    text-align: center;
+    font-size: 27px;
+    margin: 0;
+    color: black;
+    margin-top: 120px
+   
+}
+.cursos-row .date-cont img, .cursos-row .time-cont img{
+    filter: grayscale(10) brightness(-100%)
+}
+.cursos-row .date-cont, .cursos-row .time-cont{
+    color: #CC023C
+}
+.cont-cursos h2{
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 0;
+}
+.cont-cursos span{
+    font-weight: 700;
+    font-size: 18px;
+    float: right;
+    margin-top: 13px;
+    color: black
+}
+.cursos-row p{
+    font-size: 14px
+        
+}
+.cursos-row p:nth-child(4){
+    margin-top: 20px
+}
+.red-bar{
+    width: 100%;
+    height: 2px;
+    background: #CC032C;
+
+}
+.cursos-row ul{
+   list-style: #CC023C
+}
+.cursos-row ul li{
+    font-size: 12px
+}
+
+.btn-drop{
+    
+    width: 100%;
+    outline: 0;
+    background: none;
+    border: none;
+}
+.btn-drop h2{
+    font-weight: 700;
+    font-size: 15px;
+    display: inline-block;
+    float: left;
+}
+.btn-drop span{
+    font-weight: 700;
+    font-size: 20px;
+    float: right;
+    margin-top: 15px;
+    
+}
+.pre-row{
+    background: black;
+    margin-top: 60px;
+    padding: 30px 0;
+    height: 260px
+}
+.pre-row img{
+    width: 45px;
+    margin-right: 15px
+}
+.pre-row h1{
+    display: inline-block;
+    color: white;
+    font-size: 19px
+    
+}
+.t-item{
+    margin: 0 auto;
+    display: block;
+    width: 250px
+}
+.t-item-b{
+    margin: 0 auto;
+    display: block;
+    width: 200px
+}
+.red-box{
+    background: #CC023C;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    min-height: 220px
+}
+.red-box li{
+    margin: 5px 0
+}
+.red-box ul{
+    margin: 0;
+    padding: 0 0 0 20px 
+}
+.item-redes img{
+    width: 35px
+}
+.prof-img{
+    width: 100%;
+    border-radius: 500px;
+    margin-top: 40px
+    
+}
+.prof-item h1{
+    font-weight: 700;
+    font-size: 22px;
+    color: black
+}
+.prof-item p{
+    margin: 20px 0
+}
+.prof-row{
+    margin-top: 50px
+}
+.black-faq{
+    background: black;
+    color: white;
+    padding: 0 20px;
+    border-radius: 10px;
+      position: relative;
+    z-index: 1;
+    margin: 6px 0
+}
+.btn-faq-black{
+    background: none;
+    border: none;
+    width: 100%;
+  
+    
+}
+.btn-faq-black h1{
+    display: inline-block;
+    font-size: 16px;
+    margin: 15px 0;
+    float: left
+}
+.btn-faq-black:active,.btn-faq-black:focus{
+    border: none;
+    outline: none;
+}
+.plus-black{
+    float: right !important;
+}
+.red-border{
+    padding: 25px 20px 20px 20px;
+    border: #CC023C 1px solid;
+    border-radius: 0px 0px 10px 10px;
+    margin-top: -15px;
+    height: 100%;
+    position: relative;
+    z-index: 0;
+    margin-bottom: 15px
+}
+.red-border p{
+    margin: 0;
+}
+.faq-row{
+    margin-bottom: 30px
+}
+/*MEDIA QUERY*/
+@media screen and (max-width: 1200px){
+
+}
+
+@media screen and (max-width: 990px){
+    .insc-btn{
+        margin-left: 0;
+        margin-top: 0;
+    } 
+    .box-r{
+        max-width: 400px;
+        margin: 20px auto;
+    }
+    .one-row{
+        text-align: center
+    }
+    .box-r{
+        text-align: left;
+    }
+    .pre-row{
+        height: 100%;
+    }
+    .red-box{
+        min-height: 0;
+    }
+    .t-item-b{
+        margin: 30px auto 0
+    }
+    .prof-row{
+        text-align: center
+    }
+    .prof-img{
+        max-width: 350px;
+    }
+   
+}
+@media screen and (max-width: 767px){
+    .home-info-row{
+        text-align: center;
+        height: 1200px;
+          background: #9A1334  url(../images/telescopio.png) no-repeat  bottom;
+    }
+    .bg-gradient{
+        background: rgba(154,19,52,1);
+background: -moz-linear-gradient(top, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(154,19,52,1)), color-stop(38%, rgba(154,19,52,1)), color-stop(100%, rgba(154,19,52,0)));
+background: -webkit-linear-gradient(top, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -o-linear-gradient(top, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: -ms-linear-gradient(top, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+background: linear-gradient(to bottom, rgba(154,19,52,1) 0%, rgba(154,19,52,1) 38%, rgba(154,19,52,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9a1334', endColorstr='#9a1334', GradientType=0 );
+    }
+    .local-btn{
+        margin: 0 auto;
+        
+    }
+    .nav-cont-row{
+        text-align: center
+    }
+    .curso-box{
+        padding: 0 5%;
+        width: 
+    }
+     .plus-black{
+        display: none;
+    }
+    
+    .btn-faq-black h1{
+        font-size: 13px
+    }
+}

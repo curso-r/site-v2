@@ -379,7 +379,7 @@ nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:foc
   color: #da4d4d
 }
 
-.trilha-header-text-box, .trilha-header-text-box  * {
+/*.trilha-header-text-box, .trilha-header-text-box  * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -427,4 +427,4 @@ nav[data-toggle=toc] .nav-link.active, nav[data-toggle=toc] .nav-link.active:foc
 
 .trilha-inscrever:hover {
   color: purple;
-}
+}*/
