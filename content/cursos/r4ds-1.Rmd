@@ -1,16 +1,16 @@
 ---
 title: "R para Ciência de Dados I"
-data: "6 de outubro a 27 de outubro, às terças e quintas, das 19h00 às 22h00"
+data: "22 de fevereiro a 15 de março, às segundas e quintas, das 19h00 às 22h00"
 hora: "7 aulas, 21 horas de curso"
 local: "Online"
 img: "img/cursos/r4ds-1.jpg"
-preco: "R$550,00"
+preco: "R$600,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
 desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
 ordem: "5"
-id: "32"
-aberto: "false"
-unit_price: "55000"
+id: "36"
+aberto: "true"
+unit_price: "60000"
 params:
   id_unico: 1
 ---
@@ -98,7 +98,7 @@ siteCursoR:::criar_lista_stickers(c('tidyverse', 'magrittr', 'readr', 'readxl', 
 
 ```{r}
 shiny::hr()
-siteCursoR:::criar_section_header("Professoras(es)")
+siteCursoR:::criar_section_header("Professores")
 ```
 
 ```{r, results='asis'}
