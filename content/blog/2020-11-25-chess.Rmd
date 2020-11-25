@@ -1,0 +1,192 @@
+---
+title: "Xadrez no R com {chess}"
+date: "2020-11-25"
+tags: ["r", "pacotes", "divulgação"]
+categories: ["r", "pacotes", "divulgação"]
+banner: "img/banners/chess.jpg"
+author: ["Caio"]
+summary: "Um pacote em R para ler, escrever, criar e explorar jogos de xadrez"
+draft: false
+---
+
+`{chess}` é uma interface _opinionada_ em R para o
+[python-chess](https://github.com/niklasf/python-chess), uma biblioteca incrível
+criada por [Niklas Fiekas](https://github.com/niklasf). Ela permite que usuários
+leiam e escrevam arquivos [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation),
+além de possibilitar a criação e exploração de árvores de jogos como aquelas
+presentes em livros de xadrez.
+
+Este pacote ainda está amadurecendo! Então eu encorajo todos a enviar suas
+sugestões e bugs em [issues](https://github.com/curso-r/chess/issues) no
+repositório do pacote.
+
+## Instalação
+
+Você pode instalar a versão mais recente do `{chess}` do CRAN com: 
+
+``` r
+install.packages("chess")
+```
+
+Isso deveria automaticamente instalar o python-chess no seu ambiente do
+`{reticulate}`, mas você também pode fazer isso explicitamente com o comando:
+
+``` r
+chess::install_chess()
+```
+
+## Exemplo
+
+Para ler um jogo existente, basta usar `read_game()`. Para explorar ele, você
+pode usar `forward()`/`back()`, assim como `variations()`/`variation()` para ver
+todas as variações disponíveis para o próximo movimento e escolher uma delas.
+
+``` r
+library(chess)
+
+# Ler o primeiro jogo de My 60 Memorable Games
+file <- system.file("m60mg.pgn", package = "chess")
+fischer_sherwin <- read_game(file, n_max = 1)
+
+# Posição inicial
+fischer_sherwin
+#>         <Start>
+#> r n b q k b n r
+#> p p p p p p p p
+#> . . . . . . . .
+#> . . . . . . . .
+#> . . . . . . . .
+#> . . . . . . . .
+#> P P P P P P P P
+#> R N B Q K B N R
+
+# Navegar para 4. g3
+fischer_sherwin %>%
+  forward(7)
+#>         <4. g3>
+#> r . b q k b n r
+#> p p . p . p p p
+#> . . n . p . . .
+#> . . p . . . . .
+#> . . . . P . . .
+#> . . . P . N P .
+#> P P P . . P . P
+#> R N B Q K B . R
+
+# Ver todas as variações de 4...
+fischer_sherwin %>%
+  forward(7) %>%
+  variations()
+#>      <4... Nf6>          <4... d5>
+#> r . b q k b . r    r . b q k b n r
+#> p p . p . p p p    p p . . . p p p
+#> . . n . p n . .    . . n . p . . .
+#> . . p . . . . .    . . p p . . . .
+#> . . . . P . . .    . . . . P . . .
+#> . . . P . N P .    . . . P . N P .
+#> P P P . . P . P    P P P . . P . P
+#> R N B Q K B . R    R N B Q K B . R
+
+# Seguir a linha auxiliar
+fischer_sherwin %>%
+  forward(7) %>%
+  variation(2)
+#>       <4... d5>
+#> r . b q k b n r
+#> p p . . . p p p
+#> . . n . p . . .
+#> . . p p . . . .
+#> . . . . P . . .
+#> . . . P . N P .
+#> P P P . . P . P
+#> R N B Q K B . R
+```
+
+Você também pode criar o seu próprio jogo com `game()` e adicionar variações ao
+mesmo: a função `move()` adiciona jogadas assim como ramos na árvore do jogo.
+Strings são convertidas para jogadas simples, enquanto `list()` funciona
+exatamente como os parênteses de um PGN, criando uma variação para a última
+jogada. Aqui podemos ver como recriar o
+[Mate do Pastor](https://en.wikipedia.org/wiki/Scholar%27s_mate) e algumas
+formas de evitá-lo:
+
+
+``` r
+# Mate do Pastor e algumas defesas
+scholars_mate <- game() %>%
+  move("e4") %>%
+  move("e5", list("e6"), list("d5")) %>%
+  move("Bc4") %>%
+  move("Nc6", list("Nf6")) %>%
+  move("Qh5") %>%
+  move("Nf6", list("g6", "Qf3", "Nf6")) %>%
+  move("Qxf7")
+
+# Última jogada da linha principal
+scholars_mate
+#>      <4. Qxf7#>
+#> r . b q k b . r
+#> p p p p . Q p p
+#> . . n . . n . .
+#> . . . . p . . .
+#> . . B . P . . .
+#> . . . . . . . .
+#> P P P P . P P P
+#> R N B . K . N R
+```
+
+Note que há muitas formas de estruturar a entrada de `move()`. Veja
+`vignette("chess")` para mais informações.
+
+`{chess}` também traz muitas formas de ver tanto o jogo como um todo, quanto o
+tabuleiro em um momento específico.
+
+``` r
+# Tabuleiro com unicode (não fica bonito no navegador)
+print(scholars_mate, unicode = TRUE)
+#>      <4. Qxf7#>
+#> ♜ . ♝ ♛ ♚ ♝ . ♜
+#> ♟ ♟ ♟ ♟ . ♕ ♟ ♟
+#> . . ♞ . . ♞ . .
+#> . . . . ♟ . . .
+#> . . ♗ . ♙ . . .
+#> . . . . . . . .
+#> ♙ ♙ ♙ ♙ . ♙ ♙ ♙
+#> ♖ ♘ ♗ . ♔ . ♘ ♖
+
+# Exportar o FEN do tabuleiro
+fen(scholars_mate)
+#> [1] "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4"
+
+# Ver o PGN depois de um movimento
+str(back(scholars_mate, 3))
+#> 2... Nc6 3. Qh5 Nf6 ( 3... g6 4. Qf3 Nf6 ) 4. Qxf7#
+
+# Exportar o PGN depois de um movimento
+pgn(back(scholars_mate, 3))
+#> [1] "2... Nc6 3. Qh5 Nf6 ( 3... g6 4. Qf3 Nf6 ) 4. Qxf7#"
+
+# Imagem do tabuleiro atual
+plot(scholars_mate)
+```
+
+<img src="https://raw.githubusercontent.com/curso-r/chess/master/man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+## Motivação
+
+O python-chess serviu como inspiração (e base) para o `{chess}`. Enquanto a
+versão original (e o [`{rchess}`](https://github.com/jbkunst/rchess), por sinal)
+trabalha genericamente com "geração de jogadas, validação de jogadas" (com classes
+poderosas e sintaxe orientada a objeto), o `{chess}` é focado em facilitar a
+criação e exploração de árvores PGN.
+
+Ao limitar o escopo da API, eu acredito que o pacote fica mais intuitivo para
+pessoas que só querem um jeito rápido de criar análises de jogos compartilháveis
+ou facilmente explorar os jogos dos outros sem precisar depender de um software
+visual.
+
+O primeiro uso do `{chess}` foi me ajudando a estudar o *My 60 Memorable Games*
+do Bobby Fischer. Depois de um [parsing](https://github.com/curso-r/chess/blob/master/data-raw/m60mg.R)
+muito difícil, eu consegui converter o livro todo para PGN e [disponibilizá-lo no
+lichess](https://lichess.org/study/4zOTO2ki), mas eu ainda achava que a interface
+não era boa o suficiente...
