@@ -1,20 +1,22 @@
 ---
 title: "R para Ciência de Dados II"
-data: "A definir"
+data: "5 de abril a 22 de abril, às segundas e quintas, das 19h00 às 22h00"
 hora: "6 aulas, 18 horas de curso"
 local: "Online"
 img: "img/cursos/r4ds-2.jpeg"
-preco: "R$500,00"
+preco: "R$550,00"
 banner: "img/cursos/r4ds-2-banner.png"
 desc: "É hora de aprofundar os seus conhecimentos de programação em R."
 ordem: "10"
-id: "25"
-aberto: "false"
-unit_price: "50000"
+id: "37"
+aberto: "true"
+unit_price: "55000"
 params:
   id_unico: 2
 ---
 
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
 
 
 <header class="section-header">
@@ -43,11 +45,9 @@ params:
 <li>Por que não usar <code>.RData</code> e <code>.Rhistory</code></li>
 <li>Git e Github</li>
 <li>Funções e dependências</li>
-<li>Pacotes</li>
 </ul></li>
 <li><strong>Manipulação de dados</strong>
 <ul>
-<li>Explorando mais funções do <code>{dplyr}</code></li>
 <li><code>{dplyr} 1.0</code>: <code>across()</code>, <code>where()</code></li>
 <li>Pivotagem</li>
 <li>Manipulação de textos com o pacote <code>{stringr}</code></li>
@@ -55,8 +55,8 @@ params:
 </ul></li>
 <li><strong>Visualização de dados</strong>
 <ul>
-<li>Extensões do pacote <code>{ggplot2}</code></li>
 <li>Construindo mapas com o <code>geom_sf()</code></li>
+<li>Extensões do pacote <code>{ggplot2}</code></li>
 <li>Construindo seu próprio tema no <code>{ggplot2}</code></li>
 </ul></li>
 <li><strong>Programação funcional</strong>
@@ -65,12 +65,9 @@ params:
 <li>Introdução ao pacote <code>{purrr}</code></li>
 <li>Substituindo for e while pelas funções <code>map_()</code></li>
 </ul></li>
-<li><strong>Comunicação</strong>
+<li><strong>Relatórios</strong>
 <ul>
-<li>Introdução ao Shiny</li>
-<li>A lógica ui/server</li>
-<li>Inputs e outputs</li>
-<li>Hospedando um aplicativo no <a href="https://www.shinyapps.io/">shinyapps.io</a></li>
+<li>Automatizando relatórios</li>
 </ul></li>
 </ul>
 </div>
@@ -85,16 +82,6 @@ params:
 </header></p>
 <div class="row justify-content-center">
 <div class="tooltip-wrap2" align="center" style="margin-right: 50px; margin-left: 50px;">
-<img src="/img/equipe/william.jpeg" width = "150px" height = "150px" style="border-radius: 50%;">
-<div class="tooltip-content">
-<p>
-Doutor em Estatística pelo IME-USP com projeto depesquisa na área de poluição do ar. Trabalhando diaramente com análise de dados e programação em R. Escritor nas horas vagas.
-</p>
-</div>
-<br/><span style="font-weight: bold; text-transform: uppercase; font-size: 18px;">William Amorim</span><br/><a href="https://twitter.com/williamorim89" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a>  <a href="https://github.com/williamorim" class="github" target="_blank"><i class="fa fa-github"></i></a>  <a href="https://www.linkedin.com/in/william-amorim-776162108/" class="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
-</div>
-  
-<div class="tooltip-wrap2" align="center" style="margin-right: 50px; margin-left: 50px;">
 <img src="/img/equipe/caio.jpg" width = "150px" height = "150px" style="border-radius: 50%;">
 <div class="tooltip-content">
 <p>
@@ -102,6 +89,16 @@ Mestrando em Ciência da Computação no IME-USP e cientista de dados na Terrano
 </p>
 </div>
 <br/><span style="font-weight: bold; text-transform: uppercase; font-size: 18px;">Caio Lente</span><br/><a href="NA" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a>  <a href="https://github.com/clente" class="github" target="_blank"><i class="fa fa-github"></i></a>  <a href="https://www.linkedin.com/in/clente/" class="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
+</div>
+  
+<div class="tooltip-wrap2" align="center" style="margin-right: 50px; margin-left: 50px;">
+<img src="/img/equipe/julio.jpg" width = "150px" height = "150px" style="border-radius: 50%;">
+<div class="tooltip-content">
+<p>
+Faxineiro de dados. Doutorando em Estatística pelo IME-USP. Secretário-geral da Associação Brasileira de Jurimetria (ABJ). Conselheiro do CONFE. Sócio da Terranova Consultoria. Trabalha com web scraping, arrumação de dados, construção de modelos preditivos, APIs, pacotes em R e dashboards em Shiny.
+</p>
+</div>
+<br/><span style="font-weight: bold; text-transform: uppercase; font-size: 18px;">Julio Trecenti</span><br/><a href="https://twitter.com/jtrecenti" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a>  <a href="https://github.com/jtrecenti" class="github" target="_blank"><i class="fa fa-github"></i></a>  <a href="https://www.linkedin.com/in/jtrecenti/" class="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
 </div>
 </div>
 <p><hr/><header class="section-header">
@@ -111,6 +108,7 @@ Mestrando em Ciência da Computação no IME-USP e cientista de dados na Terrano
 <li>Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a).</li>
 <li>Diversos exercícios “para casa” para praticar e tirar dúvidas.</li>
 <li>Projeto de análise de dados para aplicar o conteúdo aprendido.</li>
+<li>Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).</li>
 <li>Gravação das aulas disponíveis por pelo menos 1 ano.</li>
 </ul>
 <p><hr/><header class="section-header">
@@ -125,6 +123,6 @@ Mestrando em Ciência da Computação no IME-USP e cientista de dados na Terrano
 </header></p>
 <ul>
 <li><p>Um notebook com acesso a internet e permissão para instalar novos programas;</p></li>
-<li><p>Uma conta de e-mail Google para acessar o Google Classroom;</p></li>
+<li><p>Uma conta de e-mail Google para acessar o <a href="https://classroom.google.com/">Google Classroom</a>;</p></li>
 <li><p>Últimas versões do <a href="https://cran.r-project.org/">R</a> e do <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> instaladas 😻.</p></li>
 </ul>

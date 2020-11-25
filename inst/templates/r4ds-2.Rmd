@@ -40,24 +40,20 @@ siteCursoR:::criar_section_header("Conteúdo")
   - Git e Github
   - Funções e dependências
 - **Manipulação de dados**
-  - Explorando mais funções do `{dplyr}`
   - `{dplyr} 1.0`: `across()`, `where()`
   - Pivotagem
   - Manipulação de textos com o pacote `{stringr}`
   - Manipulação de datas com o pacote `{lubridate}`
 - **Visualização de dados**
-  - Extensões do pacote `{ggplot2}`
   - Construindo mapas com o `geom_sf()`
+  - Extensões do pacote `{ggplot2}`
   - Construindo seu próprio tema no `{ggplot2}`
 - **Programação funcional**
   - Listas e list-columns
   - Introdução ao pacote `{purrr}`
   - Substituindo for e while pelas funções `map_()`
-- **Comunicação**
-  - Introdução ao Shiny
-  - A lógica ui/server
-  - Inputs e outputs
-  - Hospedando um aplicativo no [shinyapps.io](https://www.shinyapps.io/)
+- **Relatórios**
+  - Automatizando relatórios
 ::::
 
 :::: {.column-dir}

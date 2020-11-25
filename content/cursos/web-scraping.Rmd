@@ -1,16 +1,16 @@
 ---
 title: "Web scraping"
-data: "9 de novembro a 25 de novembro, às segundas e quartas, das 19h00 às 22h00"
+data: "21 de junho a 7 de julho, às segundas e quintas, das 19h00 às 22h00"
 hora: "6 aulas, 18 horas de curso"
 local: "Online"
 img: "img/cursos/web-scraping.jpg"
-preco: "R$400,00"
+preco: "R$550,00"
 banner: "img/cursos/web-scraping-banner.jpg"
 desc: "Aprenda a coletar dados da internet de forma autônoma e eficiente utilizando o R."
 ordem: "40"
-id: "30"
-aberto: "false"
-unit_price: "40000"
+id: "40"
+aberto: "true"
+unit_price: "55000"
 params:
   id_unico: 8
 ---

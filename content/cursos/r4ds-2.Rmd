@@ -1,16 +1,16 @@
 ---
 title: "R para Ciência de Dados II"
-data: "A definir"
+data: "5 de abril a 22 de abril, às segundas e quintas, das 19h00 às 22h00"
 hora: "6 aulas, 18 horas de curso"
 local: "Online"
 img: "img/cursos/r4ds-2.jpeg"
-preco: "R$500,00"
+preco: "R$550,00"
 banner: "img/cursos/r4ds-2-banner.png"
 desc: "É hora de aprofundar os seus conhecimentos de programação em R."
 ordem: "10"
-id: "25"
-aberto: "false"
-unit_price: "50000"
+id: "37"
+aberto: "true"
+unit_price: "55000"
 params:
   id_unico: 2
 ---
@@ -57,26 +57,21 @@ siteCursoR:::criar_section_header("Conteúdo")
   - Por que não usar `.RData` e `.Rhistory`
   - Git e Github
   - Funções e dependências
-  - Pacotes
 - **Manipulação de dados**
-  - Explorando mais funções do `{dplyr}`
   - `{dplyr} 1.0`: `across()`, `where()`
   - Pivotagem
   - Manipulação de textos com o pacote `{stringr}`
   - Manipulação de datas com o pacote `{lubridate}`
 - **Visualização de dados**
-  - Extensões do pacote `{ggplot2}`
   - Construindo mapas com o `geom_sf()`
+  - Extensões do pacote `{ggplot2}`
   - Construindo seu próprio tema no `{ggplot2}`
 - **Programação funcional**
   - Listas e list-columns
   - Introdução ao pacote `{purrr}`
   - Substituindo for e while pelas funções `map_()`
-- **Comunicação**
-  - Introdução ao Shiny
-  - A lógica ui/server
-  - Inputs e outputs
-  - Hospedando um aplicativo no [shinyapps.io](https://www.shinyapps.io/)
+- **Relatórios**
+  - Automatizando relatórios
 ::::
 
 :::: {.column-dir}
@@ -109,6 +104,7 @@ siteCursoR:::criar_section_header("Como será o curso?")
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}
@@ -127,7 +123,7 @@ siteCursoR:::criar_section_header("O que eu preciso ter?")
 
 - Um notebook com acesso a internet e permissão para instalar novos programas;
 
-- Uma conta de e-mail Google para acessar o Google Classroom;
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
 
 -  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
 
