@@ -54,6 +54,8 @@ criar_repositorio_turma <- function(curso_nome, curso_abrev, data) {
     curso_abrev <- "intro-ml"
   }
   
+  data <- lubridate::dmy(data)
+  
   data_formatada <- paste0(
     lubridate::year(data),
     stringr::str_pad(lubridate::month(data), 2, "left", "0")

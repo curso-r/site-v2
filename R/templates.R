@@ -208,7 +208,7 @@ abrir_turma <- function(modelo, data_inicio, data_fim, horario,
   
   usethis::ui_todo("Criando repositório do curso...")
   
-  url <- criar_repositorio_main(
+  url <- criar_repositorio_turma(
     curso_nome = curso_nome, 
     curso_abrev = curso_selecionado,
     data = data_inicio

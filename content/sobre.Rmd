@@ -1,0 +1,48 @@
+---
+title: "Sobre"
+type: "sobre"
+---
+
+```{r, echo = FALSE}
+shiny::fluidRow(
+  shiny::column(
+    width = 4,
+    offset = 1,
+    htmltools::h4("Consultoria"),
+    htmltools::tags$p("Nosso time é composto por pós-graduandos em Estatística e Ciências da Computação com anos de experiência em Ciência de Dados e programação de R. Quer usar dados para crescer, aprimorar processos ou resolver problemas na sua empresa? Fale com a gente!")
+  ),
+  shiny::column(
+    width = 4,
+    offset = 2,
+    htmltools::h4("Cursos"),
+    htmltools::tags$p(
+      "Já são mais de 6 anos ministrando cursos de programação em R e mais de 1000 alunos formados. Explore esse incrível universo da Ciência de Dados com", 
+      htmltools::tags$a(
+        href = "https://www.curso-r.com/cursos/",
+        target = "_blank",
+        "as nossas trilhas e cursos"
+      ),
+      "."
+    )
+  ),
+  shiny::column(
+    width = 4,
+    offset = 1,
+    htmltools::h4("Dashboards"),
+    htmltools::tags$p(
+      "Precisa de apresentar dados e resultados de maneira atrativa, interativa e sem cobrança de licenças? A R6 é especialista na construção de",
+      htmltools::tags$a(
+        href = "https://shiny.rstudio.com/gallery/",
+        target = "_blank",
+        "dashboards em Shiny"
+      ),
+      ", um framework altamente costumizável e open source para a construção de aplicativos web.")
+  ),
+  shiny::column(
+    width = 4,
+    offset = 2,
+    htmltools::h4("In-company"),
+    htmltools::tags$p("Quer montar uma área de análise dados ou treinar seu time em Data Science ou programação em R? Temos mais de 5 anos de experiência com treinamentos in-company e staff loan.")
+  ),
+)
+```
