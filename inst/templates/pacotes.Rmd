@@ -10,7 +10,7 @@ siteCursoR:::criar_section_header("Conheça o curso")
 
 O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
 
-O objetivo deste curso é aprofundar os conceitos essenciais de programação em R para Ciência de Dados. A partir de problemas reais de análise de dados, apresentaremos técnicas intermediárias e avançadas de manipulação de dados, incluindo textos e datas, e conceitos de programação funcional.
+Pacotes são o padrão-ouro para transferência de códigos em R. Eles encapsulam funções e sua documentação, bem como exemplos de código e conjuntos de dados. Nesse curso você vai aprender a transformar seus scripts em pacotes que outras pessoas podem baixar, instalar e usar. Pode parecer muito difícil, mas na verdade escrever seus programas em pacotes pode simplificar e agilizar o seu trabalho, além de facilitar o compartilhamento. Vamos te guiar desde os princípios e definições básicas de pacotes até as melhores práticas, como o uso de testes unitários e elaboração de documentação.
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,10 +18,9 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-- organizar seus projetos de análise de dados para gerar agilidade e eficiência;
-- fazer manipulações de dados mais complexas com os pacotes dplyr e tidyr, como pivotagem e diversos tipos de joins;
-- manipular texto e datas com os pacotes stringr e lubridate;
-- substituir loopings em for e while pelas maravilhosas funções do pacote purrr.
+- Empacotar seus scripts em formato prontos para download e uso;
+- Desenvolver código de acordo com boas práticas de desenvolvimento de pacotes;
+- Implementar rotinas de teste constante dos seus códigos.
 :::
 
 
@@ -30,33 +29,30 @@ shiny::hr()
 siteCursoR:::criar_section_header("Conteúdo")
 ```
 
-
 ::: {.row}
 
 :::: {.column-esq}
-- **Organização de projetos**
-  - Por que não usar `.RData` e `.Rhistory`
-  - Git e Github
-  - Funções e dependências
-- **Manipulação de dados**
-  - `{dplyr} 1.0`: `across()`, `where()`
-  - Mais verbos de manipulação: o pacote `tidyr`
-  - Pivotagem
-  - Manipulação de textos com o pacote `{stringr}`
-  - Manipulação de datas com o pacote `{lubridate}`
-  - Manipulação de fatores com o pacote `{forcats}`
-- **Programação funcional**
-  - Listas e list-columns
-  - Introdução ao pacote `{purrr}`
-  - Substituindo for e while pelas funções `map_()`
-  - Introdução a non-standard evaluation e ao operador `{{`
+- **Fundamentos de desenvolvimento de pacotes em R**
+  - O arquivo DESCRIPTION
+  - Estrutura de pastas e arquivos
+  - O pacote usethis
+  - Melhores práticas de desenvolvimento de pacotes
+- **Testes unitários e consistência de código**
+  - O pacote testthat
+  - Tipos de testes
+  - Passando no devtools::check
+- **Disponibilizando seu pacote**
+  - Disponibilizando em um repositório
+  - Integração contínua
+  - Criando um pkgdown
 ::::
 
 :::: {.column-dir}
 
 ::::: {.row .justify-content-center}
 ```{r}
-siteCursoR:::criar_lista_stickers(c('tidyverse', 'dplyr', 'stringr', 'lubridate', 'purrr', 'usethis')) 
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('tidyverse', 'devtools', 'usethis', 'testthat', 'pkgdown'))
 ```
 :::::
 
@@ -90,7 +86,7 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+- O conteúdo do curso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/).
 
 ```{r}
 shiny::hr()
@@ -101,7 +97,6 @@ siteCursoR:::criar_section_header("O que eu preciso ter?")
 
 - Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
 
-- Uma conta no [Github](https://github.com/);
+- Um conta [Github](https://github.com/);
 
 -  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.
-
