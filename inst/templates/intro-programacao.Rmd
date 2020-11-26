@@ -10,7 +10,8 @@ siteCursoR:::criar_section_header("Conheça o curso")
 
 O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
 
-[DESCREVER OBJETIVO DO CURSO]
+O objetivo deste curso é apresentar os conceitos essenciais de programação, utiliznado o R como base. Vamos te guiar pelos fundamentos da linguagem, solidificando seus conhecimentos prévios ou te introduzindo ao mundo da programação voltada à análise de dados. Para motivar ainda mais, vamos te mostrar como a programação pode te ajudar em muitas tarefas cotidianas de análise de dados.
+
 
 ```{r}
 shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
@@ -18,11 +19,10 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 
 ::: {.voce-saira}
-[LISTAR TAREFAS QUE O ALUNO IRÁ APRENDER]
-- tarefas 1
-- tarefas 2
-- tarefas 3
-- ...
+- Escrever e rodar scripts em R
+- Utilizar o RStudio como ambiente de programação em R
+- Utilizar lógica de programação em problemas de análise de dados
+- Aprender outras linguagens de programação com maior facilidade
 :::
 
 
@@ -34,27 +34,31 @@ siteCursoR:::criar_section_header("Conteúdo")
 ::: {.row}
 
 :::: {.column-esq}
-[ESCREVER EMENTA DO CURSO]
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
-- **Grande tópico**
-  - tópico 1
-  - tópico 2
-  - tópico 3
+- **Ambientação ao R e ao RStudio**
+    - Vantagens de usarmos programação para analisar dados
+    - O que é e por que usar o RStudio
+    - Escrevendo e rodando códigos
+- **Introdução à programação em R**
+    - Objetos e vetores
+    - Classes: números, caracteres, lógicos e data frames
+    - Data frames
+    - Operadores de seleção
+    - Utilizando e criando funções no R
+    - Operadores lógicos e aritméticos
+    - Loopings de programação: for e while
+    - O operador pipe (%>%)
+- **Programação no dia a dia**
+    - Exemplos de scripts reais
+    - Usando e instalando pacotes
+    - Estruturação de projetos
+    - Boas práticas de programação em R
 ::::
 
 :::: {.column-dir}
 
 ::::: {.row .justify-content-center}
 ```{r}
-# LISTAR PACOTES UTILIZADOS NO CURSO
-siteCursoR:::criar_lista_stickers(c('tidyverse'))
+siteCursoR:::criar_lista_stickers(c('magrittr'))
 ```
 :::::
 
@@ -77,8 +81,6 @@ shiny::hr()
 siteCursoR:::criar_section_header("Como será o curso?")
 ```
 
-[VERIFICAR INFORMAÇÕES SOBRE O CURSO]
-
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
@@ -90,18 +92,19 @@ shiny::hr()
 siteCursoR:::criar_section_header("Pré-requisitos") 
 ```
 
-[LISTAR PRÉ-REQUISITOS DO CURSO]
-
-- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+- Noções de utilização de um sistema operacional (Windows, Linux, MacOS)
+  - Criação de arquivos e pastas
+  - Instalação de programas
+  - Acesso à internet e download de arquivos
+- Interesse em aprender uma linguagem de programação
 
 ```{r}
 shiny::hr()
 siteCursoR:::criar_section_header("O que eu preciso ter?")
 ```
 
-[VERIFICAR MATERIAL NECESSÁRIO]
 
-- Um notebook com acesso a internet e permissão para instalar novos programas;
+- Um PC ou notebook com acesso a internet e permissão para instalar novos programas;
 
 - Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
 

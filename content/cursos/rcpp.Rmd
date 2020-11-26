@@ -1,6 +1,6 @@
 ---
 title: "Introdução ao R com C++"
-data: "21 de novembro e 28 de novembro, dois sábados, das 9h00 às 13h00"
+data: "A definir"
 hora: "2 aulas, 8 horas de curso"
 local: "Online"
 img: "img/cursos/rcpp.jpg"
@@ -9,7 +9,7 @@ banner: "img/cursos/rcpp-banner.jpg"
 desc: "Acelere seus scripts integrando o R com o C++"
 ordem: "50"
 id: "31"
-aberto: "true"
+aberto: "false"
 unit_price: "40000"
 params:
   id_unico: 10
