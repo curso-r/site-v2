@@ -17,6 +17,7 @@ params:
 
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 id <- params$id_unico
@@ -47,22 +48,31 @@ shiny::hr()
 siteCursoR:::criar_section_header("Conteúdo")
 ```
 
+
 ::: {.row}
 
 :::: {.column-esq}
 - **Fundamentos de desenvolvimento de pacotes em R**
-  - O arquivo DESCRIPTION
+  - Git e GitHub
+  - O arquivo `DESCRIPTION`
   - Estrutura de pastas e arquivos
-  - O pacote usethis
+  - O pacote `{usethis}`
   - Melhores práticas de desenvolvimento de pacotes
+- **Documentação**
+  - Criando bons nomes
+  - Documentação de funções
+  - Documentação de bases de dados
+  - Acentos, encoding e variáveis globais
 - **Testes unitários e consistência de código**
-  - O pacote testthat
+  - O pacote `{testthat}`
   - Tipos de testes
-  - Passando no devtools::check
+  - Passando no `devtools::check()`
 - **Disponibilizando seu pacote**
   - Disponibilizando em um repositório
-  - Integração contínua
-  - Criando um pkgdown
+  - Criando um `{pkgdown}`
+  - Integração contínua com Github Actions
+  - Regras para colocar um pacote no CRAN
+  
 ::::
 
 :::: {.column-dir}
