@@ -75,7 +75,7 @@ siteCursoR:::criar_section_header("Conteúdo")
   - Gráficos de barras
   - Boxplots e histogramas
   - Customizando gráficos
-- **Relatórios e dashboards em R Markdown**
+- **Relatórios em R Markdown**
   - Introdução ao `R Markdown`
   - Construindo relatórios em HTML, PDF e Word
 ::::
