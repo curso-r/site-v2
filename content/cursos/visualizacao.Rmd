@@ -1,0 +1,123 @@
+---
+title: "Relatórios e visualização de dados"
+data: "18 de março a 29 de março, às segundas e quintas, das 19h00 às 22h00"
+hora: "4 aulas, 12 horas de curso"
+local: "Online"
+img: "img/cursos/visualizacao.jpeg"
+preco: "R$450,00"
+banner: "img/cursos/visualizacao_banner.jpeg"
+desc: "Construa gráficos e relatórios para comunicar seus resultados."
+ordem: "12"
+id: "45"
+aberto: "true"
+unit_price: "45000"
+params:
+  id_unico: 12
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+Não aguenta mais gastar tempo atualizando apresentações e relatórios repetitivos? Quer fazer um gráfico maravilhoso e o Excel te deixou na mão? Quer fazer gráficos lindos, simples e 100% reprodutíveis mas não sabe como? Se respondeu "sim" a qualquer uma dessas perguntas esse curso é pra você.
+O objetivo deste curso é te ajudar a criar **lindos** gráficos e popular relatórios 100% reprodutíveis e automáticos,
+sem que você precise manipular manualmente os seus dados antes de gerar os produtos finais.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- Construir lindos gráficos em `ggplot2`, customizando o resultado com base nas suas necessidades;
+- Construir mapas do Brasil usando a mesma sintaxe simples e intuitiva que você já conhece;
+- Gerar relatórios, dashboards e artigos científicos a partir dos seus códigos R, seja word, ppt, html ou pdf;
+- Garantir que seus relatórios são reprodutíveis.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **Visualização de dados: ggplot2 pronto para publicação**
+  - Boas práticas para construção de gráficos
+  - Customização dos elementos gráficos
+  - Cores e gradientes
+  - Construindo mapas com o `geom_sf()`
+  - Extensões do pacote `{ggplot2}`
+  - Construindo seu próprio tema no `{ggplot2}`
+- **R Markdown e seus outputs**
+  - Customização de relatórios em Word
+  - CSS básico para Rmarkdown
+  - Customização de relatórios em PPT
+- **Canivete suíço de visualização**
+  - Dashboards estáticos: O pacote flexdashboard
+  - Apresentações impressionantes: O pacote xaringan
+  - Conteúdos extensos: O pacote pagedown
+  - Artigos e relatórios científicos: O pacote rticles
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+siteCursoR:::criar_lista_stickers(c('tidyverse', 'ggplot2', 'rmarkdown'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- O conteúdo do curso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/).
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

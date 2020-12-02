@@ -1,0 +1,102 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+Pacotes são o padrão-ouro para transferência de códigos em R. Eles encapsulam funções e sua documentação, bem como exemplos de código e conjuntos de dados. Nesse curso você vai aprender a transformar seus scripts em pacotes que outras pessoas podem baixar, instalar e usar. Pode parecer muito difícil, mas na verdade escrever seus programas em pacotes pode simplificar e agilizar o seu trabalho, além de facilitar o compartilhamento. Vamos te guiar desde os princípios e definições básicas de pacotes até as melhores práticas, como o uso de testes unitários e elaboração de documentação.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- Empacotar seus scripts em formato prontos para download e uso;
+- Desenvolver código de acordo com boas práticas de desenvolvimento de pacotes;
+- Implementar rotinas de teste constante dos seus códigos.
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **Fundamentos de desenvolvimento de pacotes em R**
+  - O arquivo DESCRIPTION
+  - Estrutura de pastas e arquivos
+  - O pacote usethis
+  - Melhores práticas de desenvolvimento de pacotes
+- **Testes unitários e consistência de código**
+  - O pacote testthat
+  - Tipos de testes
+  - Passando no devtools::check
+- **Disponibilizando seu pacote**
+  - Disponibilizando em um repositório
+  - Integração contínua
+  - Criando um pkgdown
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('tidyverse', 'devtools', 'usethis', 'testthat', 'pkgdown'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- O conteúdo do curso [R para Ciência de Dados I](https://www.curso-r.com/cursos/r4ds-1/).
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
+
+- Um conta [Github](https://github.com/);
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

@@ -1,0 +1,118 @@
+---
+title: "Faxina de dados"
+data: "8 de maio a 22 de maio, 3 sábados, das 9h00 às 13h00"
+hora: "3 aulas, 12 horas de curso"
+local: "Online"
+img: "img/cursos/faxina.jpeg"
+preco: "R$400,00"
+banner: "img/cursos/faxina-banner.jpeg"
+desc: "Aprenda a arrumar bases bagunçadas com exemplos reais."
+ordem: "37"
+id: "46"
+aberto: "true"
+unit_price: "40000"
+params:
+  id_unico: 13
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+A prática demonstra que entre 60% e 80% do trabalho da pessoa que trabalha com ciência de dados é voltada à leitura e arrumação de bases de dados. Então por que não discutir esse assunto com seriedade?
+
+O objetivo deste curso é mostrar, através de diversos exemplos práticos, o incrível arsenal de ferramentas que o R nos proporciona para fazer a faxina de dados. Do ponto de vista teórico, vamos estudar sobre o que é uma base arrumada. Também vamos mostrar melhores práticas na estruturação de um projeto de faxina de dados, focando na reprodutibilidade e facilidade de compartilhar o trabalho realizado. Do ponto de vista prático, teremos muitos e muitos cases com arrumação de dados. O curso partirá de exemplos mais simples, como empilhar diversas bases de dados, até exemplos mais complexos, envolvendo rotinas de correção e validação de dados.
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- Organizar um projeto de faxina de dados
+- Identificar o objetivo de um trabalho de faxina
+- Escrever rotinas para detecção de inconsistências nos dados
+- Definir as melhores práticas para nomear colunas
+- Escrever scripts avançados com o `{tidyverse}`
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- O que são bases bagunças e arrumadas?
+- Organizando projetos de faxina de dados
+- Resolvendo problemas de importação
+- Melhores práticas para organização das colunas
+- Identificação de inconsistências nos dados
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+# LISTAR PACOTES UTILIZADOS NO CURSO
+siteCursoR:::criar_lista_stickers(c('dplyr', 'tidyr', 'purrr', 'janitor', 'readr', 'usethis', 'devtools', 'stringr', 'lubridate', 'forcats'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
+
+- O conteúdo do curso [R para Ciência de dados II](https://www.curso-r.com/cursos/r4ds-2)
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+- Um notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
+
+- Uma conta no [Github](https://github.com/).
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

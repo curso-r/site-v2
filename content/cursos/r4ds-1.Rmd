@@ -6,7 +6,7 @@ local: "Online"
 img: "img/cursos/r4ds-1.jpg"
 preco: "R$600,00"
 banner: "img/cursos/r4ds-1-banner.jpg"
-desc: "O nosso curso introdutório de programação em R voltado para ciência de dados."
+desc: "Comece a usar o R nas suas análises de dados."
 ordem: "5"
 id: "36"
 aberto: "true"
@@ -59,28 +59,25 @@ siteCursoR:::criar_section_header("Conteúdo")
 - **Introdução à programação em R**
   - Objetos e vetores
   - Classes: números, caracteres, lógicos e data frames
-  - Utilizando e criando funções no R 
-  - Loopings de programação: `for` e `while`
+  - Funções e pacotes
   - O operador pipe (`%>%`)
 - **Importação de bases para dentro do R**
   - Importando arquivos de texto: `.csv` e `.txt`
   - Importando arquivos excel: `.xls` e `.xlsx`
-  - Conexão com um servidor SQL
 - **Manipulação de bases de dados (o pacote `dplyr`)**
   - Selecionando colunas 
   - Filtrando e ordenando linhas
   - Modificando e criando colunas 
   - Criando sumarizações
-  - Juntando duas colunas
+  - Juntando duas bases
 - **Gráficos (o pacote `ggplot2`)**
   - Gráficos de pontos (dispersão)
   - Gráficos de barras
   - Boxplots e histogramas
   - Customizando gráficos
-- **Relatórios e dashboards em R Markdown**
+- **Relatórios em R Markdown**
   - Introdução ao `R Markdown`
   - Construindo relatórios em HTML, PDF e Word
-  - Construindo dashboards com o pacote flexdashboard
 ::::
 
 :::: {.column-dir}
@@ -126,7 +123,6 @@ siteCursoR:::criar_section_header("Pré-requisitos")
 
 - Interesse por Ciência de Dados;
 - Desejo de aprender a programar (em R);
-- Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
 - Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
 
 

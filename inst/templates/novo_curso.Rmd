@@ -92,13 +92,7 @@ siteCursoR:::criar_section_header("Pré-requisitos")
 
 [LISTAR PRÉ-REQUISITOS DO CURSO]
 
-- Interesse por Ciência de Dados;
-
-- Desejo de aprender a programar (em R);
-
-- Conhecimentos básicos de Estatística: média, mediana, variância, proporção;
-
-- Conhecimentos básicos de computação: criação de arquivos e pastas, instalação de programas, navegação na internet.
+- O conteúdo do curso [R para Ciência de dados I](https://www.curso-r.com/cursos/r4ds-1)
 
 ```{r}
 shiny::hr()

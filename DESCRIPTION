@@ -36,3 +36,4 @@ Imports:
     scales,
     shiny,
     tibble
+Remotes: curso-r/googleclassroom

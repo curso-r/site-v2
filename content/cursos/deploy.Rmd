@@ -1,19 +1,20 @@
 ---
 title: "Deploy"
-data: "3 de outubro e 10 de outubro, dois sábados, das 9h00 às 13h00"
-hora: "2 aulas, 8 horas de workshop"
+data: "17 de julho e 24 de julho, dois sábados, das 9h00 às 13h00"
+hora: "2 aulas, 8 horas de curso"
 local: "Online"
 img: "img/cursos/deploy.png"
-preco: "R$350,00"
+preco: "R$450,00"
 banner: "img/cursos/deploy-banner.png"
 desc: "Aprenda a disponibilizar dashboards e o resultado dos seus modelos na Web."
 ordem: "30"
-id: "29"
-aberto: "false"
-unit_price: "35000"
+id: "42"
+aberto: "true"
+unit_price: "45000"
 params:
   id_unico: 6
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
@@ -61,6 +62,7 @@ siteCursoR:::criar_section_header("Conteúdo")
 - Como empacotar um dashboard
 - O pacote `{golem}`
 - Como automatizar um deploy com `docker`
+- GitHub Actions
 ::::
 
 :::: {.column-dir}
@@ -93,6 +95,7 @@ siteCursoR:::criar_section_header("Como será o curso?")
 
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Exercícios "para casa" para praticar e tirar dúvidas.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}

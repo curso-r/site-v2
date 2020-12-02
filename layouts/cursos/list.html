@@ -11,9 +11,20 @@
   
   {{ partial "head.html" . }}
   
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
 </head>
 
 <body>
+
+
+  <script>
+  swal(
+    "A página de cursos da Curso-R está de cara nova!",
+    "Além dos cursos, agora você pode entrar nas nossas Formações, que são coleções de vários cursos selecionados de acordo com as suas necessidades.",
+    "info"
+  );
+  </script>
   
   <!--==========================
     Header
@@ -26,8 +37,21 @@
   <!--==========================
       Nossos Cursos
     ============================-->
+    
+    
+
     <section id="cursos">
       <div class="container" style="background: none;">
+        
+        <div>
+        <header class="section-header">
+          <h3>Nossas formações</h3>
+          <p>As formações da Curso-R permitem a escolha de trilhas com diversos cursos, dependendo dos seus interesses no universo da ciência de dados</p>
+        </header>
+        
+        {{partial "trilhas.html" .}}            
+        
+        </div>
         
         <header class="section-header">
           <h3>Nossos cursos</h3>

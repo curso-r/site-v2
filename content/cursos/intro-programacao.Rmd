@@ -1,0 +1,129 @@
+---
+title: "Introdução à programação com R"
+data: "1º de fevereiro a 18 de fevereiro, às segundas e quintas, das 19h00 às 22h00 (não haverá aula na segunda de carnaval)"
+hora: "5 aulas, 15 horas de curso"
+local: "Online"
+img: "img/cursos/intro-programacao.jpeg"
+preco: "R$400,00"
+banner: "img/cursos/intro-programacao-banner.jpeg"
+desc: "O ponto de partida para quem nunca programou."
+ordem: "3"
+id: "47"
+aberto: "true"
+unit_price: "40000"
+params:
+  id_unico: 14
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+id <- params$id_unico
+```
+
+```{r, results='asis'}
+siteCursoR:::criar_section_header("Conheça o curso")
+```
+
+O R é uma linguagem de programação criada para a Ciência de Dados. Ela é uma das principais ferramentas utilizadas para manipulação, visualização e modelagem de dados, além de auxiliar na divulgação dos resultados com a criação de relatórios, apresentações e dashboards. O R conta com uma comunidade super ativa, que desenvolve novas funcionalidades em ritmo acelerado, deixando a linguagem sempre atualizada com as metodologias mais recentes.
+
+O objetivo deste curso é apresentar os conceitos essenciais de programação, utiliznado o R como base. Vamos te guiar pelos fundamentos da linguagem, solidificando seus conhecimentos prévios ou te introduzindo ao mundo da programação voltada à análise de dados. Para motivar ainda mais, vamos te mostrar como a programação pode te ajudar em muitas tarefas cotidianas de análise de dados.
+
+
+```{r}
+shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
+```
+
+
+::: {.voce-saira}
+- Escrever e rodar scripts em R
+- Utilizar o RStudio como ambiente de programação em R
+- Utilizar lógica de programação em problemas de análise de dados
+- Aprender outras linguagens de programação com maior facilidade
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Conteúdo")
+```
+
+::: {.row}
+
+:::: {.column-esq}
+- **Ambientação ao R e ao RStudio**
+    - Vantagens de usarmos programação para analisar dados
+    - O que é e por que usar o RStudio
+    - Escrevendo e rodando códigos
+- **Introdução à programação em R**
+    - Objetos e vetores
+    - Classes: números, caracteres, lógicos e data frames
+    - Data frames
+    - Operadores de seleção
+    - Utilizando e criando funções no R
+    - Operadores lógicos e aritméticos
+    - Loopings de programação: for e while
+    - O operador pipe (%>%)
+- **Programação no dia a dia**
+    - Exemplos de scripts reais
+    - Usando e instalando pacotes
+    - Estruturação de projetos
+    - Boas práticas de programação em R
+::::
+
+:::: {.column-dir}
+
+::::: {.row .justify-content-center}
+```{r}
+siteCursoR:::criar_lista_stickers(c('magrittr'))
+```
+:::::
+
+:::: 
+
+:::
+
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Professores")
+```
+
+```{r, results='asis'}
+siteCursoR:::adicionar_professores(id)
+```
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Como será o curso?")
+```
+
+- Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
+- Diversos exercícios "para casa" para praticar e tirar dúvidas.
+- Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
+- Gravação das aulas disponíveis por pelo menos 1 ano.
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("Pré-requisitos") 
+```
+
+- Noções de utilização de um sistema operacional (Windows, Linux, MacOS)
+  - Criação de arquivos e pastas
+  - Instalação de programas
+  - Acesso à internet e download de arquivos
+- Interesse em aprender uma linguagem de programação
+
+```{r}
+shiny::hr()
+siteCursoR:::criar_section_header("O que eu preciso ter?")
+```
+
+
+- Um PC ou notebook com acesso a internet e permissão para instalar novos programas;
+
+- Uma conta de e-mail Google para acessar o [Google Classroom](https://classroom.google.com/);
+
+-  Últimas versões do [R](https://cran.r-project.org/) e do [RStudio](https://www.rstudio.com/products/rstudio/download/) instaladas &#128571;.

@@ -1,16 +1,16 @@
 ---
 title: "Dashboards"
-data: "A definir"
-hora: "6 aulas, 18 horas de curso"
+data: "24 de maio a 17 de junho, às segundas e quintas, das 19h00 às 22h00 (não haverá aula no feriado)"
+hora: "7 aulas, 21 horas de curso"
 local: "Online"
 img: "img/cursos/dashboards.jpeg"
-preco: "R$550,00"
+preco: "R$600,00"
 banner: "img/cursos/dashboards-banner.jpeg"
 desc: "Comunique seus resultados construindo dashboards incríveis a partir do R."
 ordem: "25"
-id: "28"
-aberto: "false" 
-unit_price: "55000"
+id: "39"
+aberto: "true"
+unit_price: "60000"
 params:
   id_unico: 5
 ---
@@ -19,7 +19,7 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
-id <- params$id_unico 
+id <- params$id_unico
 ```
 
 ```{r, results='asis'}
@@ -37,7 +37,7 @@ shiny::h6("Você sairá deste curso apta(o) a:", style = "color: #489d51")
 
 ::: {.voce-saira}
 - usar o pacote `shiny` para construir dashboards dinâmicos;
-- hospedar um dashboard online utilizando o serviço [shinyapps.io](https://www.shinyapps.io/);
+- hospedar um dashboard online utilizando o serviço [shinyapps.io/](https://www.shinyapps.io/);
 - usar o pacote `auth0` para criar dashboards com autenticação;
 - usar o pacote `flexdashboard` para construir dashboards estáticos.
 :::
@@ -107,6 +107,7 @@ siteCursoR:::criar_section_header("Como será o curso?")
 - Aulas online, em tempo real, com um(a) professor(a) e um(a) monitor(a). 
 - Diversos exercícios "para casa" para praticar e tirar dúvidas.
 - Projeto de análise de dados para aplicar o conteúdo aprendido.
+- Certificado ao final do curso (sujeito à entrega de atividades solicitadas pelos professores).
 - Gravação das aulas disponíveis por pelo menos 1 ano.
 
 ```{r}
