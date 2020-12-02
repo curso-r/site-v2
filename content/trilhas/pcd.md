@@ -8,4 +8,3 @@ corlabel: green
 trilha: trilha
 link: https://curso-r.github.io/trilhas/programacao.html
 ---
-
