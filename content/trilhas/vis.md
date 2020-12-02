@@ -1,11 +1,11 @@
 ---
 title: "Visualização"
 img: "img/trilhas/vis.jpeg"
-desc: "Impressione todas as pessoas com visualizações e aplicativos incríveis"
+desc: "Impressione com apresentações, relatórios e dashboards incríveis."
 ordem: "103"
-tipo: Turmas abertas
+tipo: Inscreva-se
 corlabel: green
 trilha: trilha
-link: https://curso-r.github.io/trilhas/programacao.html
+link: https://curso-r.github.io/trilhas/visualizacao.html
 ---
 

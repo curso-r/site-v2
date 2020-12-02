@@ -1,11 +1,11 @@
 ---
 title: "Web Scraping"
 img: "img/trilhas/ws.jpeg"
-desc: "Obtenha dados automaticamente de web"
+desc: "Adicione ao seu repertório essa importante habilidade do cientista de dados moderno."
 ordem: "104"
-tipo: Turmas abertas
+tipo: Inscreva-se
 corlabel: green
 trilha: trilha
-link: https://curso-r.github.io/trilhas/programacao.html
+link: https://curso-r.github.io/trilhas/ws.html
 ---
 
