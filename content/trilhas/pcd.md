@@ -6,5 +6,5 @@ ordem: "101"
 tipo: Inscreva-se
 corlabel: green
 trilha: trilha
-link: https://curso-r.github.io/trilhas/programacao.html
+link: https://trilhas.curso-r.com/programacao.html
 ---

@@ -6,6 +6,6 @@ ordem: "104"
 tipo: Inscreva-se
 corlabel: green
 trilha: trilha
-link: https://curso-r.github.io/trilhas/ws.html
+link: https://trilhas.curso-r.com/ws.html
 ---
 
