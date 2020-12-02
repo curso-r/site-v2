@@ -17,9 +17,9 @@ Este post será um pouco diferente [deste](https://www.curso-r.com/blog/2020-06-
 
 ## Trabalhos premiados
 
-- **Luísa Böck**: O trabalho da Luisa é uma análise sobre a série The Office, e tanto a análise dos dados, a parte estética e o texto ficaram muito legais! Para quem gosta da série, é uma oportunidade para aprender mais sobre ela!  [Confira o trabalho neste link](https://curso-r.github.io/202010-r4ds-1/trabalho_final/Luisa_Bock.html).
+- **[Luísa Böck](https://twitter.com/lgiselebock)**: O trabalho da Luisa é uma análise sobre a série The Office, e tanto a análise dos dados, a parte estética e o texto ficaram muito legais! Para quem gosta da série, é uma oportunidade para aprender mais sobre ela!  [Confira o trabalho neste link](https://curso-r.github.io/202010-r4ds-1/trabalho_final/Luisa_Bock.html).
 
-- **André Oliveira**: O trabalho do André é uma análise utilizando a base de filmes do IMDB. O trabalho também ficou muito legal: a análise dos dados, a contextualização e a parte estética foram bem trabalhadas! [Confira o trabalho neste link](https://curso-r.github.io/202010-r4ds-1/trabalho_final/Andre_Oliveira.html).
+- **[André Oliveira](https://twitter.com/AbispoAndre)**: O trabalho do André é uma análise utilizando a base de filmes do IMDB. O trabalho também ficou muito legal: a análise dos dados, a contextualização e a parte estética foram bem trabalhadas! [Confira o trabalho neste link](https://curso-r.github.io/202010-r4ds-1/trabalho_final/Andre_Oliveira.html).
 
 
 Parabéns, Luísa e André!
