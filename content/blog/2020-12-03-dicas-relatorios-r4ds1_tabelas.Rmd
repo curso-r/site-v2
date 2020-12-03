@@ -4,7 +4,7 @@ date: "2020-12-03"
 tags: ["r", "rstudio"]
 categories: ["r", "tutorial"]
 banner: "img/banners/award-theoffice.jpg"
-author: ["Beatriz Milz", "William"]
+author: ["Beatriz Milz", "William Amorim"]
 summary: "Apresentamos os trabalhos de conclusão do nosso curso de R para Ciência de Dados I que foram premiados, e comentamos algumas dicas sobre elaboração de tabelas em relatórios."
 draft: false
 ---

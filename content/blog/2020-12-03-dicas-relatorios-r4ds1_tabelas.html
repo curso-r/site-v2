@@ -1,0 +1,201 @@
+---
+title: "Trabalhos premiados do curso R para Ciência de Dados I + Dicas !"
+date: "2020-12-03"
+tags: ["r", "rstudio"]
+categories: ["r", "tutorial"]
+banner: "img/banners/award-theoffice.jpg"
+author: ["Beatriz Milz", "William Amorim"]
+summary: "Apresentamos os trabalhos de conclusão do nosso curso de R para Ciência de Dados I que foram premiados, e comentamos algumas dicas sobre elaboração de tabelas em relatórios."
+draft: false
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Na última edição do curso de <a href="https://www.curso-r.com/cursos/r4ds-1/">R para Ciência de dados I</a>, realizada em outubro de 2020, apresentamos para as pessoas alunas como trabalho final a tarefa de realizar uma análise estatística (descritiva) e comunicar os resultados utilizando um relatório produzido em R Markdown. Como sugestão, as pessoas poderiam utilizar a base de filmes do IMDB para realizar a análise, porém eram livres para escolher outros temas de interesse também.</p>
+<p>Assim como nas últimas edições do curso, para motivar as pessoas alunas, resolvemos premiar os melhores trabalhos com vagas em qualquer um dos nossos cursos. <a href="https://www.curso-r.com/blog/2020-06-20-melhores-trabalhos-r4ds1/">Neste post</a> apresentamos o objetivo deste tipo de avaliação, além dos trabalhos premiados da turma de maio de 2020.</p>
+<p>Este post será um pouco diferente <a href="https://www.curso-r.com/blog/2020-06-20-melhores-trabalhos-r4ds1/">deste</a>: primeiro apresentaremos os trabalhos premiados, e então baseado nos feedbacks que escrevemos sobre os trabalhos, apresentaremos algumas dicas para visualizações de dados e relatórios com RMarkdown. O conteúdo foi dividido para que o post não ficasse muito extenso, então neste post as dicas serão sobre formatação de tabelas!</p>
+<div id="trabalhos-premiados" class="section level2">
+<h2>Trabalhos premiados</h2>
+<ul>
+<li><p><strong><a href="https://twitter.com/lgiselebock">Luísa Böck</a></strong>: O trabalho da Luisa é uma análise sobre a série The Office, e tanto a análise dos dados, a parte estética e o texto ficaram muito legais! Para quem gosta da série, é uma oportunidade para aprender mais sobre ela! <a href="https://curso-r.github.io/202010-r4ds-1/trabalho_final/Luisa_Bock.html">Confira o trabalho neste link</a>.</p></li>
+<li><p><strong><a href="https://twitter.com/AbispoAndre">André Oliveira</a></strong>: O trabalho do André é uma análise utilizando a base de filmes do IMDB. O trabalho também ficou muito legal: a análise dos dados, a contextualização e a parte estética foram bem trabalhadas! <a href="https://curso-r.github.io/202010-r4ds-1/trabalho_final/Andre_Oliveira.html">Confira o trabalho neste link</a>.</p></li>
+</ul>
+<p>Parabéns, Luísa e André!</p>
+<p><img src="https://media.giphy.com/media/mp1JYId8n0t3y/giphy.gif" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="dicas-para-formatar-melhor-suas-tabelas" class="section level2">
+<h2>5 Dicas para formatar melhor suas tabelas</h2>
+<p>Agora seguimos para as dicas!</p>
+<p>Primeiro vamos carregar o pacote <code>tidyverse</code>:</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>O próximo passo é carregar a base que utilizaremos como exemplo: a base de filmes do IMDB.</p>
+<pre class="r"><code>imdb &lt;-
+  read_delim(
+    &quot;https://raw.githubusercontent.com/curso-r/202010-r4ds-1/master/dados/imdb2.csv&quot;,
+    &quot;;&quot;,
+    escape_double = FALSE,
+    trim_ws = TRUE
+  )</code></pre>
+<div id="exemplo-1-ordenar-formatar-dinheiro-e-nomear-as-colunas" class="section level3">
+<h3>Exemplo 1: Ordenar, formatar dinheiro e nomear as colunas</h3>
+<p>No exemplo a seguir, primeiramente vamos selecionar as variáveis que representam o nome e o orçamento dos filmes (com a função <code>select()</code>). É interessante ordenar a tabela segundo alguma variável, para facilitar a leitura. No exemplo a seguir, vamos ordenar pelo orçamento de forma decrescente utilizando a função <code>arrange(desc(variavel))</code>.</p>
+<p>Vamos selecionar apenas as primeiras linhas da base, para facilitar a apresentação neste post (utilizando a função <code>head()</code>), e salvar em um objeto chamado <code>filmes_orcamento</code> (que usaremos nos códigos a seguir).</p>
+<pre class="r"><code>filmes_orcamento &lt;- imdb %&gt;%
+  select(titulo, orcamento) %&gt;%
+  arrange(desc(orcamento)) %&gt;% 
+  head()
+
+filmes_orcamento</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   titulo                                    orcamento
+##   &lt;chr&gt;                                         &lt;dbl&gt;
+## 1 Pirates of the Caribbean: At World&#39;s End  300000000
+## 2 John Carter                               263700000
+## 3 Tangled                                   260000000
+## 4 Spider-Man 3                              258000000
+## 5 The Dark Knight Rises                     250000000
+## 6 Avengers: Age of Ultron                   250000000</code></pre>
+<p>Para variáveis que representam dinheiro, é possível usar a função <code>scales::dollar()</code> para que os valores fiquem formatados como dinheiro (e fiquem mais legíveis!).</p>
+<pre class="r"><code>filmes_orcamento %&gt;% 
+  mutate(orcamento = scales::dollar(orcamento)) </code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   titulo                                    orcamento   
+##   &lt;chr&gt;                                     &lt;chr&gt;       
+## 1 Pirates of the Caribbean: At World&#39;s End  $300,000,000
+## 2 John Carter                               $263,700,000
+## 3 Tangled                                   $260,000,000
+## 4 Spider-Man 3                              $258,000,000
+## 5 The Dark Knight Rises                     $250,000,000
+## 6 Avengers: Age of Ultron                   $250,000,000</code></pre>
+<p>A tabela anteiror foi apresentada igual a um código que aparece como retorno no console do R, e isso não fica legal em um relatório. Existem diversas formas de apresentar tabelas, mas neste exemplo utilizaremos a função <code>knitr::kable()</code> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Além disso, é comum que o nome das variáveis estejam escritas com letras minúsculas, sem acentuação, etc (por exemplo: <code>orcamento</code>). Para que a tabela fique melhor formatada, podemos renomear o nome das colunas usando o argumento <code>col.names</code> da função <code>knitr::kable()</code>, informando um vetor com os novos nomes para as colunas da tabela.</p>
+<pre class="r"><code>imdb %&gt;%
+  select(titulo, orcamento) %&gt;%
+  arrange(desc(orcamento)) %&gt;% 
+  mutate(orcamento = scales::dollar(orcamento)) %&gt;%
+  head() %&gt;%
+  knitr::kable(col.names = c(&quot;Título do filme&quot;, &quot;Orçamento&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Título do filme</th>
+<th align="left">Orçamento</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Pirates of the Caribbean: At World’s End</td>
+<td align="left">$300,000,000</td>
+</tr>
+<tr class="even">
+<td align="left">John Carter</td>
+<td align="left">$263,700,000</td>
+</tr>
+<tr class="odd">
+<td align="left">Tangled</td>
+<td align="left">$260,000,000</td>
+</tr>
+<tr class="even">
+<td align="left">Spider-Man 3</td>
+<td align="left">$258,000,000</td>
+</tr>
+<tr class="odd">
+<td align="left">The Dark Knight Rises</td>
+<td align="left">$250,000,000</td>
+</tr>
+<tr class="even">
+<td align="left">Avengers: Age of Ultron</td>
+<td align="left">$250,000,000</td>
+</tr>
+</tbody>
+</table>
+<p>A tabela ficou mais fácil de ser lida. O que achou do resultado?</p>
+</div>
+<div id="exemplo-2-arredondar-valores-e-ordenar-categorias" class="section level3">
+<h3>Exemplo 2: Arredondar valores e ordenar categorias</h3>
+<p>No exemplo a seguir, vamos calcular a nota média dos filmes na base do IMDB para cada classificação etária. Fazemos isso utilizando as funções <code>group_by()</code> e <code>summarise()</code>.</p>
+<p>Salvaremos o resultado em um objeto chamado <code>nota_classificacao</code> (que usaremos nos códigos a seguir).</p>
+<pre class="r"><code>nota_classificacao &lt;- imdb %&gt;%
+  group_by(classificacao) %&gt;%
+  summarise(nota_media_imdb = mean(nota_imdb, na.rm = TRUE)) 
+
+nota_classificacao</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   classificacao       nota_media_imdb
+##   &lt;chr&gt;                         &lt;dbl&gt;
+## 1 A partir de 13 anos            61.8
+## 2 A partir de 18 anos            64.6
+## 3 Livre                          62.6
+## 4 Outros                         66.3</code></pre>
+<p>O primeiro ponto interessante para arrumar são os valores da variável <code>nota_media_imdb</code>, arredondando os valores para que não apareça as casas decimais. Para melhorar a apresentação, podemos usar a função <code>round()</code> (utilizada para arredondar números) junto com a função <code>mutate()</code> (que altera ou cria novas variáveis). Com o argumento <code>digits</code> da função <code>round()</code>, é possível definir quantas casas decimais você quer que o número tenha.</p>
+<pre class="r"><code>nota_classificacao %&gt;%
+  mutate(nota_media_imdb = round(nota_media_imdb, digits = 0))</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   classificacao       nota_media_imdb
+##   &lt;chr&gt;                         &lt;dbl&gt;
+## 1 A partir de 13 anos              62
+## 2 A partir de 18 anos              65
+## 3 Livre                            63
+## 4 Outros                           66</code></pre>
+<p>Na base que estamos usando de exemplo, a variável <code>classificacao</code> é uma variável categórica do tipo <code>chr</code> (character), ou seja, um texto. Por padrão, a ordem utilizada é a alfabética (repare no resultado anterior, primeiro aparecem as classificações que começam com A, depois com L e por último a que começa com O).</p>
+<p>Para ordenar essa variável, precisamos transformar ela em um fator. Portanto, usaremos o pacote <code>forcats</code>, que faz parte do <code>tidyverse</code> e possui funções para trabalhar com fatores <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>Usando a função <code>mutate()</code> com <code>fct_relevel()</code> (do pacote <code>forcats</code>), podemos alterar a ordem dos níveis desta variável, passando como argumento:</p>
+<ul>
+<li><p>a variável que queremos transformar em fator e alterar os seus níveis (os <code>levels</code>),</p></li>
+<li><p>um vetor com os níveis (<code>levels</code>), na ordem que desejamos.</p></li>
+</ul>
+<p>Posteriormente podemos ordenar a variável utilizando a função <code>arrange()</code>, e teremos como resultado a tabela ordenada de uma forma que faz mais sentido:</p>
+<pre class="r"><code>nota_classificacao %&gt;%
+  mutate(nota_media_imdb = round(nota_media_imdb, digits = 0)) %&gt;%
+  mutate(classificacao = forcats::fct_relevel(
+    classificacao,
+    c(&quot;Livre&quot;,
+      &quot;A partir de 13 anos&quot;,
+      &quot;A partir de 18 anos&quot;,
+      &quot;Outros&quot;)
+  )) %&gt;%
+  arrange(classificacao) %&gt;%
+  knitr::kable(col.names = c(&quot;Classificação etária&quot;,
+                             &quot;Nota média no IMDB&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Classificação etária</th>
+<th align="right">Nota média no IMDB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Livre</td>
+<td align="right">63</td>
+</tr>
+<tr class="even">
+<td align="left">A partir de 13 anos</td>
+<td align="right">62</td>
+</tr>
+<tr class="odd">
+<td align="left">A partir de 18 anos</td>
+<td align="right">65</td>
+</tr>
+<tr class="even">
+<td align="left">Outros</td>
+<td align="right">66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="conclusão" class="section level2">
+<h2>Conclusão</h2>
+<p>Neste post conhecemos os trabalhos premiados no curso de <a href="https://www.curso-r.com/cursos/r4ds-1/">R para Ciência de dados I</a> oferecido em outubro/2020, assim como algumas dicas que surgiram a partir do feedback dos trabalhos.</p>
+<p>Nos próximos posts apresentaremos mais algumas dicas sobre gráficos com o pacote <code>ggplot2</code> e relatórios com o pacote <code>R Markdown</code>.</p>
+<p>E caso você tenha interesse em saber mais sobre os cursos, a <a href="https://www.curso-r.com/cursos/">página de cursos</a> foi atualizada, e as incrições para os cursos de 2021 já estão abertas!</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Outros pacotes que permitem criar tabelas são: <a href="https://rstudio.github.io/DT/">DT</a>, <a href="https://glin.github.io/reactable/index.html">reactable</a>, <a href="https://davidgohel.github.io/flextable/articles/overview.html">flextable</a> e <a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html">kableExtra</a>. <a href="https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/">Essa página</a> também apresenta materiais muito ricos sobre elaboração de tabelas!<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Caso queira saber mais sobre fatores e o pacote <code>forcats</code>, recomendo consutar <a href="https://www.curso-r.com/material/forcats/">este material da Curso-R</a>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
