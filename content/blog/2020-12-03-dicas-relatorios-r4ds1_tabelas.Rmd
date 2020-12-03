@@ -1,6 +1,6 @@
 ---
 title: "Trabalhos premiados do curso R para Ciência de Dados I + Dicas !"
-date: "2020-12-02"
+date: "2020-12-03"
 tags: ["r", "rstudio"]
 categories: ["r", "tutorial"]
 banner: "img/banners/award-theoffice.jpg"
