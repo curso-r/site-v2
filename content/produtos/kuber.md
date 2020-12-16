@@ -2,7 +2,7 @@
 title: "kuber"
 img: "img/produtos/kuber.png"
 desc: "Utilizando Kubernetes, Docker e Google SDK para paralelizar códigos na nuvem."
-ordem: "107"
+ordem: "108"
 tipo: Pacote
 corlabel: green
 link: "https://curso-r.github.io/kuber/"

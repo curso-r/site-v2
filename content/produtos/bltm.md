@@ -2,7 +2,7 @@
 title: "bltm"
 img: "img/produtos/bltm.png"
 desc: "Ajusta modelo dinâmico Bayesiano com limiares nos parâmetros (Bayesian Latent Threshold Model) ."
-ordem: "110"
+ordem: "111"
 tipo: Pacote
 corlabel: green
 link: "https://curso-r.github.io/bltm/"
