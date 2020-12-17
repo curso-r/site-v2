@@ -3,7 +3,7 @@ title: "Feedback dos trabalhos do R para Ciência de Dados (Parte II): Dicas par
 date: "2020-12-17"
 tags: ["r", "rstudio"]
 categories: ["r", "tutorial"]
-banner: "img/banners/ggplot2_blank.png"
+banner: "img/banners/ggplot2_blank.jpg"
 author: ["Beatriz Milz", "William"]
 summary: "Comentamos algumas dicas sobre elaboração de gráficos em relatórios. Ilustração sobre o pacote ggplot2, criada por Allison Horst."
 draft: false
