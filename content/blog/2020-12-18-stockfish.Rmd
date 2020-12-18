@@ -16,7 +16,6 @@ um motor de xadrez muito popular, open source e poderoso escrito em C++.
 
 ## Instalação
 
-Instale a versão estável do `{stockfish}` do CRAN:
 
 ``` r
 install.packages("stockfish")
@@ -123,7 +122,7 @@ saída volta vazia.
 
 Antes de implementar o protocolo UCI manualmente, o pacote usava o `{bigchess}`.
 Ele é um pacote incrível criado por
-[@rosawojciech](https://github.com/rosawojciech), mas ele tem algumas
+[\@rosawojciech](https://github.com/rosawojciech), mas ele tem algumas
 dependências que estão além do escopo do `{stockfish}` e, no final, eu queria
 mais controle da API (por exemplo usando `{R6}`).
 
