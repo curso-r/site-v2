@@ -1,0 +1,144 @@
+---
+title: "Stockfish no R"
+date: "2020-12-18"
+tags: ["r", "pacotes", "divulgação"]
+categories: ["r", "pacotes", "divulgação"]
+banner: "img/banners/stockfish.jpg"
+author: ["Caio"]
+summary: "Um pacote R para analisar jogos de xadrez com o Stockfish"
+draft: false
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p><code>{stockfish}</code> é um pacote R que implementa o protocolo aberto de comunicação
+<a href="http://wbec-ridderkerk.nl/html/UCIProtocol.html">UCI</a> e acompanha uma
+instalação do <a href="https://github.com/official-stockfish/Stockfish">Stockfish 11</a>,
+um motor de xadrez muito popular, open source e poderoso escrito em C++.</p>
+<div id="instalação" class="section level2">
+<h2>Instalação</h2>
+<p>Instale a versão estável do <code>{stockfish}</code> do CRAN:</p>
+<pre class="r"><code>install.packages(&quot;stockfish&quot;)</code></pre>
+<p>Ou instale a versão em desenvolvimento do
+<a href="https://github.com/curso-r/stockfish">GitHub</a> com:</p>
+<pre class="r"><code># install.packages(&quot;remotes&quot;)
+remotes::install_github(&quot;curso-r/stockfish&quot;)</code></pre>
+<p>Você também pode encontrar mais (e mais recentes) versões do motor Stockfish
+para usar com o <code>{stockfish}</code> na
+<a href="https://stockfishchess.org/download/">página de download</a> do projeto.</p>
+</div>
+<div id="exemplo" class="section level2">
+<h2>Exemplo</h2>
+<p>É tão fácil usar o <code>{stockfish}</code> quanto qualquer outro pacote UCI. Você deve
+inicializar o motor com <code>fish$new()</code> e enviar comandos com os seus métodos
+internos, lembrando apenas de rodar <code>quit()</code> quando você terminar.</p>
+<pre class="r"><code>library(stockfish)
+
+# Inicializar o motor
+engine &lt;- fish$new()
+
+# Examinar o processo em plano de fundo
+engine$process
+#&gt; PROCESS &#39;stockfish&#39;, running, pid 173670.
+
+# Procurar a melhor jogada
+engine$go()
+#&gt; [1] &quot;bestmove e2e4 ponder d7d5&quot;
+
+# Começar um jogo a partir de um FEN
+engine$ucinewgame()
+engine$position(&quot;6rk/2Q3p1/5qBp/5P2/8/7P/6PK/8 w - - 15 51&quot;)
+engine$go()
+#&gt; [1] &quot;bestmove g6f7 ponder g8d8&quot;
+
+# Finalizar o motor
+engine$quit()</code></pre>
+</div>
+<div id="uso" class="section level2">
+<h2>Uso</h2>
+<p><code>fish</code>, a principal classe do pacote, representa um motor Stockfish, permitindo
+que o usuário envie comandos e receba saídas de acordo com o protocolo UCI.
+Resumindo, um objeto <code>fish</code>, quando criado, cria um processo Stockfish
+desacoplado e faz um <em>pipe</em> com as suas entrada e saída padrões.</p>
+<p>Para mais informações, veja a sua documentação completa executando <code>?fish</code>.</p>
+<div id="stockfish-incluso" class="section level3">
+<h3>Stockfish Incluso</h3>
+<p>O pacote acompanha uma instalação do
+<a href="https://github.com/official-stockfish/Stockfish">Stockfish</a>, um motor de xadrez
+muito popular, open source e poderoso escrito em C++. Ele consegue chegar em um
+ELO de 3516, roda no Windows, macOS, Linux, iOS e Android, e pode ser compilado
+em menos de um minuto.</p>
+<p>Quando o <code>{stockfish}</code> (inicial minúscula) estiver sendo instalado, o
+código-fonte do Stockfish (inicial maiúscula) é compilado e o executável
+resultante é armazenado junto com os seus pacote R. Isso não é uma instalação
+para todos os usuários! Você não precisa dar privilégios administrativos para
+ele rodar ou se preocupar com qualquer software adicional.</p>
+<p>O único ponto negativo é que a versão inclusa é o Stockfish 11, não a versão
+mais recente (Stockfish 12). Isso ocorre porque a versão 12 precisa de downloads
+adicionais, o que aumentaria dramaticamente o tempo de instalação. Se quiser,
+você pode <a href="https://stockfishchess.org/download/">baixar</a> a versão de sua escolha
+e passar o caminho para o executável como argumento para <code>fish$new()</code>.</p>
+</div>
+<div id="protocolo-uci" class="section level3">
+<h3>Protocolo UCI</h3>
+<p>UCI (<em>Universal Chess Interface</em>) é um protocolo aberto de comunicação que
+permite que motores de xadrez se comuniquem com interfaces de usuário. Na
+verdade, a classe <code>fish</code> implementa o
+<a href="http://wbec-ridderkerk.nl/html/UCIProtocol.html">protocolo UCI</a> como publicado
+por Stefan-Meyer Kahlen, apenas com um foco no Stockfish. Isso significa que
+alguns métodos não são implementados (veja <strong>Pegadinhas</strong>) e que todos os testes
+são feitos com o Stockfish, mas todo o resto deveria funcionar perfeitamente com
+outros motores.</p>
+<p>O texto entre aspas no fim da documentação de cada método foi extraído
+diretamente do protocolo UCI oficial para que você possa ver exatamente o que
+aquele comando pode fazer. No geral, os comandos são bem autoexplicativos,
+exceto pela LAN (<em>long algebraic notation</em>), a notação de jogadas usada pelo
+UCI. Nessa notação, jogadas são registradas usando as posições inicial e final
+da peça, por exemplo, e2e4, e7e5, e1g1 (roque pequeno das brancas), e7e8q
+(promoção), 0000 (jogada vazia).</p>
+</div>
+<div id="implementação" class="section level3">
+<h3>Implementação</h3>
+<p>Todo o trabalho duro da classe <code>fish</code> é feito pelo pacote <code>{processx}</code>. O
+processo do Stockfish é criado com <code>processx::process$new</code> e a entrada/saída é
+feita com <code>write_input()</code> e <code>read_output()</code>. Um aspecto importante do protocolo
+de comunicação de qualquer motor UCI é esperar por respostas, e aqui isso é
+feito com um loop que verifica o processo com <code>poll_io()</code> e para assim que a
+saída volta vazia.</p>
+<p>Antes de implementar o protocolo UCI manualmente, o pacote usava o <code>{bigchess}</code>.
+Ele é um pacote incrível criado por
+<span class="citation">[@rosawojciech]</span>(<a href="https://github.com/rosawojciech" class="uri">https://github.com/rosawojciech</a>), mas ele tem algumas
+dependências que estão além do escopo do <code>{stockfish}</code> e, no final, eu queria
+mais controle da API (por exemplo usando <code>{R6}</code>).</p>
+</div>
+<div id="pegadinhas" class="section level3">
+<h3>Pegadinhas</h3>
+<p>A classe <code>fish</code> tem algumas idiossincrasias que o usuário deve ter em mente
+quando tentar se comunicar com o Stockfish. Algumas são devidas a escolhas de
+implementação, mas outras estão relacionadas ao protocolo UCI em si. Esta não
+é uma lista completa (e você provavelmente deveria ler a
+<a href="http://wbec-ridderkerk.nl/html/UCIProtocol.html">documentação do UCI</a>), mas
+aqui vão algumas coisas para ficar de olho.</p>
+<ul>
+<li><p>Nem todos os métodos UCI foram implementados: como o <code>{stockfish}</code> foi feito
+com o Stockfish (e especialmente o Stockfish 11) em mente, dois métodos do UCI
+que não funcionam com o motor não foram implementados. Eles são <code>debug()</code> e
+<code>register()</code>.</p></li>
+<li><p>A maioria dos métodos retorna silenciosamente: como a maioria dos comandos UCI
+não retornam nada ou retornam texto padrão, a maioria dos métodos retorna
+silenciosamente. As exceções são <code>run()</code>, <code>isready()</code>, <code>go()</code> e <code>stop()</code>; você
+pode ver exatamente o que eles retornam lendo as suas documentações.</p></li>
+<li><p>Nem toda opção do Stockfish vai funcionar: pelo menos quando usando a versão
+inclusa do Stockfish, nem todas as opções documentadas vão funcionar com
+<code>setoption()</code>. Isso ocorre porque, como descrito acima, o pacote vem com o
+Stockfish 11, que não é a versão mais recente. Opções que não vão funcionar
+estão marcadas com um asterisco.</p></li>
+<li><p>Tempos são em milissegundos. diferentemente da maioria das funções do R, todo
+método que recebe um intervalo de tempo espera que o mesmo seja em milissegundos,
+não segundos.</p></li>
+</ul>
+</div>
+</div>

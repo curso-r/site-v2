@@ -1,0 +1,157 @@
+---
+title: "Stockfish no R"
+date: "2020-12-18"
+tags: ["r", "pacotes", "divulgação"]
+categories: ["r", "pacotes", "divulgação"]
+banner: "img/banners/stockfish.jpg"
+author: ["Caio"]
+summary: "Um pacote R para analisar jogos de xadrez com o Stockfish"
+draft: false
+---
+
+`{stockfish}` é um pacote R que implementa o protocolo aberto de comunicação
+[UCI](http://wbec-ridderkerk.nl/html/UCIProtocol.html) e acompanha uma
+instalação do [Stockfish 11](https://github.com/official-stockfish/Stockfish),
+um motor de xadrez muito popular, open source e poderoso escrito em C++.
+
+## Instalação
+
+Instale a versão estável do `{stockfish}` do CRAN:
+
+``` r
+install.packages("stockfish")
+```
+
+Ou instale a versão em desenvolvimento do
+[GitHub](https://github.com/curso-r/stockfish) com:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("curso-r/stockfish")
+```
+
+Você também pode encontrar mais (e mais recentes) versões do motor Stockfish
+para usar com o `{stockfish}` na
+[página de download](https://stockfishchess.org/download/) do projeto.
+
+## Exemplo
+
+É tão fácil usar o `{stockfish}` quanto qualquer outro pacote UCI. Você deve
+inicializar o motor com `fish$new()` e enviar comandos com os seus métodos
+internos, lembrando apenas de rodar `quit()` quando você terminar.
+
+``` r
+library(stockfish)
+
+# Inicializar o motor
+engine <- fish$new()
+
+# Examinar o processo em plano de fundo
+engine$process
+#> PROCESS 'stockfish', running, pid 173670.
+
+# Procurar a melhor jogada
+engine$go()
+#> [1] "bestmove e2e4 ponder d7d5"
+
+# Começar um jogo a partir de um FEN
+engine$ucinewgame()
+engine$position("6rk/2Q3p1/5qBp/5P2/8/7P/6PK/8 w - - 15 51")
+engine$go()
+#> [1] "bestmove g6f7 ponder g8d8"
+
+# Finalizar o motor
+engine$quit()
+```
+
+## Uso
+
+`fish`, a principal classe do pacote, representa um motor Stockfish, permitindo
+que o usuário envie comandos e receba saídas de acordo com o protocolo UCI.
+Resumindo, um objeto `fish`, quando criado, cria um processo Stockfish
+desacoplado e faz um _pipe_ com as suas entrada e saída padrões.
+
+Para mais informações, veja a sua documentação completa executando `?fish`.
+
+### Stockfish Incluso
+
+O pacote acompanha uma instalação do
+[Stockfish](https://github.com/official-stockfish/Stockfish), um motor de xadrez
+muito popular, open source e poderoso escrito em C++. Ele consegue chegar em um
+ELO de 3516, roda no Windows, macOS, Linux, iOS e Android, e pode ser compilado
+em menos de um minuto.
+
+Quando o `{stockfish}` (inicial minúscula) estiver sendo instalado, o
+código-fonte do Stockfish (inicial maiúscula) é compilado e o executável
+resultante é armazenado junto com os seus pacote R. Isso não é uma instalação
+para todos os usuários! Você não precisa dar privilégios administrativos para
+ele rodar ou se preocupar com qualquer software adicional.
+
+O único ponto negativo é que a versão inclusa é o Stockfish 11, não a versão
+mais recente (Stockfish 12). Isso ocorre porque a versão 12 precisa de downloads
+adicionais, o que aumentaria dramaticamente o tempo de instalação. Se quiser,
+você pode [baixar](https://stockfishchess.org/download/) a versão de sua escolha
+e passar o caminho para o executável como argumento para `fish$new()`.
+
+### Protocolo UCI
+
+UCI (_Universal Chess Interface_) é um protocolo aberto de comunicação que
+permite que motores de xadrez se comuniquem com interfaces de usuário. Na
+verdade, a classe `fish` implementa o
+[protocolo UCI](http://wbec-ridderkerk.nl/html/UCIProtocol.html) como publicado
+por Stefan-Meyer Kahlen, apenas com um foco no Stockfish. Isso significa que
+alguns métodos não são implementados (veja **Pegadinhas**) e que todos os testes
+são feitos com o Stockfish, mas todo o resto deveria funcionar perfeitamente com
+outros motores.
+
+O texto entre aspas no fim da documentação de cada método foi extraído
+diretamente do protocolo UCI oficial para que você possa ver exatamente o que
+aquele comando pode fazer. No geral, os comandos são bem autoexplicativos,
+exceto pela LAN (_long algebraic notation_), a notação de jogadas usada pelo
+UCI. Nessa notação, jogadas são registradas usando as posições inicial e final
+da peça, por exemplo, e2e4, e7e5, e1g1 (roque pequeno das brancas), e7e8q
+(promoção), 0000 (jogada vazia).
+
+### Implementação
+
+Todo o trabalho duro da classe `fish` é feito pelo pacote `{processx}`. O
+processo do Stockfish é criado com `processx::process$new` e a entrada/saída é
+feita com `write_input()` e `read_output()`. Um aspecto importante do protocolo
+de comunicação de qualquer motor UCI é esperar por respostas, e aqui isso é
+feito com um loop que verifica o processo com `poll_io()` e para assim que a
+saída volta vazia.
+
+Antes de implementar o protocolo UCI manualmente, o pacote usava o `{bigchess}`.
+Ele é um pacote incrível criado por
+[@rosawojciech](https://github.com/rosawojciech), mas ele tem algumas
+dependências que estão além do escopo do `{stockfish}` e, no final, eu queria
+mais controle da API (por exemplo usando `{R6}`).
+
+### Pegadinhas
+
+A classe `fish` tem algumas idiossincrasias que o usuário deve ter em mente
+quando tentar se comunicar com o Stockfish. Algumas são devidas a escolhas de
+implementação, mas outras estão relacionadas ao protocolo UCI em si. Esta não
+é uma lista completa (e você provavelmente deveria ler a
+[documentação do UCI](http://wbec-ridderkerk.nl/html/UCIProtocol.html)), mas
+aqui vão algumas coisas para ficar de olho.
+
+- Nem todos os métodos UCI foram implementados: como o `{stockfish}` foi feito
+com o Stockfish (e especialmente o Stockfish 11) em mente, dois métodos do UCI
+que não funcionam com o motor não foram implementados. Eles são `debug()` e
+`register()`.
+
+- A maioria dos métodos retorna silenciosamente: como a maioria dos comandos UCI
+não retornam nada ou retornam texto padrão, a maioria dos métodos retorna
+silenciosamente. As exceções são `run()`, `isready()`, `go()` e `stop()`; você
+pode ver exatamente o que eles retornam lendo as suas documentações.
+
+- Nem toda opção do Stockfish vai funcionar: pelo menos quando usando a versão
+inclusa do Stockfish, nem todas as opções documentadas vão funcionar com
+`setoption()`. Isso ocorre porque, como descrito acima, o pacote vem com o
+Stockfish 11, que não é a versão mais recente. Opções que não vão funcionar
+estão marcadas com um asterisco.
+
+- Tempos são em milissegundos. diferentemente da maioria das funções do R, todo
+método que recebe um intervalo de tempo espera que o mesmo seja em milissegundos,
+não segundos.
