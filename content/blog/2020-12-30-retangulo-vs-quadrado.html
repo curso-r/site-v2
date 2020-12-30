@@ -1,0 +1,193 @@
+
+
+<div id="exemplo-passarinho-versus-sapo" class="section level2">
+<h2>Exemplo: Passarinho versus Sapo</h2>
+<p>Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels com outros formatos podem ajudar como mostrado em <span class="citation">(Sun, Ozay, and Okatani 2016)</span>! Um exemplo é o kernel retangular quando se está mexendo com sons e seus respectivos espectrogramas. Para ilustar eu vou criar dois “espectrogramas” bem simples, assim:</p>
+<pre class="r"><code>library(torch)
+library(tidyverse)
+library(mestrado)
+
+imagem_passarinho &lt;- torch_ones(8,6) * 0.9
+imagem_passarinho[3, 1:3] &lt;- torch_zeros(3)
+imagem_sapo &lt;- torch_ones(8,6) * 0.9
+imagem_sapo[6, 1:3] &lt;- torch_zeros(3)
+
+# (N, C, F, T) ---&gt; spectrogramas (numero de imagens, canais de cores, faixas de freq, duracao do audio)
+x &lt;- torch_stack(c(imagem_passarinho, imagem_sapo))
+# coloca a dimensão do &quot;canal&quot;: se forem 3 canais é colorido (RGB), se for 1 é preto e branco.
+x$unsqueeze_(2)
+## torch_tensor
+## (1,1,.,.) = 
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.0000  0.0000  0.0000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+## 
+## (2,1,.,.) = 
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.0000  0.0000  0.0000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+##   0.9000  0.9000  0.9000  0.9000  0.9000  0.9000
+## [ CPUFloatType{2,1,8,6} ]</code></pre>
+<pre class="r"><code>image_tensors_to_tbl(x) %&gt;% 
+  mutate(label = factor(i, labels = c(&quot;passarinho&quot;, &quot;sapo&quot;))) %&gt;%
+  ggpixelgrid(grid_tickness = 2, grid_colour = &quot;white&quot;, label = label) +
+  theme_void(30) +
+  labs(x = &quot;Tempo (ms)&quot;, y = &quot;Frequência (Hz)&quot;)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="2020-12-30-retangulo-vs-quadrado_files/figure-html/unnamed-chunk-2-1.png" alt="Espectrogramas para um sapo e um passarinho. Os animais fazem sons em diferentes faixas de frequência." width="672" />
+<p class="caption">
+Figure 1: Espectrogramas para um sapo e um passarinho. Os animais fazem sons em diferentes faixas de frequência.
+</p>
+</div>
+<div id="cnns" class="section level3">
+<h3>CNNs</h3>
+<p>Aqui, as cnns são definidas pela função <code>nn_conv2d()</code> do {torch}. O parâmetro que irá variar para compararmos convolução quadrada vs retângular é o <code>kernel_size</code>: para o quadrado, kernel <code>3x3</code>; para o retangular, kernel <code>8x1</code>, como mostra o código abaixo.</p>
+<p>Repare que a saída resultante de cada convolução é bem diferente! Para o kernel quadrado o tensor resultante é <code>6x4</code> enquanto que para o kernel retangular é <code>1x6</code>.</p>
+<div id="cnn-quadrada" class="section level4">
+<h4>CNN Quadrada</h4>
+<pre class="r"><code>conv_quadrada &lt;- nn_conv2d(in_channels = 1, kernel_size = c(3,3), out_channels = 1, bias = FALSE)
+conv_quadrada(x)
+## torch_tensor
+## (1,1,.,.) = 
+##  -0.5027 -0.7713 -0.8832 -1.0574
+##  -0.5600 -0.6553 -0.8317 -1.0574
+##  -1.0521 -1.3087 -1.2403 -1.0574
+##  -1.0574 -1.0574 -1.0574 -1.0574
+##  -1.0574 -1.0574 -1.0574 -1.0574
+##  -1.0574 -1.0574 -1.0574 -1.0574
+## 
+## (2,1,.,.) = 
+##  -1.0574 -1.0574 -1.0574 -1.0574
+##  -1.0574 -1.0574 -1.0574 -1.0574
+##  -1.0574 -1.0574 -1.0574 -1.0574
+##  -0.5027 -0.7713 -0.8832 -1.0574
+##  -0.5600 -0.6553 -0.8317 -1.0574
+##  -1.0521 -1.3087 -1.2403 -1.0574
+## [ CPUFloatType{2,1,6,4} ]</code></pre>
+</div>
+<div id="cnn-retangular" class="section level4">
+<h4>CNN Retangular</h4>
+<pre class="r"><code>conv_retangular &lt;- nn_conv2d(in_channels = 1, kernel_size = c(8,1), out_channels = 1, bias = FALSE)
+conv_retangular(x)
+## torch_tensor
+## (1,1,.,.) = 
+##  -0.6746 -0.6746 -0.6746 -0.4139 -0.4139 -0.4139
+## 
+## (2,1,.,.) = 
+##  -0.3025 -0.3025 -0.3025 -0.4139 -0.4139 -0.4139
+## [ CPUFloatType{2,1,1,6} ]</code></pre>
+<p>Comentário: A saída <code>1x6</code> pode ser vista como uma média ponderada das frequências em cada um dos 6 instantes de tempo. E essa ponderação é feita pelos 8 pesos do kernel. Intuitivamente, se algum peso der zero, quer dizer que aquela faixa de frequência não é boa para distinguir passarinho de sapo.</p>
+</div>
+</div>
+<div id="ajuste" class="section level3">
+<h3>Ajuste</h3>
+<pre class="r"><code># otimizadores
+optim_quadrado &lt;- optim_adam(conv_quadrada$parameters, lr = 0.1)
+optim_retangulo &lt;- optim_adam(conv_retangular$parameters, lr = 0.1)
+
+# critério de perda
+loss &lt;- torch::nnf_binary_cross_entropy
+
+# rótulos encodados: 1 para passarinho, 0 para sapo.
+y &lt;- c(1,0)
+
+# loop para a otimização para os dois modelos simultaneamente
+erros_da_conv_quadrada &lt;- c()
+erros_da_conv_retangular &lt;- c()
+for(i in 1:100) {
+  # zera grads
+  optim_quadrado$zero_grad()
+  optim_retangulo$zero_grad()
+  
+  # valores preditos
+  pred_quadrado &lt;- conv_quadrada(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
+  pred_retangulo &lt;- conv_retangular(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
+  
+  # erros
+  erro_conv_quadrada &lt;- loss(pred_quadrado, y)
+  erro_conv_retangular &lt;- loss(pred_retangulo, y)
+  erros_da_conv_quadrada &lt;- c(erros_da_conv_quadrada, as.numeric(erro_conv_quadrada))
+  erros_da_conv_retangular &lt;- c(erros_da_conv_retangular, as.numeric(erro_conv_retangular))
+  
+  # propagação dos erros (gradientes de cada param)
+  erro_conv_quadrada$backward()
+  erro_conv_retangular$backward()
+  
+  # atualização dos pesos em direção oposta ao gradiente
+  optim_quadrado$step()
+  optim_retangulo$step()
+}</code></pre>
+<p><img src="2020-12-30-retangulo-vs-quadrado_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div id="pesos-finais" class="section level4">
+<h4>Pesos finais</h4>
+<pre class="r"><code># quadrado
+pesos_kernel_quadrado &lt;- conv_quadrada$parameters$weight$squeeze(1)$squeeze(1)
+pesos_kernel_quadrado
+## torch_tensor
+##  0.3579  0.2233 -0.1470
+## -0.1289 -0.0706  0.0239
+## -0.0689  0.0025 -0.1698
+## [ CPUFloatType{3,3} ]
+# retangular
+pesos_kernel_retangular &lt;- conv_retangular$parameters$weight$squeeze(1)$squeeze(1)
+pesos_kernel_retangular
+## torch_tensor
+## -0.2458
+##  0.1261
+## -4.3165
+## -0.2081
+##  0.2781
+##  4.3999
+## -0.2322
+##  0.2100
+## [ CPUFloatType{8,1} ]</code></pre>
+<p>É possível observar que:</p>
+<ol style="list-style-type: decimal">
+<li>No kernel quadrado os pesos estão com aspecto que aleatório.</li>
+<li>No kernel retangular os pesos em rosa estão relacionados com as duas frequências relativas ao passarinho e ao sapo.</li>
+</ol>
+<p><img src="2020-12-30-retangulo-vs-quadrado_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="predições" class="section level4">
+<h4>Predições</h4>
+<p>As predições da convolução quadrada deu tudo 50%, ou seja, não foi possível separar os dois pontos! Ou chutamos tudo sapo, ou chutamos tudo passarinho. Sempre iremos cometer algum erro.</p>
+<pre class="r"><code># quadrado
+conv_quadrada(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
+## torch_tensor
+##  0.5005
+##  0.5005
+## [ CPUFloatType{2} ]
+# retangular
+conv_retangular(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
+## torch_tensor
+##  0.7413
+##  0.2608
+## [ CPUFloatType{2} ]</code></pre>
+</div>
+</div>
+</div>
+<div id="resumo" class="section level2">
+<h2>Resumo</h2>
+<ul>
+<li>Kernels de formatos diferentes do quadrado têm potencial melhorar o modelo, a depender da natureza do problema.</li>
+<li>Basta apenas alterar o parâmetro <code>kernel_size</code> para testar novos kernels!</li>
+</ul>
+<p>Em próximas postagens vou conduzir essa comparação em outros bancos de dados mais interessantes: um de brincadeira (Guess The Correlation) e um real (Sons de Pássaros).</p>
+</div>
+<div id="referências" class="section level2 unnumbered">
+<h2>Referências</h2>
+<div id="refs" class="references">
+<div id="ref-inproceedings">
+<p>Sun, Zhun, Mete Ozay, and Takayuki Okatani. 2016. “Design of Kernels in Convolutional Neural Networks for Image Classification.” In, 9911:51–66. <a href="https://doi.org/10.1007/978-3-319-46478-7_4">https://doi.org/10.1007/978-3-319-46478-7_4</a>.</p>
+</div>
+</div>
+</div>

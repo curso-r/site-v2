@@ -1,0 +1,191 @@
+---
+title: "CNNs: Kernel Quadrado versus Kernel Retangular"
+date: "2020-12-30"
+tags: ["torch", "deep learning", "r", "machine learning"]
+bibliography: bibliography.bib
+categories: ["tutoriais", "r"]
+banner: "img/banners/quadrado-vs-retangulo.png"
+author: ["Athos"]
+summary: "Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels retangulares podem ajudar. O post mostra um exemplo minimal em {torch} para ilustrar uma situação em que isso acontece."
+draft: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE, 
+  message = FALSE, 
+  collapse = TRUE
+)
+```
+
+## Exemplo: Passarinho versus Sapo
+
+Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels com outros formatos podem ajudar como mostrado em [@inproceedings]! Um exemplo é o kernel retangular quando se está mexendo com sons e seus respectivos espectrogramas. Para ilustar eu vou criar dois "espectrogramas" bem simples, assim:
+
+```{r}
+library(torch)
+library(tidyverse)
+library(mestrado)
+
+imagem_passarinho <- torch_ones(8,6) * 0.9
+imagem_passarinho[3, 1:3] <- torch_zeros(3)
+imagem_sapo <- torch_ones(8,6) * 0.9
+imagem_sapo[6, 1:3] <- torch_zeros(3)
+
+# (N, C, F, T) ---> spectrogramas (numero de imagens, canais de cores, faixas de freq, duracao do audio)
+x <- torch_stack(c(imagem_passarinho, imagem_sapo))
+# coloca a dimensão do "canal": se forem 3 canais é colorido (RGB), se for 1 é preto e branco.
+x$unsqueeze_(2)
+```
+
+```{r, fig.cap="Espectrogramas para um sapo e um passarinho. Os animais fazem sons em diferentes faixas de frequência."}
+image_tensors_to_tbl(x) %>% 
+  mutate(label = factor(i, labels = c("passarinho", "sapo"))) %>%
+  ggpixelgrid(grid_tickness = 2, grid_colour = "white", label = label) +
+  theme_void(30) +
+  labs(x = "Tempo (ms)", y = "Frequência (Hz)")
+```
+
+### CNNs
+
+Aqui, as cnns são definidas pela função `nn_conv2d()` do {torch}. O parâmetro que irá variar para compararmos convolução quadrada vs retângular é o `kernel_size`: para o quadrado, kernel `3x3`; para o retangular, kernel `8x1`, como mostra o código abaixo.
+
+Repare que a saída resultante de cada convolução é bem diferente! Para o kernel quadrado o tensor resultante é `6x4` enquanto que para o kernel retangular é `1x6`.
+
+#### CNN Quadrada
+
+```{r, eval = TRUE}
+conv_quadrada <- nn_conv2d(in_channels = 1, kernel_size = c(3,3), out_channels = 1, bias = FALSE)
+conv_quadrada(x)
+```
+
+#### CNN Retangular
+
+```{r, eval = TRUE}
+conv_retangular <- nn_conv2d(in_channels = 1, kernel_size = c(8,1), out_channels = 1, bias = FALSE)
+conv_retangular(x)
+```
+
+Comentário: A saída `1x6` pode ser vista como uma média ponderada das frequências em cada um dos 6 instantes de tempo. E essa ponderação é feita pelos 8 pesos do kernel. Intuitivamente, se algum peso der zero, quer dizer que aquela faixa de frequência não é boa para distinguir passarinho de sapo.
+
+### Ajuste
+
+```{r, eval = TRUE}
+# otimizadores
+optim_quadrado <- optim_adam(conv_quadrada$parameters, lr = 0.1)
+optim_retangulo <- optim_adam(conv_retangular$parameters, lr = 0.1)
+
+# critério de perda
+loss <- torch::nnf_binary_cross_entropy
+
+# rótulos encodados: 1 para passarinho, 0 para sapo.
+y <- c(1,0)
+
+# loop para a otimização para os dois modelos simultaneamente
+erros_da_conv_quadrada <- c()
+erros_da_conv_retangular <- c()
+for(i in 1:100) {
+  # zera grads
+  optim_quadrado$zero_grad()
+  optim_retangulo$zero_grad()
+  
+  # valores preditos
+  pred_quadrado <- conv_quadrada(x) %>% nnf_sigmoid() %>% torch_mean(dim = c(2,3,4))
+  pred_retangulo <- conv_retangular(x) %>% nnf_sigmoid() %>% torch_mean(dim = c(2,3,4))
+  
+  # erros
+  erro_conv_quadrada <- loss(pred_quadrado, y)
+  erro_conv_retangular <- loss(pred_retangulo, y)
+  erros_da_conv_quadrada <- c(erros_da_conv_quadrada, as.numeric(erro_conv_quadrada))
+  erros_da_conv_retangular <- c(erros_da_conv_retangular, as.numeric(erro_conv_retangular))
+  
+  # propagação dos erros (gradientes de cada param)
+  erro_conv_quadrada$backward()
+  erro_conv_retangular$backward()
+  
+  # atualização dos pesos em direção oposta ao gradiente
+  optim_quadrado$step()
+  optim_retangulo$step()
+}
+```
+
+```{r, echo = FALSE, fig.height=5}
+erros_da_conv_quadrada_df <- data.frame(
+  passo = 1:length(erros_da_conv_quadrada),
+  erro = erros_da_conv_quadrada,
+  kernel = "quadrado"
+)
+
+erros_da_conv_retangular_df <- data.frame(
+  passo = 1:length(erros_da_conv_retangular),
+  erro = erros_da_conv_retangular,
+  kernel = "retangular"
+)
+
+erros <- rbind(
+  erros_da_conv_quadrada_df,
+  erros_da_conv_retangular_df
+)
+
+erros %>%
+  filter(passo > 0) %>%
+  ggplot(aes(x = passo, y = erro, colour = kernel)) +
+  geom_line() +
+  theme_minimal(20)
+```
+
+#### Pesos finais
+
+```{r, eval = TRUE}
+# quadrado
+pesos_kernel_quadrado <- conv_quadrada$parameters$weight$squeeze(1)$squeeze(1)
+pesos_kernel_quadrado
+# retangular
+pesos_kernel_retangular <- conv_retangular$parameters$weight$squeeze(1)$squeeze(1)
+pesos_kernel_retangular
+```
+
+É possível observar que:
+
+1. No kernel quadrado os pesos estão com aspecto que aleatório.
+2. No kernel retangular os pesos em rosa estão relacionados com as duas frequências relativas ao passarinho e ao sapo.
+
+```{r, eval = TRUE, echo=FALSE}
+library(patchwork)
+
+rbind(
+  pesos_kernel_retangular %>% image_tensors_to_tbl() %>% mutate(i = "retangular"),
+  pesos_kernel_quadrado %>% image_tensors_to_tbl() %>% mutate(i = "quadrado")
+) %>%
+  group_by(i) %>%
+  mutate(
+    c1 = abs(c1),
+    c1 = (c1 - min(c1))/(max(c1) - min(c1)),
+    c1 = 0.2 + c1*0.8,
+    c2 = 0.4,
+    c3 = 0.8
+  ) %>%
+  ggpixelgrid(grid_colour = "white", grid_tickness = 2) +
+  theme_void(30)
+```
+
+#### Predições
+
+As predições da convolução quadrada deu tudo 50%, ou seja, não foi possível separar os dois pontos! Ou chutamos tudo sapo, ou chutamos tudo passarinho. Sempre iremos cometer algum erro.
+
+```{r, eval = TRUE}
+# quadrado
+conv_quadrada(x) %>% nnf_sigmoid() %>% torch_mean(dim = c(2,3,4))
+# retangular
+conv_retangular(x) %>% nnf_sigmoid() %>% torch_mean(dim = c(2,3,4))
+```
+
+## Resumo
+
+- Kernels de formatos diferentes do quadrado têm potencial melhorar o modelo, a depender da natureza do problema.
+- Basta apenas alterar o parâmetro `kernel_size` para testar novos kernels!
+
+Em próximas postagens vou conduzir essa comparação em outros bancos de dados mais interessantes: um de brincadeira (Guess The Correlation) e um real (Sons de Pássaros).
+
+## Referências
