@@ -10,12 +10,11 @@ summary: "Em modelos de CNN é comum usar kernels quadrados. Mas a depender do p
 draft: false
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <div id="exemplo-passarinho-versus-sapo" class="section level2">
 <h2>Exemplo: Passarinho versus Sapo</h2>
-<p>Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels com outros formatos podem ajudar como mostrado em <span class="citation">(<a href="#ref-inproceedings" role="doc-biblioref">Sun, Ozay, and Okatani 2016</a>)</span>! Um exemplo é o kernel retangular quando se está mexendo com sons e seus respectivos espectrogramas. Para ilustar eu vou criar dois “espectrogramas” bem simples, assim:</p>
+<p>Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels com outros formatos podem ajudar como mostrado em <span class="citation">(Sun, Ozay, and Okatani 2016)</span>! Um exemplo é o kernel retangular quando se está mexendo com sons e seus respectivos espectrogramas. Para ilustar eu vou criar dois “espectrogramas” bem simples, assim:</p>
 <pre class="r"><code>library(torch)
 library(tidyverse)
 library(mestrado)
@@ -71,20 +70,20 @@ Figure 1: Espectrogramas para um sapo e um passarinho. Os animais fazem sons em 
 conv_quadrada(x)
 ## torch_tensor
 ## (1,1,.,.) = 
-##   0.4738  0.4164  0.1471  0.3151
-##   0.4156  0.2543  0.0832  0.3151
-##  -0.2593 -0.1353  0.0961  0.3151
-##   0.3151  0.3151  0.3151  0.3151
-##   0.3151  0.3151  0.3151  0.3151
-##   0.3151  0.3151  0.3151  0.3151
+##   0.2844  0.1517  0.2313  0.4015
+##  -0.1726  0.0824  0.3337  0.4015
+##   0.6913  0.5324  0.2523  0.4015
+##   0.4015  0.4015  0.4015  0.4015
+##   0.4015  0.4015  0.4015  0.4015
+##   0.4015  0.4015  0.4015  0.4015
 ## 
 ## (2,1,.,.) = 
-##   0.3151  0.3151  0.3151  0.3151
-##   0.3151  0.3151  0.3151  0.3151
-##   0.3151  0.3151  0.3151  0.3151
-##   0.4738  0.4164  0.1471  0.3151
-##   0.4156  0.2543  0.0832  0.3151
-##  -0.2593 -0.1353  0.0961  0.3151
+##   0.4015  0.4015  0.4015  0.4015
+##   0.4015  0.4015  0.4015  0.4015
+##   0.4015  0.4015  0.4015  0.4015
+##   0.2844  0.1517  0.2313  0.4015
+##  -0.1726  0.0824  0.3337  0.4015
+##   0.6913  0.5324  0.2523  0.4015
 ## [ CPUFloatType{2,1,6,4} ]</code></pre>
 </div>
 <div id="cnn-retangular" class="section level4">
@@ -93,10 +92,10 @@ conv_quadrada(x)
 conv_retangular(x)
 ## torch_tensor
 ## (1,1,.,.) = 
-##   0.1209  0.1209  0.1209 -0.0246 -0.0246 -0.0246
+##  -0.3380 -0.3380 -0.3380 -0.4634 -0.4634 -0.4634
 ## 
 ## (2,1,.,.) = 
-##  -0.3217 -0.3217 -0.3217 -0.0246 -0.0246 -0.0246
+##  -0.6774 -0.6774 -0.6774 -0.4634 -0.4634 -0.4634
 ## [ CPUFloatType{2,1,1,6} ]</code></pre>
 <p>Comentário: A saída <code>1x6</code> pode ser vista como uma média ponderada das frequências em cada um dos 6 instantes de tempo. E essa ponderação é feita pelos 8 pesos do kernel. Intuitivamente, se algum peso der zero, quer dizer que aquela faixa de frequência não é boa para distinguir passarinho de sapo.</p>
 </div>
@@ -146,22 +145,22 @@ for(i in 1:100) {
 pesos_kernel_quadrado &lt;- conv_quadrada$parameters$weight$squeeze(1)$squeeze(1)
 pesos_kernel_quadrado
 ## torch_tensor
-##  0.2186  0.2301  0.1065
-##  0.2218 -0.2280 -0.2166
-##  0.1474 -0.3397 -0.1016
+##  0.1122 -0.3657 -0.2282
+##  0.0341  0.2376  0.2391
+##  0.1440  0.0419 -0.1955
 ## [ CPUFloatType{3,3} ]
 # retangular
 pesos_kernel_retangular &lt;- conv_retangular$parameters$weight$squeeze(1)$squeeze(1)
 pesos_kernel_retangular
 ## torch_tensor
-## -0.1140
-## -0.0196
-## -4.5321
-## -0.1436
-##  0.0710
-##  4.6646
-##  0.1555
-## -0.0643
+## -0.1688
+##  0.1600
+## -4.5302
+## -0.1044
+## -0.0353
+##  4.5600
+##  0.1299
+## -0.0066
 ## [ CPUFloatType{8,1} ]</code></pre>
 <p>É possível observar que:</p>
 <ol style="list-style-type: decimal">
@@ -176,14 +175,14 @@ pesos_kernel_retangular
 <pre class="r"><code># quadrado
 conv_quadrada(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
 ## torch_tensor
-##  0.5005
-##  0.5005
+##  0.4996
+##  0.4996
 ## [ CPUFloatType{2} ]
 # retangular
 conv_retangular(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
 ## torch_tensor
-##  0.7438
-##  0.2595
+##  0.7422
+##  0.2587
 ## [ CPUFloatType{2} ]</code></pre>
 </div>
 </div>
@@ -198,9 +197,9 @@ conv_retangular(x) %&gt;% nnf_sigmoid() %&gt;% torch_mean(dim = c(2,3,4))
 </div>
 <div id="referências" class="section level2 unnumbered">
 <h2>Referências</h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-inproceedings" class="csl-entry">
-Sun, Zhun, Mete Ozay, and Takayuki Okatani. 2016. <span>“Design of Kernels in Convolutional Neural Networks for Image Classification.”</span> In, 9911:51–66. <a href="https://doi.org/10.1007/978-3-319-46478-7_4">https://doi.org/10.1007/978-3-319-46478-7_4</a>.
+<div id="refs" class="references">
+<div id="ref-inproceedings">
+<p>Sun, Zhun, Mete Ozay, and Takayuki Okatani. 2016. “Design of Kernels in Convolutional Neural Networks for Image Classification.” In, 9911:51–66. <a href="https://doi.org/10.1007/978-3-319-46478-7_4">https://doi.org/10.1007/978-3-319-46478-7_4</a>.</p>
 </div>
 </div>
 </div>

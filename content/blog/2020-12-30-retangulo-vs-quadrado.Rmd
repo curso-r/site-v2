@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   collapse = TRUE
 )
 ```
-
+ 
 ## Exemplo: Passarinho versus Sapo
 
 Em modelos de CNN é comum usar kernels quadrados. Mas a depender do problema, kernels com outros formatos podem ajudar como mostrado em [@inproceedings]! Um exemplo é o kernel retangular quando se está mexendo com sons e seus respectivos espectrogramas. Para ilustar eu vou criar dois "espectrogramas" bem simples, assim:
