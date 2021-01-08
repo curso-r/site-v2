@@ -53,7 +53,7 @@ tabela_extrida_do_pdf <- tabulizer::extract_tables(url_pdf, pages = 153)
 tabela_extrida_do_pdf[[1]]
 ```
 
-CDQ! `r "\u2b1b"`
+CQD! `r "\u2b1b"`
 
 ## Bônus: Faxina na tabela
 
