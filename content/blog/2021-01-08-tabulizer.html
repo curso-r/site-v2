@@ -1,0 +1,248 @@
+---
+title: "{tabulizer}: Tabela do PDF para data.frame em segundos"
+date: "2021-01-08"
+tags: ["faxina", "pdf", "tabulizer", "pdftools"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/tabulizer.png"
+author: ["Athos"]
+summary: "Como extrair uma tabela de um PDF facilmente com a função `tabulizer::extract_tables()`"
+draft: false
+---
+
+
+
+<pre class="r"><code>library(pdftools)
+library(magick)</code></pre>
+<div id="resumo" class="section level2">
+<h2>Resumo</h2>
+<blockquote>
+<p><code>tabulizer::extract_tables("caminho/do/arquivo.pdf", pages = 153)</code></p>
+</blockquote>
+<p>Isso é tudo!! Eu resolvi escrever esse post porque fiquei contente por ter tido grande facilidade em conseguir trazer uma tabela do PDF para o R depois do CTLR+C/CTRL+V falhar miseravelmente.</p>
+<p>Um potencial obstáculo pode ser o famigerado {rJava} do qual o {tabulizer} depende. Mas, no <strong>linux</strong>, eu rodei <code>sudo apt install default-jdk default-jre</code> e funcionou pra mim! No <strong>windows</strong> não testei, mas tem <a href="https://mauriciogeneroso.medium.com/configurando-java-1-instala%C3%A7%C3%A3o-do-jre-e-do-jdk-no-windows-38cacace0377">esse tutorial aqui</a>.</p>
+</div>
+<div id="tarefa" class="section level2">
+<h2>Tarefa</h2>
+<p>Extrair uma tabela de uma página de um arquivo pdf. No <code>url_pdf</code> está o endereço de um PDF da internet.</p>
+<pre class="r"><code>url_pdf &lt;- &quot;https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf&quot;</code></pre>
+</div>
+<div id="olhada-na-página-de-pdf" class="section level2">
+<h2>Olhada na página de PDF</h2>
+<pre class="r"><code># tira print da pagina 153 e salva como imagem PNG.
+pdftools::pdf_convert(url_pdf, pages = 153, filenames = &quot;pag153.png&quot;)
+## Converting page 153 to pag153.png... done!
+## [1] &quot;pag153.png&quot;
+
+# mostra a imagem PNG.
+magick::image_read(&quot;pag153.png&quot;)</code></pre>
+<p><img src="/blog/2021-01-08-tabulizer_files/figure-html/unnamed-chunk-4-1.png" width="306" /></p>
+</div>
+<div id="extração-da-tabela-pdf---r" class="section level2">
+<h2>Extração da tabela PDF -&gt; R</h2>
+<pre class="r"><code># extrai a tabela do PDF (e não do PNG!)
+tabela_extrida_do_pdf &lt;- tabulizer::extract_tables(url_pdf, pages = 153)
+tabela_extrida_do_pdf[[1]]
+##       [,1]    [,2]     [,3]        [,4]    [,5]     [,6]       
+##  [1,] &quot;&quot;      &quot;Idade&quot;  &quot;Distância&quot; &quot;&quot;      &quot;Idade&quot;  &quot;Distância&quot;
+##  [2,] &quot;Ident&quot; &quot;(anos)&quot; &quot;(m)&quot;       &quot;Ident&quot; &quot;(anos)&quot; &quot;(m)&quot;      
+##  [3,] &quot;1&quot;     &quot;18&quot;     &quot;170&quot;       &quot;16&quot;    &quot;55&quot;     &quot;140&quot;      
+##  [4,] &quot;2&quot;     &quot;20&quot;     &quot;197&quot;       &quot;17&quot;    &quot;63&quot;     &quot;117&quot;      
+##  [5,] &quot;3&quot;     &quot;22&quot;     &quot;187&quot;       &quot;18&quot;    &quot;65&quot;     &quot;140&quot;      
+##  [6,] &quot;4&quot;     &quot;23&quot;     &quot;170&quot;       &quot;19&quot;    &quot;66&quot;     &quot;100&quot;      
+##  [7,] &quot;5&quot;     &quot;23&quot;     &quot;153&quot;       &quot;20&quot;    &quot;67&quot;     &quot;137&quot;      
+##  [8,] &quot;6&quot;     &quot;25&quot;     &quot;163&quot;       &quot;21&quot;    &quot;68&quot;     &quot;100&quot;      
+##  [9,] &quot;7&quot;     &quot;27&quot;     &quot;187&quot;       &quot;22&quot;    &quot;70&quot;     &quot;130&quot;      
+## [10,] &quot;8&quot;     &quot;28&quot;     &quot;170&quot;       &quot;23&quot;    &quot;71&quot;     &quot;107&quot;      
+## [11,] &quot;9&quot;     &quot;29&quot;     &quot;153&quot;       &quot;24&quot;    &quot;72&quot;     &quot;123&quot;      
+## [12,] &quot;10&quot;    &quot;32&quot;     &quot;137&quot;       &quot;25&quot;    &quot;73&quot;     &quot;93&quot;       
+## [13,] &quot;11&quot;    &quot;37&quot;     &quot;140&quot;       &quot;26&quot;    &quot;74&quot;     &quot;140&quot;      
+## [14,] &quot;12&quot;    &quot;41&quot;     &quot;153&quot;       &quot;27&quot;    &quot;75&quot;     &quot;153&quot;      
+## [15,] &quot;13&quot;    &quot;46&quot;     &quot;150&quot;       &quot;28&quot;    &quot;77&quot;     &quot;120&quot;      
+## [16,] &quot;14&quot;    &quot;49&quot;     &quot;127&quot;       &quot;29&quot;    &quot;79&quot;     &quot;103&quot;      
+## [17,] &quot;15&quot;    &quot;53&quot;     &quot;153&quot;       &quot;30&quot;    &quot;82&quot;     &quot;120&quot;</code></pre>
+<p>CDQ! ⬛</p>
+</div>
+<div id="bônus-faxina-na-tabela" class="section level2">
+<h2>Bônus: Faxina na tabela</h2>
+<p>Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe melhor.</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+
+tabela_extrida_do_pdf[[1]] %&gt;%
+  as_tibble(.name_repair = &quot;unique&quot;) %&gt;%
+  row_to_names(2) %&gt;%
+  clean_names() %&gt;%
+  pivot_longer(everything(), names_to = c(&quot;.value&quot;, &quot;conjunto&quot;), names_sep = &quot;_&quot;) %&gt;%
+  select(-conjunto) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ident</th>
+<th align="left">anos</th>
+<th align="left">m</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">18</td>
+<td align="left">170</td>
+</tr>
+<tr class="even">
+<td align="left">16</td>
+<td align="left">55</td>
+<td align="left">140</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">20</td>
+<td align="left">197</td>
+</tr>
+<tr class="even">
+<td align="left">17</td>
+<td align="left">63</td>
+<td align="left">117</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">22</td>
+<td align="left">187</td>
+</tr>
+<tr class="even">
+<td align="left">18</td>
+<td align="left">65</td>
+<td align="left">140</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">23</td>
+<td align="left">170</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="left">66</td>
+<td align="left">100</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="left">23</td>
+<td align="left">153</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="left">67</td>
+<td align="left">137</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">25</td>
+<td align="left">163</td>
+</tr>
+<tr class="even">
+<td align="left">21</td>
+<td align="left">68</td>
+<td align="left">100</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">27</td>
+<td align="left">187</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">70</td>
+<td align="left">130</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="left">28</td>
+<td align="left">170</td>
+</tr>
+<tr class="even">
+<td align="left">23</td>
+<td align="left">71</td>
+<td align="left">107</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="left">29</td>
+<td align="left">153</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="left">72</td>
+<td align="left">123</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">32</td>
+<td align="left">137</td>
+</tr>
+<tr class="even">
+<td align="left">25</td>
+<td align="left">73</td>
+<td align="left">93</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">37</td>
+<td align="left">140</td>
+</tr>
+<tr class="even">
+<td align="left">26</td>
+<td align="left">74</td>
+<td align="left">140</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="left">41</td>
+<td align="left">153</td>
+</tr>
+<tr class="even">
+<td align="left">27</td>
+<td align="left">75</td>
+<td align="left">153</td>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="left">46</td>
+<td align="left">150</td>
+</tr>
+<tr class="even">
+<td align="left">28</td>
+<td align="left">77</td>
+<td align="left">120</td>
+</tr>
+<tr class="odd">
+<td align="left">14</td>
+<td align="left">49</td>
+<td align="left">127</td>
+</tr>
+<tr class="even">
+<td align="left">29</td>
+<td align="left">79</td>
+<td align="left">103</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="left">53</td>
+<td align="left">153</td>
+</tr>
+<tr class="even">
+<td align="left">30</td>
+<td align="left">82</td>
+<td align="left">120</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="leituras-relacionadas" class="section level2">
+<h2>Leituras relacionadas</h2>
+<p>Sugiro a leitura do post <a href="https://www.curso-r.com/blog/2017-05-27-ocr/">PDF e OCR</a> do <a href="">Julio Trecenti</a> para funcionalidades mais avançadas do {pdftools}, do {tesseract} e do {tabulizer}.</p>
+</div>
+<div id="comentário-aleatório" class="section level2">
+<h2>Comentário aleatório</h2>
+<p>Aproveitem para conhecer o livro <a href="https://docplayer.com.br/156868089-Ciencia-de-dados-fundamentos-e-aplicacoes-versao-parcial-preliminar-maio-pedro-a-morettin-julio-m-singer.html"><strong>Ciência de dados: Fundamentos e Prática</strong></a> de 2020 dos Professores Julio Singer e Renato Morettin.</p>
+<p>Valeu!</p>
+</div>

@@ -1,0 +1,88 @@
+---
+title: "{tabulizer}: Tabela do PDF para data.frame em segundos"
+date: "2021-01-08"
+tags: ["faxina", "pdf", "tabulizer", "pdftools"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/tabulizer.png"
+author: ["Athos"]
+summary: "Como extrair uma tabela de um PDF facilmente com a função `tabulizer::extract_tables()`"
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE, 
+  message = FALSE, 
+  collapse = TRUE
+)
+```
+
+```{r}
+library(pdftools)
+library(magick)
+```
+
+## Resumo
+
+> `tabulizer::extract_tables("caminho/do/arquivo.pdf", pages = 153)`
+
+Isso é tudo!! Eu resolvi escrever esse post porque fiquei contente por ter tido grande facilidade em conseguir trazer uma tabela do PDF para o R depois do CTLR+C/CTRL+V falhar miseravelmente.
+
+Um potencial obstáculo pode ser o famigerado {rJava} do qual o {tabulizer} depende. Mas, no **linux**, eu rodei `sudo apt install default-jdk default-jre` e funcionou pra mim! No **windows** não testei, mas tem [esse tutorial aqui](https://mauriciogeneroso.medium.com/configurando-java-1-instala%C3%A7%C3%A3o-do-jre-e-do-jdk-no-windows-38cacace0377).
+
+## Tarefa
+
+Extrair uma tabela de uma página de um arquivo pdf. No `url_pdf` está o endereço de um PDF da internet.
+
+```{r}
+url_pdf <- "https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf"
+```
+
+## Olhada na página de PDF
+
+```{r}
+# tira print da pagina 153 e salva como imagem PNG.
+pdftools::pdf_convert(url_pdf, pages = 153, filenames = "pag153.png")
+
+# mostra a imagem PNG.
+magick::image_read("pag153.png")
+```
+
+## Extração da tabela PDF -> R
+
+```{r}
+# extrai a tabela do PDF (e não do PNG!)
+tabela_extrida_do_pdf <- tabulizer::extract_tables(url_pdf, pages = 153)
+tabela_extrida_do_pdf[[1]]
+```
+
+CDQ! `r "\u2b1b"`
+
+## Bônus: Faxina na tabela
+
+Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe melhor.
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+tabela_extrida_do_pdf[[1]] %>%
+  as_tibble(.name_repair = "unique") %>%
+  row_to_names(2) %>%
+  clean_names() %>%
+  pivot_longer(everything(), names_to = c(".value", "conjunto"), names_sep = "_") %>%
+  select(-conjunto) %>%
+  knitr::kable()
+```
+
+
+## Leituras relacionadas
+
+Sugiro a leitura do post [PDF e OCR](https://www.curso-r.com/blog/2017-05-27-ocr/) do [Julio Trecenti]() para funcionalidades mais avançadas do {pdftools}, do {tesseract} e do {tabulizer}.
+
+## Comentário aleatório
+
+Aproveitem para conhecer o livro [**Ciência de dados: Fundamentos e Prática**](https://docplayer.com.br/156868089-Ciencia-de-dados-fundamentos-e-aplicacoes-versao-parcial-preliminar-maio-pedro-a-morettin-julio-m-singer.html) de 2020 dos Professores Julio Singer e Renato Morettin.
+
+Valeu!
