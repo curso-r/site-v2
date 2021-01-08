@@ -72,10 +72,91 @@ tabela_extrida_do_pdf[[1]] %&gt;%
   clean_names() %&gt;%
   pivot_longer(everything(), names_to = c(&quot;.value&quot;, &quot;conjunto&quot;), names_sep = &quot;_&quot;) %&gt;%
   select(-conjunto) %&gt;%
-  knitr::kable() %&gt;%
-  head()
-## [1] &quot;|ident |anos |m   |&quot; &quot;|:-----|:----|:---|&quot; &quot;|1     |18   |170 |&quot;
-## [4] &quot;|16    |55   |140 |&quot; &quot;|2     |20   |197 |&quot; &quot;|17    |63   |117 |&quot;</code></pre>
+  head() %&gt;%
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+ident
+</th>
+<th style="text-align:left;">
+anos
+</th>
+<th style="text-align:left;">
+m
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+170
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+55
+</td>
+<td style="text-align:left;">
+140
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+197
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+63
+</td>
+<td style="text-align:left;">
+117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+65
+</td>
+<td style="text-align:left;">
+140
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="leituras-relacionadas" class="section level2">
 <h2>Leituras relacionadas</h2>

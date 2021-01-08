@@ -70,8 +70,8 @@ tabela_extrida_do_pdf[[1]] %>%
   clean_names() %>%
   pivot_longer(everything(), names_to = c(".value", "conjunto"), names_sep = "_") %>%
   select(-conjunto) %>%
-  knitr::kable() %>%
-  head()
+  head() %>%
+  kableExtra::kable()
 ```
 
 
