@@ -5,14 +5,12 @@ tags: ["faxina", "pdf", "tabulizer", "pdftools"]
 categories: ["tutoriais", "r"]
 banner: "img/banners/tabulizer.png"
 author: ["Athos"]
-summary: "Como extrair uma tabela de um PDF facilmente com a função `tabulizer::extract_tables()`"
+summary: "Como extrair uma tabela de um PDF facilmente com a função tabulizer::extract_tables()"
 draft: false
 ---
 
 
 
-<pre class="r"><code>library(pdftools)
-library(magick)</code></pre>
 <div id="resumo" class="section level2">
 <h2>Resumo</h2>
 <blockquote>
@@ -35,7 +33,7 @@ pdftools::pdf_convert(url_pdf, pages = 153, filenames = &quot;pag153.png&quot;)
 
 # mostra a imagem PNG.
 magick::image_read(&quot;pag153.png&quot;)</code></pre>
-<p><img src="/blog/2021-01-08-tabulizer_files/figure-html/unnamed-chunk-4-1.png" width="306" /></p>
+<p><img src="/blog/2021-01-08-tabulizer_files/figure-html/unnamed-chunk-3-1.png" width="306" /></p>
 </div>
 <div id="extração-da-tabela-pdf---r" class="section level2">
 <h2>Extração da tabela PDF -&gt; R</h2>
@@ -64,7 +62,7 @@ tabela_extrida_do_pdf[[1]]
 </div>
 <div id="bônus-faxina-na-tabela" class="section level2">
 <h2>Bônus: Faxina na tabela</h2>
-<p>Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe melhor.</p>
+<p>Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe fazer de melhor. O desafio é empilhar de 3 em 3 colunas, <code>Ident, (anos), (m)</code>. Temos dois indivíduos por linha, precisamos empilhá-los para no fim termos uma linha para cada indivíduo como manda o manual. O herói aqui é o <code>pivot_longer()</code>.</p>
 <pre class="r"><code>library(tidyverse)
 library(janitor)
 
@@ -74,168 +72,10 @@ tabela_extrida_do_pdf[[1]] %&gt;%
   clean_names() %&gt;%
   pivot_longer(everything(), names_to = c(&quot;.value&quot;, &quot;conjunto&quot;), names_sep = &quot;_&quot;) %&gt;%
   select(-conjunto) %&gt;%
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">ident</th>
-<th align="left">anos</th>
-<th align="left">m</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="left">18</td>
-<td align="left">170</td>
-</tr>
-<tr class="even">
-<td align="left">16</td>
-<td align="left">55</td>
-<td align="left">140</td>
-</tr>
-<tr class="odd">
-<td align="left">2</td>
-<td align="left">20</td>
-<td align="left">197</td>
-</tr>
-<tr class="even">
-<td align="left">17</td>
-<td align="left">63</td>
-<td align="left">117</td>
-</tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="left">22</td>
-<td align="left">187</td>
-</tr>
-<tr class="even">
-<td align="left">18</td>
-<td align="left">65</td>
-<td align="left">140</td>
-</tr>
-<tr class="odd">
-<td align="left">4</td>
-<td align="left">23</td>
-<td align="left">170</td>
-</tr>
-<tr class="even">
-<td align="left">19</td>
-<td align="left">66</td>
-<td align="left">100</td>
-</tr>
-<tr class="odd">
-<td align="left">5</td>
-<td align="left">23</td>
-<td align="left">153</td>
-</tr>
-<tr class="even">
-<td align="left">20</td>
-<td align="left">67</td>
-<td align="left">137</td>
-</tr>
-<tr class="odd">
-<td align="left">6</td>
-<td align="left">25</td>
-<td align="left">163</td>
-</tr>
-<tr class="even">
-<td align="left">21</td>
-<td align="left">68</td>
-<td align="left">100</td>
-</tr>
-<tr class="odd">
-<td align="left">7</td>
-<td align="left">27</td>
-<td align="left">187</td>
-</tr>
-<tr class="even">
-<td align="left">22</td>
-<td align="left">70</td>
-<td align="left">130</td>
-</tr>
-<tr class="odd">
-<td align="left">8</td>
-<td align="left">28</td>
-<td align="left">170</td>
-</tr>
-<tr class="even">
-<td align="left">23</td>
-<td align="left">71</td>
-<td align="left">107</td>
-</tr>
-<tr class="odd">
-<td align="left">9</td>
-<td align="left">29</td>
-<td align="left">153</td>
-</tr>
-<tr class="even">
-<td align="left">24</td>
-<td align="left">72</td>
-<td align="left">123</td>
-</tr>
-<tr class="odd">
-<td align="left">10</td>
-<td align="left">32</td>
-<td align="left">137</td>
-</tr>
-<tr class="even">
-<td align="left">25</td>
-<td align="left">73</td>
-<td align="left">93</td>
-</tr>
-<tr class="odd">
-<td align="left">11</td>
-<td align="left">37</td>
-<td align="left">140</td>
-</tr>
-<tr class="even">
-<td align="left">26</td>
-<td align="left">74</td>
-<td align="left">140</td>
-</tr>
-<tr class="odd">
-<td align="left">12</td>
-<td align="left">41</td>
-<td align="left">153</td>
-</tr>
-<tr class="even">
-<td align="left">27</td>
-<td align="left">75</td>
-<td align="left">153</td>
-</tr>
-<tr class="odd">
-<td align="left">13</td>
-<td align="left">46</td>
-<td align="left">150</td>
-</tr>
-<tr class="even">
-<td align="left">28</td>
-<td align="left">77</td>
-<td align="left">120</td>
-</tr>
-<tr class="odd">
-<td align="left">14</td>
-<td align="left">49</td>
-<td align="left">127</td>
-</tr>
-<tr class="even">
-<td align="left">29</td>
-<td align="left">79</td>
-<td align="left">103</td>
-</tr>
-<tr class="odd">
-<td align="left">15</td>
-<td align="left">53</td>
-<td align="left">153</td>
-</tr>
-<tr class="even">
-<td align="left">30</td>
-<td align="left">82</td>
-<td align="left">120</td>
-</tr>
-</tbody>
-</table>
+  knitr::kable() %&gt;%
+  head()
+## [1] &quot;|ident |anos |m   |&quot; &quot;|:-----|:----|:---|&quot; &quot;|1     |18   |170 |&quot;
+## [4] &quot;|16    |55   |140 |&quot; &quot;|2     |20   |197 |&quot; &quot;|17    |63   |117 |&quot;</code></pre>
 </div>
 <div id="leituras-relacionadas" class="section level2">
 <h2>Leituras relacionadas</h2>

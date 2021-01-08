@@ -5,7 +5,7 @@ tags: ["faxina", "pdf", "tabulizer", "pdftools"]
 categories: ["tutoriais", "r"]
 banner: "img/banners/tabulizer.png"
 author: ["Athos"]
-summary: "Como extrair uma tabela de um PDF facilmente com a função `tabulizer::extract_tables()`"
+summary: "Como extrair uma tabela de um PDF facilmente com a função tabulizer::extract_tables()"
 draft: false
 ---
 
@@ -18,10 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r}
-library(pdftools)
-library(magick)
-```
 
 ## Resumo
 
@@ -61,7 +57,8 @@ CDQ! `r "\u2b1b"`
 
 ## Bônus: Faxina na tabela
 
-Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe melhor.
+Uma vez dentro do R, agora é jogo. Bora faxinar que é o que a gente sabe fazer de melhor. O desafio é empilhar de 3 em 3 colunas, `Ident, (anos), (m)`. Temos dois indivíduos por linha, precisamos empilhá-los para no fim termos uma linha para cada indivíduo como manda o manual. O herói aqui é o `pivot_longer()`.
+
 
 ```{r}
 library(tidyverse)
@@ -73,7 +70,8 @@ tabela_extrida_do_pdf[[1]] %>%
   clean_names() %>%
   pivot_longer(everything(), names_to = c(".value", "conjunto"), names_sep = "_") %>%
   select(-conjunto) %>%
-  knitr::kable()
+  knitr::kable() %>%
+  head()
 ```
 
 
