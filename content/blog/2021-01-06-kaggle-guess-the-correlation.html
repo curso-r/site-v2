@@ -1,0 +1,189 @@
+---
+title: "Kaggle: Guess The Correlation (feat. {torchdatasets})"
+date: "2021-01-06"
+tags: ["torch", "deep learning", "r", "machine learning"]
+categories: ["tutoriais", "r"]
+banner: "img/banners/guess-the-correlation.png"
+author: ["Athos"]
+summary: "Solução para o Kaggle Guess The Correlation com {torch}."
+draft: true
+---
+
+
+
+<pre class="r"><code>library(torch)
+library(torchdatasets)
+library(torchvision)
+library(tidyverse)
+library(zeallot)</code></pre>
+<pre class="r"><code>train &lt;- guess_the_correlation_dataset(
+  root = &quot;~/datasets&quot;, 
+  token = &quot;kaggle.json&quot;, 
+  download = TRUE, 
+  split = &quot;train&quot;
+)
+
+submition &lt;- guess_the_correlation_dataset(
+  root = &quot;~/datasets&quot;, 
+  token = &quot;kaggle.json&quot;,
+  download = TRUE, 
+  split = &quot;submition&quot;
+)</code></pre>
+<pre class="r"><code>train[2]
+length(train)
+train$images
+submition$images
+
+dim(train[2]$x)</code></pre>
+<pre class="r"><code>library(mestrado)
+library(patchwork)</code></pre>
+<pre class="r"><code>x &lt;- train[1]
+# (B, C, H, W)
+conv &lt;- torch::nn_conv2d(1, 1, 5, bias = FALSE)
+template_bolinha &lt;- torch::torch_tensor(array(c(0, 1, 1, 1, 0,
+                                                1, 1, 1, 1, 1,
+                                                1, 1, 1, 1, 1,
+                                                1, 1, 1, 1, 1,
+                                                0, 1, 1, 1, 0), dim = c(5,5)))
+conv$parameters$weight$requires_grad_(FALSE) # torch, não otimizar esses params
+conv$weight[1,1] &lt;- template_bolinha
+conv$parameters
+
+x_conv &lt;- x$x[100:130, 100:130]$unsqueeze(1)$unsqueeze(1) %&gt;% conv()
+  
+p1 &lt;- x_conv$squeeze(1)$squeeze(1) %&gt;%
+  torch::torch_less(0.1) %&gt;%
+  image_tensors_to_tbl() %&gt;% 
+  mutate(c1 = c1/max(c1)) %&gt;%
+  ggpixelgrid()
+
+p2 &lt;- x$x[100:130, 100:130] %&gt;%
+  image_tensors_to_tbl() %&gt;% 
+  mutate(c1 = c1/max(c1)) %&gt;%
+  ggpixelgrid()
+
+p1 + p2
+
+
+a &lt;- diag(3)
+
+# mean((x - mean(x)) * (y - mean(y))/(sd(x)*sd(y))
+
+p1 &lt;- p1 %&gt;% 
+  torch::torch_less(10) %&gt;% 
+  torch::torch_nonzero() 
+
+media_desvpad &lt;- p1$to(dtype = torch_float()) %&gt;% 
+  torch_std_mean(dim = 1)
+
+m &lt;- media_desvpad[[2]]
+s &lt;- media_desvpad[[1]]
+# -2.2217 4.3868
+# 2.7783  -0.6132
+# 3.7783  -1.6132
+# 3.7783  -0.6132
+# 3.7783  0.3868
+p1 %&gt;% 
+  torch_subtract(m) %&gt;% 
+  torch_prod(dim = 2) %&gt;% 
+  torch_sum() %&gt;%
+  torch_divide(torch_prod(s))</code></pre>
+<pre class="r"><code>cria_template_bolinha &lt;- function(kernel_size = 5) {
+  conv &lt;- torch::nn_conv2d(1, 1, kernel_size, bias = FALSE)
+  template_bolinha &lt;- torch::torch_tensor(array(c(0, 1, 1, 1, 0,
+                                                  1, 1, 1, 1, 1,
+                                                  1, 1, 1, 1, 1,
+                                                  1, 1, 1, 1, 1,
+                                                  0, 1, 1, 1, 0), dim = c(5,5)))
+  conv$parameters$weight$requires_grad_(FALSE) # torch, não otimizar esses params
+  conv$weight[1,1] &lt;- template_bolinha
+  conv
+}
+
+
+transforma &lt;- function(item_do_df) {
+  conv_bolinha &lt;- cria_template_bolinha()
+  
+  x &lt;- item_do_df$x %&gt;%
+    # retira os eixos da imagem
+    torchvision::transform_crop(5, 22, 125, 127) %&gt;%
+    # passa convolucao para encontrar o centro das bolinhas
+    torch::torch_unsqueeze(1) %&gt;%
+    torch::torch_unsqueeze(1) %&gt;%
+    conv_bolinha() %&gt;%
+    torch::torch_squeeze(1) %&gt;%
+    torch::torch_squeeze(1) %&gt;%
+    # cria a máscara de centros das bolinhas
+    torch::torch_less(0.1) %&gt;% 
+    # encontra as coordenadas dos centros das bolinhas (X, Y)
+    torch::torch_nonzero() 
+  
+    # calcula a correlação de pearson entre as coordenadas das bolinhas (X, Y)
+    # mean((x - mean(x)) * (y - mean(y)))/(sd(x)*sd(y))
+    media_desvpad &lt;- torch::torch_std_mean(x$to(dtype = torch::torch_float()), dim = 1)
+    desvpad &lt;- media_desvpad[[1]]
+    media &lt;- media_desvpad[[2]]
+    
+    corr &lt;- x %&gt;% 
+      torch_subtract(media) %&gt;% 
+      torch_prod(dim = 2) %&gt;% 
+      torch_mean() %&gt;%
+      torch_divide(torch_prod(desvpad)) %&gt;%
+      torch_multiply(-1)
+  
+  
+  item_do_df$x &lt;- corr
+  item_do_df
+}</code></pre>
+<pre class="r"><code>debugonce(transforma)
+train[20] %&gt;% transforma()
+
+train[1] %&gt;% transforma() %&gt;% formato_para_o_ggplot() %&gt;% ggpixelgrid(ncol = 3, label = resp)</code></pre>
+<pre class="r"><code>#
+formato_para_o_ggplot &lt;- function(item_do_df) {
+  item_do_df$x %&gt;%
+    image_tensors_to_tbl() %&gt;% 
+    mutate(resp = paste(&quot;corr: &quot;, scales::percent(item_do_df$y)))
+}
+
+map(1:6, ~train[.x]) %&gt;% 
+  map(transforma) %&gt;%
+  map_dfr(formato_para_o_ggplot) %&gt;% 
+  mutate(c1 = c1/max(c1)) %&gt;%
+  ggpixelgrid(ncol = 3, label = resp) </code></pre>
+<div id="dataloader" class="section level2">
+<h2>Dataloader</h2>
+<pre class="r"><code>train_dl &lt;- dataloader(train, batch_size = 32, shuffle = TRUE)
+train_dl_it &lt;- torch::as_iterator(train_dl)
+b &lt;- train_dl_it()
+
+dim(b$x)
+b$y</code></pre>
+</div>
+<div id="device" class="section level2">
+<h2>Device</h2>
+<pre class="r"><code>device &lt;- torch_device(if(cuda_is_available()) &quot;cuda&quot; else &quot;cpu&quot;)</code></pre>
+</div>
+<div id="loss" class="section level2">
+<h2>Loss</h2>
+</div>
+<div id="optimizer" class="section level2">
+<h2>Optimizer</h2>
+</div>
+<div id="modelo" class="section level2">
+<h2>Modelo</h2>
+<div id="modelo1" class="section level3">
+<h3>Modelo1</h3>
+<p>Apelar para calcular a correlação de pearson dos pontos da imagem.
+1) achar o centro dos pontos
+2) calcular a correlação entre X e Y desses centros</p>
+</div>
+<div id="modelo2" class="section level3">
+<h3>Modelo2</h3>
+<p>CNN tradicional —&gt; invariante no espaço</p>
+</div>
+<div id="modelo3" class="section level3">
+<h3>Modelo3</h3>
+<p>CNN com kernel retangular —-&gt; considera a posicao das coisas</p>
+</div>
+</div>
