@@ -1,14 +1,14 @@
 ---
 title: "Regressão linear"
-data: "9 a 23 de janeiro, aos sábados, das 9h00 às 12h00"
-hora: "3 aulas de 3 horas cada, 9 horas de curso"
+data: "13 de março a 27 de março, aos sábados, das 9h00 às 12h00"
+hora: "3 aulas, 9 horas de curso"
 local: "Online"
 img: "img/cursos/regressao-linear.png"
 preco: "R$400,00"
 banner: "img/cursos/regressao-linear-banner.png"
 desc: "Familiarize-se com os principais conceitos por trás da regressão linear."
 ordem: "15"
-id: "35"
+id: "52"
 aberto: "true"
 unit_price: "40000"
 params:
