@@ -1,0 +1,85 @@
+---
+title: "Testes de normalidade em R - Parte 1: gráficos"
+date: "2021-01-28"
+tags: ["faxina", "pdf", "tabulizer", "pdftools"]
+categories: ["análises", "conceitos", "tutoriais", "r"]
+banner: "img/banners/gaussian.png"
+author: ["Fernando"]
+summary: "Como verificar se uma variável tem distribuição normal ou não"
+draft: false
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE, 
+  message = FALSE, 
+  collapse = TRUE
+)
+```
+
+
+A distribuição normal (também conhecida como distribuição gaussiana) é um dos conceitos mais importantes da estatística. Ela nos ajuda a interpretar resultados experimentais em todas as áreas da ciência e também é o pressuposto de diversos modelos estatísticos, como por exemplo os modelos de regressão linear.
+
+Nessa série de posts, vamos te ajudar a analisar estatisticamente se uma variável segue ou não a distribuição normal de maneira simples e rápida. Hoje vamos falar especificamente de gráficos!
+
+# Método visual (Q-Q plot)
+
+Nada como construir um gráfico para nos informar rapidamente o que está acontecendo com uma variável! Para isso, vamos usar o pacote `ggpubr`, que além do Q-Q plot também ajuda a produzir `ggplot2` prontos para publicação.
+
+Vamos começar analisando a distribuição de duas variáveis de bases distintas: a potência dos carros (variável `hp`) na clássica `mtcars` e o comprimento da nadadeira dos pinguins de palmer (disponível em português no pacote `dados`:  https://github.com/cienciadedatos/dados).
+
+Começando pelo peso dos carros, a função que vamos usar para fazer os nosso gráfico é a função `ggqqplot`. O que essa função faz é comparar os *quantis empíricos* da nossa variável padronizada com os *quantis teóricos* da distribuição normal com média 0 e variância 1. Parece complicado, mas o gráfico é bem mais fácil de entender:
+
+
+```{r}
+library(ggpubr)
+
+ggqqplot(mtcars$hp)
+
+```
+
+A linha preta representa os resultados esperados se os dados seguissem a distribuição normal. Já a faixa cinza por sua vez representa a variabilidade tolerável ao redor dessa linha. Quanto mais o nossos dados (pontinhos pretos) escaparem dessa faixa mais fora do padrão da distribuição normal os dados estão. No caso acima nenhum ponto saiu da faixa, o que indica que os nossos dados seguem uma distribuição normal.
+
+Vamos dar uma olhara em um caso em que não há distribuição normal para ver como fica?
+
+```{r}
+library(ggpubr)
+
+#devtools::install_github("https://github.com/cienciadedatos/dados")
+
+library(dados)
+
+ggqqplot(pinguins$comprimento_nadadeira)
+
+```
+
+Dessa vez dá para notar que tem muitos pontos fora da faixa né? Pois essa é a evidência de que estamos fora da distribuição normal!
+
+Se você quisesse parar de ler aqui e seguir com as suas análises de normalidade, você até poderia, mas perderia as malandragens que vamos te ensinar daqui para frente...
+
+## Muitos dados podem prejudicar sua visualização!
+
+O método gráfico é fantástico quando temos poucos dados, mas conforme o tamanho da nossa base aumenta o tempo de plotagem e a visibilidade geral do gráfico é prejudicada. 
+
+A base `diamantes` já nos dá uma ideia de como a visualização pode ficar ruim. Vamos analisar a variável `profundidade` para ter uma ideia:
+
+```{r}
+library(ggpubr)
+
+#devtools::install_github("https://github.com/cienciadedatos/dados")
+
+library(dados)
+
+ggqqplot(diamante$profundidade)
+```
+
+Fica claro que a variável não segue a distribuição normal, mas a faixa cinza fica completamente esmagada, nem conseguimos ver quantos pontos estão dentro ou fora dela. O gráfico não é completamente inútil, pois é possível ver que existem inúmeros pontos que depõem contra a normalidade da variável, mas é um fato que o resultado não é tão elegante quanto o anterior.
+
+O que fazemos nesse cenário então? É aqui que entra outro jeito legal de verificar se uma variável tem distribuição normal: um teste estatístico.
+
+Mas isso é um assunto para o nosso próximo post! Fique ligada ou ligado!
+
+# Gostou? Quer saber mais?
+
+Se você quiser aprender um pouco mais sobre esse assunto, temos alguns cursos que tocam os temas deste post. Dê uma olhada nos nossos cursos de [Regressão Linear](https://www.curso-r.com/cursos/regressao-linear/) ou [Machine Learning](https://www.curso-r.com/cursos/intro-machine-learning/) e aproveite!

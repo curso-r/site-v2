@@ -1,0 +1,57 @@
+---
+title: "Testes de normalidade em R - Parte 1: gráficos"
+date: "2021-01-28"
+tags: ["faxina", "pdf", "tabulizer", "pdftools"]
+categories: ["análises", "conceitos", "tutoriais", "r"]
+banner: "img/banners/gaussian.png"
+author: ["Fernando"]
+summary: "Como verificar se uma variável tem distribuição normal ou não"
+draft: false
+---
+
+
+
+<p>A distribuição normal (também conhecida como distribuição gaussiana) é um dos conceitos mais importantes da estatística. Ela nos ajuda a interpretar resultados experimentais em todas as áreas da ciência e também é o pressuposto de diversos modelos estatísticos, como por exemplo os modelos de regressão linear.</p>
+<p>Nessa série de posts, vamos te ajudar a analisar estatisticamente se uma variável segue ou não a distribuição normal de maneira simples e rápida. Hoje vamos falar especificamente de gráficos!</p>
+<div id="método-visual-q-q-plot" class="section level1">
+<h1>Método visual (Q-Q plot)</h1>
+<p>Nada como construir um gráfico pra nos informar rapidamente o que está acontecendo com uma variável! Para isso, vamos usar o pacote <code>ggpubr</code>, que além do Q-Q plot também ajuda a produzir <code>ggplot2</code> prontos para publicação.</p>
+<p>Vamos começar analisando a distribuição de duas variáveis de bases distintas: a potência dos carros (variável <code>hp</code>) na clássica <code>mtcars</code> e o comprimento da nadadeira dos pinguins de palmer (disponível em português no pacote <code>dados</code>: <a href="https://github.com/cienciadedatos/dados" class="uri">https://github.com/cienciadedatos/dados</a>).</p>
+<p>Começando pelo peso dos carros, a função que vamos usar para fazer os nosso gráfico é a função <code>ggqqplot</code>. O que essa função faz é comparar os <em>quantis empíricos</em> da nossa variável padronizada com os <em>quantis teóricos</em> da distribuição normal com média 0 e variância 1. Parece complicado, mas o gráfico é bem mais fácil de entender:</p>
+<pre class="r"><code>library(ggpubr)
+
+ggqqplot(mtcars$hp)</code></pre>
+<p><img src="/blog/2021-01-18-testes-de-normalidade_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>A linha preta representa os resultados esperados se os dados seguissem a distribuição normal. Já a faixa cinza por sua vez representa a variabilidade tolerável ao redor dessa linha. Quanto mais o nossos dados (pontinhos pretos) escaparem dessa faixa mais fora do padrão da distribuição normal os dados estão. No caso acima nenhum ponto saiu da faixa, o que indica que os nossos dados seguem uma distribuição normal.</p>
+<p>Vamos dar uma olhara em um caso em que não há distribuição normal para ver como fica?</p>
+<pre class="r"><code>library(ggpubr)
+
+#devtools::install_github(&quot;https://github.com/cienciadedatos/dados&quot;)
+
+library(dados)
+
+ggqqplot(pinguins$comprimento_nadadeira)</code></pre>
+<p><img src="/blog/2021-01-18-testes-de-normalidade_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Dessa vez dá pra notar que tem muitos pontos fora da faixa né? Pois essa é a evidência de que estamos fora da distribuição normal!</p>
+<p>Se você quisesse parar de ler aqui e seguir com as suas análises de normalidade, você até poderia, mas perderia as malandragens que vamos te ensinar daqui pra frente…</p>
+<div id="muitos-dados-podem-prejudicar-sua-visualização" class="section level2">
+<h2>Muitos dados podem prejudicar sua visualização!</h2>
+<p>O método gráfico é fantástico quando temos poucos dados, mas conforme o tamanho da nossa base aumenta o tempo de plotagem e a visibilidade geral do gráfico é prejudicada.</p>
+<p>A base <code>diamantes</code> já nos dá uma ideia de como a visualização pode ficar ruim. Vamos analisar a variável <code>profundidade</code> para ter uma ideia:</p>
+<pre class="r"><code>library(ggpubr)
+
+#devtools::install_github(&quot;https://github.com/cienciadedatos/dados&quot;)
+
+library(dados)
+
+ggqqplot(diamante$profundidade)</code></pre>
+<p><img src="/blog/2021-01-18-testes-de-normalidade_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Fica claro que a variável não segue a distribuição normal, mas a faixa cinza fica completamente esmagada, nem conseguimos ver quantos pontos estão dentro ou fora dela. O gráfico não é completamente inútil, pois é possível ver que existem inúmeros pontos que depoem contra a normalidade da variável, mas é um fato que o resultado não é tão elegante quanto o anterior.</p>
+<p>O que fazemos nesse cenário então? É aqui que entra outro jeito legal de verificar se uma variável tem distribuição normal: um teste estatístico.</p>
+<p>Mas isso é um assunto para o nosso próximo post! Fique ligada ou ligado!</p>
+</div>
+</div>
+<div id="gostou-quer-saber-mais" class="section level1">
+<h1>Gostou? Quer saber mais?</h1>
+<p>Se você quiser aprender um pouco mais sobre esse assunto, temos alguns cursos que tocam os temas deste post. Dê uma olhada nos nossos cursos de <a href="https://www.curso-r.com/cursos/regressao-linear/">Regressão Linear</a> ou <a href="https://www.curso-r.com/cursos/intro-machine-learning/">Machine Learning</a> e aproveite!</p>
+</div>
