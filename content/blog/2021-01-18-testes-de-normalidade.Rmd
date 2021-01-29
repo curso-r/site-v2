@@ -5,7 +5,7 @@ tags: ["faxina", "pdf", "tabulizer", "pdftools"]
 categories: ["análises", "conceitos", "tutoriais", "r"]
 banner: "img/banners/gaussian.png"
 author: ["Fernando"]
-summary: "Como verificar se uma variável tem distribuição normal ou não"
+summary: "Nessa série de posts vamos te mostrar como descobrir se uma variável segue ou não a distribuição normal. No primeiro texto, vamos te mostrar como construir um QQplot da sua variável contra a distribuição normal e como interpretar esse tipo de gráfico."
 draft: false
 ---
 
