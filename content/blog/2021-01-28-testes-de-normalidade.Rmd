@@ -1,7 +1,7 @@
 ---
 title: "Testes de normalidade em R - Parte 1: gráficos"
 date: "2021-01-28"
-tags: ["faxina", "pdf", "tabulizer", "pdftools"]
+tags: ["faxina", "modelagem"]
 categories: ["análises", "conceitos", "tutoriais", "r"]
 banner: "img/banners/gaussian.png"
 author: ["Fernando"]
